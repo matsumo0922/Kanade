@@ -12,6 +12,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import caios.android.kanade.feature.album.top.navigateToAlbumTop
+import caios.android.kanade.feature.artist.top.navigateToArtistTop
+import caios.android.kanade.feature.home.navigateToHome
+import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
+import caios.android.kanade.feature.song.top.navigateToSongTop
 import caios.android.kanade.navigation.LibraryDestination
 import kotlinx.coroutines.CoroutineScope
 
@@ -55,11 +60,11 @@ class KanadeAppState(
         }
 
         when (libraryDestination) {
-            LibraryDestination.Home -> navController.navigate("library/home", navOption)
-            LibraryDestination.Song -> navController.navigate("library/song", navOption)
-            LibraryDestination.Artist -> navController.navigate("library/artist", navOption)
-            LibraryDestination.Album -> navController.navigate("library/album", navOption)
-            LibraryDestination.Playlist -> navController.navigate("library/playlist", navOption)
+            LibraryDestination.Home -> navController.navigateToHome(navOption)
+            LibraryDestination.Song -> navController.navigateToSongTop(navOption)
+            LibraryDestination.Artist -> navController.navigateToArtistTop(navOption)
+            LibraryDestination.Album -> navController.navigateToAlbumTop(navOption)
+            LibraryDestination.Playlist -> navController.navigateToPlaylistTop(navOption)
         }
     }
 }

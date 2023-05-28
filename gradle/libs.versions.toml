@@ -41,6 +41,7 @@ androidxAnnotation = "1.6.0"
 androidxCompose = "2023.04.01"
 androidxComposeConstraintLayout = "1.0.1"
 androidxComposeNavigation = "2.5.3"
+androidxHiltNavigationCompose = "1.0.0"
 
 # Google
 playServiceBilling = "5.0.0"
@@ -123,6 +124,7 @@ androidx-palette = { module = "androidx.palette:palette-ktx", version.ref = "and
 androidx-preference = { module = "androidx.preference:preference-ktx", version.ref = "androidxPreference" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDataStore" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
@@ -227,6 +229,7 @@ ui-implementation = [
     "androidx-lifecycle-viewmodel",
     "androidx-room",
     "androidx-room-ktx",
+    "androidx-hilt-navigation-compose",
     "accompanist-systemuicontroller",
     "accompanist-compose-theme-adapter",
     "accompanist-compose-theme-adapter3",

@@ -35,6 +35,12 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:repository"))
 
+    implementation(project(":feature:album"))
+    implementation(project(":feature:artist"))
+    implementation(project(":feature:playlist"))
+    implementation(project(":feature:song"))
+    implementation(project(":feature:home"))
+
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
 

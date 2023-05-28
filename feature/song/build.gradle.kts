@@ -1,6 +1,7 @@
 plugins {
     id("caios.library")
     id("caios.library.compose")
+    id("caios.hilt")
     id("caios.detekt")
 }
 

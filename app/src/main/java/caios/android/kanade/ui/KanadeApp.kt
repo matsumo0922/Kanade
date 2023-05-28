@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.navigation.KanadeNavHost
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("ModifierMissing")
@@ -59,10 +60,7 @@ fun KanadeApp(
                         ),
                     ),
             ) {
-                Text(
-                    text = "Hello, World!",
-                    color = Color.Gray,
-                )
+                KanadeNavHost(appState)
             }
         }
     }
