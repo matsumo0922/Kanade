@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package caios.android.kanade.core.design.theme
 
 import androidx.compose.runtime.Immutable

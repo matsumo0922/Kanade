@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package caios.android.kanade.core.design.component
 
 import androidx.compose.foundation.layout.fillMaxSize

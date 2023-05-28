@@ -6,9 +6,9 @@ import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
-import caios.android.kanade.core.datastore.UserPreferenceSerializer
 import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.UserPreference
+import caios.android.kanade.core.datastore.UserPreferenceSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

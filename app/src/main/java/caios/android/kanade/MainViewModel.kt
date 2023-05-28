@@ -1,8 +1,6 @@
 package caios.android.kanade
 
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     userDataRepository: UserDataRepository,
-): ViewModel() {
+) : ViewModel() {
 
     val uiState: StateFlow<MainUiState> = userDataRepository.userData.map {
         MainUiState.Idle(it)
@@ -30,6 +28,6 @@ class MainViewModel @Inject constructor(
 }
 
 sealed interface MainUiState {
-    object Loading: MainUiState
-    data class Idle(val userData: UserData): MainUiState
+    object Loading : MainUiState
+    data class Idle(val userData: UserData) : MainUiState
 }

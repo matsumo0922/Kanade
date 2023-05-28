@@ -22,9 +22,6 @@ naming:
       - 'Composable'
   MatchingDeclarationName:
     mustBeFirst: false
-  PackageNaming:
-    # android-cookpad-tv は既にパッケージ名にアンダースコアを含んでいるため無効化
-    active: false
 
 performance:
   active: true
@@ -92,9 +89,8 @@ formatting:
   # 呼び出し箇所での TrailingComma を強制
   TrailingCommaOnCallSite:
     active: true
-  PackageName:
-    # android-cookpad-tv は既にパッケージ名にアンダースコアを含んでいるため無効化
-    active: false
 
 TwitterCompose:
+  CompositionLocalAllowlist:
+    active: false
   active: true

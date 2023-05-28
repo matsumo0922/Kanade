@@ -15,21 +15,21 @@ class KanadePreferencesDataStore @Inject constructor(
                 useDynamicColor = it.useDynamicColor,
                 isDeveloperMode = it.isDeveloperMode,
                 isPremiumMode = it.isPremiumMode,
-                themeConfig = when(it.themeConfig) {
+                themeConfig = when (it.themeConfig) {
                     ThemeConfigProto.THEME_CONFIG_LIGHT -> ThemeConfig.Light
-                    ThemeConfigProto.THEME_CONFIG_DARK  -> ThemeConfig.Dark
-                    else                                -> ThemeConfig.System
-                }
+                    ThemeConfigProto.THEME_CONFIG_DARK -> ThemeConfig.Dark
+                    else -> ThemeConfig.System
+                },
             )
         }
 
     suspend fun setThemeConfig(themeConfig: ThemeConfig) {
         userPreference.updateData {
             it.copy {
-                this.themeConfig = when(themeConfig) {
+                this.themeConfig = when (themeConfig) {
                     ThemeConfig.Light -> ThemeConfigProto.THEME_CONFIG_LIGHT
-                    ThemeConfig.Dark  -> ThemeConfigProto.THEME_CONFIG_DARK
-                    else              -> ThemeConfigProto.THEME_CONFIG_SYSTEM
+                    ThemeConfig.Dark -> ThemeConfigProto.THEME_CONFIG_DARK
+                    else -> ThemeConfigProto.THEME_CONFIG_SYSTEM
                 }
             }
         }

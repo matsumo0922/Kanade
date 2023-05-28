@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import caios.android.kanade.core.design.component.KanadeBackground
 
+@Suppress("ModifierMissing")
 @Composable
 fun KanadeApp(
     windowSize: WindowSizeClass,
@@ -14,7 +15,7 @@ fun KanadeApp(
     KanadeBackground {
         Text(
             text = "Hello World!",
-            color = Color.White
+            color = Color.White,
         )
     }
 }

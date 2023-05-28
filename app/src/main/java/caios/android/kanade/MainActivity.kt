@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition {
             when (uiState) {
                 is MainUiState.Loading -> true
-                else                   -> false
+                else -> false
             }
         }
 
@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                 enableDynamicTheme = shouldUseDynamicColor(uiState),
             ) {
                 KanadeApp(
-                    windowSize = calculateWindowSizeClass(this)
+                    windowSize = calculateWindowSizeClass(this),
                 )
             }
         }
@@ -77,10 +77,10 @@ class MainActivity : ComponentActivity() {
         return when (uiState) {
             is MainUiState.Idle -> when (uiState.userData.themeConfig) {
                 ThemeConfig.Light -> false
-                ThemeConfig.Dark  -> true
-                else              -> isSystemInDarkTheme()
+                ThemeConfig.Dark -> true
+                else -> isSystemInDarkTheme()
             }
-            else                -> isSystemInDarkTheme()
+            else -> isSystemInDarkTheme()
         }
     }
 
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
     private fun shouldUseDynamicColor(uiState: MainUiState): Boolean {
         return when (uiState) {
             is MainUiState.Idle -> uiState.userData.useDynamicColor
-            else                -> false
+            else -> false
         }
     }
 }

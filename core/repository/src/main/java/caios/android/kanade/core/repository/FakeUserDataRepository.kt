@@ -5,8 +5,8 @@ import caios.android.kanade.core.model.ThemeConfig
 import javax.inject.Inject
 
 class FakeUserDataRepository @Inject constructor(
-    private val kanadePreferencesDataStore: KanadePreferencesDataStore
-): UserDataRepository {
+    private val kanadePreferencesDataStore: KanadePreferencesDataStore,
+) : UserDataRepository {
 
     override val userData = kanadePreferencesDataStore.userData
 

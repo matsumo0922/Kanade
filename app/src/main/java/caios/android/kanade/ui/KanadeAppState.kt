@@ -59,10 +59,10 @@ class KanadeAppState(
         }
 
         when (libraryDestination) {
-            LibraryDestination.Home     -> navController.navigate("library/home", navOption)
-            LibraryDestination.Song     -> navController.navigate("library/song", navOption)
-            LibraryDestination.Artist   -> navController.navigate("library/artist", navOption)
-            LibraryDestination.Album    -> navController.navigate("library/album", navOption)
+            LibraryDestination.Home -> navController.navigate("library/home", navOption)
+            LibraryDestination.Song -> navController.navigate("library/song", navOption)
+            LibraryDestination.Artist -> navController.navigate("library/artist", navOption)
+            LibraryDestination.Album -> navController.navigate("library/album", navOption)
             LibraryDestination.Playlist -> navController.navigate("library/playlist", navOption)
         }
     }

@@ -84,12 +84,12 @@ fun KanadeTheme(
 
     val backgroundTheme = BackgroundTheme(
         color = colorScheme.surface,
-        tonalElevation = 2.dp
+        tonalElevation = 2.dp,
     )
 
     val tintTheme = when {
         enableDynamicTheme && supportsDynamicTheming() -> TintTheme(colorScheme.primary)
-        else                                           -> TintTheme()
+        else -> TintTheme()
     }
 
     CompositionLocalProvider(

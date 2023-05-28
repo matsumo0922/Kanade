@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DefaultUserDataRepository @Inject constructor(
     private val kanadePreferencesDataStore: KanadePreferencesDataStore,
-): UserDataRepository {
+) : UserDataRepository {
 
     override val userData: Flow<UserData> = kanadePreferencesDataStore.userData
 

@@ -35,7 +35,6 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:repository"))
 
-    implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.bundles.ui.implementation)
