@@ -43,11 +43,7 @@ class KanadeAppState(
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    val shouldShowBottomBar: Boolean
-        get() = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
-
-    val shouldShowNavRail: Boolean
-        get() = !shouldShowBottomBar
+    val libraryDestinations = LibraryDestination.values().asList()
 
     fun navigateToLibrary(libraryDestination: LibraryDestination) {
         val navOption = navOptions {
