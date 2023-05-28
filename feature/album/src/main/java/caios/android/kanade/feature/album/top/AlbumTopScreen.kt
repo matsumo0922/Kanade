@@ -5,15 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
 
 @Composable
 internal fun AlbumTopRoute(
     modifier: Modifier = Modifier,
-    viewModel: AlbumTopViewModel = hiltViewModel()
+    viewModel: AlbumTopViewModel = hiltViewModel(),
 ) {
     AlbumTopScreen()
 }

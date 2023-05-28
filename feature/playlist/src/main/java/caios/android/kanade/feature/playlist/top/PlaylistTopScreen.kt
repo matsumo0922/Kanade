@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun PlaylistTopRoute(
     modifier: Modifier = Modifier,
-    viewModel: PlaylistTopViewModel = hiltViewModel()
+    viewModel: PlaylistTopViewModel = hiltViewModel(),
 ) {
     PlaylistTopScreen()
 }

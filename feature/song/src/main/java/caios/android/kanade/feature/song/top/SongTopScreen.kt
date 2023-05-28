@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun SongTopRoute(
     modifier: Modifier = Modifier,
-    viewModel: SongTopViewModel = hiltViewModel()
+    viewModel: SongTopViewModel = hiltViewModel(),
 ) {
     SongTopScreen()
 }

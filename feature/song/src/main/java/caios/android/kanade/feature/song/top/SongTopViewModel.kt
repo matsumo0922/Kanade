@@ -5,4 +5,4 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SongTopViewModel @Inject constructor(): ViewModel() {}
+class SongTopViewModel @Inject constructor() : ViewModel()

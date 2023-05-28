@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 
 @Composable
 fun AnimatedIcon(
@@ -32,7 +31,7 @@ fun AnimatedIcon(
         },
         update = { view ->
             view.isChecked = isSelected
-        }
+        },
     )
 }
 
@@ -63,7 +62,7 @@ private class CheckableImageView(context: Context, attrs: AttributeSet? = null) 
 
     companion object {
         private val CHECKED_STATE_SET = intArrayOf(
-            android.R.attr.state_checked
+            android.R.attr.state_checked,
         )
     }
 }

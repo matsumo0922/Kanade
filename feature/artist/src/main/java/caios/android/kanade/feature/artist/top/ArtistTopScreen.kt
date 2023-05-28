@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun ArtistTopRoute(
     modifier: Modifier = Modifier,
-    viewModel: ArtistTopViewModel = hiltViewModel()
+    viewModel: ArtistTopViewModel = hiltViewModel(),
 ) {
     ArtistTopScreen()
 }

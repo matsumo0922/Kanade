@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun HomeRoute(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     HomeScreen()
 }

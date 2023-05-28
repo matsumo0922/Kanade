@@ -52,4 +52,3 @@ object KanadeNavigationDefaults {
     @Composable
     fun navigationIndicatorColor() = MaterialTheme.colorScheme.primaryContainer
 }
-
