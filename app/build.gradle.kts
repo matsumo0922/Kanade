@@ -1,8 +1,8 @@
 plugins {
-    id("caios.application")
-    id("caios.application.compose")
-    id("caios.hilt")
-    id("caios.detekt")
+    id("kanade.application")
+    id("kanade.application.compose")
+    id("kanade.hilt")
+    id("kanade.detekt")
 }
 
 apply(from =  "${project.rootDir}/gradle/keystore/default.gradle")
@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
     implementation(project(":core:repository"))
+    implementation(project(":core:ui"))
 
     implementation(project(":feature:album"))
     implementation(project(":feature:artist"))

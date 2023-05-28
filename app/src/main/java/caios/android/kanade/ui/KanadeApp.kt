@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,11 +18,18 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.navigation.KanadeNavHost
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("ModifierMissing")
@@ -47,6 +55,9 @@ fun KanadeApp(
                 )
             },
         ) { padding ->
+
+            RequestPermissions()
+
             Column(
                 Modifier
                     .fillMaxSize()
@@ -61,5 +72,25 @@ fun KanadeApp(
                 KanadeNavHost(appState)
             }
         }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun RequestPermissions() {
+    var isShowPermissionDialog by remember { mutableStateOf(true) }
+
+    val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
+    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+    val permissionList = listOfNotNull(storagePermission, notifyPermission)
+    val permissionsState = rememberMultiplePermissionsState(permissionList)
+
+    if (permissionsState.permissions[0].status is PermissionStatus.Granted) return
+
+    if (isShowPermissionDialog) {
+        PermissionDialog(
+            onDismiss = { isShowPermissionDialog = false },
+        )
     }
 }

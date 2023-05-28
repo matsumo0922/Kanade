@@ -20,27 +20,27 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "caios.application"
+            id = "kanade.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidApplicationCompose") {
-            id = "caios.application.compose"
+            id = "kanade.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidLibrary") {
-            id = "caios.library"
+            id = "kanade.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidLibraryCompose") {
-            id = "caios.library.compose"
+            id = "kanade.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("androidHilt") {
-            id = "caios.hilt"
+            id = "kanade.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("AndroidDetekt") {
-            id = "caios.detekt"
+            id = "kanade.detekt"
             implementationClass = "AndroidDetektConventionPlugin"
         }
     }

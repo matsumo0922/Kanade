@@ -1,6 +1,6 @@
 package caios.android.kanade.navigation
 
-import caios.android.kanade.R
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.icon.Icon
 import caios.android.kanade.core.design.icon.Icon.DrawableResourceIcon
 import caios.android.kanade.core.design.icon.KanadeIcon

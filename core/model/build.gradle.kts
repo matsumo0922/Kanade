@@ -1,6 +1,6 @@
 plugins {
-    id("caios.library")
-    id("caios.detekt")
+    id("kanade.library")
+    id("kanade.detekt")
 }
 
 android {

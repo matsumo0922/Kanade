@@ -1,7 +1,7 @@
 plugins {
-    id("caios.library")
-    id("caios.detekt")
-    id("caios.hilt")
+    id("kanade.library")
+    id("kanade.detekt")
+    id("kanade.hilt")
     alias(libs.plugins.protobuf)
 }
 
