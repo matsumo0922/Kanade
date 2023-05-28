@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="110"
+    android:interpolator="@android:interpolator/fast_out_slow_in"
+    android:propertyName="pathData"
+    android:startOffset="250"
+    android:valueFrom="M 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12"
+    android:valueTo="M 11.293 11.293 C 11.48 11.105 11.735 11 12 11 C 12.265 11 12.52 11.105 12.707 11.293 C 12.895 11.48 13 11.735 13 12 C 13 12.265 12.895 12.52 12.707 12.707 C 12.52 12.895 12.265 13 12 13 C 11.735 13 11.48 12.895 11.293 12.707 C 11.105 12.52 11 12.265 11 12 C 11 11.735 11.105 11.48 11.293 11.293"
+    android:valueType="pathType" />

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/first"
+        android:drawable="@drawable/vec_repeat_off"
+        android:state_last="false"
+        android:state_middle="false" />
+    <item
+        android:id="@+id/middle"
+        android:drawable="@drawable/vec_repeat"
+        android:state_middle="true" />
+    <item
+        android:id="@+id/last"
+        android:drawable="@drawable/vec_repeat_one"
+        android:state_last="true" />
+    <transition
+        android:drawable="@drawable/av_repeat_off_to_on"
+        android:fromId="@id/first"
+        android:toId="@id/middle" />
+    <transition
+        android:drawable="@drawable/av_repeat_on_to_one"
+        android:fromId="@id/middle"
+        android:toId="@id/last" />
+    <transition
+        android:drawable="@drawable/av_repeat_one_to_off"
+        android:fromId="@id/last"
+        android:toId="@id/first" />
+</animated-selector>

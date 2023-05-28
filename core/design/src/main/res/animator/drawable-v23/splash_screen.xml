@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorLibraryBackground" />
+
+    <item
+        android:width="120dp"
+        android:height="120dp"
+        android:bottom="48dp"
+        android:drawable="@drawable/ic_app_icon"
+        android:gravity="center" />
+
+    <item
+        android:width="210dp"
+        android:height="102dp"
+        android:bottom="80dp"
+        android:drawable="@drawable/ic_caios"
+        android:gravity="center|bottom" />
+
+</layer-list>

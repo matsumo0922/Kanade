@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/enabled"
+        android:drawable="@drawable/vec_shuffle"
+        android:state_checked="true" />
+    <item
+        android:id="@+id/disabled"
+        android:drawable="@drawable/vec_shuffle_off" />
+    <transition
+        android:drawable="@drawable/av_shuffle_off_to_on"
+        android:fromId="@id/disabled"
+        android:toId="@id/enabled" />
+    <transition
+        android:drawable="@drawable/av_shuffle_on_to_off"
+        android:fromId="@id/enabled"
+        android:toId="@id/disabled" />
+</animated-selector>

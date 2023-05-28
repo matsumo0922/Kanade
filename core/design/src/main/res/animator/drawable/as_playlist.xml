@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/selectOn"
+        android:drawable="@drawable/vec_playlist"
+        android:state_checked="true" />
+    <item
+        android:id="@+id/selectOff"
+        android:drawable="@drawable/vec_playlist" />
+    <transition
+        android:drawable="@drawable/av_playlist"
+        android:fromId="@id/selectOff"
+        android:toId="@id/selectOn" />
+
+</animated-selector>

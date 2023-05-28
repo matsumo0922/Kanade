@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/vec_repeat_animate_on_to_one">
+    <target
+        android:name="group"
+        android:animation="@animator/oa_repeat_on_to_one_group" />
+    <target
+        android:name="path_3"
+        android:animation="@animator/oa_repeat_on_to_one_path3" />
+    <target
+        android:name="group_1"
+        android:animation="@animator/oa_repeat_on_to_one_group1" />
+    <target
+        android:name="path"
+        android:animation="@animator/oa_repeat_on_to_one_path" />
+    <target
+        android:name="path_4"
+        android:animation="@animator/oa_repeat_on_to_one_path4" />
+</animated-vector>

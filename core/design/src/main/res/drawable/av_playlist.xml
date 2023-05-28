@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/vec_playlist">
+    <target
+        android:name="path_1"
+        android:animation="@animator/oa_playlist_path1" />
+    <target
+        android:name="path_2"
+        android:animation="@animator/oa_playlist_path2" />
+    <target
+        android:name="path_3"
+        android:animation="@animator/oa_playlist_path3" />
+</animated-vector>

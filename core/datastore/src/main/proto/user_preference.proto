@@ -1,0 +1,15 @@
+
+syntax = "proto3";
+
+import "theme_config.proto";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+message UserPreference {
+  ThemeConfigProto theme_config = 1;
+
+  bool use_dynamic_color = 2;
+  bool is_developer_mode = 3;
+  bool is_premium_mode = 4;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/vec_artist_on">
+    <target
+        android:name="group_3"
+        android:animation="@animator/oa_artist_group1_off" />
+    <target
+        android:name="group_2"
+        android:animation="@animator/oa_artist_group2_off" />
+    <target
+        android:name="path_2"
+        android:animation="@animator/oa_artist_path_off" />
+</animated-vector>
