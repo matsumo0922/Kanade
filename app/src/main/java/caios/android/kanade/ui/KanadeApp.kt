@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -52,12 +55,32 @@ fun KanadeApp(
         var libraryTopBarHeight by remember { mutableStateOf(0.dp) }
         val snackbarHostState = remember { SnackbarHostState() }
 
+        val topAppBarState = rememberTopAppBarState()
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+
         Scaffold(
-            modifier = modifier,
+            modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
+            topBar = {
+                if (appState.currentLibraryDestination != null) {
+                    LibraryTopBar(
+                        modifier = Modifier
+                            .zIndex(1f)
+                            .fillMaxWidth()
+                            .onGloballyPositioned {
+                                with(density) {
+                                    libraryTopBarHeight = it.size.height.toDp()
+                                }
+                            },
+                        scrollBehavior = scrollBehavior,
+                        onClickMenu = {},
+                        onClickSearch = {},
+                    )
+                }
+            },
             bottomBar = {
                 KanadeBottomBar(
                     destination = appState.libraryDestinations,
@@ -80,21 +103,6 @@ fun KanadeApp(
                         ),
                     ),
             ) {
-                if (appState.currentLibraryDestination != null) {
-                    LibraryTopBar(
-                        modifier = Modifier
-                            .zIndex(1f)
-                            .fillMaxWidth()
-                            .onGloballyPositioned {
-                                with(density) {
-                                    libraryTopBarHeight = it.size.height.toDp()
-                                }
-                            },
-                        onClickMenu = {},
-                        onClickSearch = {},
-                    )
-                }
-
                 KanadeNavHost(
                     appState = appState,
                     libraryTopBarHeight = libraryTopBarHeight,
@@ -110,8 +118,10 @@ private fun RequestPermissions() {
     var isPermissionRequested by remember { mutableStateOf(false) }
     var isShowPermissionDialog by remember { mutableStateOf(true) }
 
-    val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    val notifyPermission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
+    val storagePermission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     val permissionList = listOfNotNull(storagePermission, notifyPermission)
     val permissionsState = rememberMultiplePermissionsState(permissionList) {

@@ -46,7 +46,6 @@ fun LibraryTopBar(
 
     Box(
         modifier = modifier
-            .fillMaxWidth()
             .windowInsetsPadding(TopAppBarDefaults.windowInsets)
             .padding(16.dp),
     ) {
@@ -83,6 +82,7 @@ fun LibraryTopBar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, backgroundColor = 1)
 @Composable
 private fun Preview() {
