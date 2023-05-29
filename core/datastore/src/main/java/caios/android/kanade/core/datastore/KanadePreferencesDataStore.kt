@@ -12,7 +12,7 @@ class KanadePreferencesDataStore @Inject constructor(
     val userData = userPreference.data
         .map {
             UserData(
-                useDynamicColor = it.useDynamicColor,
+                useDynamicColor = true, //it.useDynamicColor,
                 isDeveloperMode = it.isDeveloperMode,
                 isPremiumMode = it.isPremiumMode,
                 themeConfig = when (it.themeConfig) {

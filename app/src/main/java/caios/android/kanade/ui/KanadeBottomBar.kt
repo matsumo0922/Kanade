@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,6 +10,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import caios.android.kanade.core.design.component.AnimatedIcon
 import caios.android.kanade.core.design.component.KanadeNavigationBar
 import caios.android.kanade.core.design.component.KanadeNavigationBarItem
+import caios.android.kanade.core.design.component.KanadeNavigationDefaults
 import caios.android.kanade.core.design.icon.Icon
 import caios.android.kanade.navigation.LibraryDestination
 
@@ -31,10 +33,20 @@ fun KanadeBottomBar(
                         AnimatedIcon(
                             animatedIcon = destination.icon.id,
                             isSelected = isSelected,
+                            tint = if (isSelected) {
+                                KanadeNavigationDefaults.navigationSelectedItemColor()
+                            } else {
+                                KanadeNavigationDefaults.navigationContentColor()
+                            },
                         )
                     }
                 },
-                label = { Text(stringResource(destination.textId)) },
+                label = {
+                    Text(
+                        text = stringResource(destination.textId),
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                },
             )
         }
     }

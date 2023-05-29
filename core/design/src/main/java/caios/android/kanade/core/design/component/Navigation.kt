@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.json.JsonNull.content
 
 @Composable
 fun KanadeNavigationBar(
@@ -18,7 +18,7 @@ fun KanadeNavigationBar(
 ) {
     NavigationBar(
         modifier = modifier,
-        containerColor = KanadeNavigationDefaults.navigationContentColor(),
+        contentColor = KanadeNavigationDefaults.navigationContentColor(),
         tonalElevation = 0.dp,
         content = content,
     )
@@ -39,6 +39,13 @@ fun RowScope.KanadeNavigationBarItem(
         icon = icon,
         label = label,
         alwaysShowLabel = false,
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = KanadeNavigationDefaults.navigationSelectedItemColor(),
+            unselectedIconColor = KanadeNavigationDefaults.navigationContentColor(),
+            selectedTextColor = KanadeNavigationDefaults.navigationSelectedItemColor(),
+            unselectedTextColor = KanadeNavigationDefaults.navigationContentColor(),
+            indicatorColor = KanadeNavigationDefaults.navigationIndicatorColor(),
+        ),
     )
 }
 

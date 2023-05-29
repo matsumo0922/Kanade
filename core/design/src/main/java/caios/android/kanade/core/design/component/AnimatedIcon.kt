@@ -9,14 +9,18 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 
 @Composable
 fun AnimatedIcon(
     @DrawableRes animatedIcon: Int,
     isSelected: Boolean,
+    tint: Color,
     modifier: Modifier = Modifier,
 ) {
     AndroidView(
@@ -24,6 +28,7 @@ fun AnimatedIcon(
         factory = { context ->
             CheckableImageView(context).apply {
                 val drawable = ContextCompat.getDrawable(context, animatedIcon)
+                drawable?.let { DrawableCompat.setTint(it, tint.toArgb()) }
                 setImageDrawable(drawable)
                 isChecked = isSelected
                 if (drawable is Animatable) drawable.start()
