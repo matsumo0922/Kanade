@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.home
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,8 +12,12 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
     this.navigate(homeRoute, navOptions)
 }
 
-fun NavGraphBuilder.homeScreen() {
+fun NavGraphBuilder.homeScreen(
+    topMargin: Dp,
+) {
     composable(route = homeRoute) {
-        HomeRoute()
+        HomeRoute(
+            topMargin = topMargin,
+        )
     }
 }

@@ -11,11 +11,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import caios.android.kanade.feature.album.top.albumTopRoute
 import caios.android.kanade.feature.album.top.navigateToAlbumTop
+import caios.android.kanade.feature.artist.top.artistTopRoute
 import caios.android.kanade.feature.artist.top.navigateToArtistTop
+import caios.android.kanade.feature.home.homeRoute
 import caios.android.kanade.feature.home.navigateToHome
 import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
+import caios.android.kanade.feature.playlist.top.playlistTopRoute
 import caios.android.kanade.feature.song.top.navigateToSongTop
+import caios.android.kanade.feature.song.top.songTopRoute
 import caios.android.kanade.navigation.LibraryDestination
 import kotlinx.coroutines.CoroutineScope
 
@@ -46,6 +51,16 @@ class KanadeAppState(
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+
+    val currentLibraryDestination: LibraryDestination?
+        @Composable get() = when (currentDestination?.route) {
+            homeRoute -> LibraryDestination.Home
+            playlistTopRoute -> LibraryDestination.Playlist
+            songTopRoute -> LibraryDestination.Song
+            artistTopRoute -> LibraryDestination.Artist
+            albumTopRoute -> LibraryDestination.Album
+            else -> null
+        }
 
     val libraryDestinations = LibraryDestination.values().asList()
 

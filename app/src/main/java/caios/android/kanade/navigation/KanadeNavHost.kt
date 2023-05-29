@@ -2,6 +2,7 @@ package caios.android.kanade.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
 import caios.android.kanade.feature.album.top.albumTopScreen
 import caios.android.kanade.feature.artist.top.artistTopScreen
@@ -14,6 +15,7 @@ import caios.android.kanade.ui.KanadeAppState
 @Composable
 fun KanadeNavHost(
     appState: KanadeAppState,
+    libraryTopBarHeight: Dp,
     modifier: Modifier = Modifier,
     startDestination: String = homeRoute,
 ) {
@@ -24,10 +26,24 @@ fun KanadeNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        homeScreen()
-        playlistTopScreen()
-        songTopScreen()
-        artistTopScreen()
-        albumTopScreen()
+        homeScreen(
+            topMargin = libraryTopBarHeight,
+        )
+
+        playlistTopScreen(
+            topMargin = libraryTopBarHeight,
+        )
+
+        songTopScreen(
+            topMargin = libraryTopBarHeight,
+        )
+
+        artistTopScreen(
+            topMargin = libraryTopBarHeight,
+        )
+
+        albumTopScreen(
+            topMargin = libraryTopBarHeight,
+        )
     }
 }

@@ -1,12 +1,13 @@
 package caios.android.kanade.ui
 
 import android.os.Build
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -25,7 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -41,12 +47,16 @@ fun KanadeApp(
     appState: KanadeAppState = rememberKanadeAppState(windowSize),
 ) {
     KanadeBackground {
+        val density = LocalDensity.current
+
+        var libraryTopBarHeight by remember { mutableStateOf(0.dp) }
         val snackbarHostState = remember { SnackbarHostState() }
 
         Scaffold(
             modifier = modifier,
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
             snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
                 KanadeBottomBar(
@@ -59,8 +69,8 @@ fun KanadeApp(
 
             RequestPermissions()
 
-            Column(
-                Modifier
+            Box(
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .consumeWindowInsets(padding)
@@ -70,7 +80,25 @@ fun KanadeApp(
                         ),
                     ),
             ) {
-                KanadeNavHost(appState)
+                if (appState.currentLibraryDestination != null) {
+                    LibraryTopBar(
+                        modifier = Modifier
+                            .zIndex(1f)
+                            .fillMaxWidth()
+                            .onGloballyPositioned {
+                                with(density) {
+                                    libraryTopBarHeight = it.size.height.toDp()
+                                }
+                            },
+                        onClickMenu = {},
+                        onClickSearch = {},
+                    )
+                }
+
+                KanadeNavHost(
+                    appState = appState,
+                    libraryTopBarHeight = libraryTopBarHeight,
+                )
             }
         }
     }

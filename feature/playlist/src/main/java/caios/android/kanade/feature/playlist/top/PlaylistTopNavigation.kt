@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.playlist.top
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,8 +12,12 @@ fun NavController.navigateToPlaylistTop(navOptions: NavOptions? = null) {
     this.navigate(playlistTopRoute, navOptions)
 }
 
-fun NavGraphBuilder.playlistTopScreen() {
+fun NavGraphBuilder.playlistTopScreen(
+    topMargin: Dp,
+) {
     composable(route = playlistTopRoute) {
-        PlaylistTopRoute()
+        PlaylistTopRoute(
+            topMargin = topMargin,
+        )
     }
 }

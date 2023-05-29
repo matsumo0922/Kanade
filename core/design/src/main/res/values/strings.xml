@@ -23,6 +23,7 @@
     <string name="navigation_song">楽曲</string>
     <string name="navigation_artist">アーティスト</string>
     <string name="navigation_album">アルバム</string>
+    <string name="navigation_top_bar_title">ライブラリを検索</string>
 
     <!-- Permission Request-->
     <string name="permission_request_title">権限</string>

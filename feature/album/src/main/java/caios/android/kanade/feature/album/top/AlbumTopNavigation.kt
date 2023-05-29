@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.album.top
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,8 +12,12 @@ fun NavController.navigateToAlbumTop(navOptions: NavOptions? = null) {
     this.navigate(albumTopRoute, navOptions)
 }
 
-fun NavGraphBuilder.albumTopScreen() {
+fun NavGraphBuilder.albumTopScreen(
+    topMargin: Dp,
+) {
     composable(route = albumTopRoute) {
-        AlbumTopRoute()
+        AlbumTopRoute(
+            topMargin = topMargin,
+        )
     }
 }

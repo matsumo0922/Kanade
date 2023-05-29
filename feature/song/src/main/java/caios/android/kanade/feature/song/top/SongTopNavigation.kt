@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.song.top
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,8 +12,12 @@ fun NavController.navigateToSongTop(navOptions: NavOptions? = null) {
     this.navigate(songTopRoute, navOptions)
 }
 
-fun NavGraphBuilder.songTopScreen() {
+fun NavGraphBuilder.songTopScreen(
+    topMargin: Dp,
+) {
     composable(route = songTopRoute) {
-        SongTopRoute()
+        SongTopRoute(
+            topMargin = topMargin,
+        )
     }
 }

@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.artist.top
 
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,8 +12,12 @@ fun NavController.navigateToArtistTop(navOptions: NavOptions? = null) {
     this.navigate(artistTopRoute, navOptions)
 }
 
-fun NavGraphBuilder.artistTopScreen() {
+fun NavGraphBuilder.artistTopScreen(
+    topMargin: Dp,
+) {
     composable(route = artistTopRoute) {
-        ArtistTopRoute()
+        ArtistTopRoute(
+            topMargin = topMargin,
+        )
     }
 }
