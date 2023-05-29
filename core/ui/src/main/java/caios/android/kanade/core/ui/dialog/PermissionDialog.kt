@@ -2,7 +2,6 @@ package caios.android.kanade.core.ui.dialog
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,8 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import caios.android.kanade.core.design.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -46,32 +43,18 @@ fun PermissionDialog(
 ) {
     val context = LocalContext.current
 
-    val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-    val permissionList = listOfNotNull(storagePermission, notifyPermission)
-    val permissionsState = rememberMultiplePermissionsState(permissionList)
-
-    if (permissionsState.permissions[0].status is PermissionStatus.Granted) {
-        onDismiss.invoke()
-        return
-    }
-
     PermissionDialog(
         modifier = modifier,
         onConfirm = {
-            if (permissionsState.revokedPermissions.isNotEmpty()) {
-                context.startActivity(
-                    Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", context.packageName, null),
-                    ).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    },
-                )
-            } else {
-                permissionsState.launchMultiplePermissionRequest()
-            }
+            context.startActivity(
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", context.packageName, null),
+                ).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                },
+            )
+            onDismiss.invoke()
         },
         onDismiss = onDismiss,
     )
@@ -97,18 +80,21 @@ private fun PermissionDialog(
             )
         },
         text = {
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 Divider()
 
                 Text(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = 8.dp),
                     text = stringResource(R.string.permission_request_message),
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
-                StorageSection(Modifier.padding(8.dp))
+                StorageSection(Modifier.padding(horizontal = 8.dp))
 
-                NotifySection(Modifier.padding(8.dp))
+                NotifySection(Modifier.padding(horizontal = 8.dp))
             }
         },
         confirmButton = {

@@ -18,6 +18,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,19 +79,24 @@ fun KanadeApp(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun RequestPermissions() {
+    var isPermissionRequested by remember { mutableStateOf(false) }
     var isShowPermissionDialog by remember { mutableStateOf(true) }
 
     val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
     val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     val permissionList = listOfNotNull(storagePermission, notifyPermission)
-    val permissionsState = rememberMultiplePermissionsState(permissionList)
+    val permissionsState = rememberMultiplePermissionsState(permissionList) {
+        isPermissionRequested = true
+    }
 
     if (permissionsState.permissions[0].status is PermissionStatus.Granted) return
 
-    if (isShowPermissionDialog) {
-        PermissionDialog(
-            onDismiss = { isShowPermissionDialog = false },
-        )
+    if (permissionsState.shouldShowRationale || isPermissionRequested) {
+        PermissionDialog(onDismiss = { isShowPermissionDialog = false })
+    } else {
+        LaunchedEffect(permissionsState) {
+            permissionsState.launchMultiplePermissionRequest()
+        }
     }
 }

@@ -65,6 +65,7 @@ twitterComposeRule = "0.0.26"
 # Debugs
 leakCanary = "2.10"
 flipper = "0.190.0"
+timber = "5.0.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
@@ -190,6 +191,7 @@ facebook-flipper-leakcanary = { module = "com.facebook.flipper:flipper-leakcanar
 facebook-soloader = { module = "com.facebook.soloader:soloader", version = "0.10.5" }
 facebook-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipper" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakCanary" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 
 [bundles]
@@ -199,6 +201,7 @@ infra-api = [
     "kotlinx-coroutines-android",
     "kotlinx-datetime",
     "kotlinx-serialization-json",
+    "timber",
 ]
 
 ui-implementation = [
