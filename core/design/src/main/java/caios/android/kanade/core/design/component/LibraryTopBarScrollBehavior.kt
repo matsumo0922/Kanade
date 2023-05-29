@@ -3,25 +3,22 @@ package caios.android.kanade.core.design.component
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.unit.Dp
+import timber.log.Timber
+import kotlin.math.max
+import kotlin.math.min
 
 class LibraryTopBarScrollBehavior(
-    private val state: LibraryTopBarScrollState,
+    val state: LibraryTopBarScrollState,
+    val topBarHeight: Float,
 ) {
 
     val nestedScrollConnection = object : NestedScrollConnection {
         override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-            val prevHeightOffset = state.yOffset
+            state.scrolledQuantity = state.scrolledQuantity + available.y
+            state.yOffset = min(0f, max(-topBarHeight, state.yOffset + available.y))
 
-            state.yOffset = state.yOffset + available.y
-
-
-            return if (prevHeightOffset != state.yOffset) {
-                // We're in the middle of top app bar collapse or expand.
-                // Consume only the scroll on the Y axis.
-                available.copy(x = 0f)
-            } else {
-                Offset.Zero
-            }
+            return Offset.Zero
         }
     }
 }

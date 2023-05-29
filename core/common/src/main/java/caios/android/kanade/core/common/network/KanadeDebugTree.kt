@@ -7,7 +7,7 @@ import java.util.Locale
 class KanadeDebugTree : Timber.DebugTree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        Log.println(priority, tag ?: "[Kanade]", "$message ${getCallerInfo()}")
+        Log.println(priority, "KanadeLog", "$message ${getCallerInfo()}")
     }
 
     private fun getCallerInfo(): String {

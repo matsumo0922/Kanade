@@ -13,6 +13,7 @@ import caios.android.kanade.core.design.component.KanadeNavigationBarItem
 import caios.android.kanade.core.design.component.KanadeNavigationDefaults
 import caios.android.kanade.core.design.icon.Icon
 import caios.android.kanade.navigation.LibraryDestination
+import caios.android.kanade.navigation.isLibraryDestinationInHierarchy
 
 @Composable
 fun KanadeBottomBar(
@@ -23,7 +24,7 @@ fun KanadeBottomBar(
 ) {
     KanadeNavigationBar(modifier) {
         destination.forEach { destination ->
-            val isSelected = (currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } == true)
+            val isSelected = currentDestination.isLibraryDestinationInHierarchy(destination)
 
             KanadeNavigationBarItem(
                 isSelected = isSelected,

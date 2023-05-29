@@ -1,5 +1,7 @@
 package caios.android.kanade.navigation
 
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.icon.Icon
 import caios.android.kanade.core.design.icon.Icon.DrawableResourceIcon
@@ -29,4 +31,8 @@ enum class LibraryDestination(
         icon = DrawableResourceIcon(KanadeIcon.asAlbum),
         textId = R.string.navigation_album,
     ),
+}
+
+fun NavDestination?.isLibraryDestinationInHierarchy(destination: LibraryDestination): Boolean {
+    return this?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } == true
 }
