@@ -35,6 +35,7 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:repository"))
     implementation(project(":core:ui"))
+    implementation(project(":core:music"))
 
     implementation(project(":feature:album"))
     implementation(project(":feature:artist"))

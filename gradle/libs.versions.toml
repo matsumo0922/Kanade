@@ -31,7 +31,7 @@ androidxConstraintLayout = "2.1.4"
 androidxRecyclerView = "1.2.1"
 androidxCardView = "1.0.0"
 androidxViewPager2 = "1.1.0-beta01"
-androidxMedia = "1.6.0"
+androidxMedia3 = "1.0.2"
 androidxPreference = "1.2.0"
 androidxDataStore = "1.0.0"
 androidxPalette = "1.0.0"
@@ -47,7 +47,6 @@ androidxHiltNavigationCompose = "1.0.0"
 playServiceBilling = "5.0.0"
 playServiceAds = "21.1.0"
 playServiceOss = "17.0.1"
-exoPlayer = "2.18.6"
 material = "1.9.0"
 accompanist = "0.30.1"
 
@@ -117,7 +116,9 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidxComposeConstraintLayout" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardView" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "androidxViewPager2" }
-androidx-media = { module = "androidx.media:media", version.ref = "androidxMedia" }
+androidx-media-common = { module = "androidx.media3:media3-common", version.ref = "androidxMedia3" }
+androidx-media-session = { module = "androidx.media3:media3-session", version.ref = "androidxMedia3" }
+androidx-media-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidxMedia3" }
 androidx-room = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
@@ -146,7 +147,6 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 # Google
 play-service-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "playServiceBilling" }
 play-service-oss = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServiceOss" }
-google-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
 google-material = { module = "com.google.android.material:material", version.ref = "material" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-compose-theme-adapter = { module = "com.google.accompanist:accompanist-themeadapter-material", version.ref = "accompanist" }
@@ -219,7 +219,6 @@ ui-implementation = [
     "androidx-navigation-compose",
     "androidx-cardview",
     "androidx-viewpager2",
-    "androidx-media",
     "androidx-compose-runtime",
     "androidx-compose-ui",
     "androidx-compose-ui-util",
