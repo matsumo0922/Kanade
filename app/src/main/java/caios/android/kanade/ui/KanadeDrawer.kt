@@ -4,9 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Album
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MusicNote
@@ -35,12 +34,12 @@ import caios.android.kanade.navigation.isLibraryDestinationInHierarchy
 fun KanadeDrawer(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
-    onDrawerClicked: () -> Unit = {},
+    onClickItem: (LibraryDestination) -> Unit = {},
 ) {
     ModalDrawerSheet {
         Column(
             modifier = modifier
-                .wrapContentWidth()
+                .width(256.dp)
                 .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(24.dp),
@@ -49,35 +48,35 @@ fun KanadeDrawer(
                 isSelected = currentDestination.isLibraryDestinationInHierarchy(LibraryDestination.Home),
                 label = stringResource(R.string.navigation_home),
                 icon = Icons.Default.Home,
-                onClick = {},
+                onClick = { onClickItem.invoke(LibraryDestination.Home) },
             )
 
             NavigationDrawerItem(
                 isSelected = currentDestination.isLibraryDestinationInHierarchy(LibraryDestination.Playlist),
                 label = stringResource(R.string.navigation_playlist),
                 icon = Icons.Filled.QueueMusic,
-                onClick = {},
+                onClick = { onClickItem.invoke(LibraryDestination.Playlist) },
             )
 
             NavigationDrawerItem(
                 isSelected = currentDestination.isLibraryDestinationInHierarchy(LibraryDestination.Song),
                 label = stringResource(R.string.navigation_song),
                 icon = Icons.Filled.MusicNote,
-                onClick = {},
+                onClick = { onClickItem.invoke(LibraryDestination.Song) },
             )
 
             NavigationDrawerItem(
                 isSelected = currentDestination.isLibraryDestinationInHierarchy(LibraryDestination.Artist),
                 label = stringResource(R.string.navigation_artist),
                 icon = Icons.Filled.Person,
-                onClick = {},
+                onClick = { onClickItem.invoke(LibraryDestination.Artist) },
             )
 
             NavigationDrawerItem(
                 isSelected = currentDestination.isLibraryDestinationInHierarchy(LibraryDestination.Album),
                 label = stringResource(R.string.navigation_album),
                 icon = Icons.Default.Album,
-                onClick = {},
+                onClick = { onClickItem.invoke(LibraryDestination.Album) },
             )
         }
     }

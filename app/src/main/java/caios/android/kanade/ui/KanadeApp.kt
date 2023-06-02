@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +42,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.design.component.rememberLibraryTopBarScrollState
+import caios.android.kanade.core.ui.controller.BottomController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -46,7 +50,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
 @Suppress("ModifierMissing")
 @Composable
 fun KanadeApp(
@@ -56,29 +60,31 @@ fun KanadeApp(
 ) {
     KanadeBackground {
         val density = LocalDensity.current
-
-        var libraryTopBarHeight by remember { mutableStateOf(0.dp) }
-        val snackbarHostState = remember { SnackbarHostState() }
-
-        val scope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-        val topAppBarState = rememberLibraryTopBarScrollState()
-        val scrollBehavior = LibraryTopBarScrollBehavior(
-            state = topAppBarState,
-            topBarHeight = with(density) { libraryTopBarHeight.toPx() },
-        )
 
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
                 KanadeDrawer(
                     currentDestination = appState.currentDestination,
-                    onDrawerClicked = {},
+                    onClickItem = appState::navigateToLibrary,
                 )
             },
             gesturesEnabled = true,
             scrimColor = Color.Transparent,
         ) {
+            var libraryTopBarHeight by remember { mutableStateOf(0.dp) }
+            val snackbarHostState = remember { SnackbarHostState() }
+
+            val scope = rememberCoroutineScope()
+            val scaffoldState = rememberBottomSheetScaffoldState()
+
+            val topAppBarState = rememberLibraryTopBarScrollState()
+            val scrollBehavior = LibraryTopBarScrollBehavior(
+                state = topAppBarState,
+                topBarHeight = with(density) { libraryTopBarHeight.toPx() },
+            )
+
             Scaffold(
                 modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 containerColor = Color.Transparent,
@@ -96,7 +102,7 @@ fun KanadeApp(
 
                 RequestPermissions()
 
-                Box(
+                BottomSheetScaffold(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
@@ -106,29 +112,42 @@ fun KanadeApp(
                                 WindowInsetsSides.Horizontal,
                             ),
                         ),
+                    scaffoldState = scaffoldState,
+                    sheetContent = {
+                        BottomController(
+                            bottomSheetState = scaffoldState.bottomSheetState,
+                            onClickController = {},
+                        )
+                    },
+                    contentColor = Color.Transparent,
+                    backgroundColor = Color.Transparent,
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                    sheetPeekHeight = 64.dp,
                 ) {
-                    LibraryTopBar(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .onGloballyPositioned {
-                                libraryTopBarHeight = with(density) {
-                                    it.size.height.toDp()
+                    Box {
+                        LibraryTopBar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned {
+                                    libraryTopBarHeight = with(density) {
+                                        it.size.height.toDp()
+                                    }
                                 }
-                            }
-                            .zIndex(1f),
-                        onClickMenu = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        },
-                        onClickSearch = { /*TODO*/ },
-                        scrollBehavior = scrollBehavior,
-                    )
+                                .zIndex(1f),
+                            onClickMenu = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            },
+                            onClickSearch = { /*TODO*/ },
+                            scrollBehavior = scrollBehavior,
+                        )
 
-                    KanadeNavHost(
-                        appState = appState,
-                        libraryTopBarHeight = libraryTopBarHeight,
-                    )
+                        KanadeNavHost(
+                            appState = appState,
+                            libraryTopBarHeight = libraryTopBarHeight,
+                        )
+                    }
                 }
             }
         }
