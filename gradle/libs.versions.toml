@@ -231,8 +231,6 @@ ui-implementation = [
     "androidx-lifecycle-common",
     "androidx-lifecycle-runtime-compose",
     "androidx-lifecycle-viewmodel-compose",
-    "androidx-room",
-    "androidx-room-ktx",
     "androidx-hilt-navigation-compose",
     "accompanist-systemuicontroller",
     "accompanist-compose-theme-adapter",
@@ -244,7 +242,6 @@ ui-implementation = [
 
 ui-kapt = [
     "androidx-lifecycle-compiler",
-    "androidx-room-compiler",
 ]
 
 firebase = [

@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination
 import caios.android.kanade.core.design.component.AnimatedIcon
 import caios.android.kanade.core.design.component.KanadeNavigationBar
@@ -45,6 +46,7 @@ fun KanadeBottomBar(
                     Text(
                         text = stringResource(destination.textId),
                         style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
                     )
                 },
             )

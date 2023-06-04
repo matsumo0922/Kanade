@@ -42,7 +42,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.design.component.rememberLibraryTopBarScrollState
-import caios.android.kanade.core.ui.controller.BottomController
+import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -90,7 +90,7 @@ fun KanadeApp(
 
             bottomSheetOffsetRate = try {
                 val offset = scaffoldState.bottomSheetState.requireOffset()
-                val defaultHeight = bottomSheetHeight - bottomBarHeight - with(density) { 64.dp.toPx() }
+                val defaultHeight = bottomSheetHeight - bottomBarHeight - with(density) { 72.dp.toPx() }
 
                 (offset / defaultHeight).coerceIn(0f, 1f)
             } catch (e: Throwable) {
@@ -131,15 +131,18 @@ fun KanadeApp(
                     sheetShape = RectangleShape,
                     sheetDragHandle = {},
                     sheetContent = {
-                        BottomController(
-                            state = scaffoldState.bottomSheetState,
+                        AppController(
                             offsetRate = bottomSheetOffsetRate,
-                            onClickController = {},
+                            onClickBottomController = {
+                                scope.launch {
+                                    scaffoldState.bottomSheetState.expand()
+                                }
+                            }
                         )
                     },
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    sheetPeekHeight = 64.dp + with(density) { bottomBarHeight.toDp() },
+                    sheetPeekHeight = 72.dp + with(density) { bottomBarHeight.toDp() },
                 ) {
                     Box {
                         LibraryTopBar(
