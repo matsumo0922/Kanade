@@ -16,7 +16,7 @@ kotlin = "1.8.21"
 kotlinCompiler = "1.4.7"
 
 # KotlinX
-kotlinxCoroutines = "1.7.1"
+kotlinxCoroutines = "1.6.4"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.5.1"
 
@@ -103,8 +103,8 @@ androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidxCoreSplash" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotation" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
-androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "androidxLifecycle" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidxActivity" }
@@ -229,8 +229,8 @@ ui-implementation = [
     "androidx-compose-material3-window",
     "androidx-compose-material-icons-extended",
     "androidx-lifecycle-common",
-    "androidx-lifecycle-runtime",
-    "androidx-lifecycle-viewmodel",
+    "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-viewmodel-compose",
     "androidx-room",
     "androidx-room-ktx",
     "androidx-hilt-navigation-compose",

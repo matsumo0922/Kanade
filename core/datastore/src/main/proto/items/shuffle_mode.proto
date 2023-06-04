@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum ShuffleModeProto {
+  SHUFFLE_UNSPECIFIED = 0;
+  SHUFFLE_ON = 1;
+  SHUFFLE_OFF = 2;
+}

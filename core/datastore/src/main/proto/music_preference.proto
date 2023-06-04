@@ -1,0 +1,20 @@
+
+syntax = "proto3";
+
+import "items/shuffle_mode.proto";
+import "items/repeat_mode.proto";
+import "items/song_order.proto";
+import "items/artist_order.proto";
+import "items/album_order.proto";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+message MusicPreference {
+  ShuffleModeProto shuffle_mode = 1;
+  RepeatModeProto repeat_mode = 2;
+
+  SongOrderProto song_order = 3;
+  ArtistOrderProto artist_order = 4;
+  AlbumOrderProto album_order = 5;
+}

@@ -17,7 +17,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import caios.android.kanade.core.design.theme.KanadeTheme
+import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
+import caios.android.kanade.core.model.UserData
 import caios.android.kanade.ui.KanadeApp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,17 +37,17 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        var uiState: MainUiState by mutableStateOf(MainUiState.Loading)
+        var screenState: ScreenState<UserData> by mutableStateOf(ScreenState.Loading)
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.onEach { uiState = it }.collect()
+                viewModel.screenState.onEach { screenState = it }.collect()
             }
         }
 
         splashScreen.setKeepOnScreenCondition {
-            when (uiState) {
-                is MainUiState.Loading -> true
+            when (screenState) {
+                is ScreenState.Loading -> true
                 else -> false
             }
         }
@@ -54,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val systemUiController = rememberSystemUiController()
-            val shouldUseDarkTheme = shouldUseDarkTheme(uiState)
+            val shouldUseDarkTheme = shouldUseDarkTheme(screenState)
 
             DisposableEffect(systemUiController, shouldUseDarkTheme) {
                 systemUiController.systemBarsDarkContentEnabled = !shouldUseDarkTheme
@@ -63,7 +65,7 @@ class MainActivity : ComponentActivity() {
 
             KanadeTheme(
                 shouldUseDarkTheme = shouldUseDarkTheme,
-                enableDynamicTheme = shouldUseDynamicColor(uiState),
+                enableDynamicTheme = shouldUseDynamicColor(screenState),
             ) {
                 KanadeApp(
                     windowSize = calculateWindowSizeClass(this),
@@ -72,10 +74,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchMusic()
+    }
+
     @Composable
-    private fun shouldUseDarkTheme(uiState: MainUiState): Boolean {
-        return when (uiState) {
-            is MainUiState.Idle -> when (uiState.userData.themeConfig) {
+    private fun shouldUseDarkTheme(screenState: ScreenState<UserData>): Boolean {
+        return when (screenState) {
+            is ScreenState.Idle -> when (screenState.data.themeConfig) {
                 ThemeConfig.Light -> false
                 ThemeConfig.Dark -> true
                 else -> isSystemInDarkTheme()
@@ -85,9 +92,9 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun shouldUseDynamicColor(uiState: MainUiState): Boolean {
-        return when (uiState) {
-            is MainUiState.Idle -> uiState.userData.useDynamicColor
+    private fun shouldUseDynamicColor(screenState: ScreenState<UserData>): Boolean {
+        return when (screenState) {
+            is ScreenState.Idle -> screenState.data.useDynamicColor
             else -> false
         }
     }

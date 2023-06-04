@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum AlbumOrderProto {
+  ALBUM_UNSPECIFIED = 0;
+
+  ALBUM_ASC_NAME = 1;
+  ALBUM_ASC_NUM_TRACKS = 2;
+  ALBUM_ASC_ARTIST = 3;
+  ALBUM_ASC_YEAR = 4;
+
+  ALBUM_DESC_NAME = 5;
+  ALBUM_DESC_NUM_TRACKS = 6;
+  ALBUM_DESC_ARTIST = 7;
+  ALBUM_DESC_YEAR = 8;
+}

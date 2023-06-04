@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum SongOrderProto {
+  SONG_UNSPECIFIED = 0;
+
+  SONG_ASC_NAME = 1;
+  SONG_ASC_ARTIST = 2;
+  SONG_ASC_ALBUM = 3;
+  SONG_ASC_DURATION = 4;
+  SONG_ASC_YEAR = 5;
+
+  SONG_DESC_NAME = 6;
+  SONG_DESC_ARTIST = 7;
+  SONG_DESC_ALBUM = 8;
+  SONG_DESC_DURATION = 9;
+  SONG_DESC_YEAR = 10;
+}

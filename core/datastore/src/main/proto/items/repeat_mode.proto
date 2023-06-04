@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum RepeatModeProto {
+  REPEAT_UNSPECIFIED = 0;
+  REPEAT_ONE = 1;
+  REPEAT_ALL = 2;
+  REPEAT_OFF = 3;
+}
