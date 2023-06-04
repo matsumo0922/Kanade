@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import caios.android.kanade.core.design.component.AnimatedIcon
 import caios.android.kanade.core.design.component.KanadeNavigationBar
 import caios.android.kanade.core.design.component.KanadeNavigationBarItem

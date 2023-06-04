@@ -22,9 +22,9 @@ class LibraryTopBarScrollState(
             restore = {
                 LibraryTopBarScrollState(
                     initialYOffset = it[0],
-                    initialScrolledQuantity = it[1]
+                    initialScrolledQuantity = it[1],
                 )
-            }
+            },
         )
     }
 }
@@ -32,7 +32,7 @@ class LibraryTopBarScrollState(
 @Composable
 fun rememberLibraryTopBarScrollState(
     initialYOffset: Float = 0f,
-    initialContentOffset: Float = 0f
+    initialContentOffset: Float = 0f,
 ) = rememberSaveable(saver = LibraryTopBarScrollState.Saver) {
     LibraryTopBarScrollState(
         initialYOffset = initialYOffset,

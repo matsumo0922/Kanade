@@ -3,8 +3,6 @@ package caios.android.kanade.core.design.component
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.unit.Dp
-import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
 
