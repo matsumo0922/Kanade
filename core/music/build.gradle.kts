@@ -13,4 +13,8 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:repository"))
+
+    implementation(libs.androidx.media.common)
+    implementation(libs.androidx.media.session)
+    implementation(libs.androidx.media.exoplayer)
 }
