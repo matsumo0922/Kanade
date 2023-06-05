@@ -2,11 +2,13 @@ package caios.android.kanade
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val musicRepository: MusicRepository,
+    @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val screenState = userDataRepository.userData.map {
@@ -28,7 +31,7 @@ class MainViewModel @Inject constructor(
     )
 
     fun fetchMusic() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             musicRepository.fetchSongs()
             musicRepository.fetchArtists()
             musicRepository.fetchAlbums()

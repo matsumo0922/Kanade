@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import caios.android.kanade.core.model.Album
+import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.ui.AsyncLoadContents
 
 @Composable

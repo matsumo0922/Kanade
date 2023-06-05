@@ -1,14 +1,14 @@
 package caios.android.kanade.core.datastore
 
 import androidx.datastore.core.DataStore
-import caios.android.kanade.core.model.MusicConfig
-import caios.android.kanade.core.model.MusicOrder
-import caios.android.kanade.core.model.MusicOrderOption
 import caios.android.kanade.core.model.Order
-import caios.android.kanade.core.model.RepeatMode
-import caios.android.kanade.core.model.ShuffleMode
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.MusicConfig
+import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.MusicOrderOption
+import caios.android.kanade.core.model.music.RepeatMode
+import caios.android.kanade.core.model.music.ShuffleMode
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

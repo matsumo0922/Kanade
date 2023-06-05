@@ -2,8 +2,10 @@ package caios.android.kanade.core.repository.di
 
 import caios.android.kanade.core.repository.AlbumRepository
 import caios.android.kanade.core.repository.ArtistRepository
+import caios.android.kanade.core.repository.ArtworkRepository
 import caios.android.kanade.core.repository.DefaultAlbumRepository
 import caios.android.kanade.core.repository.DefaultArtistRepository
+import caios.android.kanade.core.repository.DefaultArtworkRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
@@ -43,4 +45,9 @@ interface RepositoryModule {
     fun bindAlbumRepository(
         albumRepository: DefaultAlbumRepository,
     ): AlbumRepository
+
+    @Binds
+    fun bindArtworkRepository(
+        artworkRepository: DefaultArtworkRepository,
+    ): ArtworkRepository
 }

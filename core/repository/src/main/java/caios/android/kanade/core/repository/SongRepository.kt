@@ -1,19 +1,19 @@
 package caios.android.kanade.core.repository
 
 import android.database.Cursor
-import caios.android.kanade.core.model.MusicConfig
-import caios.android.kanade.core.model.MusicOrder
-import caios.android.kanade.core.model.MusicOrderOption
 import caios.android.kanade.core.model.Order
-import caios.android.kanade.core.model.Song
+import caios.android.kanade.core.model.music.MusicConfig
+import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.MusicOrderOption
+import caios.android.kanade.core.model.music.Song
 
 interface SongRepository {
 
-    fun song(cursor: Cursor?): Song?
-    fun song(songId: Long, musicConfig: MusicConfig): Song?
+    suspend fun song(cursor: Cursor?): Song?
+    suspend fun song(songId: Long, musicConfig: MusicConfig): Song?
 
-    fun songs(musicConfig: MusicConfig): List<Song>
-    fun songs(cursor: Cursor?): List<Song>
+    suspend fun songs(musicConfig: MusicConfig): List<Song>
+    suspend fun songs(cursor: Cursor?): List<Song>
 
     fun makeCursor(
         selection: String = "",

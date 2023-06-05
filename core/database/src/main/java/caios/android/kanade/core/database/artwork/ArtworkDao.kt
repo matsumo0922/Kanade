@@ -35,6 +35,14 @@ interface ArtworkDao {
     fun loadAlbums(): List<ArtworkEntity>
 
     @Transaction
+    @Query("SELECT * FROM artwork WHERE artist_id in (:artistIds)")
+    fun loadArtists(artistIds: List<Long>): List<ArtworkEntity>
+
+    @Transaction
+    @Query("SELECT * FROM artwork WHERE album_id in (:albumIds)")
+    fun loadAlbums(albumIds: List<Long>): List<ArtworkEntity>
+
+    @Transaction
     @Query("SELECT * FROM artwork WHERE artist_id = :artistId")
     fun loadArtist(artistId: Long): ArtworkEntity?
 

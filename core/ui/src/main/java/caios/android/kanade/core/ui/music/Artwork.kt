@@ -29,7 +29,7 @@ import caios.android.kanade.core.design.theme.Green40
 import caios.android.kanade.core.design.theme.Orange40
 import caios.android.kanade.core.design.theme.Purple40
 import caios.android.kanade.core.design.theme.Teal40
-import caios.android.kanade.core.model.Artwork
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.util.extraSize
 import coil.compose.AsyncImage
 

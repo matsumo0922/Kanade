@@ -1,13 +1,15 @@
 package caios.android.kanade.core.repository
 
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
-import caios.android.kanade.core.model.Album
-import caios.android.kanade.core.model.Artist
-import caios.android.kanade.core.model.MusicConfig
-import caios.android.kanade.core.model.MusicOrder
-import caios.android.kanade.core.model.RepeatMode
-import caios.android.kanade.core.model.ShuffleMode
-import caios.android.kanade.core.model.Song
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.MusicConfig
+import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.RepeatMode
+import caios.android.kanade.core.model.music.ShuffleMode
+import caios.android.kanade.core.model.music.Song
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
@@ -30,6 +32,7 @@ class DefaultMusicRepository @Inject constructor(
         }
     }
 
+    @Dispatcher(KanadeDispatcher.IO)
     override suspend fun fetchArtists() {
         config.collect {
             artists.emit(artistRepository.artists(it))

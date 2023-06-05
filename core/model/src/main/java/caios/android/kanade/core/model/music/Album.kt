@@ -1,4 +1,4 @@
-package caios.android.kanade.core.model
+package caios.android.kanade.core.model.music
 
 data class Album(
     val album: String,

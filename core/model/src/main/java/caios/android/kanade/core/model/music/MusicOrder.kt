@@ -1,6 +1,7 @@
-package caios.android.kanade.core.model
+package caios.android.kanade.core.model.music
 
 import android.provider.MediaStore
+import caios.android.kanade.core.model.Order
 
 data class MusicOrder(
     val order: Order,

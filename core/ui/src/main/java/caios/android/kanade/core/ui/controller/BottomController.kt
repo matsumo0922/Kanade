@@ -29,7 +29,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.KanadeTheme
-import caios.android.kanade.core.model.Artwork
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.music.Artwork
 
 @Composable

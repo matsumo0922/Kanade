@@ -1,11 +1,11 @@
 package caios.android.kanade.core.repository
 
 import android.provider.MediaStore.Audio.AudioColumns
-import caios.android.kanade.core.model.Album
-import caios.android.kanade.core.model.MusicConfig
-import caios.android.kanade.core.model.MusicOrder
-import caios.android.kanade.core.model.MusicOrderOption
-import caios.android.kanade.core.model.Song
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.MusicConfig
+import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.MusicOrderOption
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.util.sortList
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class DefaultAlbumRepository @Inject constructor(
     private val songRepository: SongRepository,
 ) : AlbumRepository {
 
-    override fun album(albumId: Long, musicConfig: MusicConfig): Album {
+    override suspend fun album(albumId: Long, musicConfig: MusicConfig): Album {
         val cursor = songRepository.makeCursor(
             selection = AudioColumns.ALBUM_ID + "=?",
             selectionValues = listOf(albumId.toString()),
@@ -28,7 +28,7 @@ class DefaultAlbumRepository @Inject constructor(
         )
     }
 
-    override fun albums(musicConfig: MusicConfig): List<Album> {
+    override suspend fun albums(musicConfig: MusicConfig): List<Album> {
         val cursor = songRepository.makeCursor(
             selection = "",
             selectionValues = emptyList(),
@@ -39,7 +39,7 @@ class DefaultAlbumRepository @Inject constructor(
         return splitIntoAlbums(songs, musicConfig.albumOrder)
     }
 
-    override fun albums(query: String, musicConfig: MusicConfig): List<Album> {
+    override suspend fun albums(query: String, musicConfig: MusicConfig): List<Album> {
         val cursor = songRepository.makeCursor(
             selection = AudioColumns.ALBUM + " LIKE ?",
             selectionValues = listOf("%$query%"),

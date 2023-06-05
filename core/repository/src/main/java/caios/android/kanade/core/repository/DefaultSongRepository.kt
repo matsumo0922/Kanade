@@ -1,5 +1,6 @@
 package caios.android.kanade.core.repository
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -8,9 +9,11 @@ import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.Media
-import caios.android.kanade.core.model.MusicConfig
-import caios.android.kanade.core.model.MusicOrder
-import caios.android.kanade.core.model.Song
+import androidx.core.net.toUri
+import caios.android.kanade.core.model.music.Artwork
+import caios.android.kanade.core.model.music.MusicConfig
+import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.util.getInt
 import caios.android.kanade.core.repository.util.getLong
 import caios.android.kanade.core.repository.util.getString
@@ -21,6 +24,7 @@ import javax.inject.Inject
 
 class DefaultSongRepository @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val artworkRepository: ArtworkRepository,
 ) : SongRepository {
 
     private val baseProjection = arrayOf(
@@ -38,7 +42,7 @@ class DefaultSongRepository @Inject constructor(
         AudioColumns.MIME_TYPE,
     )
 
-    override fun song(songId: Long, musicConfig: MusicConfig): Song? {
+    override suspend fun song(songId: Long, musicConfig: MusicConfig): Song? {
         return song(
             makeCursor(
                 selection = AudioColumns._ID,
@@ -48,21 +52,21 @@ class DefaultSongRepository @Inject constructor(
         )
     }
 
-    override fun song(cursor: Cursor?): Song? {
-        val song = if (cursor != null && cursor.moveToFirst()) getSong(cursor) else null
+    override suspend fun song(cursor: Cursor?): Song? {
+        val song = if (cursor != null && cursor.moveToFirst()) getSong(cursor, null) else null
         cursor?.close()
         return song
     }
 
-    override fun songs(musicConfig: MusicConfig): List<Song> {
+    override suspend fun songs(musicConfig: MusicConfig): List<Song> {
         return songs(makeCursor(musicOrders = arrayOf(musicConfig.songOrder)))
     }
 
-    override fun songs(cursor: Cursor?): List<Song> {
+    override suspend fun songs(cursor: Cursor?): List<Song> {
         val songs = mutableListOf<Song>()
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                songs.add(getSong(cursor))
+                songs.add(getSong(cursor, null))
             } while (cursor.moveToNext())
         }
         cursor?.close()
@@ -101,7 +105,7 @@ class DefaultSongRepository @Inject constructor(
         }
     }
 
-    private fun getSong(cursor: Cursor): Song {
+    private suspend fun getSong(cursor: Cursor, artwork: Artwork?): Song {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
 
         val id = cursor.getLong(AudioColumns._ID)
@@ -131,6 +135,12 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
+            artwork = artwork ?: artworkRepository.albumArtwork(id),
         )
+    }
+
+    fun getMediaStoreAlbumCoverUri(albumId: Long): Uri {
+        val artworkUri = "content://media/external/audio/albumart".toUri()
+        return ContentUris.withAppendedId(artworkUri, albumId)
     }
 }
