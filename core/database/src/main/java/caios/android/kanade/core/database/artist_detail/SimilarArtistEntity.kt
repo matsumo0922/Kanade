@@ -9,12 +9,14 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "similar_artist",
     indices = [Index(value = ["artist_id"])],
-    foreignKeys = [ForeignKey(
-        entity = ArtistDetailEntity::class,
-        parentColumns = arrayOf("artist_id"),
-        childColumns = arrayOf("artist_id"),
-        onDelete = ForeignKey.CASCADE,
-    )],
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtistDetailEntity::class,
+            parentColumns = arrayOf("artist_id"),
+            childColumns = arrayOf("artist_id"),
+            onDelete = ForeignKey.CASCADE,
+        ),
+    ],
 )
 data class SimilarArtistEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,

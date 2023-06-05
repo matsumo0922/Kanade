@@ -63,7 +63,7 @@ fun BottomController(
                     height = Dimension.fillToConstraints
                 }
                 .aspectRatio(1f),
-            artwork = Artwork.Internal("ABC")
+            artwork = Artwork.Internal("ABC"),
         )
 
         Text(
@@ -110,11 +110,11 @@ fun BottomController(
                     .border(
                         width = 1.dp,
                         color = LocalContentColor.current,
-                        shape = RoundedCornerShape(24.dp)
+                        shape = RoundedCornerShape(24.dp),
                     )
                     .padding(4.dp),
                 imageVector = Icons.Filled.SkipPrevious,
-                contentDescription = "Skip to previous"
+                contentDescription = "Skip to previous",
             )
 
             Icon(
@@ -126,11 +126,11 @@ fun BottomController(
                     .border(
                         width = 1.dp,
                         color = LocalContentColor.current,
-                        shape = RoundedCornerShape(24.dp)
+                        shape = RoundedCornerShape(24.dp),
                     )
                     .padding(4.dp),
                 imageVector = Icons.Filled.PlayArrow,
-                contentDescription = "Play or Pause"
+                contentDescription = "Play or Pause",
             )
 
             Icon(
@@ -142,7 +142,7 @@ fun BottomController(
                     .border(
                         width = 1.dp,
                         color = LocalContentColor.current,
-                        shape = RoundedCornerShape(24.dp)
+                        shape = RoundedCornerShape(24.dp),
                     )
                     .padding(4.dp),
                 imageVector = Icons.Filled.SkipNext,

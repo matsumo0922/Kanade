@@ -20,14 +20,14 @@ class MusicService : MediaSessionService() {
         override fun onAddMediaItems(
             mediaSession: MediaSession,
             controller: MediaSession.ControllerInfo,
-            mediaItems: MutableList<MediaItem>
+            mediaItems: MutableList<MediaItem>,
         ): ListenableFuture<MutableList<MediaItem>> {
             return Futures.immediateFuture(
                 mediaItems.map {
                     it.buildUpon()
                         .setUri(it.requestMetadata.mediaUri)
                         .build()
-                }.toMutableList()
+                }.toMutableList(),
             )
         }
     }

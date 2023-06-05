@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DefaultArtworkRepository @Inject constructor(
     private val artworkDao: ArtworkDao,
-): ArtworkRepository {
+) : ArtworkRepository {
 
     override suspend fun artistArtworks(): Map<Long, Artwork> {
         return artworkDao.loadArtists().associate { entity ->

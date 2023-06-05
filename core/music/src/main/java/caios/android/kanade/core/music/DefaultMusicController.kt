@@ -28,7 +28,7 @@ class DefaultMusicController @Inject constructor(
     private val musicRepository: MusicRepository,
     private val kanadePreferencesDataStore: KanadePreferencesDataStore,
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
-): MusicController, Player.Listener, CoroutineScope {
+) : MusicController, Player.Listener, CoroutineScope {
 
     private var job: Job? = null
     private val _state = MutableStateFlow<ControllerState>(ControllerState.Initialize)
@@ -72,7 +72,6 @@ class DefaultMusicController @Inject constructor(
                 _state.value = ControllerState.Playing(false)
             }
             ControllerEvent.SkipToNext -> {
-
             }
             ControllerEvent.SkipToPrevious -> TODO()
         }
@@ -80,7 +79,6 @@ class DefaultMusicController @Inject constructor(
 
     override fun onPlayFromMediaId(index: Int, queue: List<Song>, playWhenReady: Boolean) {
         val mediaItems = queue.map { it.toMediaItem(null) }
-
     }
 
     private fun startUpdateJob() {

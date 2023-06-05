@@ -15,7 +15,7 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideKanadeDatabase(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ) = Room.databaseBuilder(context, KanadeDataBase::class.java, "kanade.db").build()
 
     @Singleton

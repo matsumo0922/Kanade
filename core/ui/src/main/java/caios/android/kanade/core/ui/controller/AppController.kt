@@ -41,7 +41,7 @@ fun AppController(
                 modifier = Modifier
                     .alpha(1f - offsetRate)
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.surface),
             )
         }
     }

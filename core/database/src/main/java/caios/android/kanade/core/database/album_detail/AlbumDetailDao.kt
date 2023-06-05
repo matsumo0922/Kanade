@@ -12,10 +12,10 @@ import androidx.room.Update
 interface AlbumDetailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAlbumDetail(vararg entity: AlbumDetailEntity)
-    
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTrack(vararg entity: AlbumTrackEntity)
-    
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTag(vararg entity: AlbumTagEntity)
 

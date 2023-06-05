@@ -85,7 +85,7 @@ fun KanadeApp(
             val topAppBarState = rememberLibraryTopBarScrollState()
             val scrollBehavior = LibraryTopBarScrollBehavior(
                 state = topAppBarState,
-                topBarHeight = topBarHeight
+                topBarHeight = topBarHeight,
             )
 
             bottomSheetOffsetRate = try {
@@ -137,7 +137,7 @@ fun KanadeApp(
                                 scope.launch {
                                     scaffoldState.bottomSheetState.expand()
                                 }
-                            }
+                            },
                         )
                     },
                     containerColor = Color.Transparent,

@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey
             parentColumns = ["artist_id"],
             childColumns = ["artist_id"],
             onDelete = ForeignKey.CASCADE,
-        )
-    ]
+        ),
+    ],
 )
 data class ArtistTagEntity(
     @PrimaryKey(autoGenerate = true)

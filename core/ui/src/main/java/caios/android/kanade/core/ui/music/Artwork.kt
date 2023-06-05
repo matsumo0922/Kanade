@@ -38,11 +38,11 @@ fun Artwork(
     artwork: Artwork,
     modifier: Modifier = Modifier,
 ) {
-    when(artwork) {
-        is Artwork.Internal   -> ArtworkFromInternal(modifier, artwork)
+    when (artwork) {
+        is Artwork.Internal -> ArtworkFromInternal(modifier, artwork)
         is Artwork.MediaStore -> ArtworkFromMediaStore(modifier, artwork)
-        is Artwork.Web        -> ArtworkFromWeb(modifier, artwork)
-        is Artwork.Unknown    -> ArtworkFromUnknown(modifier)
+        is Artwork.Web -> ArtworkFromWeb(modifier, artwork)
+        is Artwork.Unknown -> ArtworkFromUnknown(modifier)
     }
 }
 
@@ -107,7 +107,7 @@ private fun ArtworkFromInternal(modifier: Modifier, artwork: Artwork.Internal) {
             .clipToBounds(),
     ) {
         val boxHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
-        val fontSize = with(density) {  (boxHeight * 1.4f).toSp() }
+        val fontSize = with(density) { (boxHeight * 1.4f).toSp() }
         val xOffset = boxHeight * 0.15f
         val yOffset = boxHeight * 0.05f
         val xOffsetPlus = boxHeight * 0.02f
@@ -158,6 +158,6 @@ private fun ArtworkFromInternal(modifier: Modifier, artwork: Artwork.Internal) {
 private fun Preview() {
     Artwork(
         modifier = Modifier,
-        artwork = Artwork.Internal("ABC")
+        artwork = Artwork.Internal("ABC"),
     )
 }
