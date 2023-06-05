@@ -1,6 +1,5 @@
 package caios.android.kanade.core.repository
 
-import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -9,7 +8,6 @@ import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.Media
-import androidx.core.net.toUri
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
@@ -19,7 +17,6 @@ import caios.android.kanade.core.repository.util.getLong
 import caios.android.kanade.core.repository.util.getString
 import caios.android.kanade.core.repository.util.getStringOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultSongRepository @Inject constructor(
@@ -70,7 +67,6 @@ class DefaultSongRepository @Inject constructor(
             } while (cursor.moveToNext())
         }
         cursor?.close()
-        Timber.d("songs: ${songs.size}")
         return songs
     }
 
@@ -137,10 +133,5 @@ class DefaultSongRepository @Inject constructor(
             uri = Uri.withAppendedPath(uri, id.toString()),
             artwork = artwork ?: artworkRepository.albumArtwork(id),
         )
-    }
-
-    fun getMediaStoreAlbumCoverUri(albumId: Long): Uri {
-        val artworkUri = "content://media/external/audio/albumart".toUri()
-        return ContentUris.withAppendedId(artworkUri, albumId)
     }
 }

@@ -1,7 +1,5 @@
 package caios.android.kanade.core.repository
 
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
@@ -12,6 +10,7 @@ import caios.android.kanade.core.model.music.ShuffleMode
 import caios.android.kanade.core.model.music.Song
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultMusicRepository @Inject constructor(
@@ -19,6 +18,7 @@ class DefaultMusicRepository @Inject constructor(
     private val songRepository: SongRepository,
     private val artistRepository: ArtistRepository,
     private val albumRepository: AlbumRepository,
+    private val artworkRepository: ArtworkRepository,
 ) : MusicRepository {
 
     override val config: Flow<MusicConfig> = kanadePreferencesDataStore.musicConfig
@@ -32,16 +32,30 @@ class DefaultMusicRepository @Inject constructor(
         }
     }
 
-    @Dispatcher(KanadeDispatcher.IO)
     override suspend fun fetchArtists() {
         config.collect {
-            artists.emit(artistRepository.artists(it))
+            val data = artistRepository.artists(it)
+
+            artists.emit(data)
+
+            if (artworkRepository.fetchArtistArtwork(data)) {
+                Timber.d("Required refetch artists.")
+                fetchArtists()
+            }
         }
     }
 
     override suspend fun fetchAlbums() {
         config.collect {
-            albums.emit(albumRepository.albums(it))
+            val data = albumRepository.albums(it)
+
+            albums.emit(data)
+
+            if (artworkRepository.fetchAlbumArtwork(data)) {
+                Timber.d("Required refetch songs and albums.")
+                fetchSongs()
+                fetchAlbums()
+            }
         }
     }
 

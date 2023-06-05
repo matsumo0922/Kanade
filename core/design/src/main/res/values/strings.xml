@@ -32,4 +32,8 @@
     <string name="permission_request_storage_why">楽曲を読み込むため</string>
     <string name="permission_request_notification">通知</string>
     <string name="permission_request_notification_why">コントローラーを表示するため</string>
+
+    <!-- Notification -->
+    <string name="notify_channel_music_name">コントローラー</string>
+    <string name="notify_channel_music_description">通知欄にコントローラーを表示します</string>
 </resources>

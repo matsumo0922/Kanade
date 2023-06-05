@@ -1,5 +1,7 @@
 package caios.android.kanade.core.repository
 
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Artwork
 
 interface ArtworkRepository {
@@ -12,4 +14,7 @@ interface ArtworkRepository {
 
     suspend fun artistArtworks(): Map<Long, Artwork>
     suspend fun albumArtworks(): Map<Long, Artwork>
+
+    suspend fun fetchArtistArtwork(artists: List<Artist>): Boolean
+    suspend fun fetchAlbumArtwork(albums: List<Album>): Boolean
 }
