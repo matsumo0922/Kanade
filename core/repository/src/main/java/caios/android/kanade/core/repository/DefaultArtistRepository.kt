@@ -2,6 +2,7 @@ package caios.android.kanade.core.repository
 
 import android.provider.MediaStore.Audio.AudioColumns
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.MusicOrderOption
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class DefaultArtistRepository @Inject constructor(
     private val songRepository: SongRepository,
     private val albumRepository: AlbumRepository,
+    private val artworkRepository: ArtworkRepository,
 ) : ArtistRepository {
 
     override suspend fun artist(artistId: Long, musicConfig: MusicConfig): Artist {
@@ -26,6 +28,7 @@ class DefaultArtistRepository @Inject constructor(
             artist = songs.firstOrNull()?.artist ?: "",
             artistId = artistId,
             albums = albumRepository.splitIntoAlbums(songs, musicConfig.albumOrder),
+            artwork = artworkRepository.artistArtwork(artistId),
         )
     }
 
@@ -62,6 +65,7 @@ class DefaultArtistRepository @Inject constructor(
                     artist = it.value.first().artist,
                     artistId = it.key,
                     albums = it.value,
+                    artwork = artworkRepository.artistArtworks[it.key] ?: Artwork.Unknown,
                 )
             }
 

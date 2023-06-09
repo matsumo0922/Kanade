@@ -10,8 +10,8 @@ import androidx.media3.ui.PlayerNotificationManager
 @UnstableApi
 class NotificationAdapter(
     private val context: Context,
-    private val pendingIntent: PendingIntent?
-): PlayerNotificationManager.MediaDescriptionAdapter {
+    private val pendingIntent: PendingIntent?,
+) : PlayerNotificationManager.MediaDescriptionAdapter {
     override fun getCurrentContentTitle(player: Player): CharSequence {
         TODO("Not yet implemented")
     }

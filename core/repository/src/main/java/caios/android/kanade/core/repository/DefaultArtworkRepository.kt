@@ -15,6 +15,15 @@ class DefaultArtworkRepository @Inject constructor(
     private val artworkDao: ArtworkDao,
 ) : ArtworkRepository {
 
+    private val _artistArtwork = mutableMapOf<Long, Artwork>()
+    private val _albumArtwork = mutableMapOf<Long, Artwork>()
+
+    override val artistArtworks: Map<Long, Artwork>
+        get() = _artistArtwork.toMap()
+
+    override val albumArtworks: Map<Long, Artwork>
+        get() = _albumArtwork.toMap()
+
     override suspend fun artistArtworks(): Map<Long, Artwork> {
         return artworkDao.loadArtists().associate { entity ->
             entity.artistId!! to entity.toArtwork()
@@ -48,11 +57,15 @@ class DefaultArtworkRepository @Inject constructor(
     }
 
     override suspend fun fetchArtistArtwork(artists: List<Artist>): Boolean {
-        val registeredIds = artworkDao.loadArtists().map { it.artistId }
+        val registeredArtworks = artworkDao.loadArtists()
+        val registeredIds = registeredArtworks.map { it.artistId }
         val uris = artists.filterNot { registeredIds.contains(it.artistId) }
 
         if (uris.isEmpty()) {
             Timber.d("Don't necessarily to fetch artist artwork. [fetched=${registeredIds.size}]")
+
+            _artistArtwork.clear()
+            _artistArtwork.putAll(registeredArtworks.associate { it.artistId!! to it.toArtwork() })
             return false
         }
 
@@ -66,6 +79,9 @@ class DefaultArtworkRepository @Inject constructor(
 
         artworkDao.insert(*entities.toTypedArray())
 
+        _artistArtwork.clear()
+        _artistArtwork.putAll(artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() })
+
         return true
     }
 
@@ -77,6 +93,9 @@ class DefaultArtworkRepository @Inject constructor(
 
         if (uris.isEmpty()) {
             Timber.d("Don't necessarily to fetch album artwork. [fetched=${registeredIds.size}]")
+
+            _albumArtwork.clear()
+            _albumArtwork.putAll(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
             return false
         }
 
@@ -90,6 +109,9 @@ class DefaultArtworkRepository @Inject constructor(
         }
 
         artworkDao.insert(*entities.toTypedArray())
+
+        _albumArtwork.clear()
+        _albumArtwork.putAll(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
 
         return true
     }

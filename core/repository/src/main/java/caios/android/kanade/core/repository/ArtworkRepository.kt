@@ -6,6 +6,9 @@ import caios.android.kanade.core.model.music.Artwork
 
 interface ArtworkRepository {
 
+    val artistArtworks: Map<Long, Artwork>
+    val albumArtworks: Map<Long, Artwork>
+
     suspend fun artistArtwork(artistId: Long): Artwork
     suspend fun albumArtwork(albumId: Long): Artwork
 

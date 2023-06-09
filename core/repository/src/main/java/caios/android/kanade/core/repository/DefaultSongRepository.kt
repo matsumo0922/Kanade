@@ -50,7 +50,7 @@ class DefaultSongRepository @Inject constructor(
     }
 
     override suspend fun song(cursor: Cursor?): Song? {
-        val song = if (cursor != null && cursor.moveToFirst()) getSong(cursor, null) else null
+        val song = if (cursor != null && cursor.moveToFirst()) getSong(cursor) else null
         cursor?.close()
         return song
     }
@@ -63,7 +63,7 @@ class DefaultSongRepository @Inject constructor(
         val songs = mutableListOf<Song>()
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                songs.add(getSong(cursor, null))
+                songs.add(getSong(cursor))
             } while (cursor.moveToNext())
         }
         cursor?.close()
@@ -101,7 +101,7 @@ class DefaultSongRepository @Inject constructor(
         }
     }
 
-    private suspend fun getSong(cursor: Cursor, artwork: Artwork?): Song {
+    private fun getSong(cursor: Cursor): Song {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
 
         val id = cursor.getLong(AudioColumns._ID)
@@ -131,7 +131,7 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = Artwork.Unknown,
+            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
         )
     }
 }

@@ -26,8 +26,8 @@ class NotificationManager @Inject constructor(
             .setMediaDescriptionAdapter(
                 NotificationAdapter(
                     context = context,
-                    pendingIntent = mediaSession.sessionActivity
-                )
+                    pendingIntent = mediaSession.sessionActivity,
+                ),
             )
             .setSmallIconResourceId(R.drawable.vec_songs_off)
             .build()

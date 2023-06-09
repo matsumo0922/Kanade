@@ -2,6 +2,7 @@ package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.RepeatMode
@@ -16,10 +17,14 @@ interface MusicRepository {
     val songs: SharedFlow<List<Song>>
     val artists: SharedFlow<List<Artist>>
     val albums: SharedFlow<List<Album>>
+    val artistArtworks: SharedFlow<Map<Long, Artwork>>
+    val albumArtworks: SharedFlow<Map<Long, Artwork>>
 
     suspend fun fetchSongs(musicConfig: MusicConfig)
     suspend fun fetchArtists(musicConfig: MusicConfig)
     suspend fun fetchAlbums(musicConfig: MusicConfig)
+    suspend fun fetchArtistArtwork()
+    suspend fun fetchAlbumArtwork()
 
     suspend fun setShuffleMode(mode: ShuffleMode)
     suspend fun setRepeatMode(mode: RepeatMode)

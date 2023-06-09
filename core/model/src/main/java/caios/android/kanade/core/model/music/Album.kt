@@ -4,6 +4,7 @@ data class Album(
     val album: String,
     val albumId: Long,
     val songs: List<Song>,
+    val artwork: Artwork,
 ) {
     val artist: String
         get() = songs.firstOrNull()?.artist ?: ""
