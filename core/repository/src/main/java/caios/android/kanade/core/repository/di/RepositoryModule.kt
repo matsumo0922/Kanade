@@ -16,36 +16,43 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {
 
+    @Singleton
     @Binds
     fun bindUserDataRepository(
         userDataRepository: DefaultUserDataRepository,
     ): UserDataRepository
 
+    @Singleton
     @Binds
     fun bindMusicRepository(
         musicRepository: DefaultMusicRepository,
     ): MusicRepository
 
+    @Singleton
     @Binds
     fun bindSongRepository(
         songRepository: DefaultSongRepository,
     ): SongRepository
 
+    @Singleton
     @Binds
     fun bindArtistRepository(
         artistRepository: DefaultArtistRepository,
     ): ArtistRepository
 
+    @Singleton
     @Binds
     fun bindAlbumRepository(
         albumRepository: DefaultAlbumRepository,
     ): AlbumRepository
 
+    @Singleton
     @Binds
     fun bindArtworkRepository(
         artworkRepository: DefaultArtworkRepository,

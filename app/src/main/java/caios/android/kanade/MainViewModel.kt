@@ -32,9 +32,11 @@ class MainViewModel @Inject constructor(
 
     fun fetchMusic() {
         viewModelScope.launch(dispatcher) {
-            musicRepository.fetchSongs()
-            musicRepository.fetchArtists()
-            musicRepository.fetchAlbums()
+            musicRepository.config.collect {
+                musicRepository.fetchSongs(it)
+                musicRepository.fetchArtists(it)
+                musicRepository.fetchAlbums(it)
+            }
         }
     }
 }

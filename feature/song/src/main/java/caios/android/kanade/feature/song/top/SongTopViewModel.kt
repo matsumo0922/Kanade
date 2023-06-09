@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,10 +26,4 @@ class SongTopViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ScreenState.Loading,
     )
-
-    init {
-        viewModelScope.launch(dispatcher) {
-            musicRepository.fetchSongs()
-        }
-    }
 }

@@ -17,9 +17,9 @@ interface MusicRepository {
     val artists: SharedFlow<List<Artist>>
     val albums: SharedFlow<List<Album>>
 
-    suspend fun fetchSongs()
-    suspend fun fetchArtists()
-    suspend fun fetchAlbums()
+    suspend fun fetchSongs(musicConfig: MusicConfig)
+    suspend fun fetchArtists(musicConfig: MusicConfig)
+    suspend fun fetchAlbums(musicConfig: MusicConfig)
 
     suspend fun setShuffleMode(mode: ShuffleMode)
     suspend fun setRepeatMode(mode: RepeatMode)

@@ -1,7 +1,14 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <option name="RIGHT_MARGIN" value="150" />
+    <JetCodeStyleSettings>
+      <option name="WRAP_ELVIS_EXPRESSIONS" value="0" />
+      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+    </JetCodeStyleSettings>
+    <codeStyleSettings language="Python">
+      <option name="RIGHT_MARGIN" value="175" />
+    </codeStyleSettings>
     <codeStyleSettings language="XML">
-      <option name="FORCE_REARRANGE_MODE" value="1" />
       <indentOptions>
         <option name="CONTINUATION_INDENT_SIZE" value="4" />
       </indentOptions>
@@ -112,6 +119,11 @@
           </section>
         </rules>
       </arrangement>
+    </codeStyleSettings>
+    <codeStyleSettings language="kotlin">
+      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      <option name="RIGHT_MARGIN" value="175" />
+      <option name="ENUM_CONSTANTS_WRAP" value="5" />
     </codeStyleSettings>
   </code_scheme>
 </component>

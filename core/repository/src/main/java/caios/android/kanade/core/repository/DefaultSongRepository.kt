@@ -131,7 +131,7 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = artwork ?: artworkRepository.albumArtwork(id),
+            artwork = Artwork.Unknown,
         )
     }
 }

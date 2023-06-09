@@ -42,6 +42,7 @@ androidxCompose = "2023.05.01"
 androidxComposeConstraintLayout = "1.0.1"
 androidxComposeNavigation = "2.5.3"
 androidxHiltNavigationCompose = "1.0.0"
+androidxLagacySupportV4 = "1.0.0"
 
 # Google
 playServiceBilling = "5.0.0"
@@ -129,6 +130,7 @@ androidx-preference = { module = "androidx.preference:preference-ktx", version.r
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDataStore" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "androidxLagacySupportV4" }
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
