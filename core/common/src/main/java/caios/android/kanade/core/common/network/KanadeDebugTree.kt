@@ -13,18 +13,19 @@ class KanadeDebugTree : Timber.DebugTree() {
     private fun getCallerInfo(): String {
         val stackTrace = Throwable().stackTrace
 
-        if (stackTrace.size < 7) {
+        if (stackTrace.size < 6) {
             // stack[0] KanadeDebugTree.getCallerInfo()
             // stack[1] KanadeDebugTree.log()
             // stack[2] Tree.prepareLog()
             // stack[3] Tree.d()
-            // stack[4] 1.d()
+            // stack[4] Forrest.d()
             // stack[5] Timber.d()
-            // stack[6] CallerClass#xxxx
 
             return ""
         }
 
-        return String.format(Locale.getDefault(), "@%s:%s", stackTrace[6].fileName, stackTrace[6].lineNumber)
+        val element = stackTrace[5]
+
+        return String.format(Locale.getDefault(), "%s(%s:%s)", element.methodName, element.fileName, element.lineNumber)
     }
 }
