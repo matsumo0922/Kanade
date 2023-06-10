@@ -3,6 +3,7 @@ package caios.android.kanade.core.common.network.di
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher.Default
 import caios.android.kanade.core.common.network.KanadeDispatcher.IO
+import caios.android.kanade.core.common.network.KanadeDispatcher.Main
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +21,8 @@ object DispatchersModule {
     @Provides
     @Dispatcher(Default)
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+    @Provides
+    @Dispatcher(Main)
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }

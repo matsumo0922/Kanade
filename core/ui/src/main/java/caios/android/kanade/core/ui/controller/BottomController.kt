@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
@@ -23,17 +24,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.model.music.Artwork
+import caios.android.kanade.core.music.MusicUiState
 import caios.android.kanade.core.ui.music.Artwork
 
 @Composable
 fun BottomController(
+    uiState: MusicUiState,
     onClickPlay: () -> Unit,
     onClickPause: () -> Unit,
     onClickSkipToNext: () -> Unit,
@@ -51,6 +57,7 @@ fun BottomController(
 
                 width = Dimension.fillToConstraints
             },
+            progress = uiState.progressParent,
         )
 
         Artwork(
@@ -63,7 +70,7 @@ fun BottomController(
                     height = Dimension.fillToConstraints
                 }
                 .aspectRatio(1f),
-            artwork = Artwork.Internal("ABC"),
+            artwork = uiState.song?.artwork ?: Artwork.Unknown,
         )
 
         Text(
@@ -75,8 +82,10 @@ fun BottomController(
 
                 width = Dimension.fillToConstraints
             },
-            text = "Title",
+            text = uiState.song?.title ?: stringResource(R.string.music_unknown_title),
             style = MaterialTheme.typography.bodyLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
 
         Text(
@@ -88,8 +97,10 @@ fun BottomController(
 
                 width = Dimension.fillToConstraints
             },
-            text = "Artist",
+            text = uiState.song?.artist ?: stringResource(R.string.music_unknown_artist),
             style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
 
         Row(
@@ -105,7 +116,7 @@ fun BottomController(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .clickable { onClickSkipToNext() }
+                    .clickable { onClickSkipToPrevious() }
                     .padding(8.dp)
                     .border(
                         width = 1.dp,
@@ -121,7 +132,7 @@ fun BottomController(
                 modifier = Modifier
                     .size(54.dp)
                     .clip(RoundedCornerShape(27.dp))
-                    .clickable { onClickPlay() }
+                    .clickable { if (uiState.isPlaying) onClickPause() else onClickPlay() }
                     .padding(8.dp)
                     .border(
                         width = 1.dp,
@@ -129,7 +140,7 @@ fun BottomController(
                         shape = RoundedCornerShape(24.dp),
                     )
                     .padding(4.dp),
-                imageVector = Icons.Filled.PlayArrow,
+                imageVector = if (uiState.isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                 contentDescription = "Play or Pause",
             )
 
@@ -161,6 +172,7 @@ private fun Preview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(72.dp),
+                uiState = MusicUiState(),
                 onClickPlay = {},
                 onClickPause = {},
                 onClickSkipToNext = {},

@@ -1,5 +1,6 @@
 package caios.android.kanade
 
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,6 +22,8 @@ import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.music.MusicService
+import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.ui.KanadeApp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +36,9 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
+    private val musicViewModel by viewModels<MusicViewModel>()
+
+    private var isServiceRunning = false
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         val splashScreen = installSplashScreen()
@@ -63,11 +70,16 @@ class MainActivity : ComponentActivity() {
                 onDispose {}
             }
 
+            LaunchedEffect(true) {
+                startService()
+            }
+
             KanadeTheme(
                 shouldUseDarkTheme = shouldUseDarkTheme,
                 enableDynamicTheme = shouldUseDynamicColor(screenState),
             ) {
                 KanadeApp(
+                    musicViewModel = musicViewModel,
                     windowSize = calculateWindowSizeClass(this),
                 )
             }
@@ -77,6 +89,19 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.fetchMusic()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, MusicService::class.java))
+        isServiceRunning = false
+    }
+
+    private fun startService() {
+        if (!isServiceRunning) {
+            startForegroundService(Intent(this, MusicService::class.java))
+            isServiceRunning = true
+        }
     }
 
     @Composable

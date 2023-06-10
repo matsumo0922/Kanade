@@ -13,4 +13,6 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
     implementation(project(":core:database"))
+
+    implementation(libs.androidx.media3.common)
 }

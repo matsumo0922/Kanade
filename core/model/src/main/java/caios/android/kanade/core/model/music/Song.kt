@@ -1,10 +1,9 @@
 package caios.android.kanade.core.model.music
 
-import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import java.io.ByteArrayOutputStream
 
 data class Song(
     val id: Long,
@@ -23,22 +22,15 @@ data class Song(
     val artwork: Artwork,
 )
 
-fun Song.toMediaItem(bitmap: Bitmap?): MediaItem {
+fun Song.toMediaItem(): MediaItem {
     val metadata = MediaMetadata.Builder()
         .setTitle(title)
         .setArtist(artist)
         .setAlbumTitle(album)
-
-    if (bitmap != null) {
-        val stream = ByteArrayOutputStream().also { bitmap.compress(Bitmap.CompressFormat.PNG, 90, it) }
-        val array = stream.toByteArray()
-
-        metadata.maybeSetArtworkData(array, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
-    } else {
-        metadata.setArtworkUri(null)
-    }
+        .setExtras(Bundle().apply { putParcelable("artwork", artwork) })
 
     return MediaItem.Builder()
+        .setMediaId(id.toString())
         .setUri(uri)
         .setMediaMetadata(metadata.build())
         .build()

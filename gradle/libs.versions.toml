@@ -200,6 +200,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [bundles]
 infra-api = [
+    "androidx-core",
     "kotlin-stdlib",
     "kotlin-reflect",
     "kotlinx-coroutines-android",
@@ -209,10 +210,8 @@ infra-api = [
 ]
 
 ui-implementation = [
-    "androidx-core",
     "androidx-annotation",
     "androidx-appcompat",
-    "androidx-core",
     "androidx-activity",
     "androidx-activity-compose",
     "androidx-fragment",

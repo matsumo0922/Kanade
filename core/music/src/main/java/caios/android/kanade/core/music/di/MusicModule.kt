@@ -10,6 +10,8 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.music.DefaultMusicController
+import caios.android.kanade.core.music.MusicController
+import caios.android.kanade.core.music.NotificationManager
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.Module
 import dagger.Provides
@@ -52,8 +54,20 @@ class MusicModule {
         player: ExoPlayer,
         musicRepository: MusicRepository,
         kanadePreferencesDataStore: KanadePreferencesDataStore,
+        @ApplicationContext context: Context,
+        @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
+        @Dispatcher(KanadeDispatcher.Main) main: CoroutineDispatcher,
+    ): MusicController {
+        return DefaultMusicController(player, musicRepository, kanadePreferencesDataStore, context, io, main)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(
+        @ApplicationContext context: Context,
         @Dispatcher(KanadeDispatcher.IO) dispatcher: CoroutineDispatcher,
-    ): DefaultMusicController {
-        return DefaultMusicController(player, musicRepository, kanadePreferencesDataStore, dispatcher)
+        player: ExoPlayer,
+    ): NotificationManager {
+        return NotificationManager(context, dispatcher, player)
     }
 }

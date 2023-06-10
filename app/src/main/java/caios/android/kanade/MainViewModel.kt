@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
+import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val musicRepository: MusicRepository,
+    private val musicController: MusicController,
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -33,9 +35,9 @@ class MainViewModel @Inject constructor(
     fun fetchMusic() {
         viewModelScope.launch(dispatcher) {
             musicRepository.config.collect {
-                musicRepository.fetchSongs(it)
                 musicRepository.fetchArtists(it)
                 musicRepository.fetchAlbums(it)
+                musicRepository.fetchSongs(it)
             }
         }
     }

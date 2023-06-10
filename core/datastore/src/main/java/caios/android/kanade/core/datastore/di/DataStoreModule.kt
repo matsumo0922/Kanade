@@ -9,6 +9,8 @@ import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.MusicPreference
 import caios.android.kanade.core.datastore.MusicPreferenceSerializer
+import caios.android.kanade.core.datastore.QueuePreference
+import caios.android.kanade.core.datastore.QueuePreferenceSerializer
 import caios.android.kanade.core.datastore.UserPreference
 import caios.android.kanade.core.datastore.UserPreferenceSerializer
 import dagger.Module
@@ -51,6 +53,21 @@ object DataStoreModule {
             serializer = musicPreferenceSerializer,
             scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
             produceFile = { context.dataStoreFile("music_preference.pb") },
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providesQueuePreferencesDataStore(
+        @ApplicationContext context: Context,
+        @Dispatcher(KanadeDispatcher.IO) ioDispatcher: CoroutineDispatcher,
+        @ApplicationScope scope: CoroutineScope,
+        queuePreferenceSerializer: QueuePreferenceSerializer,
+    ): DataStore<QueuePreference> {
+        return DataStoreFactory.create(
+            serializer = queuePreferenceSerializer,
+            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
+            produceFile = { context.dataStoreFile("queue_preference.pb") },
         )
     }
 }

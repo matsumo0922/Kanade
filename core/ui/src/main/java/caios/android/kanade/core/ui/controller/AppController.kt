@@ -12,10 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.model.music.ControllerEvent
+import caios.android.kanade.core.music.MusicUiState
 
 @Composable
 fun AppController(
+    uiState: MusicUiState,
     offsetRate: Float,
+    onControllerEvent: (event: ControllerEvent) -> Unit,
     onClickBottomController: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -29,10 +33,11 @@ fun AppController(
                     .align(Alignment.TopCenter)
                     .background(MaterialTheme.colorScheme.surface)
                     .clickable { onClickBottomController() },
-                onClickPlay = {},
-                onClickPause = {},
-                onClickSkipToNext = {},
-                onClickSkipToPrevious = {},
+                uiState = uiState,
+                onClickPlay = { onControllerEvent.invoke(ControllerEvent.Play) },
+                onClickPause = { onControllerEvent.invoke(ControllerEvent.Pause) },
+                onClickSkipToNext = { onControllerEvent.invoke(ControllerEvent.SkipToNext) },
+                onClickSkipToPrevious = { onControllerEvent.invoke(ControllerEvent.SkipToPrevious) },
             )
         }
 

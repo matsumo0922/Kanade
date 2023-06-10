@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import caios.android.kanade.core.model.Order
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.MusicOrderOption
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class KanadePreferencesDataStore @Inject constructor(
     private val userPreference: DataStore<UserPreference>,
     private val musicPreference: DataStore<MusicPreference>,
+    private val queuePreference: DataStore<QueuePreference>,
 ) {
     val userData = userPreference.data
         .map {
@@ -76,6 +78,16 @@ class KanadePreferencesDataStore @Inject constructor(
                     AlbumOrderProto.ALBUM_DESC_YEAR -> MusicOrder(Order.DESC, MusicOrderOption.Album.YEAR)
                     else -> MusicOrder(Order.ASC, MusicOrderOption.Album.NAME)
                 },
+            )
+        }
+
+    val lastQueue = queuePreference.data
+        .map {
+            LastQueue(
+                originalItems = it.originalItemsList ?: emptyList(),
+                currentItems = it.currentItemsList ?: emptyList(),
+                index = it.index,
+                progress = it.progress,
             )
         }
 
@@ -206,6 +218,45 @@ class KanadePreferencesDataStore @Inject constructor(
                         else -> error("Invalid album order option. $musicOrder")
                     }
                 }
+            }
+        }
+    }
+
+    suspend fun setLastOriginalQueue(
+        originalItems: List<Long>,
+        index: Int,
+    ) {
+        queuePreference.updateData {
+            it.copy {
+                this.originalItems.clear()
+                this.originalItems.addAll(originalItems)
+
+                this.currentItems.clear()
+                this.currentItems.addAll(currentItems)
+
+                this.index = index
+            }
+        }
+    }
+
+    suspend fun setLastCurrentQueue(
+        currentItems: List<Long>,
+        index: Int,
+    ) {
+        queuePreference.updateData {
+            it.copy {
+                this.currentItems.clear()
+                this.currentItems.addAll(currentItems)
+
+                this.index = index
+            }
+        }
+    }
+
+    suspend fun setLastQueueProgress(progress: Long) {
+        queuePreference.updateData {
+            it.copy {
+                this.progress = progress
             }
         }
     }

@@ -4,6 +4,7 @@ import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Artwork
+import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.RepeatMode
@@ -29,11 +30,31 @@ class DefaultMusicRepository @Inject constructor(
     private val _albumArtworks: MutableSharedFlow<Map<Long, Artwork>> = MutableSharedFlow(1)
 
     override val config: Flow<MusicConfig> = kanadePreferencesDataStore.musicConfig
+    override val lastQueue: Flow<LastQueue> = kanadePreferencesDataStore.lastQueue
+
     override val songs: SharedFlow<List<Song>> = _songs
     override val artists: SharedFlow<List<Artist>> = _artists
     override val albums: SharedFlow<List<Album>> = _albums
     override val artistArtworks: SharedFlow<Map<Long, Artwork>> = _artistArtworks
     override val albumArtworks: SharedFlow<Map<Long, Artwork>> = _albumArtworks
+
+    override suspend fun saveQueue(items: List<Long>, index: Int, isShuffled: Boolean) {
+        if (isShuffled) {
+            kanadePreferencesDataStore.setLastCurrentQueue(
+                currentItems = items,
+                index = index,
+            )
+        } else {
+            kanadePreferencesDataStore.setLastOriginalQueue(
+                originalItems = items,
+                index = index,
+            )
+        }
+    }
+
+    override suspend fun saveProgress(progress: Long) {
+        kanadePreferencesDataStore.setLastQueueProgress(progress)
+    }
 
     override suspend fun fetchSongs(musicConfig: MusicConfig) {
         _songs.emit(songRepository.songs(musicConfig))

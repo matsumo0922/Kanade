@@ -5,5 +5,6 @@ sealed interface ControllerEvent {
     object Pause : ControllerEvent
     object SkipToNext : ControllerEvent
     object SkipToPrevious : ControllerEvent
-    data class Progress(val progress: Long)
+    object Stop: ControllerEvent
+    data class Progress(val progress: Long) : ControllerEvent
 }

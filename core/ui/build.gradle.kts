@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":core:repository"))
     implementation(project(":core:datastore"))
     implementation(project(":core:design"))
+    implementation(project(":core:music"))
 
     implementation(libs.bundles.ui.implementation)
     kapt(libs.bundles.ui.kapt)

@@ -10,4 +10,5 @@ annotation class Dispatcher(val kanadeDispatcher: KanadeDispatcher)
 enum class KanadeDispatcher {
     Default,
     IO,
+    Main,
 }

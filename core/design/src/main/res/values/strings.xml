@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- common -->
+    <!-- Common -->
     <string name="common_ok">OK</string>
     <string name="common_cancel">キャンセル</string>
     <string name="common_allow">許可</string>
@@ -16,6 +16,13 @@
     <string name="common_caution">注意</string>
     <string name="common_error">エラー</string>
     <string name="common_warning">警告</string>
+
+    <!-- Music -->
+    <string name="music_title">タイトル</string>
+    <string name="music_artist">アーティスト</string>
+    <string name="music_album">アルバム</string>
+    <string name="music_unknown_title">音楽がありません</string>
+    <string name="music_unknown_artist">不明な音楽情報</string>
 
     <!-- Navigation -->
     <string name="navigation_home">ホーム</string>

@@ -1,0 +1,13 @@
+
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+message QueuePreference {
+  repeated int64 original_items = 1;
+  repeated int64 current_items = 2;
+
+  int32 index = 3;
+  int64 progress = 4;
+}

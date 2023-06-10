@@ -1,9 +1,12 @@
 package caios.android.kanade.feature.song.top
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +22,7 @@ import caios.android.kanade.core.ui.AsyncLoadContents
 @Composable
 internal fun SongTopRoute(
     topMargin: Dp,
+    onClickSong: (Int, List<Song>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
 ) {
@@ -27,6 +31,7 @@ internal fun SongTopRoute(
     AsyncLoadContents(screenState) {
         SongTopScreen(
             songs = it ?: emptyList(),
+            onClickSong = onClickSong,
             modifier = modifier,
             contentPadding = PaddingValues(top = topMargin),
         )
@@ -45,6 +50,7 @@ internal fun SongTopRoute(
 @Composable
 internal fun SongTopScreen(
     songs: List<Song>,
+    onClickSong: (Int, List<Song>) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -52,12 +58,16 @@ internal fun SongTopScreen(
         modifier = modifier.fillMaxSize(),
         contentPadding = contentPadding,
     ) {
-        items(
+        itemsIndexed(
             items = songs,
-            key = { it.id },
-        ) {
+            key = { _, song -> song.id },
+        ) { index, song ->
             Text(
-                text = it.title,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .clickable { onClickSong.invoke(index, songs) },
+                text = song.title,
                 color = Color.Gray,
             )
         }
