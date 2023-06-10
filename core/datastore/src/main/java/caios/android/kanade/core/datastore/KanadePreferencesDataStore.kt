@@ -232,7 +232,7 @@ class KanadePreferencesDataStore @Inject constructor(
                 this.originalItems.addAll(originalItems)
 
                 this.currentItems.clear()
-                this.currentItems.addAll(currentItems)
+                this.currentItems.addAll(originalItems)
 
                 this.index = index
             }

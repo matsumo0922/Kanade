@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -30,6 +29,7 @@ class MusicViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
 ): ViewModel() {
 
+    private var isInitializedPlayer = false
     private val config = musicRepository.config.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -41,16 +41,20 @@ class MusicViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(musicRepository.lastQueue, musicRepository.config, musicRepository.songs, ::Triple).collect { (lastQueue, config, songs) ->
-                val items = lastQueue.currentItems.mapNotNull { songId -> songs.find { it.id == songId } }
-                val mediaItems = items.map { it.toMediaItem() }
+                if (!isInitializedPlayer) {
+                    val items = lastQueue.currentItems.mapNotNull { songId -> songs.find { it.id == songId } }
+                    val mediaItems = items.map { it.toMediaItem() }
 
-                musicController.restorePlayerState(
-                    items = mediaItems,
-                    index = lastQueue.index,
-                    progress = lastQueue.progress,
-                    shuffleMode = config.shuffleMode,
-                    repeatMode = config.repeatMode,
-                )
+                    musicController.restorePlayerState(
+                        items = mediaItems,
+                        index = lastQueue.index,
+                        progress = lastQueue.progress,
+                        shuffleMode = config.shuffleMode,
+                        repeatMode = config.repeatMode,
+                    )
+
+                    isInitializedPlayer = true
+                }
             }
         }
 
@@ -61,6 +65,7 @@ class MusicViewModel @Inject constructor(
                         MusicUiState()
                     }
                     is ControllerState.Buffering -> {
+
                         uiState.copy(
                             isPlaying = false,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
@@ -82,11 +87,11 @@ class MusicViewModel @Inject constructor(
                         uiState.copy(
                             song = songs.find { song -> song.id.toString() == state.mediaItem?.mediaId },
                             queue = musicController.getQueue(),
+                            progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
+                            progressString = state.progress.toProgressString(),
                         )
                     }
                 }
-
-                Timber.d("new MusicUiState: ${uiState.isPlaying}, ${uiState.progressParent}, ${uiState.progressString}, ${uiState.song?.title}, ${uiState.song?.artwork}")
             }
         }
 

@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -44,6 +45,8 @@ class DefaultMusicController @Inject constructor(
     init {
         player.addListener(this)
         job = Job()
+
+        startUpdateJob()
     }
 
     override val coroutineContext: CoroutineContext
@@ -52,32 +55,24 @@ class DefaultMusicController @Inject constructor(
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
             ExoPlayer.STATE_BUFFERING -> _state.value = ControllerState.Buffering(player.currentPosition)
-            ExoPlayer.STATE_READY -> _state.value = ControllerState.Ready(player.currentMediaItem)
+            ExoPlayer.STATE_READY -> _state.value = ControllerState.Ready(player.currentMediaItem, player.currentPosition)
             else -> { /* do nothing */ }
         }
     }
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         _state.value = ControllerState.Playing(isPlaying)
-
-        if (isPlaying) {
-            startUpdateJob()
-        } else {
-            stopUpdateJob()
-        }
     }
 
     override suspend fun onControllerEvent(event: ControllerEvent) {
         when (event) {
             ControllerEvent.Play -> {
-                startUpdateJob()
                 player.play()
                 _state.value = ControllerState.Playing(true)
             }
             ControllerEvent.Pause -> {
                 _state.value = ControllerState.Playing(false)
                 player.pause()
-                stopUpdateJob()
             }
             ControllerEvent.SkipToNext -> {
                 player.seekToNextMediaItem()
@@ -100,6 +95,8 @@ class DefaultMusicController @Inject constructor(
     }
 
     override suspend fun restorePlayerState(items: List<MediaItem>, index: Int, progress: Long, shuffleMode: ShuffleMode, repeatMode: RepeatMode)  {
+        Timber.d("restorePlayerState: $items, $index, $progress, $shuffleMode, $repeatMode")
+
         player.setMediaItems(items, index, progress)
 
         player.repeatMode = when (repeatMode) {
@@ -145,7 +142,9 @@ class DefaultMusicController @Inject constructor(
     ) {
         while (isActive) {
             _state.value = ControllerState.Progress(player.currentPosition)
-            delay(200)
+            kanadePreferencesDataStore.setLastQueueProgress(player.currentPosition)
+
+            delay(500)
         }
     }
 }
