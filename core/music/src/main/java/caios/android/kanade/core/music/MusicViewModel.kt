@@ -42,11 +42,12 @@ class MusicViewModel @Inject constructor(
         viewModelScope.launch {
             combine(musicRepository.lastQueue, musicRepository.config, musicRepository.songs, ::Triple).collect { (lastQueue, config, songs) ->
                 if (!isInitializedPlayer) {
-                    val items = lastQueue.currentItems.mapNotNull { songId -> songs.find { it.id == songId } }
-                    val mediaItems = items.map { it.toMediaItem() }
+                    val currentItems = lastQueue.currentItems.mapNotNull { songId -> songs.find { it.id == songId }?.toMediaItem() }
+                    val originalItems = lastQueue.originalItems.mapNotNull { songId -> songs.find { it.id == songId }?.toMediaItem() }
 
                     musicController.restorePlayerState(
-                        items = mediaItems,
+                        currentItems = currentItems,
+                        originalItems = originalItems,
                         index = lastQueue.index,
                         progress = lastQueue.progress,
                         shuffleMode = config.shuffleMode,

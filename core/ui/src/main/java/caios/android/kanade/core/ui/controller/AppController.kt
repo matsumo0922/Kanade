@@ -47,6 +47,13 @@ fun AppController(
                     .alpha(1f - offsetRate)
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
+                uiState = uiState,
+                onClickPlay = { onControllerEvent.invoke(ControllerEvent.Play) },
+                onClickPause = { onControllerEvent.invoke(ControllerEvent.Pause) },
+                onClickSkipToNext = { onControllerEvent.invoke(ControllerEvent.SkipToNext) },
+                onClickSkipToPrevious = { onControllerEvent.invoke(ControllerEvent.SkipToPrevious) },
+                onClickShuffle = { onControllerEvent.invoke(ControllerEvent.Shuffle(it)) },
+                onClickRepeat = { onControllerEvent.invoke(ControllerEvent.Repeat(it)) }
             )
         }
     }

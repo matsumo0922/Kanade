@@ -14,7 +14,8 @@ interface MusicController {
     suspend fun onControllerEvent(event: ControllerEvent)
 
     suspend fun restorePlayerState(
-        items: List<MediaItem>,
+        currentItems: List<MediaItem>,
+        originalItems: List<MediaItem>,
         index: Int,
         progress: Long,
         shuffleMode: ShuffleMode,
