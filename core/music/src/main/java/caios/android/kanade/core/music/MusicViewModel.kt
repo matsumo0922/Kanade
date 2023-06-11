@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -144,10 +143,15 @@ class MusicViewModel @Inject constructor(
     }
 
     private fun Long.toProgressString(): String {
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(this)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(this) - TimeUnit.MINUTES.toSeconds(minutes)
+        val second = this / 1000
+        val minute = second / 60
+        val hour = minute / 60
 
-        return String.format("%02d:%02d", minutes, seconds)
+        return if (hour > 0) {
+            "%02d:%02d:%02d".format(hour, minute % 60, second % 60)
+        } else {
+            "%02d:%02d".format(minute, second % 60)
+        }
     }
 }
 

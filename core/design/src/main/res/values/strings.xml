@@ -43,4 +43,13 @@
     <!-- Notification -->
     <string name="notify_channel_music_name">コントローラー</string>
     <string name="notify_channel_music_description">通知欄にコントローラーを表示します</string>
+
+    <!-- Controller -->
+    <string name="controller_menu_add_playlist">プレイリストに追加</string>
+    <string name="controller_menu_artist">アーティスト</string>
+    <string name="controller_menu_album">アルバム</string>
+    <string name="controller_menu_equalizer">イコライザー</string>
+    <string name="controller_menu_edit">音楽情報を編集</string>
+    <string name="controller_menu_analyze">音楽情報を解析</string>
+    <string name="controller_menu_detail_info">詳細情報</string>
 </resources>
