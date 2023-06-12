@@ -1,15 +1,24 @@
 package caios.android.kanade.core.ui.controller.items
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -19,6 +28,7 @@ import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.MusicUiState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainControllerInfoSection(
     uiState: MusicUiState,
@@ -27,6 +37,9 @@ internal fun MainControllerInfoSection(
 ) {
     ConstraintLayout(modifier) {
         val (title, artist, slider, progress, remain) = createRefs()
+
+        val interactionSource = remember { MutableInteractionSource() }
+        var sliderPosition by remember { mutableStateOf<Float?>(null) }
 
         Text(
             modifier = Modifier.constrainAs(title) {
@@ -62,10 +75,26 @@ internal fun MainControllerInfoSection(
 
                 width = Dimension.fillToConstraints
             },
-            value = uiState.progressParent,
-            valueRange = 0f..1f,
-            onValueChange = onSeek,
             enabled = uiState.song != null,
+            value = sliderPosition ?: uiState.progressParent,
+            valueRange = 0f..1f,
+            onValueChange = {
+                sliderPosition = it
+            },
+            onValueChangeFinished = {
+                sliderPosition?.also {
+                    onSeek.invoke(it)
+                    sliderPosition = null
+                }
+            },
+            thumb = {
+                SliderDefaults.Thumb(
+                    interactionSource = interactionSource,
+                    thumbSize = DpSize(12.dp, 12.dp),
+                    // NOTE: pad top to fix stupid layout
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+            }
         )
 
         Text(

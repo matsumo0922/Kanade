@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonS
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
+import caios.android.kanade.core.ui.util.recomposeHighlighter
 
 @Composable
 fun MainController(

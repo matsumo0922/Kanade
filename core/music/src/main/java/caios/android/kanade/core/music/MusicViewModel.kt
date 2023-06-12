@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,9 +85,12 @@ class MusicViewModel @Inject constructor(
                     }
                     is ControllerState.Ready -> {
                         val queue = musicController.getQueue()
+                        val song = songs.find { song -> song.id.toString() == state.mediaItem?.mediaId }
+
+                        Timber.d("Ready: ${song?.title}")
 
                         uiState.copy(
-                            song = songs.find { song -> song.id.toString() == state.mediaItem?.mediaId },
+                            song = song,
                             queueItems = queue.items.mapNotNull { item -> songs.find { it.id.toString() == item.mediaId } },
                             queueIndex = queue.index,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),

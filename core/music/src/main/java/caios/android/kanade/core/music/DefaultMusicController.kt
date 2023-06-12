@@ -61,7 +61,7 @@ class DefaultMusicController @Inject constructor(
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-        Timber.d(mediaItem?.mediaId)
+        ControllerState.Ready(player.currentMediaItem, player.currentPosition)
     }
 
     override suspend fun onControllerEvent(event: ControllerEvent) {
