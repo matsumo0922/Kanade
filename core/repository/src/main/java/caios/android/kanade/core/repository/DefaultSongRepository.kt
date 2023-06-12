@@ -11,18 +11,22 @@ import android.provider.MediaStore.Audio.Media
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
+import caios.android.kanade.core.model.music.MusicOrderOption
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.util.getInt
 import caios.android.kanade.core.repository.util.getLong
 import caios.android.kanade.core.repository.util.getString
 import caios.android.kanade.core.repository.util.getStringOrNull
+import caios.android.kanade.core.repository.util.sortList
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 class DefaultSongRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val artworkRepository: ArtworkRepository,
 ) : SongRepository {
+
+    private val cache = ConcurrentHashMap<Long, Song>()
 
     private val baseProjection = arrayOf(
         BaseColumns._ID,
@@ -38,6 +42,12 @@ class DefaultSongRepository @Inject constructor(
         AudioColumns.ARTIST,
         AudioColumns.MIME_TYPE,
     )
+
+    override fun get(songId: Long): Song? = cache[songId]
+
+    override fun gets(songIds: List<Long>): List<Song> = songIds.mapNotNull { get(it) }
+
+    override fun gets(): List<Song> = cache.values.toList()
 
     override suspend fun song(songId: Long, musicConfig: MusicConfig): Song? {
         return song(
@@ -101,6 +111,29 @@ class DefaultSongRepository @Inject constructor(
         }
     }
 
+    override fun applyArtwork(albumId: Long, artwork: Artwork) {
+        for (song in cache.values.filter { it.albumId == albumId }) {
+            cache[song.id] = song.copy(artwork = artwork)
+        }
+    }
+
+    override fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song> {
+        val order = musicConfig.songOrder
+        val option = order.musicOrderOption
+
+        if (option !is MusicOrderOption.Song) {
+            throw IllegalArgumentException("MusicOrderOption is not Song")
+        }
+
+        return when (option) {
+            MusicOrderOption.Song.NAME -> songs.sortList({ it.title }, { it.artist }, order = order.order)
+            MusicOrderOption.Song.ARTIST -> songs.sortList({ it.artist }, { it.title }, order = order.order)
+            MusicOrderOption.Song.ALBUM -> songs.sortList({ it.album }, { it.title }, order = order.order)
+            MusicOrderOption.Song.DURATION -> songs.sortList({ it.duration }, { it.title }, order = order.order)
+            MusicOrderOption.Song.YEAR -> songs.sortList({ it.year }, { it.title }, order = order.order)
+        }
+    }
+
     private fun getSong(cursor: Cursor): Song {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
 
@@ -131,7 +164,9 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
-        )
+            artwork = Artwork.Unknown,
+        ).also {
+            cache[id] = it
+        }
     }
 }

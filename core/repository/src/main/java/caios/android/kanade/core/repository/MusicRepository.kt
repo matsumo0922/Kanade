@@ -2,7 +2,6 @@ package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
@@ -10,18 +9,19 @@ import caios.android.kanade.core.model.music.RepeatMode
 import caios.android.kanade.core.model.music.ShuffleMode
 import caios.android.kanade.core.model.music.Song
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 
 interface MusicRepository {
 
     val config: Flow<MusicConfig>
     val lastQueue: Flow<LastQueue>
 
-    val songs: SharedFlow<List<Song>>
-    val artists: SharedFlow<List<Artist>>
-    val albums: SharedFlow<List<Album>>
-    val artistArtworks: SharedFlow<Map<Long, Artwork>>
-    val albumArtworks: SharedFlow<Map<Long, Artwork>>
+    val songs: List<Song>
+    val artists: List<Artist>
+    val albums: List<Album>
+
+    fun sortedSongs(musicConfig: MusicConfig): List<Song>
+    fun sortedArtists(musicConfig: MusicConfig): List<Artist>
+    fun sortedAlbums(musicConfig: MusicConfig): List<Album>
 
     suspend fun saveQueue(items: List<Long>, index: Int, isShuffled: Boolean)
     suspend fun saveProgress(progress: Long)

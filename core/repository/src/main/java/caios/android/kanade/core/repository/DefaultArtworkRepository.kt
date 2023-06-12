@@ -4,18 +4,26 @@ import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.database.artwork.ArtworkDao
 import caios.android.kanade.core.database.artwork.ArtworkEntity
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Artwork
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultArtworkRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val artworkDao: ArtworkDao,
+    private val songRepository: SongRepository,
+    private val artistRepository: ArtistRepository,
+    private val albumRepository: AlbumRepository,
+    @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ArtworkRepository {
 
     private val _artistArtwork = mutableMapOf<Long, Artwork>()
@@ -27,39 +35,39 @@ class DefaultArtworkRepository @Inject constructor(
     override val albumArtworks: Map<Long, Artwork>
         get() = _albumArtwork.toMap()
 
-    override suspend fun artistArtworks(): Map<Long, Artwork> {
-        return artworkDao.loadArtists().associate { entity ->
+    override suspend fun artistArtworks(): Map<Long, Artwork> = withContext(dispatcher) {
+        artworkDao.loadArtists().associate { entity ->
             entity.artistId!! to entity.toArtwork()
         }
     }
 
-    override suspend fun albumArtworks(): Map<Long, Artwork> {
-        return artworkDao.loadAlbums().associate { entity ->
+    override suspend fun albumArtworks(): Map<Long, Artwork> = withContext(dispatcher) {
+        artworkDao.loadAlbums().associate { entity ->
             entity.albumId!! to entity.toArtwork()
         }
     }
 
-    override suspend fun artistArtworks(artistIds: List<Long>): Map<Long, Artwork> {
-        return artworkDao.loadArtists(artistIds).associate { entity ->
+    override suspend fun artistArtworks(artistIds: List<Long>): Map<Long, Artwork> = withContext(dispatcher) {
+        artworkDao.loadArtists(artistIds).associate { entity ->
             entity.artistId!! to entity.toArtwork()
         }
     }
 
-    override suspend fun albumArtworks(albumIds: List<Long>): Map<Long, Artwork> {
-        return artworkDao.loadAlbums(albumIds).associate { entity ->
+    override suspend fun albumArtworks(albumIds: List<Long>): Map<Long, Artwork> = withContext(dispatcher) {
+        artworkDao.loadAlbums(albumIds).associate { entity ->
             entity.albumId!! to entity.toArtwork()
         }
     }
 
-    override suspend fun artistArtwork(artistId: Long): Artwork {
-        return artworkDao.loadArtist(artistId)?.toArtwork() ?: Artwork.Unknown
+    override suspend fun artistArtwork(artistId: Long): Artwork = withContext(dispatcher) {
+        artworkDao.loadArtist(artistId)?.toArtwork() ?: Artwork.Unknown
     }
 
-    override suspend fun albumArtwork(albumId: Long): Artwork {
-        return artworkDao.loadAlbum(albumId)?.toArtwork() ?: Artwork.Unknown
+    override suspend fun albumArtwork(albumId: Long): Artwork = withContext(dispatcher) {
+        artworkDao.loadAlbum(albumId)?.toArtwork() ?: Artwork.Unknown
     }
 
-    override suspend fun fetchArtistArtwork(artists: List<Artist>): Boolean {
+    override suspend fun fetchArtistArtwork(artists: List<Artist>): Boolean = withContext(dispatcher) {
         val registeredArtworks = artworkDao.loadArtists()
         val registeredIds = registeredArtworks.map { it.artistId }
         val uris = artists.filterNot { registeredIds.contains(it.artistId) }
@@ -67,9 +75,9 @@ class DefaultArtworkRepository @Inject constructor(
         if (uris.isEmpty()) {
             Timber.d("Don't necessarily to fetch artist artwork. [fetched=${registeredIds.size}]")
 
-            _artistArtwork.clear()
-            _artistArtwork.putAll(registeredArtworks.associate { it.artistId!! to it.toArtwork() })
-            return false
+            artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() }
+
+            return@withContext false
         }
 
         val entities = uris.map {
@@ -82,13 +90,12 @@ class DefaultArtworkRepository @Inject constructor(
 
         artworkDao.insert(*entities.toTypedArray())
 
-        _artistArtwork.clear()
-        _artistArtwork.putAll(artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() })
+        applyArtistArtworks(artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() })
 
-        return true
+        return@withContext true
     }
 
-    override suspend fun fetchAlbumArtwork(albums: List<Album>): Boolean {
+    override suspend fun fetchAlbumArtwork(albums: List<Album>): Boolean = withContext(dispatcher) {
         val registeredIds = artworkDao.loadAlbums().map { it.albumId }
         val uris = albums
             .filterNot { registeredIds.contains(it.albumId) }
@@ -97,9 +104,9 @@ class DefaultArtworkRepository @Inject constructor(
         if (uris.isEmpty()) {
             Timber.d("Don't necessarily to fetch album artwork. [fetched=${registeredIds.size}]")
 
-            _albumArtwork.clear()
-            _albumArtwork.putAll(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
-            return false
+            applyAlbumArtworks(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
+
+            return@withContext false
         }
 
         val entities = uris.map {
@@ -113,10 +120,9 @@ class DefaultArtworkRepository @Inject constructor(
 
         artworkDao.insert(*entities.toTypedArray())
 
-        _albumArtwork.clear()
-        _albumArtwork.putAll(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
+        applyAlbumArtworks(artworkDao.loadAlbums().associate { it.albumId!! to it.toArtwork() })
 
-        return true
+        return@withContext true
     }
 
     private fun ArtworkEntity.toArtwork(): Artwork {
@@ -125,6 +131,25 @@ class DefaultArtworkRepository @Inject constructor(
             !mediaStore.isNullOrBlank() -> Artwork.MediaStore(mediaStore!!.toUri())
             !internal.isNullOrBlank() -> Artwork.Internal(internal!!)
             else -> Artwork.Unknown
+        }
+    }
+
+    private fun applyArtistArtworks(artworks: Map<Long, Artwork>) {
+        _artistArtwork.clear()
+        _artistArtwork.putAll(artworks)
+
+        for ((artistId, artwork) in artworks) {
+            artistRepository.applyArtwork(artistId, artwork)
+        }
+    }
+
+    private fun applyAlbumArtworks(artworks: Map<Long, Artwork>) {
+        _albumArtwork.clear()
+        _albumArtwork.putAll(artworks)
+
+        for ((albumId, artwork) in artworks) {
+            songRepository.applyArtwork(albumId, artwork)
+            albumRepository.applyArtwork(albumId, artwork)
         }
     }
 

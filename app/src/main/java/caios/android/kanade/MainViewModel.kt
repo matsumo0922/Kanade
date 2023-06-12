@@ -38,6 +38,8 @@ class MainViewModel @Inject constructor(
                 musicRepository.fetchArtists(it)
                 musicRepository.fetchAlbums(it)
                 musicRepository.fetchSongs(it)
+                musicRepository.fetchArtistArtwork()
+                musicRepository.fetchAlbumArtwork()
             }
         }
     }

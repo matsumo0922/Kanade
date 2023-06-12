@@ -8,13 +8,21 @@ import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.MusicOrderOption
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.util.sortList
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 class DefaultArtistRepository @Inject constructor(
     private val songRepository: SongRepository,
     private val albumRepository: AlbumRepository,
-    private val artworkRepository: ArtworkRepository,
 ) : ArtistRepository {
+
+    private val cache = ConcurrentHashMap<Long, Artist>()
+
+    override fun get(artistId: Long): Artist? = cache[artistId]
+
+    override fun gets(artistIds: List<Long>): List<Artist> = artistIds.mapNotNull { get(it) }
+
+    override fun gets(): List<Artist> = cache.values.toList()
 
     override suspend fun artist(artistId: Long, musicConfig: MusicConfig): Artist {
         val cursor = songRepository.makeCursor(
@@ -27,8 +35,8 @@ class DefaultArtistRepository @Inject constructor(
         return Artist(
             artist = songs.firstOrNull()?.artist ?: "",
             artistId = artistId,
-            albums = albumRepository.splitIntoAlbums(songs, musicConfig.albumOrder),
-            artwork = artworkRepository.artistArtwork(artistId),
+            albums = albumRepository.splitIntoAlbums(songs, musicConfig),
+            artwork = Artwork.Unknown,
         )
     }
 
@@ -55,28 +63,39 @@ class DefaultArtistRepository @Inject constructor(
     }
 
     override fun splitIntoArtists(songs: List<Song>, musicConfig: MusicConfig): List<Artist> {
-        val artistOrder = musicConfig.artistOrder
-        val option = artistOrder.musicOrderOption
-        val albums = albumRepository.splitIntoAlbums(songs, musicConfig.albumOrder)
+        val albums = albumRepository.splitIntoAlbums(songs, musicConfig)
         val artists = albums
             .groupBy { it.artistId }
-            .map {
+            .map { (artistId, albums) ->
                 Artist(
-                    artist = it.value.first().artist,
-                    artistId = it.key,
-                    albums = it.value,
-                    artwork = artworkRepository.artistArtworks[it.key] ?: Artwork.Unknown,
-                )
+                    artist = albums.first().artist,
+                    artistId = artistId,
+                    albums = albums,
+                    artwork = Artwork.Unknown,
+                ).also {
+                    cache[artistId] = it
+                }
             }
+
+        return artistsSort(artists, musicConfig)
+    }
+
+    override fun applyArtwork(artistId: Long, artwork: Artwork) {
+        cache[artistId] = cache[artistId]?.copy(artwork = artwork) ?: return
+    }
+
+    override fun artistsSort(artists: List<Artist>, musicConfig: MusicConfig): List<Artist> {
+        val order = musicConfig.artistOrder
+        val option = order.musicOrderOption
 
         if (option !is MusicOrderOption.Artist) {
             throw IllegalArgumentException("MusicOrderOption is not Artist")
         }
 
         return when (option) {
-            MusicOrderOption.Artist.NAME -> artists.sortList({ it.artist }, order = artistOrder.order)
-            MusicOrderOption.Artist.TRACKS -> artists.sortList({ it.songs.size }, order = artistOrder.order)
-            MusicOrderOption.Artist.ALBUMS -> artists.sortList({ it.albums.size }, order = artistOrder.order)
+            MusicOrderOption.Artist.NAME -> artists.sortList({ it.artist }, order = order.order)
+            MusicOrderOption.Artist.TRACKS -> artists.sortList({ it.songs.size }, order = order.order)
+            MusicOrderOption.Artist.ALBUMS -> artists.sortList({ it.albums.size }, order = order.order)
         }
     }
 

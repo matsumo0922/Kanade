@@ -2,12 +2,17 @@ package caios.android.kanade.core.repository
 
 import android.database.Cursor
 import caios.android.kanade.core.model.Order
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
 import caios.android.kanade.core.model.music.MusicOrderOption
 import caios.android.kanade.core.model.music.Song
 
 interface SongRepository {
+
+    fun get(songId: Long): Song?
+    fun gets(songIds: List<Long>): List<Song>
+    fun gets(): List<Song>
 
     suspend fun song(cursor: Cursor?): Song?
     suspend fun song(songId: Long, musicConfig: MusicConfig): Song?
@@ -20,4 +25,7 @@ interface SongRepository {
         selectionValues: List<String> = emptyList(),
         vararg musicOrders: MusicOrder = arrayOf(MusicOrder(Order.ASC, MusicOrderOption.Song.NAME)),
     ): Cursor?
+
+    fun applyArtwork(albumId: Long, artwork: Artwork)
+    fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song>
 }

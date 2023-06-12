@@ -3,7 +3,6 @@ package caios.android.kanade.core.repository
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.MusicOrder
@@ -11,8 +10,6 @@ import caios.android.kanade.core.model.music.RepeatMode
 import caios.android.kanade.core.model.music.ShuffleMode
 import caios.android.kanade.core.model.music.Song
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 
 class DefaultMusicRepository @Inject constructor(
@@ -23,20 +20,24 @@ class DefaultMusicRepository @Inject constructor(
     private val artworkRepository: ArtworkRepository,
 ) : MusicRepository {
 
-    private val _songs: MutableSharedFlow<List<Song>> = MutableSharedFlow(1)
-    private val _artists: MutableSharedFlow<List<Artist>> = MutableSharedFlow(1)
-    private val _albums: MutableSharedFlow<List<Album>> = MutableSharedFlow(1)
-    private val _artistArtworks: MutableSharedFlow<Map<Long, Artwork>> = MutableSharedFlow(1)
-    private val _albumArtworks: MutableSharedFlow<Map<Long, Artwork>> = MutableSharedFlow(1)
-
     override val config: Flow<MusicConfig> = kanadePreferencesDataStore.musicConfig
     override val lastQueue: Flow<LastQueue> = kanadePreferencesDataStore.lastQueue
 
-    override val songs: SharedFlow<List<Song>> = _songs
-    override val artists: SharedFlow<List<Artist>> = _artists
-    override val albums: SharedFlow<List<Album>> = _albums
-    override val artistArtworks: SharedFlow<Map<Long, Artwork>> = _artistArtworks
-    override val albumArtworks: SharedFlow<Map<Long, Artwork>> = _albumArtworks
+    override val songs: List<Song> get() = songRepository.gets()
+    override val artists: List<Artist> get() = artistRepository.gets()
+    override val albums: List<Album> get() = albumRepository.gets()
+
+    override fun sortedSongs(musicConfig: MusicConfig): List<Song> {
+        return songRepository.songsSort(songs, musicConfig)
+    }
+
+    override fun sortedArtists(musicConfig: MusicConfig): List<Artist> {
+        return artistRepository.artistsSort(artists, musicConfig)
+    }
+
+    override fun sortedAlbums(musicConfig: MusicConfig): List<Album> {
+        return albumRepository.albumsSort(albums, musicConfig)
+    }
 
     override suspend fun saveQueue(items: List<Long>, index: Int, isShuffled: Boolean) {
         if (isShuffled) {
@@ -57,37 +58,23 @@ class DefaultMusicRepository @Inject constructor(
     }
 
     override suspend fun fetchSongs(musicConfig: MusicConfig) {
-        _songs.emit(songRepository.songs(musicConfig))
+        songRepository.songs(musicConfig)
     }
 
     override suspend fun fetchArtists(musicConfig: MusicConfig) {
-        var data = artistRepository.artists(musicConfig)
-        val result = artworkRepository.fetchArtistArtwork(data)
-
-        if (result) {
-            data = artistRepository.artists(musicConfig)
-        }
-
-        _artists.emit(data)
+        artistRepository.artists(musicConfig)
     }
 
     override suspend fun fetchAlbums(musicConfig: MusicConfig) {
-        var data = albumRepository.albums(musicConfig)
-        val result = artworkRepository.fetchAlbumArtwork(data)
-
-        if (result) {
-            data = albumRepository.albums(musicConfig)
-        }
-
-        _albums.emit(data)
+        albumRepository.albums(musicConfig)
     }
 
     override suspend fun fetchArtistArtwork() {
-        _artistArtworks.emit(artworkRepository.artistArtworks())
+        artworkRepository.fetchArtistArtwork(artists)
     }
 
     override suspend fun fetchAlbumArtwork() {
-        _albumArtworks.emit(artworkRepository.albumArtworks())
+        artworkRepository.fetchAlbumArtwork(albums)
     }
 
     override suspend fun setShuffleMode(mode: ShuffleMode) {

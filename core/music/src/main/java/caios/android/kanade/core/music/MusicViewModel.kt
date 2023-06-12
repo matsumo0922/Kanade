@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,8 +38,9 @@ class MusicViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            combine(musicRepository.lastQueue, musicRepository.config, musicRepository.songs, ::Triple).collect { (lastQueue, config, songs) ->
+            combine(musicRepository.lastQueue, musicRepository.config, ::Pair).collect { (lastQueue, config) ->
                 if (!isInitializedPlayer) {
+                    val songs = musicRepository.songs
                     val currentItems = lastQueue.currentItems.mapNotNull { songId -> songs.find { it.id == songId }?.toMediaItem() }
                     val originalItems = lastQueue.originalItems.mapNotNull { songId -> songs.find { it.id == songId }?.toMediaItem() }
 
@@ -59,13 +59,12 @@ class MusicViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            combine(musicController.state, musicRepository.songs, ::Pair).collectLatest { (state, songs) ->
+            musicController.state.collectLatest { state ->
                 uiState = when (state) {
                     ControllerState.Initialize -> {
                         MusicUiState()
                     }
                     is ControllerState.Buffering -> {
-
                         uiState.copy(
                             isPlaying = false,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
@@ -83,9 +82,8 @@ class MusicViewModel @Inject constructor(
                     }
                     is ControllerState.Ready -> {
                         val queue = musicController.getQueue()
+                        val songs = musicRepository.songs
                         val song = songs.find { song -> song.id.toString() == state.mediaItem?.mediaId }
-
-                        Timber.d("Ready: ${song?.title}")
 
                         uiState.copy(
                             song = song,
