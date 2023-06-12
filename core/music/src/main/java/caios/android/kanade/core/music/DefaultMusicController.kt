@@ -33,8 +33,8 @@ class DefaultMusicController @Inject constructor(
 
     private var job: Job? = null
     private var originalItems: List<MediaItem> = emptyList()
-    private val _state = MutableStateFlow<ControllerState>(ControllerState.Initialize)
 
+    private val _state = MutableStateFlow<ControllerState>(ControllerState.Initialize)
     override val state = _state.asStateFlow()
 
     init {
@@ -65,58 +65,14 @@ class DefaultMusicController @Inject constructor(
 
     override suspend fun onControllerEvent(event: ControllerEvent) {
         when (event) {
-            ControllerEvent.Play -> {
-                player.play()
-                _state.value = ControllerState.Playing(true)
-            }
-            ControllerEvent.Pause -> {
-                _state.value = ControllerState.Playing(false)
-                player.pause()
-            }
-            ControllerEvent.SkipToNext -> {
-                player.seekToNextMediaItem()
-            }
-            ControllerEvent.SkipToPrevious -> {
-                if (player.currentPosition < 5000) {
-                    player.seekToPreviousMediaItem()
-                } else {
-                    player.seekTo(0)
-                }
-            }
-            ControllerEvent.Stop -> {
-                stopUpdateJob()
-                _state.value = ControllerState.Initialize
-            }
-            is ControllerEvent.Seek -> {
-                (player.duration * event.progress).toLong().also {
-                    player.seekTo(it)
-                    _state.value = ControllerState.Progress(it)
-                }
-            }
-            is ControllerEvent.Shuffle -> {
-                if (event.shuffleMode == ShuffleMode.ON) {
-                    val queue = getQueue()
-                    val remainItems = queue.items.toMutableList().apply { removeAt(queue.index) }
-
-                    repeat(player.mediaItemCount) {
-                        if (queue.index != it) player.removeMediaItem(it)
-                    }
-
-                    player.addMediaItems(remainItems.shuffled())
-                } else {
-                    val index = originalItems.indexOfFirst { it.mediaId == player.currentMediaItem?.mediaId }.coerceAtLeast(0)
-
-                    player.addMediaItems(0, originalItems.subList(0, index - 1))
-                    player.addMediaItems(index, originalItems.subList(index + 1, originalItems.size))
-                }
-            }
-            is ControllerEvent.Repeat -> {
-                player.repeatMode = when (event.repeatMode) {
-                    RepeatMode.OFF -> Player.REPEAT_MODE_OFF
-                    RepeatMode.ONE -> Player.REPEAT_MODE_ONE
-                    RepeatMode.ALL -> Player.REPEAT_MODE_ALL
-                }
-            }
+            ControllerEvent.Play -> onPlay()
+            ControllerEvent.Pause -> onPause()
+            ControllerEvent.Stop -> onStop()
+            ControllerEvent.SkipToNext -> onSkipToNext()
+            ControllerEvent.SkipToPrevious -> onSkipToPrevious()
+            is ControllerEvent.Seek -> onSeekTo((player.duration * event.progress).toLong())
+            is ControllerEvent.Shuffle -> onShuffleModeChanged(event.shuffleMode)
+            is ControllerEvent.Repeat -> onRepeatModeChanged(event.repeatMode)
         }
     }
 
@@ -145,6 +101,50 @@ class DefaultMusicController @Inject constructor(
         player.setMediaItems(queue, index, 0)
         player.prepare()
         player.playWhenReady = playWhenReady
+    }
+
+    override fun onPlay() {
+        player.play()
+        _state.value = ControllerState.Playing(true)
+    }
+
+    override fun onPause() {
+        _state.value = ControllerState.Playing(false)
+        player.pause()
+    }
+
+    override fun onStop() {
+        stopUpdateJob()
+        _state.value = ControllerState.Initialize
+    }
+
+    override fun onSkipToNext() {
+        player.seekToNextMediaItem()
+    }
+
+    override fun onSkipToPrevious() {
+        if (player.currentPosition < 5000) {
+            player.seekToPreviousMediaItem()
+        } else {
+            player.seekTo(0)
+        }
+    }
+
+    override fun onSeekTo(position: Long) {
+        player.seekTo(position)
+        _state.value = ControllerState.Progress(position)
+    }
+
+    override fun onShuffleModeChanged(shuffleMode: ShuffleMode) {
+        player.shuffleModeEnabled = (shuffleMode == ShuffleMode.ON)
+    }
+
+    override fun onRepeatModeChanged(repeatMode: RepeatMode) {
+        player.repeatMode = when (repeatMode) {
+            RepeatMode.OFF -> Player.REPEAT_MODE_OFF
+            RepeatMode.ONE -> Player.REPEAT_MODE_ONE
+            RepeatMode.ALL -> Player.REPEAT_MODE_ALL
+        }
     }
 
     override fun getQueue(): Queue {

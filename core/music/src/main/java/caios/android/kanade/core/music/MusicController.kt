@@ -23,5 +23,13 @@ interface MusicController {
     )
 
     fun onPlayWithNewQueue(index: Int, queue: List<MediaItem>, playWhenReady: Boolean)
+    fun onPlay()
+    fun onPause()
+    fun onStop()
+    fun onSkipToNext()
+    fun onSkipToPrevious()
+    fun onSeekTo(position: Long)
+    fun onShuffleModeChanged(shuffleMode: ShuffleMode)
+    fun onRepeatModeChanged(repeatMode: RepeatMode)
     fun getQueue(): Queue
 }
