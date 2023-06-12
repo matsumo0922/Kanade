@@ -78,9 +78,9 @@ class NotificationAdapter(
 
                 return binding.root.toBitmap()
             }
-            is Artwork.Web        -> ImageRequest.Builder(context).data(url)
+            is Artwork.Web -> ImageRequest.Builder(context).data(url)
             is Artwork.MediaStore -> ImageRequest.Builder(context).data(uri)
-            else                                -> return null
+            else -> return null
         }.allowHardware(false)
 
         val request = builder.build()
@@ -92,7 +92,7 @@ class NotificationAdapter(
     private fun View.toBitmap(): Bitmap? {
         measure(
             View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY)
+            View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY),
         )
 
         val bitmap = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)

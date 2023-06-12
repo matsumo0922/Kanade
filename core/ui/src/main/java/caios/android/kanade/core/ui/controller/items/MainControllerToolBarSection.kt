@@ -148,7 +148,7 @@ private fun DropDownMenuItem(
                 text = stringResource(text),
                 style = MaterialTheme.typography.bodyMedium,
             )
-        }
+        },
     )
 }
 

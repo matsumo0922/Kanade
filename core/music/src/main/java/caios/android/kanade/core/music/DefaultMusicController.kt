@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -125,7 +124,7 @@ class DefaultMusicController @Inject constructor(
         progress: Long,
         shuffleMode: ShuffleMode,
         repeatMode: RepeatMode,
-    )  {
+    ) {
         this.originalItems = originalItems
 
         player.setMediaItems(currentItems, index, progress)

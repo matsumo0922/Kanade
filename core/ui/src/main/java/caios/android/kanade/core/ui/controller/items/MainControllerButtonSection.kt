@@ -139,7 +139,7 @@ private fun ShuffleButton(
                     when (shuffleMode) {
                         ShuffleMode.ON -> ShuffleMode.OFF
                         ShuffleMode.OFF -> ShuffleMode.ON
-                    }
+                    },
                 )
             }
             .padding(8.dp),
@@ -152,7 +152,7 @@ private fun ShuffleButton(
         update = {
             it.setImageState(intArrayOf(state), true)
             it.setColorFilter(color.toArgb())
-        }
+        },
     )
 }
 
@@ -182,7 +182,7 @@ private fun RepeatButton(
                         RepeatMode.OFF -> RepeatMode.ALL
                         RepeatMode.ALL -> RepeatMode.ONE
                         RepeatMode.ONE -> RepeatMode.OFF
-                    }
+                    },
                 )
             }
             .padding(8.dp),
@@ -195,7 +195,7 @@ private fun RepeatButton(
         update = {
             it.setImageState(intArrayOf(state), true)
             it.setColorFilter(color.toArgb())
-        }
+        },
     )
 }
 

@@ -130,7 +130,7 @@ class DefaultArtworkRepository @Inject constructor(
 
     private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri? {
         val sArtworkUri = "content://media/external/audio/albumart".toUri()
-        val uri =  ContentUris.withAppendedId(sArtworkUri, albumId)
+        val uri = ContentUris.withAppendedId(sArtworkUri, albumId)
 
         return if (isExistUri(uri)) uri else null
     }

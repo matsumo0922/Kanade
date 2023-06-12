@@ -26,7 +26,7 @@ import javax.inject.Inject
 class MusicViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
-): ViewModel() {
+) : ViewModel() {
 
     private var isInitializedPlayer = false
     private val config = musicRepository.config.stateIn(
