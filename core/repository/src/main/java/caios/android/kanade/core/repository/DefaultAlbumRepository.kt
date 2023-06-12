@@ -86,9 +86,7 @@ class DefaultAlbumRepository @Inject constructor(
         val order = musicConfig.albumOrder
         val option = order.musicOrderOption
 
-        if (option !is MusicOrderOption.Album) {
-            throw IllegalArgumentException("MusicOrderOption is not Album")
-        }
+        require(option is MusicOrderOption.Album) { "MusicOrderOption is not Album" }
 
         return when (option) {
             MusicOrderOption.Album.NAME -> albums.sortList({ it.album }, order = order.order)

@@ -40,7 +40,7 @@ fun ArtistHolder(
             ) {
                 Artwork(
                     modifier = Modifier.fillMaxWidth(),
-                    artwork = artist.artwork
+                    artwork = artist.artwork,
                 )
 
                 Text(
@@ -72,7 +72,7 @@ private fun ArtistHolderPreview() {
         ArtistHolder(
             modifier = Modifier.width(64.dp),
             artist = Artist.dummy(),
-            onClickHolder = {  },
+            onClickHolder = { },
         )
     }
 }

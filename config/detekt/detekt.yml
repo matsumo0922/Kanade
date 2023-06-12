@@ -22,6 +22,10 @@ naming:
       - 'Composable'
   MatchingDeclarationName:
     mustBeFirst: false
+  PackageNaming:
+    active: false
+  TopLevelPropertyNaming:
+    active: false
 
 performance:
   active: true
@@ -89,6 +93,8 @@ formatting:
   # 呼び出し箇所での TrailingComma を強制
   TrailingCommaOnCallSite:
     active: true
+  PackageName:
+    active: false
 
 TwitterCompose:
   CompositionLocalAllowlist:

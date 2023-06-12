@@ -7,17 +7,17 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.model.music.Song
 
-const val songTopRoute = "songTop"
+const val SongTopRoute = "songTop"
 
 fun NavController.navigateToSongTop(navOptions: NavOptions? = null) {
-    this.navigate(songTopRoute, navOptions)
+    this.navigate(SongTopRoute, navOptions)
 }
 
 fun NavGraphBuilder.songTopScreen(
     topMargin: Dp,
     onClickSong: (Int, List<Song>) -> Unit,
 ) {
-    composable(route = songTopRoute) {
+    composable(route = SongTopRoute) {
         SongTopRoute(
             topMargin = topMargin,
             onClickSong = onClickSong,

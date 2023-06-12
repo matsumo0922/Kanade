@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.feature.album.top.albumTopScreen
 import caios.android.kanade.feature.artist.top.artistTopScreen
-import caios.android.kanade.feature.home.homeRoute
+import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.song.top.songTopScreen
@@ -19,7 +19,7 @@ fun KanadeNavHost(
     appState: KanadeAppState,
     libraryTopBarHeight: Dp,
     modifier: Modifier = Modifier,
-    startDestination: String = homeRoute,
+    startDestination: String = HomeRoute,
 ) {
     val navController = appState.navController
 

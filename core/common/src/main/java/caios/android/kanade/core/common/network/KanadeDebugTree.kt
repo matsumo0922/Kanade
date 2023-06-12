@@ -10,6 +10,7 @@ class KanadeDebugTree : Timber.DebugTree() {
         Log.println(priority, "KanadeLog", "$message ${getCallerInfo()}")
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun getCallerInfo(): String {
         val stackTrace = Throwable().stackTrace
 

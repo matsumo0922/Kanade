@@ -19,6 +19,7 @@ import caios.android.kanade.core.repository.util.getString
 import caios.android.kanade.core.repository.util.getStringOrNull
 import caios.android.kanade.core.repository.util.sortList
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -107,6 +108,7 @@ class DefaultSongRepository @Inject constructor(
                 order,
             )
         } catch (ex: SecurityException) {
+            Timber.w(ex, "Permission denied")
             return null
         }
     }
@@ -121,9 +123,7 @@ class DefaultSongRepository @Inject constructor(
         val order = musicConfig.songOrder
         val option = order.musicOrderOption
 
-        if (option !is MusicOrderOption.Song) {
-            throw IllegalArgumentException("MusicOrderOption is not Song")
-        }
+        require(option is MusicOrderOption.Song) { "MusicOrderOption is not Song" }
 
         return when (option) {
             MusicOrderOption.Song.NAME -> songs.sortList({ it.title }, { it.artist }, order = order.order)

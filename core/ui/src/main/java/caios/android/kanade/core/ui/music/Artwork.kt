@@ -47,7 +47,10 @@ fun Artwork(
 }
 
 @Composable
-private fun ArtworkFromWeb(modifier: Modifier, artwork: Artwork.Web) {
+private fun ArtworkFromWeb(
+    artwork: Artwork.Web,
+    modifier: Modifier = Modifier,
+) {
     AsyncImage(
         modifier = modifier
             .fillMaxSize()
@@ -59,7 +62,10 @@ private fun ArtworkFromWeb(modifier: Modifier, artwork: Artwork.Web) {
 }
 
 @Composable
-private fun ArtworkFromMediaStore(modifier: Modifier, artwork: Artwork.MediaStore) {
+private fun ArtworkFromMediaStore(
+    artwork: Artwork.MediaStore,
+    modifier: Modifier,
+) {
     AsyncImage(
         modifier = modifier
             .fillMaxSize()
@@ -71,7 +77,7 @@ private fun ArtworkFromMediaStore(modifier: Modifier, artwork: Artwork.MediaStor
 }
 
 @Composable
-private fun ArtworkFromUnknown(modifier: Modifier) {
+private fun ArtworkFromUnknown(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier
             .fillMaxSize()
@@ -83,7 +89,10 @@ private fun ArtworkFromUnknown(modifier: Modifier) {
 }
 
 @Composable
-private fun ArtworkFromInternal(modifier: Modifier, artwork: Artwork.Internal) {
+private fun ArtworkFromInternal(
+    artwork: Artwork.Internal,
+    modifier: Modifier,
+) {
     val density = LocalDensity.current
 
     val name = remember { artwork.name.replace(Regex("\\s+"), "") }

@@ -6,16 +6,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 
-const val artistTopRoute = "artistTop"
+const val ArtistTopRoute = "artistTop"
 
 fun NavController.navigateToArtistTop(navOptions: NavOptions? = null) {
-    this.navigate(artistTopRoute, navOptions)
+    this.navigate(ArtistTopRoute, navOptions)
 }
 
 fun NavGraphBuilder.artistTopScreen(
     topMargin: Dp,
 ) {
-    composable(route = artistTopRoute) {
+    composable(route = ArtistTopRoute) {
         ArtistTopRoute(
             topMargin = topMargin,
         )
