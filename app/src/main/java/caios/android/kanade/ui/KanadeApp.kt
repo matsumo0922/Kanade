@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -108,7 +109,8 @@ fun KanadeApp(
                     KanadeBottomBar(
                         modifier = Modifier
                             .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
-                            .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffsetRate)),
+                            .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffsetRate))
+                            .alpha(bottomSheetOffsetRate),
                         destination = appState.libraryDestinations,
                         onNavigateToDestination = appState::navigateToLibrary,
                         currentDestination = appState.currentDestination,
@@ -142,6 +144,16 @@ fun KanadeApp(
                                     scaffoldState.bottomSheetState.expand()
                                 }
                             },
+                            onClickCloseExpanded = {
+                                scope.launch {
+                                    scaffoldState.bottomSheetState.partialExpand()
+                                }
+                            },
+                            navigateToLyrics = { },
+                            navigateToFavorite = { },
+                            navigateToSleepTimer = { },
+                            navigateToQueue = { },
+                            navigateToKaraoke = { },
                         )
                     },
                     containerColor = Color.Transparent,

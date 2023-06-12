@@ -1,6 +1,7 @@
 package caios.android.kanade.core.repository
 
 import android.content.ContentUris
+import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import caios.android.kanade.core.database.artwork.ArtworkDao
@@ -8,10 +9,12 @@ import caios.android.kanade.core.database.artwork.ArtworkEntity
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Artwork
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultArtworkRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val artworkDao: ArtworkDao,
 ) : ArtworkRepository {
 
@@ -103,7 +106,7 @@ class DefaultArtworkRepository @Inject constructor(
             ArtworkEntity(
                 id = 0,
                 albumId = it.key.albumId,
-                mediaStore = it.value.toString(),
+                mediaStore = it.value?.toString(),
                 internal = it.key.album,
             )
         }
@@ -125,8 +128,19 @@ class DefaultArtworkRepository @Inject constructor(
         }
     }
 
-    private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri {
+    private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri? {
         val sArtworkUri = "content://media/external/audio/albumart".toUri()
-        return ContentUris.withAppendedId(sArtworkUri, albumId)
+        val uri =  ContentUris.withAppendedId(sArtworkUri, albumId)
+
+        return if (isExistUri(uri)) uri else null
+    }
+
+    private fun isExistUri(uri: Uri): Boolean {
+        return runCatching {
+            context.contentResolver.openInputStream(uri)
+        }.fold(
+            onSuccess = { true },
+            onFailure = { false },
+        )
     }
 }

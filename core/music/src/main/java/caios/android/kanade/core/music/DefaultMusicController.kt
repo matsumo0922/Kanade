@@ -88,8 +88,8 @@ class DefaultMusicController @Inject constructor(
                 stopUpdateJob()
                 _state.value = ControllerState.Initialize
             }
-            is ControllerEvent.Progress -> {
-                player.seekTo(player.duration * event.progress)
+            is ControllerEvent.Seek -> {
+                player.seekTo((player.duration * event.progress).toLong())
             }
             is ControllerEvent.Shuffle -> {
                 if (event.shuffleMode == ShuffleMode.ON) {

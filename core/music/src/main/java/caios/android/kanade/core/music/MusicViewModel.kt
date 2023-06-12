@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.music.ControllerEvent
 import caios.android.kanade.core.model.music.ControllerState
-import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.RepeatMode
 import caios.android.kanade.core.model.music.ShuffleMode
 import caios.android.kanade.core.model.music.Song
@@ -84,9 +83,12 @@ class MusicViewModel @Inject constructor(
                         )
                     }
                     is ControllerState.Ready -> {
+                        val queue = musicController.getQueue()
+
                         uiState.copy(
                             song = songs.find { song -> song.id.toString() == state.mediaItem?.mediaId },
-                            queue = musicController.getQueue(),
+                            queueItems = queue.items.mapNotNull { item -> songs.find { it.id.toString() == item.mediaId } },
+                            queueIndex = queue.index,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
                             progressString = state.progress.toProgressString(),
                         )
@@ -159,7 +161,8 @@ class MusicViewModel @Inject constructor(
 data class MusicUiState(
     val isPlaying: Boolean = false,
     val song: Song? = null,
-    val queue: Queue? = null,
+    val queueItems: List<Song> = emptyList(),
+    val queueIndex: Int = 0,
     val progressParent: Float = 0f,
     val progressString: String = "00:00",
     val shuffleMode: ShuffleMode = ShuffleMode.OFF,

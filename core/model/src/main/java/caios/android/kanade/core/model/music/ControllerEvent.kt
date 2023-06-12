@@ -6,7 +6,7 @@ sealed interface ControllerEvent {
     object SkipToNext : ControllerEvent
     object SkipToPrevious : ControllerEvent
     object Stop: ControllerEvent
-    data class Progress(val progress: Long) : ControllerEvent
+    data class Seek(val progress: Float) : ControllerEvent
     data class Shuffle(val shuffleMode: ShuffleMode) : ControllerEvent
     data class Repeat(val repeatMode: RepeatMode) : ControllerEvent
 }

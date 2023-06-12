@@ -21,6 +21,12 @@ fun AppController(
     offsetRate: Float,
     onControllerEvent: (event: ControllerEvent) -> Unit,
     onClickBottomController: () -> Unit,
+    onClickCloseExpanded: () -> Unit,
+    navigateToLyrics: () -> Unit,
+    navigateToFavorite: () -> Unit,
+    navigateToSleepTimer: () -> Unit,
+    navigateToQueue: () -> Unit,
+    navigateToKaraoke: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier.fillMaxSize()) {
@@ -48,12 +54,27 @@ fun AppController(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
                 uiState = uiState,
+                onClickClose = onClickCloseExpanded,
+                onClickSearch = { },
+                onClickMenuAddPlaylist = { },
+                onClickMenuArtist = { },
+                onClickMenuAlbum = { },
+                onClickMenuEqualizer = { },
+                onClickMenuEdit = { },
+                onClickMenuAnalyze = { },
+                onClickMenuDetailInfo = { },
                 onClickPlay = { onControllerEvent.invoke(ControllerEvent.Play) },
                 onClickPause = { onControllerEvent.invoke(ControllerEvent.Pause) },
                 onClickSkipToNext = { onControllerEvent.invoke(ControllerEvent.SkipToNext) },
                 onClickSkipToPrevious = { onControllerEvent.invoke(ControllerEvent.SkipToPrevious) },
                 onClickShuffle = { onControllerEvent.invoke(ControllerEvent.Shuffle(it)) },
-                onClickRepeat = { onControllerEvent.invoke(ControllerEvent.Repeat(it)) }
+                onClickRepeat = { onControllerEvent.invoke(ControllerEvent.Repeat(it)) },
+                onClickSeek = { onControllerEvent.invoke(ControllerEvent.Seek(it)) },
+                onClickLyrics = navigateToLyrics,
+                onClickFavorite = navigateToFavorite,
+                onClickSleepTimer = navigateToSleepTimer,
+                onClickQueue = navigateToQueue,
+                onClickKaraoke = navigateToKaraoke,
             )
         }
     }
