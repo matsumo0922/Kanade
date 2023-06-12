@@ -69,7 +69,6 @@ class MusicViewModel @Inject constructor(
                         uiState.copy(
                             isPlaying = false,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
-                            progressString = state.progress.toProgressString(),
                         )
                     }
                     is ControllerState.Playing -> {
@@ -80,7 +79,6 @@ class MusicViewModel @Inject constructor(
                     is ControllerState.Progress -> {
                         uiState.copy(
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
-                            progressString = state.progress.toProgressString(),
                         )
                     }
                     is ControllerState.Ready -> {
@@ -94,7 +92,6 @@ class MusicViewModel @Inject constructor(
                             queueItems = queue.items.mapNotNull { item -> songs.find { it.id.toString() == item.mediaId } },
                             queueIndex = queue.index,
                             progressParent = state.progress.toProgressParent(uiState.song?.duration ?: 0),
-                            progressString = state.progress.toProgressString(),
                         )
                     }
                 }
@@ -147,9 +144,20 @@ class MusicViewModel @Inject constructor(
             (this / duration.toDouble()).coerceIn(0.0, 1.0).toFloat()
         }
     }
+}
 
-    private fun Long.toProgressString(): String {
-        val second = this / 1000
+@Stable
+data class MusicUiState(
+    val isPlaying: Boolean = false,
+    val song: Song? = null,
+    val queueItems: List<Song> = emptyList(),
+    val queueIndex: Int = 0,
+    val progressParent: Float = 0f,
+    val shuffleMode: ShuffleMode = ShuffleMode.OFF,
+    val repeatMode: RepeatMode = RepeatMode.OFF,
+) {
+    fun getProgressString(parent: Float = progressParent): String {
+        val second = ((song?.duration ?: 0) * parent / 1000).toInt()
         val minute = second / 60
         val hour = minute / 60
 
@@ -160,15 +168,3 @@ class MusicViewModel @Inject constructor(
         }
     }
 }
-
-@Stable
-data class MusicUiState(
-    val isPlaying: Boolean = false,
-    val song: Song? = null,
-    val queueItems: List<Song> = emptyList(),
-    val queueIndex: Int = 0,
-    val progressParent: Float = 0f,
-    val progressString: String = "00:00",
-    val shuffleMode: ShuffleMode = ShuffleMode.OFF,
-    val repeatMode: RepeatMode = RepeatMode.OFF,
-)

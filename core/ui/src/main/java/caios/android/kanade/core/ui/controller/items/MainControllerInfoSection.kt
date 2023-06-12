@@ -102,7 +102,7 @@ internal fun MainControllerInfoSection(
                 start.linkTo(parent.start, 24.dp)
                 bottom.linkTo(parent.bottom)
             },
-            text = uiState.progressString,
+            text = uiState.getProgressString(sliderPosition ?: uiState.progressParent),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -143,7 +143,6 @@ private fun Preview() {
             uiState = MusicUiState().copy(
                 song = Song.dummy(),
                 progressParent = 0.3f,
-                progressString = "01:58",
             ),
             onSeek = { },
         )

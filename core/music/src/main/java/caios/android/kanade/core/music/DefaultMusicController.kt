@@ -88,7 +88,10 @@ class DefaultMusicController @Inject constructor(
                 _state.value = ControllerState.Initialize
             }
             is ControllerEvent.Seek -> {
-                player.seekTo((player.duration * event.progress).toLong())
+                (player.duration * event.progress).toLong().also {
+                    player.seekTo(it)
+                    _state.value = ControllerState.Progress(it)
+                }
             }
             is ControllerEvent.Shuffle -> {
                 if (event.shuffleMode == ShuffleMode.ON) {
@@ -174,7 +177,7 @@ class DefaultMusicController @Inject constructor(
             _state.value = ControllerState.Progress(player.currentPosition)
             kanadePreferencesDataStore.setLastQueueProgress(player.currentPosition)
 
-            delay(500)
+            delay(100)
         }
     }
 }

@@ -130,7 +130,6 @@ private fun Preview() {
             uiState = MusicUiState().copy(
                 song = Song.dummy(),
                 progressParent = 0.3f,
-                progressString = "01:58",
                 shuffleMode = ShuffleMode.ON,
                 repeatMode = RepeatMode.ALL,
                 queueItems = Song.dummies(20),
