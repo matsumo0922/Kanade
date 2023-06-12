@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import java.util.Locale
 
 data class Song(
     val id: Long,
@@ -21,6 +22,19 @@ data class Song(
     val uri: Uri,
     val artwork: Artwork,
 ) {
+    val durationString: String
+        get() {
+            val second = duration / 1000
+            val minute = second / 60
+            val hour = minute / 60
+
+            return if (hour > 0) {
+                String.format(Locale.getDefault(), "%02d:%02d:%02d", hour, minute % 60, second % 60)
+            } else {
+                String.format(Locale.getDefault(), "%02d:%02d", minute, second % 60)
+            }
+        }
+
     companion object {
         fun dummy(id: String = ""): Song {
             return Song(
@@ -30,7 +44,7 @@ data class Song(
                 artistId = -1,
                 album = "テストアルバム",
                 albumId = -1,
-                duration = -1,
+                duration = 217392,
                 year = -1,
                 track = -1,
                 mimeType = "audio/mpeg",

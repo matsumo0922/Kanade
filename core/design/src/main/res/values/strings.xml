@@ -17,6 +17,11 @@
     <string name="common_error">エラー</string>
     <string name="common_warning">警告</string>
 
+    <!-- Common Unit -->
+    <string name="unit_song">%1$s 曲</string>
+    <string name="unit_artist">%1$s 名</string>
+    <string name="unit_album">%1$s 枚</string>
+
     <!-- Music -->
     <string name="music_title">タイトル</string>
     <string name="music_artist">アーティスト</string>
