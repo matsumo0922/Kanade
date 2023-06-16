@@ -14,7 +14,7 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
     lateinit var musicController: MusicController
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val playerEvent = when(intent?.action?.toLongOrNull()) {
+        val playerEvent = when (intent?.action?.toLongOrNull()) {
             PlaybackStateCompat.ACTION_PLAY -> PlayerEvent.Play
             PlaybackStateCompat.ACTION_PAUSE -> PlayerEvent.Pause
             PlaybackStateCompat.ACTION_STOP -> PlayerEvent.Stop

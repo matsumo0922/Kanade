@@ -35,7 +35,7 @@ class ArtistTopViewModel @Inject constructor(
                 index = 0,
                 queue = artist.songs,
                 playWhenReady = true,
-            )
+            ),
         )
     }
 }

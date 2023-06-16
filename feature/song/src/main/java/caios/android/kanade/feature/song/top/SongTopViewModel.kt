@@ -34,7 +34,7 @@ class SongTopViewModel @Inject constructor(
                 index = index,
                 queue = queue,
                 playWhenReady = true,
-            )
+            ),
         )
     }
 }

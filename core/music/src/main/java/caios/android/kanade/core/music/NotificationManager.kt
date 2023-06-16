@@ -70,7 +70,7 @@ class NotificationManager(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionToken)
                     .setShowActionsInCompactView(0, 1, 2)
-                    .setShowCancelButton(true)
+                    .setShowCancelButton(true),
             )
             .setSmallIcon(R.drawable.vec_songs_off)
             .setLargeIcon(song?.artwork?.toBitmap(context))
