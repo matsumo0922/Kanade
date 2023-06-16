@@ -30,11 +30,13 @@ class MediaSessionManager(
 
     private val audioFocusRequest by lazy {
         AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
-            setAudioAttributes(AudioAttributesCompat.Builder().run {
-                setUsage(AudioAttributesCompat.USAGE_MEDIA)
-                setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
-                build()
-            })
+            setAudioAttributes(
+                AudioAttributesCompat.Builder().run {
+                    setUsage(AudioAttributesCompat.USAGE_MEDIA)
+                    setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
+                    build()
+                },
+            )
             setOnAudioFocusChangeListener(audioFocusChangeListener, Handler(Looper.myLooper()!!))
             setWillPauseWhenDucked(true)
             build()
@@ -135,9 +137,9 @@ class MediaSessionManager(
     private fun withAudioFocus(f: () -> Unit) {
         when (AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)) {
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> f.invoke()
-            AudioManager.AUDIOFOCUS_REQUEST_FAILED  -> Timber.d("Audio focus request failed")
+            AudioManager.AUDIOFOCUS_REQUEST_FAILED -> Timber.d("Audio focus request failed")
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> Timber.d("Audio focus request delayed")
-            else                                    -> Timber.d("Audio focus request unknown")
+            else -> Timber.d("Audio focus request unknown")
         }
     }
 

@@ -60,7 +60,6 @@ class NotificationManager(
                 it.setPriority(NotificationCompat.PRIORITY_LOW)
                 it.setPlayer(player)
             }
-
     }
 
     private fun createNotificationChannel() {

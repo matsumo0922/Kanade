@@ -57,8 +57,8 @@ class MusicControllerImpl @Inject constructor(
     private val queueManager: QueueManager,
     @ApplicationContext private val context: Context,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher
-): MusicController {
+    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+) : MusicController {
 
     private var _isInitialized = MutableStateFlow(false)
     private var _currentSong = MutableStateFlow<Song?>(null)

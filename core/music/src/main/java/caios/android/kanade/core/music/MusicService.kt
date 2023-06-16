@@ -26,9 +26,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class MusicService : MediaBrowserServiceCompat(){
+class MusicService : MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var musicRepository: MusicRepository

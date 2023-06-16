@@ -85,7 +85,7 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
     }
 
     override fun setShuffleMode(shuffleMode: ShuffleMode) {
-        when(shuffleMode) {
+        when (shuffleMode) {
             ShuffleMode.ON -> {
                 val shuffledQueue = originalQueue.shuffled()
                 val shuffledIndex = shuffledQueue.indexOf(currentQueue[index])
