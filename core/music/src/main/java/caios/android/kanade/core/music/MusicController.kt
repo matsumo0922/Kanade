@@ -13,7 +13,7 @@ import caios.android.kanade.core.model.player.ControlAction
 import caios.android.kanade.core.model.player.ControlKey
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
-import caios.android.kanade.core.model.player.RepeatMode.Companion.toPlaybackState
+import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.repository.MusicRepository
 import com.google.android.exoplayer2.ExoPlayer
@@ -167,6 +167,7 @@ class MusicControllerImpl @Inject constructor(
         when (state) {
             ExoPlayer.STATE_BUFFERING -> _playerState.value = PlayerState.Buffering
             ExoPlayer.STATE_READY -> _playerState.value = PlayerState.Ready
+            ExoPlayer.STATE_ENDED -> onComplete()
         }
 
         _isInitialized.value = true
@@ -254,11 +255,12 @@ class MusicControllerImpl @Inject constructor(
         event.transport { seekTo(position) }
     }
 
-    private fun onRepeatModeChanged(event: PlayerEvent.Repeat) {
-        event.transport { setRepeatMode(event.repeatMode.toPlaybackState()) }
+    private suspend fun onRepeatModeChanged(event: PlayerEvent.Repeat) {
+        musicRepository.setRepeatMode(event.repeatMode)
     }
 
-    private fun onShuffleModeChanged(event: PlayerEvent.Shuffle) {
+    private suspend fun onShuffleModeChanged(event: PlayerEvent.Shuffle) {
+        musicRepository.setShuffleMode(event.shuffleMode)
         queueManager.setShuffleMode(event.shuffleMode)
     }
 
@@ -287,6 +289,27 @@ class MusicControllerImpl @Inject constructor(
         )
 
         event.transport { sendCustomAction(ControlAction.INITIALIZE, args) }
+    }
+
+    private fun onComplete() {
+        scope.launch {
+            val config = musicRepository.config.first()
+
+            when (config.repeatMode) {
+                RepeatMode.ONE -> playerEvent(PlayerEvent.Seek(0f))
+                RepeatMode.ALL -> playerEvent(PlayerEvent.SkipToNext)
+                RepeatMode.OFF -> {
+                    val index = queueManager.getIndex()
+                    val queue = queueManager.getCurrentQueue()
+
+                    if (queue.size <= index + 1) {
+                        playerEvent(PlayerEvent.Pause)
+                    }
+
+                    playerEvent(PlayerEvent.SkipToNext)
+                }
+            }
+        }
     }
 
     private fun PlayerEvent.transport(action: MediaControllerCompat.TransportControls.() -> Unit) {

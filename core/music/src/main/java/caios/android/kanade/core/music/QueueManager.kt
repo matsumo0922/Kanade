@@ -25,6 +25,7 @@ interface QueueManager {
     fun getCurrentSong(): Song?
     fun getCurrentQueue(): List<Song>
     fun getOriginalQueue(): List<Song>
+    fun getIndex(): Int
 
     fun build(currentQueue: List<Song>, originalQueue: List<Song>, index: Int)
     fun clear()
@@ -116,6 +117,10 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
 
     override fun getOriginalQueue(): List<Song> {
         return originalQueue.toList()
+    }
+
+    override fun getIndex(): Int {
+        return index
     }
 
     override fun build(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {

@@ -87,13 +87,13 @@ class MediaSessionManager(
 
         override fun onSkipToNext() {
             withAudioFocus {
-                loadSong(queueManager.skipToNext(), true)
+                loadSong(queueManager.skipToNext(), player.playWhenReady)
             }
         }
 
         override fun onSkipToPrevious() {
             withAudioFocus {
-                loadSong(queueManager.skipToPrevious(), true)
+                loadSong(queueManager.skipToPrevious(), player.playWhenReady)
             }
         }
 
