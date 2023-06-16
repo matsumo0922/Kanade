@@ -125,11 +125,13 @@ class MusicControllerImpl @Inject constructor(
             queueManager.queue.collectLatest {
                 _currentQueue.value = it
 
-                musicRepository.saveQueue(
-                    currentQueue = queueManager.getCurrentQueue(),
-                    originalQueue = queueManager.getOriginalQueue(),
-                    index = it.index,
-                )
+                if (it.items.isNotEmpty()) {
+                    musicRepository.saveQueue(
+                        currentQueue = queueManager.getCurrentQueue(),
+                        originalQueue = queueManager.getOriginalQueue(),
+                        index = it.index,
+                    )
+                }
             }
         }
 
@@ -180,8 +182,10 @@ class MusicControllerImpl @Inject constructor(
     override fun setPlayerPosition(position: Long) {
         _playerPosition.value = position
 
-        scope.launch {
-            musicRepository.saveProgress(position)
+        if (isInitialized.value) {
+            scope.launch {
+                musicRepository.saveProgress(position)
+            }
         }
     }
 

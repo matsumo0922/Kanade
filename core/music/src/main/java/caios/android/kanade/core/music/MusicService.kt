@@ -82,10 +82,7 @@ class MusicService : MediaBrowserServiceCompat() {
     private val updateProcess by lazy {
         scope.launch(start = CoroutineStart.LAZY, context = main) {
             while (isActive) {
-                if (exoPlayer.playWhenReady) {
-                    musicController.setPlayerPosition(exoPlayer.currentPosition)
-                }
-
+                musicController.setPlayerPosition(exoPlayer.currentPosition)
                 updatePlaybackState()
                 delay(200)
             }
@@ -131,6 +128,10 @@ class MusicService : MediaBrowserServiceCompat() {
         mediaSession.setCallback(mediaSessionManager.callback)
 
         updateProcess.start()
+
+        scope.launch {
+            notificationManager.setForegroundService(true)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

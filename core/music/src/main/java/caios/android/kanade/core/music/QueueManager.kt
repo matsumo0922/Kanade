@@ -6,6 +6,7 @@ import caios.android.kanade.core.model.player.ShuffleMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import timber.log.Timber
 import javax.inject.Inject
 
 interface QueueManager {
@@ -124,6 +125,8 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
     }
 
     override fun build(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
+        Timber.d("build: current=${currentQueue.size}, originalQueue=${originalQueue.size}, index=$index")
+
         _currentQueue.value = currentQueue.toMutableList()
         _originalQueue.value = originalQueue.toMutableList()
         _index.value = index

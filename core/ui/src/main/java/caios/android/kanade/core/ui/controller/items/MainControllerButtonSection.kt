@@ -46,7 +46,7 @@ internal fun MainControllerControlButtonSection(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.padding(horizontal = 32.dp),
+        modifier = modifier.padding(horizontal = 40.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -60,7 +60,7 @@ internal fun MainControllerControlButtonSection(
 
         Icon(
             modifier = Modifier
-                .size(60.dp)
+                .size(64.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickSkipToPrevious() }
                 .padding(8.dp)
@@ -76,7 +76,7 @@ internal fun MainControllerControlButtonSection(
 
         Icon(
             modifier = Modifier
-                .size(72.dp)
+                .size(74.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { if (uiState.isPlaying) onClickPause() else onClickPlay() }
                 .padding(8.dp)
@@ -92,7 +92,7 @@ internal fun MainControllerControlButtonSection(
 
         Icon(
             modifier = Modifier
-                .size(60.dp)
+                .size(64.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickSkipToNext() }
                 .padding(8.dp)
@@ -123,8 +123,8 @@ private fun ShuffleButton(
     modifier: Modifier = Modifier,
 ) {
     val state = when (shuffleMode) {
-        ShuffleMode.OFF -> android.R.attr.state_checked
-        ShuffleMode.ON -> android.R.attr.state_checked * -1
+        ShuffleMode.OFF -> android.R.attr.state_checked * -1
+        ShuffleMode.ON -> android.R.attr.state_checked
     }
 
     val color = when (shuffleMode) {

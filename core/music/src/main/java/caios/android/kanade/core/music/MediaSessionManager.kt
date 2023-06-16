@@ -85,13 +85,13 @@ class MediaSessionManager(
         }
 
         override fun onSkipToNext() {
-            if (player.playWhenReady && releaseAudioFocus()) {
+            if (!player.playWhenReady || (player.playWhenReady && releaseAudioFocus())) {
                 loadSong(queueManager.skipToNext(), player.playWhenReady)
             }
         }
 
         override fun onSkipToPrevious() {
-            if (player.playWhenReady && releaseAudioFocus()) {
+            if (!player.playWhenReady || (player.playWhenReady && releaseAudioFocus())) {
                 if (player.currentPosition <= 5000) {
                     loadSong(queueManager.skipToPrevious(), player.playWhenReady)
                 } else {
@@ -110,7 +110,11 @@ class MediaSessionManager(
             when (action) {
                 ControlAction.INITIALIZE -> {
                     withAudioFocus {
-                        val song = queueManager.getCurrentSong() ?: return@withAudioFocus
+                        val song = queueManager.getCurrentSong() ?: kotlin.run {
+                            Timber.d("onCustomAction: cannot initialize because current song is null")
+                            return@withAudioFocus
+                        }
+
                         val playWhenReady = extras?.getBoolean(ControlKey.PLAY_WHEN_READY) ?: false
                         val progress = extras?.getLong(ControlKey.PROGRESS) ?: 0L
 
@@ -130,6 +134,8 @@ class MediaSessionManager(
     }
 
     private fun loadSong(song: Song, playWhenReady: Boolean, startPosition: Long = 0L) {
+        Timber.d("loadSong: ${song.title}, ${song.artist}, ${song.artwork}")
+
         mediaSession.setMetadata(song.toMetadata())
 
         player.playWhenReady = playWhenReady

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
 
@@ -32,9 +33,12 @@ internal fun MainControllerArtworkSection(
     modifier: Modifier = Modifier,
 ) {
     val dummyPagerCount = Int.MAX_VALUE
-    val pagerState = rememberPagerState(initialPage = (dummyPagerCount / songs.size / 2) * songs.size)
+    val queueSize = if (songs.isEmpty()) 1 else songs.size
+    val pagerState = rememberPagerState(initialPage = (dummyPagerCount / queueSize / 2) * songs.size)
 
     LaunchedEffect(index) {
+        if (songs.isEmpty()) return@LaunchedEffect
+
         val currentPage = pagerState.currentPage % songs.size
         val targetPage = if (index >= currentPage) {
             currentPage - index
@@ -68,12 +72,12 @@ internal fun MainControllerArtworkSection(
             Box(Modifier.fillMaxSize()) {
                 Artwork(
                     modifier = Modifier.fillMaxSize(),
-                    artwork = songs[dummyIndex % songs.size].artwork,
+                    artwork = if (songs.isNotEmpty()) songs[dummyIndex % songs.size].artwork else Artwork.Unknown,
                 )
 
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "${dummyIndex % songs.size}, $dummyIndex [${songs[dummyIndex % songs.size].title}]",
+                    text = if (songs.isNotEmpty()) "${dummyIndex % songs.size}, $dummyIndex [${songs[dummyIndex % songs.size].title}]" else "Unknown",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

@@ -1,7 +1,10 @@
 package caios.android.kanade.feature.artist.top
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -28,6 +31,7 @@ internal fun ArtistTopRoute(
         ArtistTopScreen(
             artists = it ?: emptyList(),
             modifier = modifier,
+            onClickArtist = viewModel::onNewPlay,
             contentPadding = PaddingValues(top = topMargin),
         )
     }
@@ -36,6 +40,7 @@ internal fun ArtistTopRoute(
 @Composable
 internal fun ArtistTopScreen(
     artists: List<Artist>,
+    onClickArtist: (Artist) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -46,9 +51,13 @@ internal fun ArtistTopScreen(
         items(
             items = artists,
             key = { it.artistId },
-        ) {
+        ) { artist ->
             Text(
-                text = it.artist,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .clickable { onClickArtist.invoke(artist) },
+                text = artist.artist,
                 color = Color.Gray,
             )
         }

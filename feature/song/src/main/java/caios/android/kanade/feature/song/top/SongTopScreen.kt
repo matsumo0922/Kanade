@@ -35,15 +35,6 @@ internal fun SongTopRoute(
             onClickSong = viewModel::onNewPlay,
         )
     }
-
-    /*Box(Modifier.fillMaxSize()) {
-        Button(
-            modifier = Modifier.align(Alignment.Center),
-            onClick = { viewModel.fetchSongs() }
-        ) {
-            Text(text = "Button")
-        }
-    }*/
 }
 
 @Composable

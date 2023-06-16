@@ -1,5 +1,6 @@
 package caios.android.kanade.core.ui.controller
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +49,7 @@ fun BottomController(
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier) {
+        val position by animateFloatAsState(targetValue = uiState.progressParent)
         val (indicator, artwork, title, artist, buttons) = createRefs()
 
         LinearProgressIndicator(
@@ -57,7 +60,7 @@ fun BottomController(
 
                 width = Dimension.fillToConstraints
             },
-            progress = uiState.progressParent,
+            progress = position,
         )
 
         Artwork(

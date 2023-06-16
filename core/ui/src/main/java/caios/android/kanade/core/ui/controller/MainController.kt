@@ -83,7 +83,7 @@ fun MainController(
 
         MainControllerInfoSection(
             modifier = Modifier
-                .padding(vertical = 12.dp)
+                .padding(top = 12.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
             uiState = uiState,
