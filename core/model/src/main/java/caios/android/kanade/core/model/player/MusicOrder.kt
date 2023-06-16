@@ -1,4 +1,4 @@
-package caios.android.kanade.core.model.music
+package caios.android.kanade.core.model.player
 
 import android.provider.MediaStore
 import caios.android.kanade.core.model.Order

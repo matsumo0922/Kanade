@@ -10,5 +10,5 @@ android {
 dependencies {
     api(libs.bundles.infra.api)
 
-    implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media)
 }

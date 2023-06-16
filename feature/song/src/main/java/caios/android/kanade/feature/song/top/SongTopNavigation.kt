@@ -5,7 +5,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import caios.android.kanade.core.model.music.Song
 
 const val SongTopRoute = "songTop"
 
@@ -15,12 +14,10 @@ fun NavController.navigateToSongTop(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.songTopScreen(
     topMargin: Dp,
-    onClickSong: (Int, List<Song>) -> Unit,
 ) {
     composable(route = SongTopRoute) {
         SongTopRoute(
             topMargin = topMargin,
-            onClickSong = onClickSong,
         )
     }
 }

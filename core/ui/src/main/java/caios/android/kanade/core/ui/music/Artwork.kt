@@ -39,9 +39,9 @@ fun Artwork(
     modifier: Modifier = Modifier,
 ) {
     when (artwork) {
-        is Artwork.Internal -> ArtworkFromInternal(modifier, artwork)
-        is Artwork.MediaStore -> ArtworkFromMediaStore(modifier, artwork)
-        is Artwork.Web -> ArtworkFromWeb(modifier, artwork)
+        is Artwork.Internal -> ArtworkFromInternal(artwork, modifier)
+        is Artwork.MediaStore -> ArtworkFromMediaStore(artwork, modifier)
+        is Artwork.Web -> ArtworkFromWeb(artwork, modifier)
         is Artwork.Unknown -> ArtworkFromUnknown(modifier)
     }
 }

@@ -22,7 +22,6 @@ import caios.android.kanade.core.ui.AsyncLoadContents
 @Composable
 internal fun SongTopRoute(
     topMargin: Dp,
-    onClickSong: (Int, List<Song>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
 ) {
@@ -30,10 +29,10 @@ internal fun SongTopRoute(
 
     AsyncLoadContents(screenState) {
         SongTopScreen(
-            songs = it ?: emptyList(),
-            onClickSong = onClickSong,
             modifier = modifier,
+            songs = it ?: emptyList(),
             contentPadding = PaddingValues(top = topMargin),
+            onClickSong = viewModel::onNewPlay,
         )
     }
 

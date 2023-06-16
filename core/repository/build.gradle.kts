@@ -14,5 +14,5 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:database"))
 
-    implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media)
 }

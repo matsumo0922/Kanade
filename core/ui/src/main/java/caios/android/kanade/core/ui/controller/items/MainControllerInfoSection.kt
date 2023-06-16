@@ -1,5 +1,6 @@
 package caios.android.kanade.core.ui.controller.items
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,7 @@ internal fun MainControllerInfoSection(
 
         val interactionSource = remember { MutableInteractionSource() }
         var sliderPosition by remember { mutableStateOf<Float?>(null) }
+        val position by animateFloatAsState(sliderPosition ?: uiState.progressParent)
 
         Text(
             modifier = Modifier.constrainAs(title) {
@@ -52,6 +55,8 @@ internal fun MainControllerInfoSection(
             text = uiState.song?.title ?: stringResource(R.string.music_unknown_title),
             style = MaterialTheme.typography.titleLarge.center(),
             color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
 
         Text(
@@ -65,6 +70,8 @@ internal fun MainControllerInfoSection(
             text = uiState.song?.artist ?: stringResource(R.string.music_unknown_artist),
             style = MaterialTheme.typography.bodyMedium.center(),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
 
         Slider(
@@ -76,7 +83,7 @@ internal fun MainControllerInfoSection(
                 width = Dimension.fillToConstraints
             },
             enabled = uiState.song != null,
-            value = sliderPosition ?: uiState.progressParent,
+            value = position,
             valueRange = 0f..1f,
             onValueChange = {
                 sliderPosition = it
@@ -102,7 +109,7 @@ internal fun MainControllerInfoSection(
                 start.linkTo(parent.start, 24.dp)
                 bottom.linkTo(parent.bottom)
             },
-            text = uiState.getProgressString(sliderPosition ?: uiState.progressParent),
+            text = uiState.progressString,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -142,7 +149,7 @@ private fun Preview() {
                 .wrapContentHeight(),
             uiState = MusicUiState().copy(
                 song = Song.dummy(),
-                progressParent = 0.3f,
+                progress = 20000,
             ),
             onSeek = { },
         )

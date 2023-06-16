@@ -31,24 +31,24 @@ androidxConstraintLayout = "2.1.4"
 androidxRecyclerView = "1.2.1"
 androidxCardView = "1.0.0"
 androidxViewPager2 = "1.1.0-beta01"
-androidxMedia3 = "1.0.2"
 androidxPreference = "1.2.0"
 androidxDataStore = "1.0.0"
 androidxPalette = "1.0.0"
 androidxLifecycle = "2.6.1"
 androidxRoom = "2.5.1"
+androidxMedia = "1.6.0"
 androidxAnnotation = "1.6.0"
 androidxCompose = "2023.05.01"
 androidxComposeConstraintLayout = "1.1.0-alpha06"
 androidxComposeNavigation = "2.5.3"
 androidxHiltNavigationCompose = "1.0.0"
-androidxLagacySupportV4 = "1.0.0"
 
 # Google
 playServiceBilling = "5.0.0"
 playServiceAds = "21.1.0"
 playServiceOss = "17.0.1"
 material = "1.9.0"
+exoPlayer = "2.18.7"
 accompanist = "0.30.1"
 
 # Protobuf
@@ -118,10 +118,7 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidxComposeConstraintLayout" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardView" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "androidxViewPager2" }
-androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "androidxMedia3" }
-androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "androidxMedia3" }
-androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidxMedia3" }
-androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "androidxMedia3" }
+androidx-media = { module = "androidx.media:media", version.ref = "androidxMedia" }
 androidx-room = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
@@ -130,7 +127,7 @@ androidx-preference = { module = "androidx.preference:preference-ktx", version.r
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDataStore" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
-androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "androidxLagacySupportV4" }
+
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
@@ -152,6 +149,7 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 play-service-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "playServiceBilling" }
 play-service-oss = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServiceOss" }
 google-material = { module = "com.google.android.material:material", version.ref = "material" }
+google-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-compose-theme-adapter = { module = "com.google.accompanist:accompanist-themeadapter-material", version.ref = "accompanist" }
 accompanist-compose-theme-adapter3 = { module = "com.google.accompanist:accompanist-themeadapter-material3", version.ref = "accompanist" }

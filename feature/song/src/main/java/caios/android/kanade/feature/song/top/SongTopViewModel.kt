@@ -3,6 +3,9 @@ package caios.android.kanade.feature.song.top
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ScreenState
+import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SongTopViewModel @Inject constructor(
+    private val musicController: MusicController,
     private val musicRepository: MusicRepository,
 ) : ViewModel() {
 
@@ -23,4 +27,14 @@ class SongTopViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ScreenState.Loading,
     )
+
+    fun onNewPlay(index: Int, queue: List<Song>) {
+        musicController.playerEvent(
+            PlayerEvent.NewPlay(
+                index = index,
+                queue = queue,
+                playWhenReady = true,
+            )
+        )
+    }
 }

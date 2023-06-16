@@ -8,9 +8,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.compose.ui.graphics.toArgb
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.ui.PlayerNotificationManager
 import caios.android.kanade.core.design.databinding.LayoutDefaultArtworkBinding
 import caios.android.kanade.core.design.theme.Blue40
 import caios.android.kanade.core.design.theme.Green40
@@ -21,15 +18,17 @@ import caios.android.kanade.core.model.music.Artwork
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@UnstableApi
 class NotificationAdapter(
     private val context: Context,
     private val pendingIntent: PendingIntent?,
     private val scope: CoroutineScope,
-) : PlayerNotificationManager.MediaDescriptionAdapter {
+) : MediaDescriptionAdapter {
     override fun getCurrentContentTitle(player: Player): CharSequence {
         return player.mediaMetadata.albumTitle ?: "Unknown"
     }

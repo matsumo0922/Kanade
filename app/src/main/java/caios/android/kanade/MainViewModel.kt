@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,16 +30,4 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ScreenState.Loading,
     )
-
-    fun fetchMusic() {
-        viewModelScope.launch(dispatcher) {
-            musicRepository.config.collect {
-                musicRepository.fetchArtists(it)
-                musicRepository.fetchAlbums(it)
-                musicRepository.fetchSongs(it)
-                musicRepository.fetchArtistArtwork()
-                musicRepository.fetchAlbumArtwork()
-            }
-        }
-    }
 }

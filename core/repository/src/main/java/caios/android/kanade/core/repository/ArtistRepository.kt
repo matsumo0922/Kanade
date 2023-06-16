@@ -2,8 +2,8 @@ package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Artwork
-import caios.android.kanade.core.model.music.MusicConfig
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.MusicConfig
 
 interface ArtistRepository {
 

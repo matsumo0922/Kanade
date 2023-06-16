@@ -1,28 +1,23 @@
 package caios.android.kanade.core.music
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
-import androidx.media3.ui.PlayerNotificationManager
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.design.R
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
 
-class NotificationManager @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
-    private val player: ExoPlayer,
+class NotificationManager(
+    private val context: Context,
+    private val dispatcher: CoroutineDispatcher,
 ) {
 
     private val manager = NotificationManagerCompat.from(context)
@@ -31,35 +26,41 @@ class NotificationManager @Inject constructor(
         createNotificationChannel()
     }
 
-    @UnstableApi
-    fun startNotificationService(
-        mediaSessionService: MediaSessionService,
-        mediaSession: MediaSession,
-    ) {
-        bindNotification(mediaSession)
-        startForegroundNotification(mediaSessionService)
+    @SuppressLint("MissingPermission")
+    fun setForegroundService(service: Service, isForeground: Boolean) {
+        val notification = NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
+            .setSmallIcon(R.drawable.vec_songs_off)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build()
+
+        if (isForeground) {
+            service.startForeground(NOTIFY_ID, notification)
+        } else {
+            manager.notify(NOTIFY_ID, notification)
+            service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+        }
     }
 
-    @UnstableApi
-    private fun bindNotification(mediaSession: MediaSession) {
+    fun bindNotification(mediaSession: MediaSessionCompat, player: Player) {
         PlayerNotificationManager.Builder(context, NOTIFY_ID, NOTIFY_CHANNEL_ID)
             .setMediaDescriptionAdapter(
                 NotificationAdapter(
                     context = context,
-                    pendingIntent = mediaSession.sessionActivity,
+                    pendingIntent = null,
                     scope = CoroutineScope(dispatcher),
                 ),
             )
             .setSmallIconResourceId(R.drawable.vec_songs_off)
             .build()
             .also {
-                it.setMediaSessionToken(mediaSession.sessionCompatToken)
+                it.setMediaSessionToken(mediaSession.sessionToken)
                 it.setUseFastForwardActionInCompactView(true)
                 it.setUseRewindActionInCompactView(true)
                 it.setUseNextActionInCompactView(false)
                 it.setPriority(NotificationCompat.PRIORITY_LOW)
                 it.setPlayer(player)
             }
+
     }
 
     private fun createNotificationChannel() {
@@ -77,15 +78,6 @@ class NotificationManager @Inject constructor(
         }
 
         manager.createNotificationChannel(channel)
-    }
-
-    private fun startForegroundNotification(mediaSessionService: MediaSessionService) {
-        val notification = NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
-            .setSmallIcon(R.drawable.vec_songs_off)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .build()
-
-        mediaSessionService.startForeground(NOTIFY_ID, notification)
     }
 
     companion object {

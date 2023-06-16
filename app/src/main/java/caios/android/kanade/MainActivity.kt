@@ -86,11 +86,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchMusic()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         stopService(Intent(this, MusicService::class.java))

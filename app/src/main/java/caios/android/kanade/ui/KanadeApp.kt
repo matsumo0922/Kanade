@@ -138,7 +138,7 @@ fun KanadeApp(
                         AppController(
                             uiState = musicViewModel.uiState,
                             offsetRate = bottomSheetOffsetRate,
-                            onControllerEvent = musicViewModel::onControllerEvent,
+                            onControllerEvent = musicViewModel::playerEvent,
                             onClickBottomController = {
                                 scope.launch {
                                     scaffoldState.bottomSheetState.expand()

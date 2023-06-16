@@ -1,9 +1,8 @@
 package caios.android.kanade.core.model.music
 
 import android.net.Uri
-import android.os.Bundle
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
 import java.util.Locale
 
 data class Song(
@@ -61,16 +60,18 @@ data class Song(
     }
 }
 
-fun Song.toMediaItem(): MediaItem {
-    val metadata = MediaMetadata.Builder()
-        .setTitle(title)
-        .setArtist(artist)
-        .setAlbumTitle(album)
-        .setExtras(Bundle().apply { putParcelable("artwork", artwork) })
+fun Song.toMediaItem(): MediaBrowserCompat.MediaItem {
+    return MediaBrowserCompat.MediaItem(this.toMetadata().description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
+}
 
-    return MediaItem.Builder()
-        .setMediaId(id.toString())
-        .setUri(uri)
-        .setMediaMetadata(metadata.build())
+fun Song.toMetadata(): MediaMetadataCompat {
+    return MediaMetadataCompat.Builder()
+        .putText(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+        .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+        .putText(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+        .putLong(MediaMetadataCompat.METADATA_KEY_YEAR, year.toLong())
+        .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, track.toLong())
+        .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id.toString())
         .build()
 }

@@ -1,9 +1,7 @@
 package caios.android.kanade.core.model.music
 
-import androidx.media3.common.MediaItem
-
 data class Queue(
-    val items: List<MediaItem>,
+    val items: List<Song>,
     val index: Int,
 )
 

@@ -3,10 +3,10 @@ package caios.android.kanade.core.repository
 import android.provider.MediaStore.Audio.AudioColumns
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artwork
-import caios.android.kanade.core.model.music.MusicConfig
-import caios.android.kanade.core.model.music.MusicOrder
-import caios.android.kanade.core.model.music.MusicOrderOption
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.MusicConfig
+import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.sortList
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject

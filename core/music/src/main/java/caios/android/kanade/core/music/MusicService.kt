@@ -1,71 +1,151 @@
 package caios.android.kanade.core.music
 
+import android.app.Service
 import android.content.Intent
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
-import com.google.common.util.concurrent.Futures
-import com.google.common.util.concurrent.ListenableFuture
+import android.os.Bundle
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.session.MediaSessionCompat
+import androidx.media.MediaBrowserServiceCompat
+import androidx.media.session.MediaButtonReceiver
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.model.music.toMediaItem
+import caios.android.kanade.core.repository.MusicRepository
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class MusicService : MediaSessionService() {
+class MusicService : MediaBrowserServiceCompat(){
 
     @Inject
-    lateinit var player: ExoPlayer
+    lateinit var musicRepository: MusicRepository
 
     @Inject
-    lateinit var notificationManager: NotificationManager
+    lateinit var musicController: MusicController
 
-    private val mediaSessionCallback = object : MediaSession.Callback {
-        override fun onAddMediaItems(
-            mediaSession: MediaSession,
-            controller: MediaSession.ControllerInfo,
-            mediaItems: MutableList<MediaItem>,
-        ): ListenableFuture<MutableList<MediaItem>> {
-            return Futures.immediateFuture(
-                mediaItems.map {
-                    it.buildUpon()
-                        .setUri(it.requestMetadata.mediaUri)
-                        .build()
-                }.toMutableList(),
-            )
+    @Inject
+    lateinit var queueManager: QueueManager
+
+    @Inject
+    @Dispatcher(KanadeDispatcher.IO)
+    lateinit var io: CoroutineDispatcher
+
+    @Inject
+    @Dispatcher(KanadeDispatcher.Main)
+    lateinit var main: CoroutineDispatcher
+
+    private val supervisorJob = SupervisorJob()
+    private val scope by lazy { CoroutineScope(io + supervisorJob) }
+
+    private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var mediaSessionManager: MediaSessionManager
+    private lateinit var notificationManager: NotificationManager
+
+    private val exoPlayer: ExoPlayer by lazy {
+        ExoPlayer.Builder(baseContext).build().apply {
+            setHandleAudioBecomingNoisy(true)
+            addListener(playerEventListener)
         }
     }
 
-    private val mediaSession by lazy {
-        MediaSession.Builder(this, player)
-            .setCallback(mediaSessionCallback)
-            .build()
+    private val playerEventListener = object : Player.Listener {
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            musicController.setPlayerPlaying(isPlaying)
+            notificationManager.setForegroundService(this@MusicService, isPlaying)
+        }
+
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            musicController.setPlayerState(playbackState)
+        }
+
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            mediaItem?.mediaMetadata?.let { musicController.setPlayerItem(it) }
+        }
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession = mediaSession
+    private val updateProcess by lazy {
+        scope.launch(start = CoroutineStart.LAZY, context = main) {
+            while (isActive) {
+                if (exoPlayer.playWhenReady) {
+                    musicController.setPlayerPosition(exoPlayer.currentPosition)
+                }
 
-    @UnstableApi
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        notificationManager.startNotificationService(
-            mediaSessionService = this,
+                delay(200)
+            }
+        }
+    }
+
+    override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot {
+        return BrowserRoot(MEDIA_BROWSER_ROOT_ID, null)
+    }
+
+    override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
+        scope.launch {
+            musicRepository.config.first()
+            musicRepository.fetchSongs()
+
+            val songs = musicRepository.songs
+            val items = songs.map { it.toMediaItem() }
+
+            result.sendResult(items.toMutableList())
+        }
+
+        result.detach()
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        notificationManager = NotificationManager(baseContext, io)
+
+        mediaSession = MediaSessionCompat(this, "KanadeMediaSession").apply {
+            setSessionActivity(null)
+            setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
+            this@MusicService.sessionToken = sessionToken
+        }
+
+        mediaSessionManager = MediaSessionManager(
+            service = this,
+            player = exoPlayer,
             mediaSession = mediaSession,
+            musicController = musicController,
+            queueManager = queueManager,
         )
 
-        return super.onStartCommand(intent, flags, startId)
+        mediaSession.setCallback(mediaSessionManager.callback)
+        notificationManager.bindNotification(mediaSession, exoPlayer)
+
+        updateProcess.start()
+
+        Timber.d("MusicService onCreate")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (::mediaSession.isInitialized) MediaButtonReceiver.handleIntent(mediaSession, intent)
+        return Service.START_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        mediaSession.run {
-            release()
+        exoPlayer.stop()
+        exoPlayer.release()
+    }
 
-            if (player.playbackState != Player.STATE_IDLE) {
-                player.seekTo(0)
-                player.playWhenReady = false
-                player.stop()
-            }
-        }
+    companion object {
+        private const val MEDIA_BROWSER_ROOT_ID = "kanade-media-root2"
     }
 }

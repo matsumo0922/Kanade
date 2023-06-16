@@ -9,10 +9,10 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.Media
 import caios.android.kanade.core.model.music.Artwork
-import caios.android.kanade.core.model.music.MusicConfig
-import caios.android.kanade.core.model.music.MusicOrder
-import caios.android.kanade.core.model.music.MusicOrderOption
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.MusicConfig
+import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.getInt
 import caios.android.kanade.core.repository.util.getLong
 import caios.android.kanade.core.repository.util.getString

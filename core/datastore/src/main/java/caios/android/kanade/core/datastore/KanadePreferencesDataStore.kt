@@ -5,11 +5,11 @@ import caios.android.kanade.core.model.Order
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.LastQueue
-import caios.android.kanade.core.model.music.MusicConfig
-import caios.android.kanade.core.model.music.MusicOrder
-import caios.android.kanade.core.model.music.MusicOrderOption
-import caios.android.kanade.core.model.music.RepeatMode
-import caios.android.kanade.core.model.music.ShuffleMode
+import caios.android.kanade.core.model.player.MusicConfig
+import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
+import caios.android.kanade.core.model.player.RepeatMode
+import caios.android.kanade.core.model.player.ShuffleMode
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -222,7 +222,8 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setLastOriginalQueue(
+    suspend fun setLastQueue(
+        currentItems: List<Long>,
         originalItems: List<Long>,
         index: Int,
     ) {
@@ -231,20 +232,6 @@ class KanadePreferencesDataStore @Inject constructor(
                 this.originalItems.clear()
                 this.originalItems.addAll(originalItems)
 
-                this.currentItems.clear()
-                this.currentItems.addAll(originalItems)
-
-                this.index = index
-            }
-        }
-    }
-
-    suspend fun setLastCurrentQueue(
-        currentItems: List<Long>,
-        index: Int,
-    ) {
-        queuePreference.updateData {
-            it.copy {
                 this.currentItems.clear()
                 this.currentItems.addAll(currentItems)
 

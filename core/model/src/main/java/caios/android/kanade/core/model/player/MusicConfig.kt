@@ -1,4 +1,4 @@
-package caios.android.kanade.core.model.music
+package caios.android.kanade.core.model.player
 
 data class MusicConfig(
     val shuffleMode: ShuffleMode,

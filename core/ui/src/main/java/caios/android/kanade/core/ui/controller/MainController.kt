@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.model.music.RepeatMode
-import caios.android.kanade.core.model.music.ShuffleMode
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.RepeatMode
+import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicUiState
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
@@ -129,11 +129,11 @@ private fun Preview() {
         MainController(
             uiState = MusicUiState().copy(
                 song = Song.dummy(),
-                progressParent = 0.3f,
-                shuffleMode = ShuffleMode.ON,
-                repeatMode = RepeatMode.ALL,
                 queueItems = Song.dummies(20),
                 queueIndex = 3,
+                progress = 200238,
+                shuffleMode = ShuffleMode.ON,
+                repeatMode = RepeatMode.ALL,
             ),
             onClickClose = { },
             onClickSearch = { },

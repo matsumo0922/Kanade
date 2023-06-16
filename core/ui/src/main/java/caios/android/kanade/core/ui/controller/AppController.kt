@@ -12,14 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import caios.android.kanade.core.model.music.ControllerEvent
+import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicUiState
 
 @Composable
 fun AppController(
     uiState: MusicUiState,
     offsetRate: Float,
-    onControllerEvent: (event: ControllerEvent) -> Unit,
+    onControllerEvent: (event: PlayerEvent) -> Unit,
     onClickBottomController: () -> Unit,
     onClickCloseExpanded: () -> Unit,
     navigateToLyrics: () -> Unit,
@@ -40,10 +40,10 @@ fun AppController(
                     .background(MaterialTheme.colorScheme.surface)
                     .clickable { onClickBottomController() },
                 uiState = uiState,
-                onClickPlay = { onControllerEvent.invoke(ControllerEvent.Play) },
-                onClickPause = { onControllerEvent.invoke(ControllerEvent.Pause) },
-                onClickSkipToNext = { onControllerEvent.invoke(ControllerEvent.SkipToNext) },
-                onClickSkipToPrevious = { onControllerEvent.invoke(ControllerEvent.SkipToPrevious) },
+                onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
+                onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
+                onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
+                onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
             )
         }
 
@@ -63,13 +63,13 @@ fun AppController(
                 onClickMenuEdit = { },
                 onClickMenuAnalyze = { },
                 onClickMenuDetailInfo = { },
-                onClickPlay = { onControllerEvent.invoke(ControllerEvent.Play) },
-                onClickPause = { onControllerEvent.invoke(ControllerEvent.Pause) },
-                onClickSkipToNext = { onControllerEvent.invoke(ControllerEvent.SkipToNext) },
-                onClickSkipToPrevious = { onControllerEvent.invoke(ControllerEvent.SkipToPrevious) },
-                onClickShuffle = { onControllerEvent.invoke(ControllerEvent.Shuffle(it)) },
-                onClickRepeat = { onControllerEvent.invoke(ControllerEvent.Repeat(it)) },
-                onClickSeek = { onControllerEvent.invoke(ControllerEvent.Seek(it)) },
+                onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
+                onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
+                onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
+                onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
+                onClickShuffle = { onControllerEvent.invoke(PlayerEvent.Shuffle(it)) },
+                onClickRepeat = { onControllerEvent.invoke(PlayerEvent.Repeat(it)) },
+                onClickSeek = { onControllerEvent.invoke(PlayerEvent.Seek(it)) },
                 onClickLyrics = navigateToLyrics,
                 onClickFavorite = navigateToFavorite,
                 onClickSleepTimer = navigateToSleepTimer,

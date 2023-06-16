@@ -38,7 +38,6 @@ fun KanadeNavHost(
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
-            onClickSong = { index, songs -> musicViewModel.onPlayWithNewQueue(index, songs, true) },
         )
 
         artistTopScreen(
