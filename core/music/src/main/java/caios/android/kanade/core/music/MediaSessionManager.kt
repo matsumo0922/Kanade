@@ -27,7 +27,6 @@ class MediaSessionManager(
     private val queueManager: QueueManager,
 ) {
     private val audioManager by lazy { service.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
-
     private val audioFocusRequest by lazy {
         AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
             setAudioAttributes(
@@ -86,14 +85,18 @@ class MediaSessionManager(
         }
 
         override fun onSkipToNext() {
-            withAudioFocus {
+            if (player.playWhenReady && releaseAudioFocus()) {
                 loadSong(queueManager.skipToNext(), player.playWhenReady)
             }
         }
 
         override fun onSkipToPrevious() {
-            withAudioFocus {
-                loadSong(queueManager.skipToPrevious(), player.playWhenReady)
+            if (player.playWhenReady && releaseAudioFocus()) {
+                if (player.currentPosition <= 5000) {
+                    loadSong(queueManager.skipToPrevious(), player.playWhenReady)
+                } else {
+                    onSeekTo(0L)
+                }
             }
         }
 
@@ -135,12 +138,20 @@ class MediaSessionManager(
     }
 
     private fun withAudioFocus(f: () -> Unit) {
+        if (requestAudioForcus()) {
+            f()
+        }
+    }
+
+    private fun requestAudioForcus(): Boolean {
         when (AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)) {
-            AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> f.invoke()
+            AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> return true
             AudioManager.AUDIOFOCUS_REQUEST_FAILED -> Timber.d("Audio focus request failed")
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> Timber.d("Audio focus request delayed")
             else -> Timber.d("Audio focus request unknown")
         }
+
+        return false
     }
 
     private fun releaseAudioFocus(): Boolean {

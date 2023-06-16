@@ -5,11 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.music.toMediaItem
+import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.repository.MusicRepository
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -23,7 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -63,7 +64,10 @@ class MusicService : MediaBrowserServiceCompat() {
     private val playerEventListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             musicController.setPlayerPlaying(isPlaying)
-            notificationManager.setForegroundService(this@MusicService, isPlaying)
+
+            scope.launch(main) {
+                notificationManager.setForegroundService(isPlaying)
+            }
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -82,6 +86,7 @@ class MusicService : MediaBrowserServiceCompat() {
                     musicController.setPlayerPosition(exoPlayer.currentPosition)
                 }
 
+                updatePlaybackState()
                 delay(200)
             }
         }
@@ -108,14 +113,13 @@ class MusicService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
 
-        notificationManager = NotificationManager(baseContext, io)
-
         mediaSession = MediaSessionCompat(this, "KanadeMediaSession").apply {
             setSessionActivity(null)
             setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
             this@MusicService.sessionToken = sessionToken
         }
 
+        notificationManager = NotificationManager(this, mediaSession, musicController)
         mediaSessionManager = MediaSessionManager(
             service = this,
             player = exoPlayer,
@@ -125,11 +129,8 @@ class MusicService : MediaBrowserServiceCompat() {
         )
 
         mediaSession.setCallback(mediaSessionManager.callback)
-        notificationManager.bindNotification(mediaSession, exoPlayer)
 
         updateProcess.start()
-
-        Timber.d("MusicService onCreate")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -142,6 +143,22 @@ class MusicService : MediaBrowserServiceCompat() {
 
         exoPlayer.stop()
         exoPlayer.release()
+    }
+
+    private fun updatePlaybackState() {
+        val playerState = when (musicController.playerState.value) {
+            PlayerState.Playing -> PlaybackStateCompat.STATE_PLAYING
+            PlayerState.Paused -> PlaybackStateCompat.STATE_PAUSED
+            PlayerState.Buffering -> PlaybackStateCompat.STATE_BUFFERING
+            else -> PlaybackStateCompat.STATE_NONE
+        }
+
+        val playbackState = PlaybackStateCompat.Builder()
+            .setActions(PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP or PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_FAST_FORWARD or PlaybackStateCompat.ACTION_REWIND)
+            .setState(playerState, exoPlayer.currentPosition, 1f)
+            .build()
+
+        mediaSession.setPlaybackState(playbackState)
     }
 
     companion object {
