@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +42,7 @@ fun LibraryTopBar(
     onClickMenu: () -> Unit,
     onClickSearch: () -> Unit,
     modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
     scrollBehavior: LibraryTopBarScrollBehavior? = null,
 ) {
     val yOffset = with(LocalDensity.current) {
@@ -66,7 +67,7 @@ fun LibraryTopBar(
                     onClickSearch.invoke()
                 }
                 .background(contentColor)
-                .padding(vertical = 4.dp, horizontal = 16.dp),
+                .padding(vertical = 5.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {

@@ -3,6 +3,7 @@ package caios.android.kanade.core.ui.music
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,7 +62,7 @@ fun MusicHolder(
                 width = Dimension.fillToConstraints
             },
             text = song.title,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -77,7 +78,7 @@ fun MusicHolder(
                 width = Dimension.fillToConstraints
             },
             text = song.artist,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -90,13 +91,13 @@ fun MusicHolder(
                 end.linkTo(menu.start, 16.dp)
             },
             text = song.durationString,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Icon(
             modifier = Modifier
-                .size(24.dp)
+                .size(32.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(50))
                 .constrainAs(menu) {
@@ -104,7 +105,8 @@ fun MusicHolder(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end, 16.dp)
                 }
-                .clickable { onClickMenu.invoke() },
+                .clickable { onClickMenu.invoke() }
+                .padding(4.dp),
             imageVector = Icons.Default.MoreVert,
             contentDescription = null,
         )

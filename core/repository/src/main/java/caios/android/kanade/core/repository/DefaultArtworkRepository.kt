@@ -72,7 +72,7 @@ class DefaultArtworkRepository @Inject constructor(
         if (uris.isEmpty()) {
             Timber.d("Don't necessarily to fetch artist artwork. [fetched=${registeredIds.size}]")
 
-            artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() }
+            applyArtistArtworks(artworkDao.loadArtists().associate { it.artistId!! to it.toArtwork() })
 
             return@withContext false
         }

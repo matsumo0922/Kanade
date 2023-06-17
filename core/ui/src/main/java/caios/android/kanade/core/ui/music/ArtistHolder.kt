@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +34,14 @@ fun ArtistHolder(
     Box(modifier.padding(4.dp)) {
         Card(
             modifier = Modifier.clickable { onClickHolder.invoke() },
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+                contentColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+            ),
         ) {
             Column(
+                modifier = Modifier.padding(bottom = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -44,7 +51,9 @@ fun ArtistHolder(
                 )
 
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .fillMaxWidth(),
                     text = artist.artist,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -53,10 +62,12 @@ fun ArtistHolder(
                 )
 
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .fillMaxWidth(),
                     text = stringResource(R.string.unit_song, artist.songs.size),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

@@ -1,23 +1,25 @@
 package caios.android.kanade.feature.artist.top
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.music.ArtistHolder
+import caios.android.kanade.core.ui.music.SortInfo
+import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
+import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 
 @Composable
 internal fun ArtistTopRoute(
@@ -27,10 +29,12 @@ internal fun ArtistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(screenState) {
+    AsyncLoadContents(screenState) { uiState ->
         ArtistTopScreen(
-            artists = it ?: emptyList(),
-            modifier = modifier,
+            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            artists = uiState?.artists ?: emptyList(),
+            sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
+            onClickSort = { /*TODO*/ },
             onClickArtist = viewModel::onNewPlay,
             contentPadding = PaddingValues(top = topMargin),
         )
@@ -40,25 +44,37 @@ internal fun ArtistTopRoute(
 @Composable
 internal fun ArtistTopScreen(
     artists: List<Artist>,
+    sortOrder: MusicOrder,
+    onClickSort: (MusicOrder) -> Unit,
     onClickArtist: (Artist) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
+    LazyVerticalGrid(
+        modifier = modifier,
         contentPadding = contentPadding,
+        columns = FixedWithEdgeSpace(
+            count = 3,
+            edgeSpace = 8.dp
+        ),
     ) {
-        items(
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            SortInfo(
+                sortOrder = sortOrder,
+                itemSize = artists.size,
+                onClickSort = onClickSort,
+            )
+        }
+
+        itemsWithEdgeSpace(
+            spanCount = 3,
             items = artists,
-            key = { it.artistId },
+            key = { artist -> artist.artistId }
         ) { artist ->
-            Text(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .clickable { onClickArtist.invoke(artist) },
-                text = artist.artist,
-                color = Color.Gray,
+            ArtistHolder(
+                modifier = Modifier.fillMaxWidth(),
+                artist = artist,
+                onClickHolder = { onClickArtist.invoke(artist) },
             )
         }
     }

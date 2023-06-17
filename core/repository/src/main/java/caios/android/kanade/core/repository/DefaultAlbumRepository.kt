@@ -36,7 +36,7 @@ class DefaultAlbumRepository @Inject constructor(
             album = songs.firstOrNull()?.album ?: "",
             albumId = albumId,
             songs = songs,
-            artwork = Artwork.Unknown,
+            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
         )
     }
 

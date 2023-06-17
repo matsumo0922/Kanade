@@ -16,6 +16,29 @@ data class MusicOrder(
 
         return if (order == Order.ASC) option else "$option DESC"
     }
+
+    companion object {
+        fun songDefault(): MusicOrder {
+            return MusicOrder(
+                order = Order.ASC,
+                musicOrderOption = MusicOrderOption.Song.NAME,
+            )
+        }
+
+        fun artistDefault(): MusicOrder {
+            return MusicOrder(
+                order = Order.ASC,
+                musicOrderOption = MusicOrderOption.Artist.NAME,
+            )
+        }
+
+        fun albumDefault(): MusicOrder {
+            return MusicOrder(
+                order = Order.ASC,
+                musicOrderOption = MusicOrderOption.Album.NAME,
+            )
+        }
+    }
 }
 
 sealed interface MusicOrderOption {

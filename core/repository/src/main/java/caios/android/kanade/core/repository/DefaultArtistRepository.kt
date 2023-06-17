@@ -37,7 +37,7 @@ class DefaultArtistRepository @Inject constructor(
             artist = songs.firstOrNull()?.artist ?: "",
             artistId = artistId,
             albums = albumRepository.splitIntoAlbums(songs, musicConfig),
-            artwork = Artwork.Unknown,
+            artwork = artworkRepository.artistArtworks[artistId] ?: Artwork.Unknown,
         )
     }
 
