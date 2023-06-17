@@ -25,6 +25,7 @@ import javax.inject.Inject
 
 class DefaultSongRepository @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val artworkRepository: ArtworkRepository,
 ) : SongRepository {
 
     private val cache = ConcurrentHashMap<Long, Song>()
@@ -113,9 +114,11 @@ class DefaultSongRepository @Inject constructor(
         }
     }
 
-    override fun applyArtwork(albumId: Long, artwork: Artwork) {
-        for (song in cache.values.filter { it.albumId == albumId }) {
-            cache[song.id] = song.copy(artwork = artwork)
+    override fun fetchArtwork() {
+        for ((albumId, artwork) in artworkRepository.albumArtworks) {
+            for (song in cache.values.filter { it.albumId == albumId }) {
+                cache[song.id] = song.copy(artwork = artwork)
+            }
         }
     }
 
@@ -164,7 +167,7 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = Artwork.Unknown,
+            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
         ).also {
             cache[id] = it
         }

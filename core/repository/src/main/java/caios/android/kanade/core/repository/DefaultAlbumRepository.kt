@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 class DefaultAlbumRepository @Inject constructor(
     private val songRepository: SongRepository,
+    private val artworkRepository: ArtworkRepository,
 ) : AlbumRepository {
 
     private val cache = ConcurrentHashMap<Long, Album>()
@@ -69,7 +70,7 @@ class DefaultAlbumRepository @Inject constructor(
                     album = songs.first().album,
                     albumId = albumId,
                     songs = songs,
-                    artwork = Artwork.Unknown,
+                    artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
                 ).also {
                     cache[albumId] = it
                 }
@@ -78,8 +79,10 @@ class DefaultAlbumRepository @Inject constructor(
         return albumsSort(albums, musicConfig)
     }
 
-    override fun applyArtwork(albumId: Long, artwork: Artwork) {
-        cache[albumId] = cache[albumId]?.copy(artwork = artwork) ?: return
+    override fun fetchArtwork() {
+        for ((albumId, artwork) in artworkRepository.albumArtworks) {
+            cache[albumId] = cache[albumId]?.copy(artwork = artwork) ?: continue
+        }
     }
 
     override fun albumsSort(albums: List<Album>, musicConfig: MusicConfig): List<Album> {

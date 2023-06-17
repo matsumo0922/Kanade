@@ -2,7 +2,6 @@ package caios.android.kanade.core.repository
 
 import android.database.Cursor
 import caios.android.kanade.core.model.Order
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
@@ -26,6 +25,6 @@ interface SongRepository {
         vararg musicOrders: MusicOrder = arrayOf(MusicOrder(Order.ASC, MusicOrderOption.Song.NAME)),
     ): Cursor?
 
-    fun applyArtwork(albumId: Long, artwork: Artwork)
+    fun fetchArtwork()
     fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song>
 }

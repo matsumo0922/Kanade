@@ -3,6 +3,7 @@ package caios.android.kanade.core.music
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.ShuffleMode
+import caios.android.kanade.core.repository.MusicRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -32,10 +33,12 @@ interface QueueManager {
     fun clear()
 }
 
-class QueueManagerImpl @Inject constructor() : QueueManager {
+class QueueManagerImpl @Inject constructor(
+    private val musicRepository: MusicRepository
+) : QueueManager {
 
-    private val _currentQueue = MutableStateFlow(mutableListOf<Song>())
-    private val _originalQueue = MutableStateFlow(mutableListOf<Song>())
+    private val _currentQueue = MutableStateFlow(mutableListOf<Long>())
+    private val _originalQueue = MutableStateFlow(mutableListOf<Long>())
     private val _index = MutableStateFlow(0)
 
     @get:JvmName("currentQueueValue")
@@ -48,26 +51,31 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
     private val index get() = _index.value
 
     override val queue: Flow<Queue>
-        get() = combine(_currentQueue, _index, ::Queue)
+        get() = combine(_currentQueue, _index) { queue, index ->
+            Queue(
+                items = queue.mapNotNull { musicRepository.getSong(it) },
+                index = index,
+            )
+        }
 
     override fun skipToNext(): Song {
         _index.value = if (currentQueue.size > index + 1) index + 1 else 0
-        return currentQueue[index]
+        return musicRepository.getSong(currentQueue[index])!!
     }
 
     override fun skipToPrevious(): Song {
         _index.value = if (index - 1 >= 0) index - 1 else currentQueue.size - 1
-        return currentQueue[index]
+        return musicRepository.getSong(currentQueue[index])!!
     }
 
     override fun skipToItem(toIndex: Int): Song {
         _index.value = toIndex
-        return currentQueue[index]
+        return musicRepository.getSong(currentQueue[index])!!
     }
 
     override fun addItem(index: Int, song: Song) {
-        _currentQueue.value.add(index, song)
-        _originalQueue.value.add(song)
+        _currentQueue.value.add(index, song.id)
+        _originalQueue.value.add(song.id)
         _index.value = if (index <= this.index) this.index + 1 else this.index
     }
 
@@ -105,19 +113,19 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
     }
 
     override fun setCurrentSong(song: Song) {
-        _index.value = currentQueue.indexOf(song)
+        _index.value = currentQueue.indexOf(song.id)
     }
 
     override fun getCurrentSong(): Song? {
-        return currentQueue.elementAtOrNull(index)
+        return currentQueue.elementAtOrNull(index)?.let { musicRepository.getSong(it) }
     }
 
     override fun getCurrentQueue(): List<Song> {
-        return currentQueue.toList()
+        return currentQueue.mapNotNull { musicRepository.getSong(it) }
     }
 
     override fun getOriginalQueue(): List<Song> {
-        return originalQueue.toList()
+        return originalQueue.mapNotNull { musicRepository.getSong(it) }
     }
 
     override fun getIndex(): Int {
@@ -127,8 +135,8 @@ class QueueManagerImpl @Inject constructor() : QueueManager {
     override fun build(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
         Timber.d("build: current=${currentQueue.size}, originalQueue=${originalQueue.size}, index=$index")
 
-        _currentQueue.value = currentQueue.toMutableList()
-        _originalQueue.value = originalQueue.toMutableList()
+        _currentQueue.value = currentQueue.map { it.id }.toMutableList()
+        _originalQueue.value = originalQueue.map { it.id }.toMutableList()
         _index.value = index
     }
 

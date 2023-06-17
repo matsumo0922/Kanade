@@ -1,7 +1,6 @@
 package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.model.music.Album
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 
@@ -16,6 +15,6 @@ interface AlbumRepository {
     suspend fun albums(query: String, musicConfig: MusicConfig): List<Album>
 
     fun splitIntoAlbums(songs: List<Song>, musicConfig: MusicConfig): List<Album>
-    fun applyArtwork(albumId: Long, artwork: Artwork)
+    fun fetchArtwork()
     fun albumsSort(albums: List<Album>, musicConfig: MusicConfig): List<Album>
 }

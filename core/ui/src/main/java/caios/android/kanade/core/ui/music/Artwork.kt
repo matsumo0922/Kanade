@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -52,9 +51,7 @@ private fun ArtworkFromWeb(
     modifier: Modifier = Modifier,
 ) {
     AsyncImage(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(1f),
+        modifier = modifier.aspectRatio(1f),
         model = artwork.url,
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -67,9 +64,7 @@ private fun ArtworkFromMediaStore(
     modifier: Modifier,
 ) {
     AsyncImage(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(1f),
+        modifier = modifier.aspectRatio(1f),
         model = artwork.uri,
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -79,9 +74,7 @@ private fun ArtworkFromMediaStore(
 @Composable
 private fun ArtworkFromUnknown(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(1f),
+        modifier = modifier.aspectRatio(1f),
         painter = painterResource(R.drawable.im_default_artwork),
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -110,7 +103,6 @@ private fun ArtworkFromInternal(
 
     BoxWithConstraints(
         modifier = modifier
-            .fillMaxSize()
             .aspectRatio(1f)
             .background(backgroundColor)
             .clipToBounds(),

@@ -55,11 +55,15 @@ class NotificationManager(
             song = musicController.currentSong.first(),
         )
 
-        if (isForeground) {
-            service.startForeground(NOTIFY_ID, notification)
-        } else {
-            manager.notify(NOTIFY_ID, notification)
-            service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+        try {
+            if (isForeground) {
+                service.startForeground(NOTIFY_ID, notification)
+            } else {
+                manager.notify(NOTIFY_ID, notification)
+                service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+            }
+        } catch (e: Throwable) {
+            Timber.e(e, "cannot set foreground service.")
         }
     }
 

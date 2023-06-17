@@ -83,10 +83,13 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun fetchArtistArtwork() {
         artworkRepository.fetchArtistArtwork(artists)
+        artistRepository.fetchArtwork()
     }
 
     override suspend fun fetchAlbumArtwork() {
         artworkRepository.fetchAlbumArtwork(albums)
+        songRepository.fetchArtwork()
+        albumRepository.fetchArtwork()
     }
 
     override suspend fun setShuffleMode(mode: ShuffleMode) {

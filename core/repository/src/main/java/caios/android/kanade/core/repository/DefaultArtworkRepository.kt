@@ -18,11 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultArtworkRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val artworkDao: ArtworkDao,
-    private val songRepository: SongRepository,
-    private val artistRepository: ArtistRepository,
-    private val albumRepository: AlbumRepository,
+    @ApplicationContext private val context: Context,
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ArtworkRepository {
 
@@ -137,20 +134,11 @@ class DefaultArtworkRepository @Inject constructor(
     private fun applyArtistArtworks(artworks: Map<Long, Artwork>) {
         _artistArtwork.clear()
         _artistArtwork.putAll(artworks)
-
-        for ((artistId, artwork) in artworks) {
-            artistRepository.applyArtwork(artistId, artwork)
-        }
     }
 
     private fun applyAlbumArtworks(artworks: Map<Long, Artwork>) {
         _albumArtwork.clear()
         _albumArtwork.putAll(artworks)
-
-        for ((albumId, artwork) in artworks) {
-            songRepository.applyArtwork(albumId, artwork)
-            albumRepository.applyArtwork(albumId, artwork)
-        }
     }
 
     private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri? {

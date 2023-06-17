@@ -34,7 +34,9 @@ class MusicModule {
 
     @Provides
     @Singleton
-    fun provideQueueManager(): QueueManager {
-        return QueueManagerImpl()
+    fun provideQueueManager(
+        musicRepository: MusicRepository,
+    ): QueueManager {
+        return QueueManagerImpl(musicRepository)
     }
 }
