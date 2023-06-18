@@ -1,10 +1,7 @@
 android {
     signingConfigs {
         def localProperties = new Properties()
-
-        if (project.rootProject.file('local.properties').exists()) {
-            localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-        }
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
         debug {
             storeFile = file("${project.rootDir}/gradle/keystore/debug.keystore")

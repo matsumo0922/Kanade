@@ -45,6 +45,9 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
 
+      - name: Create local.properties
+        run: echo > local.properties
+
       - name: Run detekt and merge reports
         id: detekt
         continue-on-error: true
@@ -68,4 +71,4 @@ jobs:
 
       - name: Save Result
         if: success() || failure()
-        run: echo "detekt=${{ steps.detekt.outcome }}" >> $GITHUB_ENV
+        run: echo detekt=${{ steps.detekt.outcome }} >> $GITHUB_ENV

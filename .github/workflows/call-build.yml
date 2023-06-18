@@ -46,10 +46,13 @@ jobs:
       - name: Create release keystore
         run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 -d > gradle/keystore/release.jks
 
+      - name: Create local.properties
+        run: echo > local.properties
+
       - name: Build app
         id: build
         run: ./gradlew :app:assembleDebug
 
       - name: Save Result
         if: success() || failure()
-        run: echo "build=${{ steps.build.outcome }}" >> $GITHUB_ENV
+        run: echo build=${{ steps.build.outcome }} >> $GITHUB_ENV
