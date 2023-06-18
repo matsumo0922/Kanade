@@ -4,6 +4,7 @@ package caios.android.kanade.core.design.component
 
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -15,14 +16,19 @@ import caios.android.kanade.core.design.theme.LocalBackgroundTheme
 @Composable
 fun KanadeBackground(
     modifier: Modifier = Modifier,
+    backgroundColor: Color? = null,
     content: @Composable () -> Unit,
 ) {
-    val color = LocalBackgroundTheme.current.color
-    val tonalElevation = LocalBackgroundTheme.current.tonalElevation
+    val localColor = LocalBackgroundTheme.current.color
+    val localTotalElevation = LocalBackgroundTheme.current.tonalElevation
+
+    val color = if (localColor == Color.Unspecified) Color.Transparent else localColor
+    val totalElevation = if (localTotalElevation == Dp.Unspecified) 0.dp else localTotalElevation
 
     Surface(
-        color = if (color == Color.Unspecified) Color.Transparent else color,
-        tonalElevation = if (tonalElevation == Dp.Unspecified) 0.dp else tonalElevation,
+        color = backgroundColor ?: color,
+        contentColor = contentColorFor(color),
+        tonalElevation = totalElevation,
         modifier = modifier,
     ) {
         CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {

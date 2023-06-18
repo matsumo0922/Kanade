@@ -43,6 +43,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.design.component.rememberLibraryTopBarScrollState
+import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
@@ -57,6 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun KanadeApp(
     musicViewModel: MusicViewModel,
+    userData: UserData?,
     windowSize: WindowSizeClass,
     modifier: Modifier = Modifier,
     appState: KanadeAppState = rememberKanadeAppState(windowSize),
@@ -178,6 +180,7 @@ fun KanadeApp(
                         KanadeNavHost(
                             musicViewModel = musicViewModel,
                             appState = appState,
+                            userData = userData,
                             libraryTopBarHeight = with(density) { topBarHeight.toDp() },
                         )
                     }

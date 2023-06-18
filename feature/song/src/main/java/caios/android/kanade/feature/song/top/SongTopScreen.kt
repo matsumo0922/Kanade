@@ -26,6 +26,7 @@ internal fun SongTopRoute(
     topMargin: Dp,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
+    navigateToSongMenu: (Song) -> Unit,
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -37,7 +38,7 @@ internal fun SongTopRoute(
             contentPadding = PaddingValues(top = topMargin),
             onClickSort = { /*TODO*/ },
             onClickSong = viewModel::onNewPlay,
-            onClickMenu = { /*TODO*/ },
+            onClickMenu = navigateToSongMenu,
             onClickHistory = { /*TODO*/ },
             onClickRecentlyAdd = { /*TODO*/ },
             onClickMostPlayed = { /*TODO*/ },

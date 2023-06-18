@@ -59,6 +59,20 @@
     <string name="controller_menu_analyze">音楽情報を解析</string>
     <string name="controller_menu_detail_info">詳細情報</string>
 
+    <!-- Menu -->
+    <string name="menu_play_next">次に再生</string>
+    <string name="menu_play_only">この曲だけ再生</string>
+    <string name="menu_add_to_queue">再生待ちリストに追加</string>
+    <string name="menu_add_to_playlist">プレイリストに追加</string>
+    <string name="menu_artist">アーティスト</string>
+    <string name="menu_album">アルバム</string>
+    <string name="menu_analyze">音楽情報を解析</string>
+    <string name="menu_edit">音楽情報を編集</string>
+    <string name="menu_lyrics">歌詞</string>
+    <string name="menu_detail_info">詳細情報</string>
+    <string name="menu_share">共有</string>
+    <string name="menu_delete">デバイスから削除</string>
+
     <!-- Song -->
     <string name="song_header_history">履歴</string>
     <string name="song_header_recently_add">最近の追加</string>
