@@ -25,12 +25,16 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
 import caios.android.kanade.feature.menu.MenuItemSection
 
@@ -53,6 +57,8 @@ private fun SongMenuDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -70,19 +76,31 @@ private fun SongMenuDialog(
         MenuItemSection(
             titleRes = R.string.menu_play_next,
             imageVector = Icons.Default.DoubleArrow,
-            onClick = onClickPlayNext,
+            onClick = {
+                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                onDismiss.invoke()
+                onClickPlayNext.invoke()
+            },
         )
 
         MenuItemSection(
             titleRes = R.string.menu_play_only,
             imageVector = Icons.Default.NavigateNext,
-            onClick = onClickPlayOnly,
+            onClick = {
+                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                onDismiss.invoke()
+                onClickPlayOnly.invoke()
+            },
         )
 
         MenuItemSection(
             titleRes = R.string.menu_add_to_queue,
             imageVector = Icons.Default.LibraryAdd,
-            onClick = onClickAddToQueue,
+            onClick = {
+                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                onDismiss.invoke()
+                onClickAddToQueue.invoke()
+            },
         )
 
         MenuItemSection(
@@ -186,15 +204,34 @@ private fun SongMenuDialog(
     }
 }
 
-fun Activity.showSongMenuDialog(userData: UserData?, song: Song) {
-    showAsButtonSheet(userData) {
+fun Activity.showSongMenuDialog(
+    musicViewModel: MusicViewModel,
+    userData: UserData?,
+    song: Song,
+) {
+    showAsButtonSheet(userData) { onDismiss ->
         SongMenuDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             song = song,
             onClickFavorite = { /*TODO*/ },
-            onClickPlayNext = { /*TODO*/ },
-            onClickPlayOnly = { /*TODO*/ },
-            onClickAddToQueue = { /*TODO*/ },
+            onClickPlayNext = {
+                musicViewModel.addToQueue(
+                    songs = listOf(song),
+                    index = musicViewModel.uiState.queueIndex + 1,
+                )
+            },
+            onClickPlayOnly = {
+                musicViewModel.playerEvent(
+                    PlayerEvent.NewPlay(
+                        index = 0,
+                        queue = listOf(song),
+                        playWhenReady = true,
+                    ),
+                )
+            },
+            onClickAddToQueue = {
+                musicViewModel.addToQueue(listOf(song))
+            },
             onClickAddToPlaylist = { /*TODO*/ },
             onClickArtist = { /*TODO*/ },
             onClickAlbum = { /*TODO*/ },
@@ -204,7 +241,7 @@ fun Activity.showSongMenuDialog(userData: UserData?, song: Song) {
             onClickMusicDetailInfo = { /*TODO*/ },
             onClickShare = { /*TODO*/ },
             onClickDelete = { /*TODO*/ },
-            onDismiss = { /*TODO*/ },
+            onDismiss = onDismiss,
         )
     }
 }

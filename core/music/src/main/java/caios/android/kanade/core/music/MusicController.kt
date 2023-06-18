@@ -49,6 +49,8 @@ interface MusicController {
     fun setPlayerItem(item: MediaMetadata)
     fun setPlayerPosition(position: Long)
 
+    fun addToQueue(songs: List<Song>, index: Int? = null)
+
     fun playerEvent(event: PlayerEvent)
 }
 
@@ -187,6 +189,10 @@ class MusicControllerImpl @Inject constructor(
                 musicRepository.saveProgress(position)
             }
         }
+    }
+
+    override fun addToQueue(songs: List<Song>, index: Int?) {
+        queueManager.addItems(index ?: currentQueue.value?.items?.size ?: 0, songs)
     }
 
     override fun playerEvent(event: PlayerEvent) {

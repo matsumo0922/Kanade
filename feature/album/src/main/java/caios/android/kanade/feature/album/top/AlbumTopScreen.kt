@@ -20,6 +20,9 @@ import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun AlbumTopRoute(
@@ -32,7 +35,7 @@ internal fun AlbumTopRoute(
     AsyncLoadContents(screenState) { uiState ->
         AlbumTopScreen(
             modifier = modifier.background(MaterialTheme.colorScheme.surface),
-            albums = uiState?.albums ?: emptyList(),
+            albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.albumDefault(),
             onClickSort = { /*TODO*/ },
             onClickAlbum = viewModel::onNewPlay,
@@ -45,7 +48,7 @@ internal fun AlbumTopRoute(
 
 @Composable
 internal fun AlbumTopScreen(
-    albums: List<Album>,
+    albums: ImmutableList<Album>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
     onClickAlbum: (Album) -> Unit,

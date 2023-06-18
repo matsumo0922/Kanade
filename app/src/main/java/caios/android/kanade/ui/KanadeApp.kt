@@ -51,10 +51,11 @@ import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
-@Suppress("ModifierMissing")
+@Suppress("SwallowedException")
 @Composable
 fun KanadeApp(
     musicViewModel: MusicViewModel,
@@ -113,7 +114,7 @@ fun KanadeApp(
                             .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
                             .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffsetRate))
                             .alpha(bottomSheetOffsetRate),
-                        destination = appState.libraryDestinations,
+                        destination = appState.libraryDestinations.toImmutableList(),
                         onNavigateToDestination = appState::navigateToLibrary,
                         currentDestination = appState.currentDestination,
                     )

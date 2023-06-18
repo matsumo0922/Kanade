@@ -20,6 +20,9 @@ import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.MusicHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.feature.song.top.items.SongTopHeaderSection
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun SongTopRoute(
@@ -33,7 +36,7 @@ internal fun SongTopRoute(
     AsyncLoadContents(screenState) { uiState ->
         SongTopScreen(
             modifier = modifier.background(MaterialTheme.colorScheme.surface),
-            songs = uiState?.songs ?: emptyList(),
+            songs = uiState?.songs?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.songDefault(),
             contentPadding = PaddingValues(top = topMargin),
             onClickSort = { /*TODO*/ },
@@ -49,7 +52,7 @@ internal fun SongTopRoute(
 
 @Composable
 internal fun SongTopScreen(
-    songs: List<Song>,
+    songs: ImmutableList<Song>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
     onClickSong: (Int, List<Song>) -> Unit,

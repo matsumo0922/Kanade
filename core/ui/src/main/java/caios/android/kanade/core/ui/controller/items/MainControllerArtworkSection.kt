@@ -23,11 +23,13 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun MainControllerArtworkSection(
-    songs: List<Song>,
+    songs: ImmutableList<Song>,
     index: Int,
     onSwipeArtwork: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -91,7 +93,7 @@ internal fun MainControllerArtworkSection(
 private fun MainControllerArtworkSectionPreview() {
     KanadeBackground(Modifier.wrapContentSize()) {
         MainControllerArtworkSection(
-            songs = Song.dummies(10),
+            songs = Song.dummies(10).toImmutableList(),
             index = 3,
             onSwipeArtwork = { },
         )

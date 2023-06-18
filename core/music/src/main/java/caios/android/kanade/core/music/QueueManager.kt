@@ -18,6 +18,7 @@ interface QueueManager {
     fun skipToItem(toIndex: Int): Song
 
     fun addItem(index: Int, song: Song)
+    fun addItems(index: Int, songs: List<Song>)
     fun removeItem(index: Int)
     fun moveItem(fromIndex: Int, toIndex: Int)
 
@@ -77,6 +78,12 @@ class QueueManagerImpl @Inject constructor(
         _currentQueue.value.add(index, song.id)
         _originalQueue.value.add(song.id)
         _index.value = if (index <= this.index) this.index + 1 else this.index
+    }
+
+    override fun addItems(index: Int, songs: List<Song>) {
+        _currentQueue.value.addAll(index, songs.map { it.id })
+        _originalQueue.value.addAll(songs.map { it.id })
+        _index.value = if (index <= this.index) this.index + songs.size else this.index
     }
 
     override fun removeItem(index: Int) {

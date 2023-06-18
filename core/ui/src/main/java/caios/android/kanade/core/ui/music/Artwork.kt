@@ -61,7 +61,7 @@ private fun ArtworkFromWeb(
 @Composable
 private fun ArtworkFromMediaStore(
     artwork: Artwork.MediaStore,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     AsyncImage(
         modifier = modifier.aspectRatio(1f),
@@ -84,7 +84,7 @@ private fun ArtworkFromUnknown(modifier: Modifier = Modifier) {
 @Composable
 private fun ArtworkFromInternal(
     artwork: Artwork.Internal,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
 

@@ -64,6 +64,10 @@ class MusicViewModel @Inject constructor(
     fun playerEvent(event: PlayerEvent) {
         musicController.playerEvent(event)
     }
+
+    fun addToQueue(songs: List<Song>, index: Int? = null) {
+        musicController.addToQueue(songs, index)
+    }
 }
 
 @Stable

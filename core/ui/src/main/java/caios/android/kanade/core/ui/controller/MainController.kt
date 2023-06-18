@@ -24,6 +24,7 @@ import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonS
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainController(
@@ -76,7 +77,7 @@ fun MainController(
                 .padding(bottom = 12.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            songs = uiState.queueItems,
+            songs = uiState.queueItems.toImmutableList(),
             index = uiState.queueIndex,
             onSwipeArtwork = { },
         )

@@ -14,10 +14,11 @@ import caios.android.kanade.core.design.component.KanadeNavigationDefaults
 import caios.android.kanade.core.design.icon.Icon
 import caios.android.kanade.navigation.LibraryDestination
 import caios.android.kanade.navigation.isLibraryDestinationInHierarchy
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun KanadeBottomBar(
-    destination: List<LibraryDestination>,
+    destination: ImmutableList<LibraryDestination>,
     onNavigateToDestination: (LibraryDestination) -> Unit,
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,

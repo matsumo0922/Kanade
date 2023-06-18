@@ -72,6 +72,8 @@
     <string name="menu_detail_info">詳細情報</string>
     <string name="menu_share">共有</string>
     <string name="menu_delete">デバイスから削除</string>
+    <string name="menu_toast_add_to_queue">再生待ちリストに追加しました</string>
+    <string name="menu_toast_add_to_playlist">プレイリストに追加しました</string>
 
     <!-- Song -->
     <string name="song_header_history">履歴</string>
