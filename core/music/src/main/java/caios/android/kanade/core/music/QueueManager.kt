@@ -34,7 +34,7 @@ interface QueueManager {
 }
 
 class QueueManagerImpl @Inject constructor(
-    private val musicRepository: MusicRepository
+    private val musicRepository: MusicRepository,
 ) : QueueManager {
 
     private val _currentQueue = MutableStateFlow(mutableListOf<Long>())

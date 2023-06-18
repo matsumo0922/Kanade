@@ -61,7 +61,7 @@ fun KanadeApp(
     modifier: Modifier = Modifier,
     appState: KanadeAppState = rememberKanadeAppState(windowSize),
 ) {
-    KanadeBackground {
+    KanadeBackground(Modifier.fillMaxSize()) {
         val density = LocalDensity.current
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 

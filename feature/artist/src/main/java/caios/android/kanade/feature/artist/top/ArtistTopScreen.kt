@@ -55,7 +55,7 @@ internal fun ArtistTopScreen(
         contentPadding = contentPadding,
         columns = FixedWithEdgeSpace(
             count = 3,
-            edgeSpace = 8.dp
+            edgeSpace = 8.dp,
         ),
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -69,7 +69,7 @@ internal fun ArtistTopScreen(
         itemsWithEdgeSpace(
             spanCount = 3,
             items = artists,
-            key = { artist -> artist.artistId }
+            key = { artist -> artist.artistId },
         ) { artist ->
             ArtistHolder(
                 modifier = Modifier.fillMaxWidth(),

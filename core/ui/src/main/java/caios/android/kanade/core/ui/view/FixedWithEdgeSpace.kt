@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 
 class FixedWithEdgeSpace(
     private val count: Int,
-    private val edgeSpace: Dp = 0.dp
+    private val edgeSpace: Dp = 0.dp,
 ) : GridCells {
 
     init {

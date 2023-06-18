@@ -16,7 +16,7 @@ inline fun <T> LazyGridScope.itemsWithEdgeSpace(
     noinline key: ((item: T) -> Any)? = null,
     noinline span: (LazyGridItemSpanScope.(item: T) -> GridItemSpan)? = null,
     noinline contentType: (item: T) -> Any? = { null },
-    crossinline itemContent: @Composable LazyGridItemScope.(item: T) -> Unit
+    crossinline itemContent: @Composable LazyGridItemScope.(item: T) -> Unit,
 ) {
     require(spanCount > 0)
 
@@ -28,7 +28,7 @@ inline fun <T> LazyGridScope.itemsWithEdgeSpace(
 
         val childItems = items.subList(
             index * spanCount,
-            minOf(index * spanCount + spanCount, itemSize)
+            minOf(index * spanCount + spanCount, itemSize),
         )
         items(childItems, key, span, contentType, itemContent)
 

@@ -2,7 +2,6 @@
 
 package caios.android.kanade.core.design.component
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -24,7 +23,7 @@ fun KanadeBackground(
     Surface(
         color = if (color == Color.Unspecified) Color.Transparent else color,
         tonalElevation = if (tonalElevation == Dp.Unspecified) 0.dp else tonalElevation,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
     ) {
         CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
             content()

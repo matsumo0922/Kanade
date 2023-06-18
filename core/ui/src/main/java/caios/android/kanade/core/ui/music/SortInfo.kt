@@ -28,7 +28,7 @@ fun SortInfo(
     sortOrder: MusicOrder,
     itemSize: Int,
     onClickSort: (MusicOrder) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.padding(vertical = 16.dp, horizontal = 16.dp),
@@ -44,7 +44,7 @@ fun SortInfo(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Icon(

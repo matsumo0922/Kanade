@@ -76,7 +76,7 @@ internal fun SongTopHeaderSection(
             imageVector = Icons.Default.TrendingUp,
             tintColor = Green60,
             backgroundColor = Green80.copy(alpha = 0.2f),
-            onClick = onClickMostPlayed
+            onClick = onClickMostPlayed,
         )
 
         ImageButton(

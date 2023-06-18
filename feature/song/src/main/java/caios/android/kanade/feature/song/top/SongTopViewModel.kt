@@ -30,7 +30,7 @@ class SongTopViewModel @Inject constructor(
             SongTopUiState(
                 songs = musicRepository.sortedSongs(it),
                 sortOrder = it.songOrder,
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,

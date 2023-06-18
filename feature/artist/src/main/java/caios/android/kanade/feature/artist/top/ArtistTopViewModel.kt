@@ -30,10 +30,10 @@ class ArtistTopViewModel @Inject constructor(
         Timber.d("ArtistTopViewModel: ${musicRepository.sortedArtists(it).filter { it.artwork is Artwork.Unknown }.size}")
 
         ScreenState.Idle(
-            ArtistUiState(
+            ArtistTopUiState(
                 artists = musicRepository.sortedArtists(it),
                 sortOrder = it.artistOrder,
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -53,7 +53,7 @@ class ArtistTopViewModel @Inject constructor(
 }
 
 @Stable
-data class ArtistUiState(
+data class ArtistTopUiState(
     val artists: List<Artist>,
     val sortOrder: MusicOrder,
 )
