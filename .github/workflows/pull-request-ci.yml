@@ -31,9 +31,6 @@ jobs:
       ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    env:
-      DETEKT_RESULT: ${{ needs.Lint.outputs.detekt }}
-      BUILD_RESULT: ${{ needs.Build.outputs.build }}
     steps:
       - name: Notify to LINE
         uses: snow-actions/line-notify@v1.1.0
@@ -42,7 +39,7 @@ jobs:
           message: |
             Pull Request CI #${{ github.event.number }} has been completed.
 
-            - Lint: ${{ env.DETEKT_RESULT }}
-            - Build: ${{ env.BUILD_RESULT }}
+            - Lint: ${{ needs.Lint.outputs.detekt }}
+            - Build: ${{ needs.Build.outputs.build }}
 
             ${{ github.event.pull_request.html_url }}
