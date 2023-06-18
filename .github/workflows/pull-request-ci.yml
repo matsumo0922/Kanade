@@ -29,7 +29,20 @@ jobs:
         Lint,
         Build,
       ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       DETEKT_RESULT: ${{ needs.Lint.outputs.detekt }}
       BUILD_RESULT: ${{ needs.Build.outputs.build }}
-    uses: ./.github/workflows/call-notification.yml
+    steps:
+      - name: Notify to LINE
+        uses: snow-actions/line-notify@v1.1.0
+        with:
+          access_token: ${{ secrets.LINE_NOTIFY_ACCESS_TOKEN }}
+          message: |
+            Pull Request CI #${{ github.event.number }} has been completed.
+
+            - Lint: ${{ env.DETEKT_RESULT }}
+            - Build: ${{ env.BUILD_RESULT }}
+
+            ${{ github.event.pull_request.html_url }}
