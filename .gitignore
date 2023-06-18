@@ -25,7 +25,7 @@ local.properties
 .DS_Store
 
 # Keystore
-gradle/keystore/
+gradle/keystore/release.jks
 
 # IDEA/Android Studio project files, because
 # the project can be imported from settings.gradle.kts
@@ -40,3 +40,6 @@ _sandbox
 
 # Android Studio captures folder
 captures/
+
+# Room schema
+core/database/schemas

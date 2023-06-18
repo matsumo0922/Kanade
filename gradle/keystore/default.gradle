@@ -1,0 +1,16 @@
+android {
+    signingConfigs {
+        def localProperties = new Properties()
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        debug {
+            storeFile = file("${project.rootDir}/gradle/keystore/debug.keystore")
+        }
+        release {
+            storeFile = file("${project.rootDir}/gradle/keystore/release.jks")
+            storePassword = localProperties["storePassword"] ?: System.getenv("storePassword")
+            keyPassword = localProperties["keyPassword"] ?: System.getenv("storePassword")
+            keyAlias = localProperties["keyAlias"] ?: System.getenv("keyAlias")
+        }
+    }
+}

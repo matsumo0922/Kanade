@@ -58,7 +58,7 @@ protobufPlugin = "0.9.3"
 
 # Others
 dagger = "2.46.1"
-ktor = "2.3.0"
+ktor = "2.3.1"
 detekt = "1.22.0"
 balloon = "1.5.3"
 twitterComposeRule = "0.0.26"

@@ -13,6 +13,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
@@ -21,6 +22,11 @@ android {
             applicationIdSuffix = ".debug"
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    lint {
+        // Error: MusicService must extend android.app.Service [Instantiatable]
+        disable.add("Instantiatable")
     }
 }
 
@@ -70,3 +76,5 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
+
+plugins.apply("com.google.gms.google-services")
