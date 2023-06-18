@@ -31,7 +31,7 @@ internal fun SongMenuHeader(
     song: Song,
     isFavorite: Boolean,
     onClickFavorite: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier) {
         val (artwork, title, artist, duration, favorite) = createRefs()
@@ -48,7 +48,7 @@ internal fun SongMenuHeader(
                 start.linkTo(parent.start, 16.dp)
                 bottom.linkTo(parent.bottom, 16.dp)
             },
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(4.dp),
         ) {
             Artwork(
                 modifier = Modifier.size(48.dp),

@@ -56,7 +56,7 @@ private fun SongMenuDialog(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .navigationBarsPadding()
+            .navigationBarsPadding(),
     ) {
         SongMenuHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -99,7 +99,7 @@ private fun SongMenuDialog(
                 .padding(
                     top = 8.dp,
                     bottom = 8.dp,
-                    start = 54.dp
+                    start = 54.dp,
                 ),
         )
 
@@ -126,7 +126,7 @@ private fun SongMenuDialog(
                 .padding(
                     top = 8.dp,
                     bottom = 8.dp,
-                    start = 54.dp
+                    start = 54.dp,
                 ),
         )
 
@@ -191,19 +191,19 @@ fun Activity.showSongMenuDialog(userData: UserData?, song: Song) {
         SongMenuDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             song = song,
-            onClickFavorite = { /*TODO*/},
+            onClickFavorite = { /*TODO*/ },
             onClickPlayNext = { /*TODO*/ },
             onClickPlayOnly = { /*TODO*/ },
             onClickAddToQueue = { /*TODO*/ },
-            onClickAddToPlaylist = { /*TODO*/},
-            onClickArtist = { /*TODO*/},
-            onClickAlbum = { /*TODO*/},
-            onClickAnalyzeMusicInfo = { /*TODO*/},
-            onClickEditMusicInfo = { /*TODO*/},
-            onClickLyrics = { /*TODO*/},
-            onClickMusicDetailInfo = { /*TODO*/},
-            onClickShare = { /*TODO*/},
-            onClickDelete = { /*TODO*/},
+            onClickAddToPlaylist = { /*TODO*/ },
+            onClickArtist = { /*TODO*/ },
+            onClickAlbum = { /*TODO*/ },
+            onClickAnalyzeMusicInfo = { /*TODO*/ },
+            onClickEditMusicInfo = { /*TODO*/ },
+            onClickLyrics = { /*TODO*/ },
+            onClickMusicDetailInfo = { /*TODO*/ },
+            onClickShare = { /*TODO*/ },
+            onClickDelete = { /*TODO*/ },
             onDismiss = { /*TODO*/ },
         )
     }

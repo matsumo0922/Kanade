@@ -44,7 +44,7 @@ fun KanadeNavHost(
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
-            navigateToSongMenu = { activity.showSongMenuDialog(userData, it) } ,
+            navigateToSongMenu = { activity.showSongMenuDialog(userData, it) },
         )
 
         artistTopScreen(

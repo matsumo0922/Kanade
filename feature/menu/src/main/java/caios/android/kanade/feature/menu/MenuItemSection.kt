@@ -25,7 +25,7 @@ internal fun MenuItemSection(
 ) {
     Row(
         modifier = modifier.clickable { onClick.invoke() },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier

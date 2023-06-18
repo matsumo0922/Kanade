@@ -29,7 +29,7 @@ class AlbumTopViewModel @Inject constructor(
             AlbumTopUiState(
                 albums = musicRepository.albums,
                 sortOrder = it.albumOrder,
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,

@@ -36,7 +36,7 @@ private fun BottomSheetWrapper(
     parent: ViewGroup,
     composeView: ComposeView,
     modifier: Modifier = Modifier,
-    content: @Composable (() -> Unit) -> Unit
+    content: @Composable (() -> Unit) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
@@ -53,7 +53,7 @@ private fun BottomSheetWrapper(
                     modalBottomSheetState.hide()
                 }
             }
-        }
+        },
     ) {}
 
     BackHandler {
@@ -93,7 +93,7 @@ fun Activity.showAsButtonSheet(
 
             KanadeTheme(
                 shouldUseDarkTheme = shouldUseDarkTheme,
-                enableDynamicTheme = userData?.useDynamicColor ?: false
+                enableDynamicTheme = userData?.useDynamicColor ?: false,
             ) {
                 KanadeBackground(
                     modifier = Modifier.fillMaxWidth(),

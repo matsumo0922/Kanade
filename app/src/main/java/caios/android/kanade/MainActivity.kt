@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     KanadeApp(
                         musicViewModel = musicViewModel,
                         userData = userData,
-                        windowSize = calculateWindowSizeClass (this),
+                        windowSize = calculateWindowSizeClass(this),
                     )
                 }
             }

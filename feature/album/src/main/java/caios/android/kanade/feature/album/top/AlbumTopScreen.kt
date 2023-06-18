@@ -37,7 +37,7 @@ internal fun AlbumTopRoute(
             onClickSort = { /*TODO*/ },
             onClickAlbum = viewModel::onNewPlay,
             onClickPlay = viewModel::onNewPlay,
-            onClickMenu = {  },
+            onClickMenu = { },
             contentPadding = PaddingValues(top = topMargin),
         )
     }

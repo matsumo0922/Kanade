@@ -20,7 +20,7 @@ fun NavGraphBuilder.songTopScreen(
     composable(route = SongTopRoute) {
         SongTopRoute(
             topMargin = topMargin,
-            navigateToSongMenu = navigateToSongMenu
+            navigateToSongMenu = navigateToSongMenu,
         )
     }
 }
