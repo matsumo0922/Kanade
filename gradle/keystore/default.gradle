@@ -8,9 +8,9 @@ android {
         }
         release {
             storeFile = file("${project.rootDir}/gradle/keystore/release.jks")
-            storePassword = localProperties["storePassword"] ?: System.getenv("storePassword")
-            keyPassword = localProperties["keyPassword"] ?: System.getenv("storePassword")
-            keyAlias = localProperties["keyAlias"] ?: System.getenv("keyAlias")
+            storePassword = localProperties["storePassword"] ?: System.getenv("RELEASE_STORE_PASSWORD")
+            keyPassword = localProperties["keyPassword"] ?: System.getenv("RELEASE_KEY_PASSWORD")
+            keyAlias = localProperties["keyAlias"] ?: System.getenv("RELEASE_KEY_ALIAS")
         }
     }
 }

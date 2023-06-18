@@ -1,0 +1,53 @@
+name: Haneda
+
+on:
+  workflow_call:
+
+permissions:
+  pull-requests: write
+  statuses: write
+  checks: write
+  id-token: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+          ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Restore bundle cache
+        uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: bundle-${{ hashFiles('**/Gemfile.lock') }}
+
+      - name: Restore gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
+
+      - name: Build app
+        id: build
+        run: ./gradlew :app:assembleDebug
+
+      - name: Save Result
+        if: success() || failure()
+        run: echo build=${{ steps.build.outcome }} >> $GITHUB_ENV
