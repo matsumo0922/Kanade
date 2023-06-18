@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   Lint:
-    uses: ./.github/workflows/call-detekt.yml
+    uses: ./.github/workflows/call-lint.yml
 
   Build:
     uses: ./.github/workflows/call-build.yml

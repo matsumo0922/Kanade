@@ -1,4 +1,4 @@
-name: Detekt
+name: Lint
 
 on:
   workflow_call:
@@ -68,4 +68,4 @@ jobs:
 
       - name: Save Result
         if: success() || failure()
-        run: echo detekt=${{ steps.detekt.outcome }} >> $GITHUB_ENV
+        run: echo "detekt=${{ steps.detekt.outcome }}" >> $GITHUB_ENV
