@@ -13,7 +13,6 @@ import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,15 +27,7 @@ class MusicViewModel @Inject constructor(
         private set
 
     init {
-        viewModelScope.launch {
-            musicRepository.config.collectLatest {
-                musicRepository.fetchArtists(it)
-                musicRepository.fetchAlbums(it)
-                musicRepository.fetchSongs(it)
-                musicRepository.fetchArtistArtwork()
-                musicRepository.fetchAlbumArtwork()
-            }
-        }
+        fetch()
 
         viewModelScope.launch {
             combine(
@@ -58,6 +49,16 @@ class MusicViewModel @Inject constructor(
             }.collect {
                 uiState = it
             }
+        }
+    }
+
+    fun fetch() {
+        viewModelScope.launch {
+            musicRepository.fetchArtists()
+            musicRepository.fetchAlbums()
+            musicRepository.fetchSongs()
+            musicRepository.fetchArtistArtwork()
+            musicRepository.fetchAlbumArtwork()
         }
     }
 

@@ -109,17 +109,15 @@ class MediaSessionManager(
 
             when (action) {
                 ControlAction.INITIALIZE -> {
-                    withAudioFocus {
-                        val song = queueManager.getCurrentSong() ?: kotlin.run {
-                            Timber.d("onCustomAction: cannot initialize because current song is null")
-                            return@withAudioFocus
-                        }
-
-                        val playWhenReady = extras?.getBoolean(ControlKey.PLAY_WHEN_READY) ?: false
-                        val progress = extras?.getLong(ControlKey.PROGRESS) ?: 0L
-
-                        loadSong(song, playWhenReady, progress)
+                    val song = queueManager.getCurrentSong() ?: kotlin.run {
+                        Timber.d("onCustomAction: cannot initialize because current song is null")
+                        return
                     }
+
+                    val playWhenReady = extras?.getBoolean(ControlKey.PLAY_WHEN_READY) ?: false
+                    val progress = extras?.getLong(ControlKey.PROGRESS) ?: 0L
+
+                    loadSong(song, playWhenReady, progress)
                 }
                 ControlAction.NEW_PLAY -> {
                     withAudioFocus {
@@ -144,12 +142,13 @@ class MediaSessionManager(
     }
 
     private fun withAudioFocus(f: () -> Unit) {
-        if (requestAudioForcus()) {
+        if (requestAudioFocus()) {
+            Timber.d("withAudioFocus: Granted")
             f()
         }
     }
 
-    private fun requestAudioForcus(): Boolean {
+    private fun requestAudioFocus(): Boolean {
         when (AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)) {
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> return true
             AudioManager.AUDIOFOCUS_REQUEST_FAILED -> Timber.d("Audio focus request failed")

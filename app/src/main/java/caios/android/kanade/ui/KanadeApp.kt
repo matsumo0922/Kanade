@@ -121,7 +121,7 @@ fun KanadeApp(
                 },
             ) { padding ->
 
-                RequestPermissions()
+                RequestPermissions(musicViewModel::fetch)
 
                 BottomSheetScaffold(
                     modifier = Modifier
@@ -193,7 +193,7 @@ fun KanadeApp(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-private fun RequestPermissions() {
+private fun RequestPermissions(onGranted: () -> Unit) {
     var isPermissionRequested by remember { mutableStateOf(false) }
     var isShowPermissionDialog by remember { mutableStateOf(true) }
 
@@ -205,7 +205,11 @@ private fun RequestPermissions() {
         isPermissionRequested = true
     }
 
-    if (permissionsState.permissions[0].status is PermissionStatus.Granted) return
+    if (permissionsState.permissions[0].status is PermissionStatus.Granted) {
+        if (isPermissionRequested) onGranted.invoke()
+
+        return
+    }
 
     if (permissionsState.shouldShowRationale || isPermissionRequested) {
         PermissionDialog(onDismiss = { isShowPermissionDialog = false })
