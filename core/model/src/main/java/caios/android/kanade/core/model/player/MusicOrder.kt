@@ -62,5 +62,6 @@ sealed interface MusicOrderOption {
         ALBUM(MediaStore.Audio.Albums.DEFAULT_SORT_ORDER),
         DURATION(MediaStore.Audio.Media.DURATION),
         YEAR(MediaStore.Audio.Media.YEAR),
+        TRACK(MediaStore.Audio.Media.TRACK),
     }
 }

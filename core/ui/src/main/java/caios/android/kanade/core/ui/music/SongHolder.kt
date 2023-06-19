@@ -25,7 +25,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Song
 
 @Composable
-fun MusicHolder(
+fun SongHolder(
     song: Song,
     onClickHolder: () -> Unit,
     onClickMenu: () -> Unit,
@@ -117,7 +117,7 @@ fun MusicHolder(
 @Composable
 private fun MusicHolderPreview() {
     KanadeBackground(Modifier.wrapContentSize()) {
-        MusicHolder(
+        SongHolder(
             modifier = Modifier.fillMaxWidth(),
             song = Song.dummy(),
             onClickHolder = { },

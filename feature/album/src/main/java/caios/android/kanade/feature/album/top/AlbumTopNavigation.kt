@@ -14,10 +14,12 @@ fun NavController.navigateToAlbumTop(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.albumTopScreen(
     topMargin: Dp,
+    navigateToAlbumDetail: (Long) -> Unit,
 ) {
     composable(route = AlbumTopRoute) {
         AlbumTopRoute(
             topMargin = topMargin,
+            navigateToAlbumDetail = navigateToAlbumDetail,
         )
     }
 }

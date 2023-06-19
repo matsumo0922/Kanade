@@ -1,6 +1,7 @@
 package caios.android.kanade.core.repository
 
 import android.provider.MediaStore.Audio.AudioColumns
+import caios.android.kanade.core.model.Order
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
@@ -103,6 +104,9 @@ class DefaultAlbumRepository @Inject constructor(
     }
 
     private fun getSongLoaderOrder(musicConfig: MusicConfig): Array<MusicOrder> {
-        return arrayOf(musicConfig.albumOrder, musicConfig.songOrder)
+        return arrayOf(
+            musicConfig.albumOrder,
+            MusicOrder(Order.ASC, MusicOrderOption.Song.TRACK),
+        )
     }
 }

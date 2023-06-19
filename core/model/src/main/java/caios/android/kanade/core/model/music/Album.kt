@@ -19,17 +19,17 @@ data class Album(
         get() = songs.sumOf { it.duration }
 
     companion object {
-        fun dummy(id: String = ""): Album {
+        fun dummy(id: Long = 0): Album {
             return Album(
                 album = "テストアルバム$id",
-                albumId = -1,
+                albumId = id,
                 songs = Song.dummies(5),
                 artwork = Artwork.Internal("${id}Album"),
             )
         }
 
         fun dummies(count: Int): List<Album> {
-            return (0 until count).map { dummy(it.toString()) }
+            return (0 until count).map { dummy(it.toLong()) }
         }
     }
 }

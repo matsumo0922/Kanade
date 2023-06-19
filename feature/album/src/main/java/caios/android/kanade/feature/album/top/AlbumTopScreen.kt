@@ -27,6 +27,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun AlbumTopRoute(
     topMargin: Dp,
+    navigateToAlbumDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AlbumTopViewModel = hiltViewModel(),
 ) {
@@ -38,7 +39,7 @@ internal fun AlbumTopRoute(
             albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.albumDefault(),
             onClickSort = { /*TODO*/ },
-            onClickAlbum = viewModel::onNewPlay,
+            onClickAlbum = navigateToAlbumDetail,
             onClickPlay = viewModel::onNewPlay,
             onClickMenu = { },
             contentPadding = PaddingValues(top = topMargin),
@@ -51,7 +52,7 @@ internal fun AlbumTopScreen(
     albums: ImmutableList<Album>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
-    onClickAlbum: (Album) -> Unit,
+    onClickAlbum: (Long) -> Unit,
     onClickPlay: (Album) -> Unit,
     onClickMenu: (Album) -> Unit,
     modifier: Modifier = Modifier,
@@ -81,7 +82,7 @@ internal fun AlbumTopScreen(
             AlbumHolder(
                 modifier = Modifier.fillMaxWidth(),
                 album = album,
-                onClickHolder = { onClickAlbum.invoke(album) },
+                onClickHolder = { onClickAlbum.invoke(album.albumId) },
                 onClickPlay = { onClickPlay.invoke(album) },
                 onClickMenu = { onClickMenu.invoke(album) },
             )

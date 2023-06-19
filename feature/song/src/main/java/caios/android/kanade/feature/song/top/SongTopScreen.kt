@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.ui.AsyncLoadContents
-import caios.android.kanade.core.ui.music.MusicHolder
+import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.feature.song.top.items.SongTopHeaderSection
 import kotlinx.collections.immutable.ImmutableList
@@ -90,7 +90,7 @@ internal fun SongTopScreen(
             items = songs,
             key = { _, song -> song.id },
         ) { index, song ->
-            MusicHolder(
+            SongHolder(
                 modifier = Modifier.fillMaxWidth(),
                 song = song,
                 onClickHolder = { onClickSong.invoke(index, songs) },

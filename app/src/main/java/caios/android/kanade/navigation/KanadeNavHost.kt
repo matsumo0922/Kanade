@@ -8,6 +8,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.MusicViewModel
+import caios.android.kanade.feature.album.detail.albumDetailScreen
+import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.album.top.albumTopScreen
 import caios.android.kanade.feature.artist.top.artistTopScreen
 import caios.android.kanade.feature.home.HomeRoute
@@ -55,6 +57,11 @@ fun KanadeNavHost(
 
         albumTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToAlbumDetail = {
+                navController.navigateToAlbumDetail(it)
+            },
         )
+
+        albumDetailScreen()
     }
 }

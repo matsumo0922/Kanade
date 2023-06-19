@@ -1,6 +1,7 @@
 package caios.android.kanade.ui
 
 import android.os.Build
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -38,7 +39,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
@@ -84,6 +84,7 @@ fun KanadeApp(
             var bottomSheetHeight by remember { mutableStateOf(0f) }
 
             var bottomSheetOffsetRate by remember { mutableStateOf(-1f) }
+            val bottomSheetOffset by animateFloatAsState(bottomSheetOffsetRate)
 
             val scope = rememberCoroutineScope()
             val scaffoldState = rememberBottomSheetScaffoldState()
@@ -112,8 +113,8 @@ fun KanadeApp(
                     KanadeBottomBar(
                         modifier = Modifier
                             .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
-                            .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffsetRate))
-                            .alpha(bottomSheetOffsetRate),
+                            .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffset))
+                            .alpha(bottomSheetOffset),
                         destination = appState.libraryDestinations.toImmutableList(),
                         onNavigateToDestination = appState::navigateToLibrary,
                         currentDestination = appState.currentDestination,
@@ -140,7 +141,7 @@ fun KanadeApp(
                     sheetContent = {
                         AppController(
                             uiState = musicViewModel.uiState,
-                            offsetRate = bottomSheetOffsetRate,
+                            offsetRate = bottomSheetOffset,
                             onControllerEvent = musicViewModel::playerEvent,
                             onClickBottomController = {
                                 scope.launch {
@@ -167,8 +168,7 @@ fun KanadeApp(
                         LibraryTopBar(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .onGloballyPositioned { topBarHeight = it.size.height.toFloat() }
-                                .zIndex(1f),
+                                .onGloballyPositioned { topBarHeight = it.size.height.toFloat() },
                             onClickMenu = {
                                 scope.launch {
                                     drawerState.open()

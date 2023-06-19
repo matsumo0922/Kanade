@@ -134,6 +134,7 @@ class DefaultSongRepository @Inject constructor(
             MusicOrderOption.Song.ALBUM -> songs.sortList({ it.album }, { it.title }, order = order.order)
             MusicOrderOption.Song.DURATION -> songs.sortList({ it.duration }, { it.title }, order = order.order)
             MusicOrderOption.Song.YEAR -> songs.sortList({ it.year }, { it.title }, order = order.order)
+            MusicOrderOption.Song.TRACK -> songs.sortList({ it.track }, { it.title }, order = order.order)
         }
     }
 

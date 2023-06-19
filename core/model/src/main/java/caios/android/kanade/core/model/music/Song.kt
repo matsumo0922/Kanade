@@ -35,9 +35,9 @@ data class Song(
         }
 
     companion object {
-        fun dummy(id: String = ""): Song {
+        fun dummy(id: Long = 0): Song {
             return Song(
-                id = -1,
+                id = id,
                 title = "サンプル楽曲$id",
                 artist = "CAIOS",
                 artistId = -1,
@@ -55,7 +55,7 @@ data class Song(
         }
 
         fun dummies(count: Int): List<Song> {
-            return (0 until count).map { dummy(it.toString()) }
+            return (0 until count).map { dummy(it.toLong()) }
         }
     }
 }
