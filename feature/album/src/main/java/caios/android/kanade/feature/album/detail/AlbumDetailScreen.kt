@@ -1,7 +1,7 @@
 package caios.android.kanade.feature.album.detail
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
@@ -29,6 +30,8 @@ internal fun AlbumDetailRoute(
         AlbumDetailScreen(
             modifier = modifier,
             album = it?.album ?: Album.dummy(),
+            onClickAlbumHolder = viewModel::onNewPlay,
+            onClickMenu = {}
         )
     }
 }
@@ -36,6 +39,8 @@ internal fun AlbumDetailRoute(
 @Composable
 private fun AlbumDetailScreen(
     album: Album,
+    onClickAlbumHolder: (List<Song>, Int) -> Unit,
+    onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CoordinatorScaffold(
@@ -45,15 +50,15 @@ private fun AlbumDetailScreen(
         artwork = album.artwork,
         onClickNavigateUp = { /*TODO*/ },
     ) {
-        items(
+        itemsIndexed(
             items = album.songs,
-            key = { it.id },
-        ) { song ->
+            key = { _, song -> song.id },
+        ) { index, song ->
             SongHolder(
                 modifier = Modifier.fillMaxWidth(),
                 song = song,
-                onClickHolder = { /*TODO*/ },
-                onClickMenu = { /*TODO*/ },
+                onClickHolder = { onClickAlbumHolder.invoke(album.songs, index) },
+                onClickMenu = onClickMenu,
             )
         }
     }

@@ -1,14 +1,19 @@
 package caios.android.kanade.ui
 
 import android.os.Build
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -39,6 +44,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
@@ -77,14 +83,28 @@ fun KanadeApp(
                 )
             },
             gesturesEnabled = true,
-            scrimColor = Color.Transparent,
         ) {
             var topBarHeight by remember { mutableStateOf(0f) }
             var bottomBarHeight by remember { mutableStateOf(0f) }
             var bottomSheetHeight by remember { mutableStateOf(0f) }
-
             var bottomSheetOffsetRate by remember { mutableStateOf(-1f) }
-            val bottomSheetOffset by animateFloatAsState(bottomSheetOffsetRate)
+
+            val topBarAlpha by animateFloatAsState(
+                targetValue = if (appState.currentLibraryDestination == null) 0f else 1f
+            )
+
+            val bottomSheetPeekHeight by animateDpAsState(
+                targetValue = if (appState.currentLibraryDestination == null) {
+                    val passing = WindowInsets.navigationBars.asPaddingValues()
+                    72.dp + passing.calculateBottomPadding() + passing.calculateTopPadding()
+                } else {
+                    72.dp + with(density) { bottomBarHeight.toDp() }
+                }
+            )
+
+            val bottomBarOffset by animateDpAsState(
+                targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate)
+            )
 
             val scope = rememberCoroutineScope()
             val scaffoldState = rememberBottomSheetScaffoldState()
@@ -113,16 +133,21 @@ fun KanadeApp(
                     KanadeBottomBar(
                         modifier = Modifier
                             .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
-                            .offset(y = with(density) { bottomBarHeight.toDp() } * (1f - bottomSheetOffset))
-                            .alpha(bottomSheetOffset),
+                            .offset(y = bottomBarOffset)
+                            .alpha(bottomSheetOffsetRate),
                         destination = appState.libraryDestinations.toImmutableList(),
                         onNavigateToDestination = appState::navigateToLibrary,
                         currentDestination = appState.currentDestination,
                     )
                 },
-            ) { padding ->
+            ) {
 
                 RequestPermissions(musicViewModel::fetch)
+
+                val padding = PaddingValues(
+                    top = it.calculateTopPadding(),
+                    bottom = bottomSheetPeekHeight,
+                )
 
                 BottomSheetScaffold(
                     modifier = Modifier
@@ -140,8 +165,9 @@ fun KanadeApp(
                     sheetDragHandle = {},
                     sheetContent = {
                         AppController(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                             uiState = musicViewModel.uiState,
-                            offsetRate = bottomSheetOffset,
+                            offsetRate = bottomSheetOffsetRate,
                             onControllerEvent = musicViewModel::playerEvent,
                             onClickBottomController = {
                                 scope.launch {
@@ -162,13 +188,15 @@ fun KanadeApp(
                     },
                     containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
-                    sheetPeekHeight = 72.dp + with(density) { bottomBarHeight.toDp() },
+                    sheetPeekHeight = bottomSheetPeekHeight,
                 ) {
                     Box {
                         LibraryTopBar(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .onGloballyPositioned { topBarHeight = it.size.height.toFloat() },
+                                .onGloballyPositioned { topBarHeight = it.size.height.toFloat() }
+                                .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
+                                .alpha(topBarAlpha),
                             onClickMenu = {
                                 scope.launch {
                                     drawerState.open()
@@ -198,7 +226,8 @@ private fun RequestPermissions(onGranted: () -> Unit) {
     var isShowPermissionDialog by remember { mutableStateOf(true) }
 
     val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    val storagePermission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     val permissionList = listOfNotNull(storagePermission, notifyPermission)
     val permissionsState = rememberMultiplePermissionsState(permissionList) {
@@ -206,8 +235,10 @@ private fun RequestPermissions(onGranted: () -> Unit) {
     }
 
     if (permissionsState.permissions[0].status is PermissionStatus.Granted) {
-        if (isPermissionRequested) onGranted.invoke()
-
+        if (isPermissionRequested) {
+            isPermissionRequested = false
+            onGranted.invoke()
+        }
         return
     }
 

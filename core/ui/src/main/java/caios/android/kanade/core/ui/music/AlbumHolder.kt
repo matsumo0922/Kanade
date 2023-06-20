@@ -21,6 +21,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,10 +66,12 @@ fun AlbumHolder(
 
                     Icon(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(4.dp)
+                            .size(32.dp)
                             .align(Alignment.TopEnd)
-                            .size(24.dp)
-                            .clickable { onClickMenu.invoke() },
+                            .clip(RoundedCornerShape(50))
+                            .clickable { onClickMenu.invoke() }
+                            .padding(4.dp),
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurface,

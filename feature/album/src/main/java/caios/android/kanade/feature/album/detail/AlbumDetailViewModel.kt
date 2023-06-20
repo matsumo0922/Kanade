@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +33,16 @@ class AlbumDetailViewModel @Inject constructor(
                 ScreenState.Error(message = R.string.error_no_data)
             }
         }
+    }
+
+    fun onNewPlay(songs: List<Song>, index: Int) {
+        musicController.playerEvent(
+            PlayerEvent.NewPlay(
+                index = index,
+                queue = songs,
+                playWhenReady = true,
+            )
+        )
     }
 }
 

@@ -10,7 +10,6 @@ class LibraryTopBarScrollBehavior(
     val state: LibraryTopBarScrollState,
     val topBarHeight: Float,
 ) {
-
     val nestedScrollConnection = object : NestedScrollConnection {
         override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
             state.scrolledQuantity = state.scrolledQuantity + available.y
@@ -18,5 +17,13 @@ class LibraryTopBarScrollBehavior(
 
             return Offset.Zero
         }
+    }
+
+    fun show() {
+        state.yOffset = 0f
+    }
+
+    fun hide() {
+        state.yOffset = -topBarHeight
     }
 }

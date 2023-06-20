@@ -41,12 +41,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.bold
+import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.music.Artwork
 
@@ -63,7 +68,6 @@ fun CoordinatorScaffold(
 ) {
     val listState = rememberLazyListState()
     var appBarAlpha by remember { mutableStateOf(0f) }
-    var topSectionTextAlpha by remember { mutableStateOf(1f) }
     var topSectionHeight by remember { mutableStateOf(100) }
 
     Box(modifier.background(color)) {
@@ -81,7 +85,7 @@ fun CoordinatorScaffold(
                     summary = summary,
                     artwork = artwork,
                     color = color,
-                    textAlpha = topSectionTextAlpha,
+                    alpha = 1f - appBarAlpha,
                 )
             }
 
@@ -101,11 +105,10 @@ fun CoordinatorScaffold(
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo }.collect {
             val index = listState.firstVisibleItemIndex
-            val disableArea = topSectionHeight * 0.3
+            val disableArea = topSectionHeight * 0.4
             val alpha = if (index == 0) (listState.firstVisibleItemScrollOffset.toDouble() - disableArea) / (topSectionHeight - disableArea) else 1
 
-            appBarAlpha = alpha.toFloat().coerceIn(0f..1f)
-            topSectionTextAlpha = 1 - (appBarAlpha * 3).coerceIn(0f..1f)
+            appBarAlpha = (alpha.toFloat() * 3).coerceIn(0f..1f)
         }
     }
 }
@@ -115,13 +118,15 @@ private fun FillSection(
     title: String,
     summary: String,
     artwork: Artwork,
-    textAlpha: Float,
+    alpha: Float,
     color: Color,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier) {
         Artwork(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .blur(16.dp)
+                .fillMaxWidth(),
             artwork = artwork,
         )
 
@@ -145,7 +150,8 @@ private fun FillSection(
             modifier = Modifier
                 .align(Alignment.Center)
                 .size(224.dp)
-                .aspectRatio(1f),
+                .aspectRatio(1f)
+                .alpha(alpha),
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp
         ) {
@@ -159,14 +165,14 @@ private fun FillSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(24.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .alpha(textAlpha),
+                    .alpha(alpha),
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineSmall.center().bold(),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -176,9 +182,9 @@ private fun FillSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp)
-                    .alpha(textAlpha),
+                    .alpha(alpha),
                 text = summary,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.center(),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -202,7 +208,7 @@ private fun CoordinatorToolBar(
         modifier = modifier,
         color = color.copy(backgroundAlpha),
         contentColor = MaterialTheme.colorScheme.onSurface,
-        elevation = if (backgroundAlpha == 1f) 4.dp else 0.dp,
+        elevation = if (backgroundAlpha > 0.9f) 4.dp else 0.dp,
     ) {
         TopAppBar(
             modifier = modifier.statusBarsPadding(),
@@ -228,10 +234,13 @@ private fun CoordinatorToolBar(
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                         Text(
                             modifier = Modifier
+                                .padding(8.dp)
                                 .fillMaxWidth()
                                 .weight(1f)
                                 .alpha(backgroundAlpha),
                             text = title,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -263,5 +272,19 @@ private fun CoordinatorToolBar(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun FillSectionPreview() {
+    KanadeBackground {
+        FillSection(
+            title = "UNDERTALE",
+            summary = "toby fox",
+            artwork = Artwork.Internal("UNDERTALE"),
+            alpha = 1f,
+            color = Color.Black,
+        )
     }
 }
