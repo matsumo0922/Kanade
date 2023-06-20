@@ -38,7 +38,7 @@ internal fun ArtistDetailRoute(
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
                 onClickMenu = navigateToArtistMenu,
-                onTerminate = terminate
+                onTerminate = terminate,
             )
         }
     }

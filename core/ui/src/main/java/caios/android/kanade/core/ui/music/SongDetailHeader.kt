@@ -61,7 +61,7 @@ fun SongDetailHeader(
                 modifier = Modifier.size(16.dp),
                 imageVector = Icons.Default.ArrowForwardIos,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

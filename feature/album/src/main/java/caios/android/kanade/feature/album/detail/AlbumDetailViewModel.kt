@@ -41,7 +41,7 @@ class AlbumDetailViewModel @Inject constructor(
                 index = index,
                 queue = songs,
                 playWhenReady = true,
-            )
+            ),
         )
     }
 }

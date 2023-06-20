@@ -90,7 +90,7 @@ fun KanadeApp(
             var bottomSheetOffsetRate by remember { mutableStateOf(-1f) }
 
             val topBarAlpha by animateFloatAsState(
-                targetValue = if (appState.currentLibraryDestination == null) 0f else 1f
+                targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
             )
 
             val bottomSheetPeekHeight by animateDpAsState(
@@ -99,11 +99,11 @@ fun KanadeApp(
                     72.dp + passing.calculateBottomPadding() + passing.calculateTopPadding()
                 } else {
                     72.dp + with(density) { bottomBarHeight.toDp() }
-                }
+                },
             )
 
             val bottomBarOffset by animateDpAsState(
-                targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate)
+                targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
             )
 
             val scope = rememberCoroutineScope()
@@ -141,7 +141,6 @@ fun KanadeApp(
                     )
                 },
             ) {
-
                 RequestPermissions(musicViewModel::fetch)
 
                 val padding = PaddingValues(

@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ArtistDetailViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
-): ViewModel() {
+) : ViewModel() {
     val screenState = MutableStateFlow<ScreenState<ArtistDetailUiState>>(ScreenState.Loading)
 
     fun fetch(artistId: Long) {
@@ -41,7 +41,7 @@ class ArtistDetailViewModel @Inject constructor(
                 index = index,
                 queue = songs,
                 playWhenReady = true,
-            )
+            ),
         )
     }
 
@@ -53,7 +53,7 @@ class ArtistDetailViewModel @Inject constructor(
                     index = 0,
                     queue = songs,
                     playWhenReady = true,
-                )
+                ),
             )
         }
     }

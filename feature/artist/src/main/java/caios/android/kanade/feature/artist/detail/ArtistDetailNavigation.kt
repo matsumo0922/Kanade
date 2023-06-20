@@ -24,7 +24,7 @@ fun NavGraphBuilder.artistDetailScreen(
     composable(
         route = ArtistDetailRoute,
         arguments = listOf(
-            navArgument(ArtistDetailId) { type = NavType.LongType }
+            navArgument(ArtistDetailId) { type = NavType.LongType },
         ),
     ) {
         ArtistDetailRoute(

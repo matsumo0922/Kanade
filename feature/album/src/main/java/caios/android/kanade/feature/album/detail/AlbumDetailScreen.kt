@@ -37,7 +37,7 @@ internal fun AlbumDetailRoute(
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
                 onClickMenu = navigateToAlbumMenu,
-                onTerminate = terminate
+                onTerminate = terminate,
             )
         }
     }

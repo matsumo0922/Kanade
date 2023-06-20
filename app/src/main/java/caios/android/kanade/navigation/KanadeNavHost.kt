@@ -57,7 +57,7 @@ fun KanadeNavHost(
             topMargin = libraryTopBarHeight,
             navigateToArtistDetail = {
                 navController.navigateToArtistDetail(it)
-            }
+            },
         )
 
         albumTopScreen(
@@ -72,10 +72,8 @@ fun KanadeNavHost(
                 activity.showSongMenuDialog(musicViewModel, userData, it)
             },
             navigateToArtistMenu = {
-
             },
             navigateToAlbumDetail = {
-
             },
             terminate = {
                 navController.popBackStack()
@@ -87,11 +85,10 @@ fun KanadeNavHost(
                 activity.showSongMenuDialog(musicViewModel, userData, it)
             },
             navigateToAlbumMenu = {
-
             },
             terminate = {
                 navController.popBackStack()
-            }
+            },
         )
     }
 }

@@ -23,7 +23,7 @@ fun NavGraphBuilder.albumDetailScreen(
     composable(
         route = AlbumDetailRoute,
         arguments = listOf(
-            navArgument(AlbumDetailId) { type = NavType.LongType }
+            navArgument(AlbumDetailId) { type = NavType.LongType },
         ),
     ) {
         AlbumDetailRoute(

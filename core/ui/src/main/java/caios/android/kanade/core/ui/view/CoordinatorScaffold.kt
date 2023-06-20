@@ -149,7 +149,7 @@ private fun FillSection(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .align(Alignment.TopCenter)
-                .background(Brush.verticalGradient(listOf(Color.Transparent, color)))
+                .background(Brush.verticalGradient(listOf(Color.Transparent, color))),
         )
 
         if (shouldUseBlur) {
@@ -160,7 +160,7 @@ private fun FillSection(
                     .aspectRatio(1f)
                     .alpha(alpha),
                 shape = RoundedCornerShape(8.dp),
-                elevation = 4.dp
+                elevation = 4.dp,
             ) {
                 Artwork(
                     modifier = Modifier.fillMaxWidth(),
@@ -173,7 +173,7 @@ private fun FillSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
         ) {
             Text(
                 modifier = Modifier
@@ -183,7 +183,7 @@ private fun FillSection(
                 style = titleStyle.center().bold(),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Text(
@@ -195,7 +195,7 @@ private fun FillSection(
                 style = summaryStyle.center(),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -217,7 +217,7 @@ private fun CoordinatorToolBar(
         elevation = if (backgroundAlpha > 0.9f) 4.dp else 0.dp,
     ) {
         TopAppBar(
-            modifier = modifier.statusBarsPadding(),
+            modifier = Modifier.statusBarsPadding(),
             backgroundColor = Color.Transparent,
             contentPadding = PaddingValues(vertical = 4.dp),
             elevation = 0.dp,
@@ -280,7 +280,7 @@ private fun FillSectionPreview1() {
             artwork = Artwork.Internal("UNDERTALE"),
             alpha = 1f,
             color = Color.Black,
-            shouldUseBlur = true
+            shouldUseBlur = true,
         )
     }
 }
