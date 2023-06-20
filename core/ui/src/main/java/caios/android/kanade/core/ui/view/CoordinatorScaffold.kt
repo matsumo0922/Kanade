@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,7 +26,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,9 +59,9 @@ fun CoordinatorScaffold(
     summary: String,
     artwork: Artwork,
     onClickNavigateUp: () -> Unit,
+    onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surface,
-    dropDownMenuContent: @Composable ColumnScope.() -> Unit = {},
     content: LazyListScope.() -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -98,7 +96,7 @@ fun CoordinatorScaffold(
             color = color,
             backgroundAlpha = appBarAlpha,
             onClickNavigateUp = onClickNavigateUp,
-            dropDownMenuContent = dropDownMenuContent,
+            onClickMenu = onClickMenu,
         )
     }
 
@@ -199,11 +197,9 @@ private fun CoordinatorToolBar(
     color: Color,
     backgroundAlpha: Float,
     onClickNavigateUp: () -> Unit,
-    dropDownMenuContent: @Composable ColumnScope.() -> Unit,
+    onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showDropDownMenu by remember { mutableStateOf(false) }
-
     Surface(
         modifier = modifier,
         color = color.copy(backgroundAlpha),
@@ -248,27 +244,16 @@ private fun CoordinatorToolBar(
                 }
 
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                    Box {
-                        Icon(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .aspectRatio(1f)
-                                .clip(RoundedCornerShape(50))
-                                .clickable { showDropDownMenu = !showDropDownMenu }
-                                .padding(8.dp),
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = null,
-                        )
-
-                        DropdownMenu(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .background(MaterialTheme.colorScheme.surface),
-                            expanded = showDropDownMenu,
-                            onDismissRequest = { showDropDownMenu = false },
-                            content = dropDownMenuContent,
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(50))
+                            .clickable { onClickMenu.invoke() }
+                            .padding(8.dp),
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null,
+                    )
                 }
             }
         }

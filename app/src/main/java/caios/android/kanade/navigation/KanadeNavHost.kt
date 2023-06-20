@@ -62,6 +62,16 @@ fun KanadeNavHost(
             },
         )
 
-        albumDetailScreen()
+        albumDetailScreen(
+            navigateToSongMenu = {
+                activity.showSongMenuDialog(musicViewModel, userData, it)
+            },
+            navigateToAlbumMenu = {
+
+            },
+            terminate = {
+                navController.popBackStack()
+            }
+        )
     }
 }

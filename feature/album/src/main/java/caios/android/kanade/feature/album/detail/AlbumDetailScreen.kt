@@ -17,6 +17,9 @@ import caios.android.kanade.core.ui.view.CoordinatorScaffold
 @Composable
 internal fun AlbumDetailRoute(
     albumId: Long,
+    navigateToAlbumMenu: (Album) -> Unit,
+    navigateToSongMenu: (Song) -> Unit,
+    terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AlbumDetailViewModel = hiltViewModel(),
 ) {
@@ -27,20 +30,26 @@ internal fun AlbumDetailRoute(
     }
 
     AsyncLoadContents(screenState) {
-        AlbumDetailScreen(
-            modifier = modifier,
-            album = it?.album ?: Album.dummy(),
-            onClickAlbumHolder = viewModel::onNewPlay,
-            onClickMenu = {}
-        )
+        if (it != null) {
+            AlbumDetailScreen(
+                modifier = modifier,
+                album = it.album,
+                onClickSongHolder = viewModel::onNewPlay,
+                onClickSongMenu = navigateToSongMenu,
+                onClickMenu = navigateToAlbumMenu,
+                onTerminate = terminate
+            )
+        }
     }
 }
 
 @Composable
 private fun AlbumDetailScreen(
     album: Album,
-    onClickAlbumHolder: (List<Song>, Int) -> Unit,
-    onClickMenu: () -> Unit,
+    onClickSongHolder: (List<Song>, Int) -> Unit,
+    onClickSongMenu: (Song) -> Unit,
+    onClickMenu: (Album) -> Unit,
+    onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CoordinatorScaffold(
@@ -48,7 +57,8 @@ private fun AlbumDetailScreen(
         title = album.album,
         summary = album.artist,
         artwork = album.artwork,
-        onClickNavigateUp = { /*TODO*/ },
+        onClickNavigateUp = onTerminate,
+        onClickMenu = { onClickMenu.invoke(album) },
     ) {
         itemsIndexed(
             items = album.songs,
@@ -57,8 +67,8 @@ private fun AlbumDetailScreen(
             SongHolder(
                 modifier = Modifier.fillMaxWidth(),
                 song = song,
-                onClickHolder = { onClickAlbumHolder.invoke(album.songs, index) },
-                onClickMenu = onClickMenu,
+                onClickHolder = { onClickSongHolder.invoke(album.songs, index) },
+                onClickMenu = { onClickSongMenu.invoke(song) },
             )
         }
     }

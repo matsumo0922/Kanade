@@ -27,9 +27,9 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun SongTopRoute(
     topMargin: Dp,
+    navigateToSongMenu: (Song) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
-    navigateToSongMenu: (Song) -> Unit,
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
