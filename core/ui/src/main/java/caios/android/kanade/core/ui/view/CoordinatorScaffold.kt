@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ fun CoordinatorScaffold(
     onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surface,
+    shouldUseBlur: Boolean = true,
     content: LazyListScope.() -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -76,6 +78,7 @@ fun CoordinatorScaffold(
             item {
                 FillSection(
                     modifier = Modifier
+                        .padding(bottom = 16.dp)
                         .fillMaxWidth()
                         .aspectRatio(1f)
                         .onGloballyPositioned { topSectionHeight = it.size.height },
@@ -84,6 +87,7 @@ fun CoordinatorScaffold(
                     artwork = artwork,
                     color = color,
                     alpha = 1f - appBarAlpha,
+                    shouldUseBlur = shouldUseBlur,
                 )
             }
 
@@ -118,12 +122,24 @@ private fun FillSection(
     artwork: Artwork,
     alpha: Float,
     color: Color,
+    shouldUseBlur: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val titleStyle: TextStyle
+    val summaryStyle: TextStyle
+
+    if (shouldUseBlur) {
+        titleStyle = MaterialTheme.typography.headlineSmall
+        summaryStyle = MaterialTheme.typography.bodyMedium
+    } else {
+        titleStyle = MaterialTheme.typography.headlineMedium
+        summaryStyle = MaterialTheme.typography.bodyLarge
+    }
+
     Box(modifier) {
         Artwork(
             modifier = Modifier
-                .blur(16.dp)
+                .blur(if (shouldUseBlur) 16.dp else 0.dp)
                 .fillMaxWidth(),
             artwork = artwork,
         )
@@ -131,32 +147,26 @@ private fun FillSection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(5 / 4f)
+                .aspectRatio(1f)
                 .align(Alignment.TopCenter)
                 .background(Brush.verticalGradient(listOf(Color.Transparent, color)))
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(5 / 1f)
-                .align(Alignment.BottomCenter)
-                .background(color)
-        )
-
-        Card(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .size(224.dp)
-                .aspectRatio(1f)
-                .alpha(alpha),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 4.dp
-        ) {
-            Artwork(
-                modifier = Modifier.fillMaxWidth(),
-                artwork = artwork,
-            )
+        if (shouldUseBlur) {
+            Card(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(224.dp)
+                    .aspectRatio(1f)
+                    .alpha(alpha),
+                shape = RoundedCornerShape(8.dp),
+                elevation = 4.dp
+            ) {
+                Artwork(
+                    modifier = Modifier.fillMaxWidth(),
+                    artwork = artwork,
+                )
+            }
         }
 
         Column(
@@ -170,7 +180,7 @@ private fun FillSection(
                     .fillMaxWidth()
                     .alpha(alpha),
                 text = title,
-                style = MaterialTheme.typography.headlineSmall.center().bold(),
+                style = titleStyle.center().bold(),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -182,7 +192,7 @@ private fun FillSection(
                     .padding(top = 4.dp)
                     .alpha(alpha),
                 text = summary,
-                style = MaterialTheme.typography.bodyMedium.center(),
+                style = summaryStyle.center(),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -262,7 +272,7 @@ private fun CoordinatorToolBar(
 
 @Preview
 @Composable
-private fun FillSectionPreview() {
+private fun FillSectionPreview1() {
     KanadeBackground {
         FillSection(
             title = "UNDERTALE",
@@ -270,6 +280,22 @@ private fun FillSectionPreview() {
             artwork = Artwork.Internal("UNDERTALE"),
             alpha = 1f,
             color = Color.Black,
+            shouldUseBlur = true
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun FillSectionPreview2() {
+    KanadeBackground {
+        FillSection(
+            title = "UNDERTALE",
+            summary = "toby fox",
+            artwork = Artwork.Internal("UNDERTALE"),
+            alpha = 1f,
+            color = Color.Black,
+            shouldUseBlur = false,
         )
     }
 }

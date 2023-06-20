@@ -17,6 +17,11 @@
     <string name="common_error">エラー</string>
     <string name="common_warning">警告</string>
     <string name="common_unknown">不明</string>
+    <string name="common_songs">楽曲</string>
+    <string name="common_artists">アーティスト</string>
+    <string name="common_albums">アルバム</string>
+    <string name="common_playlists">プレイリスト</string>
+    <string name="common_genres">ジャンル</string>
 
     <!-- Common Unit -->
     <string name="unit_song">%1$s 曲</string>
@@ -85,4 +90,5 @@
     <string name="song_header_recently_add">最近の追加</string>
     <string name="song_header_most_played">再生回数トップ</string>
     <string name="song_header_shuffle">シャッフル</string>
+    <string name="song_header_see_all">すべて表示</string>
 </resources>

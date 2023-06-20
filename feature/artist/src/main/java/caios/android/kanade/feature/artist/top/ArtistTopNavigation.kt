@@ -14,10 +14,12 @@ fun NavController.navigateToArtistTop(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.artistTopScreen(
     topMargin: Dp,
+    navigateToArtistDetail: (Long) -> Unit,
 ) {
     composable(route = ArtistTopRoute) {
         ArtistTopRoute(
             topMargin = topMargin,
+            navigateToArtistDetail = navigateToArtistDetail,
         )
     }
 }

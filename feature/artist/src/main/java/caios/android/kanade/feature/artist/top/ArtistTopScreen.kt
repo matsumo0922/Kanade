@@ -27,6 +27,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun ArtistTopRoute(
     topMargin: Dp,
+    navigateToArtistDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ArtistTopViewModel = hiltViewModel(),
 ) {
@@ -38,7 +39,7 @@ internal fun ArtistTopRoute(
             artists = uiState?.artists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
             onClickSort = { /*TODO*/ },
-            onClickArtist = viewModel::onNewPlay,
+            onClickArtist = navigateToArtistDetail,
             contentPadding = PaddingValues(top = topMargin),
         )
     }
@@ -49,7 +50,7 @@ internal fun ArtistTopScreen(
     artists: ImmutableList<Artist>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
-    onClickArtist: (Artist) -> Unit,
+    onClickArtist: (Long) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -77,7 +78,7 @@ internal fun ArtistTopScreen(
             ArtistHolder(
                 modifier = Modifier.fillMaxWidth(),
                 artist = artist,
-                onClickHolder = { onClickArtist.invoke(artist) },
+                onClickHolder = { onClickArtist.invoke(artist.artistId) },
             )
         }
     }
