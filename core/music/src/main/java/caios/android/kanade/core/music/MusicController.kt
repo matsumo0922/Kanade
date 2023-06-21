@@ -208,6 +208,7 @@ class MusicControllerImpl @Inject constructor(
                 is PlayerEvent.Stop -> onStop(event)
                 is PlayerEvent.SkipToNext -> onSkipToNext(event)
                 is PlayerEvent.SkipToPrevious -> onSkipToPrevious(event)
+                is PlayerEvent.SkipToQueue -> onSkipToQueue(event)
                 is PlayerEvent.Seek -> onSeek(event)
                 is PlayerEvent.Repeat -> onRepeatModeChanged(event)
                 is PlayerEvent.Shuffle -> onShuffleModeChanged(event)
@@ -256,6 +257,16 @@ class MusicControllerImpl @Inject constructor(
 
     private fun onSkipToPrevious(event: PlayerEvent.SkipToPrevious) {
         event.transport { skipToPrevious() }
+    }
+
+    private fun onSkipToQueue(event: PlayerEvent.SkipToQueue) {
+        queueManager.skipToItem(event.index)
+
+        val args = buildBundle {
+            putBoolean(ControlKey.PLAY_WHEN_READY, playerState.value == PlayerState.Playing)
+        }
+
+        event.transport { sendCustomAction(ControlAction.NEW_PLAY, args) }
     }
 
     private fun onSeek(event: PlayerEvent.Seek) {

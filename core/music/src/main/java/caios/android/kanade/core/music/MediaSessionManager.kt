@@ -120,12 +120,11 @@ class MediaSessionManager(
                     loadSong(song, playWhenReady, progress)
                 }
                 ControlAction.NEW_PLAY -> {
-                    withAudioFocus {
-                        val song = queueManager.getCurrentSong() ?: return@withAudioFocus
-                        val playWhenReady = extras?.getBoolean(ControlKey.PLAY_WHEN_READY) ?: false
+                    val song = queueManager.getCurrentSong() ?: return
+                    val playWhenReady = extras?.getBoolean(ControlKey.PLAY_WHEN_READY) ?: false
 
-                        loadSong(song, playWhenReady)
-                    }
+                    if (playWhenReady) requestAudioFocus()
+                    loadSong(song, playWhenReady)
                 }
             }
         }

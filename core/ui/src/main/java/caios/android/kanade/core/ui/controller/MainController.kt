@@ -42,6 +42,7 @@ fun MainController(
     onClickPause: () -> Unit,
     onClickSkipToNext: () -> Unit,
     onClickSkipToPrevious: () -> Unit,
+    onClickSkipToQueue: (Int) -> Unit,
     onClickShuffle: (ShuffleMode) -> Unit,
     onClickRepeat: (RepeatMode) -> Unit,
     onClickSeek: (Float) -> Unit,
@@ -79,7 +80,7 @@ fun MainController(
                 .wrapContentHeight(),
             songs = uiState.queueItems.toImmutableList(),
             index = uiState.queueIndex,
-            onSwipeArtwork = { },
+            onSwipeArtwork = onClickSkipToQueue,
         )
 
         MainControllerInfoSection(
@@ -149,6 +150,7 @@ private fun Preview() {
             onClickPause = { },
             onClickSkipToNext = { },
             onClickSkipToPrevious = { },
+            onClickSkipToQueue = { },
             onClickShuffle = { },
             onClickRepeat = { },
             onClickSeek = { },

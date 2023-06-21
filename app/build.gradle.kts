@@ -19,7 +19,7 @@ android {
         debug {
             isDebuggable = true
             versionNameSuffix = ".D"
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug3"
             signingConfig = signingConfigs.getByName("debug")
         }
     }

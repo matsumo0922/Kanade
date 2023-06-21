@@ -72,6 +72,7 @@ fun AppController(
                 onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
                 onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
                 onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
+                onClickSkipToQueue = { onControllerEvent.invoke(PlayerEvent.SkipToQueue(it)) },
                 onClickShuffle = { onControllerEvent.invoke(PlayerEvent.Shuffle(it)) },
                 onClickRepeat = { onControllerEvent.invoke(PlayerEvent.Repeat(it)) },
                 onClickSeek = { onControllerEvent.invoke(PlayerEvent.Seek(it)) },

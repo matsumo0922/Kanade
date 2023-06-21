@@ -38,6 +38,7 @@ import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.music.MusicUiState
 import caios.android.kanade.core.ui.music.Artwork
+import caios.android.kanade.core.ui.util.marquee
 
 @Composable
 fun BottomController(
@@ -77,14 +78,16 @@ fun BottomController(
         )
 
         Text(
-            modifier = Modifier.constrainAs(title) {
-                top.linkTo(parent.top, 16.dp)
-                start.linkTo(artwork.end, 16.dp)
-                end.linkTo(buttons.start, 16.dp)
-                bottom.linkTo(artist.top)
+            modifier = Modifier
+                .marquee()
+                .constrainAs(title) {
+                    top.linkTo(parent.top, 16.dp)
+                    start.linkTo(artwork.end, 8.dp)
+                    end.linkTo(buttons.start, 8.dp)
+                    bottom.linkTo(artist.top)
 
-                width = Dimension.fillToConstraints
-            },
+                    width = Dimension.fillToConstraints
+                },
             text = uiState.song?.title ?: stringResource(R.string.music_unknown_title),
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
@@ -92,14 +95,16 @@ fun BottomController(
         )
 
         Text(
-            modifier = Modifier.constrainAs(artist) {
-                top.linkTo(title.bottom)
-                start.linkTo(artwork.end, 16.dp)
-                end.linkTo(buttons.start, 16.dp)
-                bottom.linkTo(parent.bottom, 16.dp)
+            modifier = Modifier
+                .marquee()
+                .constrainAs(artist) {
+                    top.linkTo(title.bottom)
+                    start.linkTo(artwork.end, 8.dp)
+                    end.linkTo(buttons.start, 8.dp)
+                    bottom.linkTo(parent.bottom, 16.dp)
 
-                width = Dimension.fillToConstraints
-            },
+                    width = Dimension.fillToConstraints
+                },
             text = uiState.song?.artist ?: stringResource(R.string.music_unknown_artist),
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,

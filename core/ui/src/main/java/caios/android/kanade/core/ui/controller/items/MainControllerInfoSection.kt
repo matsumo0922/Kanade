@@ -29,6 +29,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.MusicUiState
+import caios.android.kanade.core.ui.util.marquee
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,13 +46,15 @@ internal fun MainControllerInfoSection(
         val position by animateFloatAsState(sliderPosition ?: uiState.progressParent)
 
         Text(
-            modifier = Modifier.constrainAs(title) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start, 16.dp)
-                end.linkTo(parent.end, 16.dp)
+            modifier = Modifier
+                .marquee()
+                .constrainAs(title) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start, 16.dp)
+                    end.linkTo(parent.end, 16.dp)
 
-                width = Dimension.fillToConstraints
-            },
+                    width = Dimension.fillToConstraints
+                },
             text = uiState.song?.title ?: stringResource(R.string.music_unknown_title),
             style = MaterialTheme.typography.titleLarge.center(),
             color = MaterialTheme.colorScheme.onSurface,
@@ -60,13 +63,15 @@ internal fun MainControllerInfoSection(
         )
 
         Text(
-            modifier = Modifier.constrainAs(artist) {
-                top.linkTo(title.bottom, 8.dp)
-                start.linkTo(parent.start, 16.dp)
-                end.linkTo(parent.end, 16.dp)
+            modifier = Modifier
+                .marquee()
+                .constrainAs(artist) {
+                    top.linkTo(title.bottom, 8.dp)
+                    start.linkTo(parent.start, 16.dp)
+                    end.linkTo(parent.end, 16.dp)
 
-                width = Dimension.fillToConstraints
-            },
+                    width = Dimension.fillToConstraints
+                },
             text = uiState.song?.artist ?: stringResource(R.string.music_unknown_artist),
             style = MaterialTheme.typography.bodyMedium.center(),
             color = MaterialTheme.colorScheme.onSurfaceVariant,

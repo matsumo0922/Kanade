@@ -24,6 +24,8 @@ sealed interface PlayerEvent {
 
     object SkipToPrevious : PlayerEvent
 
+    data class SkipToQueue(val index: Int) : PlayerEvent
+
     data class Seek(val progress: Float) : PlayerEvent
 
     data class Shuffle(val shuffleMode: ShuffleMode) : PlayerEvent

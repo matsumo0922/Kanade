@@ -1,5 +1,6 @@
 package caios.android.kanade.core.ui.view
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,7 @@ import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.music.Artwork
+import caios.android.kanade.core.ui.util.marquee
 
 @Composable
 fun CoordinatorScaffold(
@@ -115,6 +117,7 @@ fun CoordinatorScaffold(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FillSection(
     title: String,
@@ -178,6 +181,7 @@ private fun FillSection(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .marquee()
                     .alpha(alpha),
                 text = title,
                 style = titleStyle.center().bold(),
