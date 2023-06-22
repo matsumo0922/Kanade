@@ -65,8 +65,8 @@ fun ContentDrawScope.drawFadedEdge(leftEdge: Boolean) {
         brush = Brush.horizontalGradient(
             colors = listOf(Color.Transparent, Color.Black),
             startX = if (leftEdge) 0f else size.width,
-            endX = if (leftEdge) edgeWidthPx else size.width - edgeWidthPx
+            endX = if (leftEdge) edgeWidthPx else size.width - edgeWidthPx,
         ),
-        blendMode = BlendMode.DstIn
+        blendMode = BlendMode.DstIn,
     )
 }
