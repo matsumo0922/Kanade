@@ -1,5 +1,11 @@
 package caios.android.kanade.core.ui.controller
 
+import android.content.Context
+import android.graphics.drawable.BitmapDrawable
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,20 +17,40 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.palette.graphics.Palette
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.Blue40
+import caios.android.kanade.core.design.theme.Green40
+import caios.android.kanade.core.design.theme.Orange40
+import caios.android.kanade.core.design.theme.Purple40
+import caios.android.kanade.core.design.theme.Teal40
+import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicUiState
+import caios.android.kanade.core.music.MusicUiState.Companion.isDarkMode
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
 
 @Composable
 fun MainController(
@@ -53,8 +79,25 @@ fun MainController(
     onClickKaraoke: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val isDarkMode = uiState.userData?.isDarkMode()
+    var artworkColor by remember { mutableStateOf(Color.Transparent) }
+    val gradientColor by animateColorAsState(
+        targetValue = artworkColor,
+        animationSpec = tween(300, 0, LinearEasing),
+    )
+
+    LaunchedEffect(uiState.song) {
+        val artwork = uiState.song?.artwork ?: return@LaunchedEffect
+        artworkColor = getArtworkColor(context, artwork, isDarkMode ?: false)
+    }
+
     Column(
-        modifier = modifier,
+        modifier = modifier.background(
+            brush = Brush.verticalGradient(
+                listOf(gradientColor, Color.Transparent),
+            ),
+        ),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         MainControllerToolBarSection(
@@ -121,6 +164,41 @@ fun MainController(
         )
 
         Spacer(Modifier.height(12.dp))
+    }
+}
+
+private suspend fun getArtworkColor(context: Context, artwork: Artwork, isDarkMode: Boolean): Color {
+    try {
+        val builder = when (artwork) {
+            is Artwork.Internal -> {
+                return when (artwork.name.toList().sumOf { it.code } % 5) {
+                    0 -> Blue40
+                    1 -> Green40
+                    2 -> Orange40
+                    3 -> Purple40
+                    4 -> Teal40
+                    else -> throw IllegalArgumentException("Unknown album name.")
+                }
+            }
+            is Artwork.Web -> ImageRequest.Builder(context).data(artwork.url)
+            is Artwork.MediaStore -> ImageRequest.Builder(context).data(artwork.uri)
+            else -> return Color.Transparent
+        }.allowHardware(false)
+
+        val request = builder.build()
+        val result = (ImageLoader(context).execute(request) as? SuccessResult)?.drawable ?: return Color.Transparent
+        val palette = Palette.from((result as BitmapDrawable).bitmap).generate()
+
+        val list = listOfNotNull(
+            palette.lightVibrantSwatch,
+            palette.vibrantSwatch,
+            palette.darkVibrantSwatch,
+        )
+
+        return Color((if (isDarkMode) list.last() else list.first()).rgb)
+    } catch (e: Throwable) {
+        Timber.e(e)
+        return Color.Transparent
     }
 }
 

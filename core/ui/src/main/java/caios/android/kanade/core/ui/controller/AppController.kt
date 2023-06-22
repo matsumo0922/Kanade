@@ -35,53 +35,49 @@ fun AppController(
     }
 
     Box(modifier.fillMaxSize()) {
-        if (offsetRate > 0f) {
-            BottomController(
-                modifier = Modifier
-                    .alpha(offsetRate)
-                    .height(72.dp)
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .clickable { onClickBottomController() },
-                uiState = uiState,
-                onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
-                onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
-                onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
-                onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
-            )
-        }
+        BottomController(
+            modifier = Modifier
+                .alpha(offsetRate)
+                .height(72.dp)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .background(MaterialTheme.colorScheme.surface)
+                .clickable { onClickBottomController() },
+            uiState = uiState,
+            onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
+            onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
+            onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
+            onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
+        )
 
-        if (offsetRate < 1f) {
-            MainController(
-                modifier = Modifier
-                    .alpha(1f - offsetRate)
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-                uiState = uiState,
-                onClickClose = onClickCloseExpanded,
-                onClickSearch = { },
-                onClickMenuAddPlaylist = { },
-                onClickMenuArtist = { },
-                onClickMenuAlbum = { },
-                onClickMenuEqualizer = { },
-                onClickMenuEdit = { },
-                onClickMenuAnalyze = { },
-                onClickMenuDetailInfo = { },
-                onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
-                onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
-                onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
-                onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
-                onClickSkipToQueue = { onControllerEvent.invoke(PlayerEvent.SkipToQueue(it)) },
-                onClickShuffle = { onControllerEvent.invoke(PlayerEvent.Shuffle(it)) },
-                onClickRepeat = { onControllerEvent.invoke(PlayerEvent.Repeat(it)) },
-                onClickSeek = { onControllerEvent.invoke(PlayerEvent.Seek(it)) },
-                onClickLyrics = navigateToLyrics,
-                onClickFavorite = navigateToFavorite,
-                onClickSleepTimer = navigateToSleepTimer,
-                onClickQueue = navigateToQueue,
-                onClickKaraoke = navigateToKaraoke,
-            )
-        }
+        MainController(
+            modifier = Modifier
+                .alpha(1f - offsetRate)
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
+            uiState = uiState,
+            onClickClose = onClickCloseExpanded,
+            onClickSearch = { },
+            onClickMenuAddPlaylist = { },
+            onClickMenuArtist = { },
+            onClickMenuAlbum = { },
+            onClickMenuEqualizer = { },
+            onClickMenuEdit = { },
+            onClickMenuAnalyze = { },
+            onClickMenuDetailInfo = { },
+            onClickPlay = { onControllerEvent.invoke(PlayerEvent.Play) },
+            onClickPause = { onControllerEvent.invoke(PlayerEvent.Pause) },
+            onClickSkipToNext = { onControllerEvent.invoke(PlayerEvent.SkipToNext) },
+            onClickSkipToPrevious = { onControllerEvent.invoke(PlayerEvent.SkipToPrevious) },
+            onClickSkipToQueue = { onControllerEvent.invoke(PlayerEvent.SkipToQueue(it)) },
+            onClickShuffle = { onControllerEvent.invoke(PlayerEvent.Shuffle(it)) },
+            onClickRepeat = { onControllerEvent.invoke(PlayerEvent.Repeat(it)) },
+            onClickSeek = { onControllerEvent.invoke(PlayerEvent.Seek(it)) },
+            onClickLyrics = navigateToLyrics,
+            onClickFavorite = navigateToFavorite,
+            onClickSleepTimer = navigateToSleepTimer,
+            onClickQueue = navigateToQueue,
+            onClickKaraoke = navigateToKaraoke,
+        )
     }
 }

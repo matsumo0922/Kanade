@@ -130,7 +130,9 @@ class MediaSessionManager(
         }
     }
 
-    private fun loadSong(song: Song, playWhenReady: Boolean, startPosition: Long = 0L) {
+    private fun loadSong(song: Song?, playWhenReady: Boolean, startPosition: Long = 0L) {
+        song ?: return
+
         Timber.d("loadSong: ${song.title}, ${song.artist}, ${song.artwork}")
 
         mediaSession.setMetadata(song.toMetadata())

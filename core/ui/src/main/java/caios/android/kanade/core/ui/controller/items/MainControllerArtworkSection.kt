@@ -54,6 +54,8 @@ internal fun MainControllerArtworkSection(
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.settledPage }.collect {
+            if (songs.isEmpty()) return@collect
+
             val realIndex = when (it) {
                 0 -> {
                     pagerState.scrollToPage(dummyPagerCount - 2)
@@ -86,7 +88,7 @@ internal fun MainControllerArtworkSection(
             else -> dummyIndex - 1
         }
 
-        val song = songs[realIndex]
+        val song = songs.elementAtOrElse(realIndex) { Song.dummy() }
 
         Card(
             modifier = Modifier

@@ -1,17 +1,24 @@
 package caios.android.kanade.core.music
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.model.ThemeConfig
+import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.repository.MusicRepository
+import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -21,6 +28,7 @@ import javax.inject.Inject
 class MusicViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
+    private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(MusicUiState())
@@ -31,13 +39,22 @@ class MusicViewModel @Inject constructor(
 
         viewModelScope.launch {
             combine(
+                userDataRepository.userData,
                 musicRepository.config,
                 musicController.currentSong,
                 musicController.currentQueue,
                 musicController.playerState,
                 musicController.playerPosition,
-            ) { config, song, queue, state, position ->
+            ) { data ->
+                val userData = data[0] as UserData
+                val config = data[1] as MusicConfig
+                val song = data[2] as Song?
+                val queue = data[3] as Queue?
+                val state = data[4] as PlayerState
+                val position = data[5] as Long
+
                 uiState.copy(
+                    userData = userData,
                     song = song,
                     queueItems = queue?.items ?: emptyList(),
                     queueIndex = queue?.index ?: 0,
@@ -73,6 +90,7 @@ class MusicViewModel @Inject constructor(
 
 @Stable
 data class MusicUiState(
+    val userData: UserData? = null,
     val song: Song? = null,
     val queueItems: List<Song> = emptyList(),
     val queueIndex: Int = 0,
@@ -103,4 +121,15 @@ data class MusicUiState(
 
             return "%02d:%02d".format(minute, second)
         }
+
+    companion object {
+        @Composable
+        fun UserData.isDarkMode(): Boolean {
+            return when (themeConfig) {
+                ThemeConfig.Light -> false
+                ThemeConfig.Dark -> true
+                else -> isSystemInDarkTheme()
+            }
+        }
+    }
 }

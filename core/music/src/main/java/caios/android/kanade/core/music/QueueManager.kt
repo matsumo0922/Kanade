@@ -13,9 +13,9 @@ import javax.inject.Inject
 interface QueueManager {
     val queue: Flow<Queue>
 
-    fun skipToNext(): Song
-    fun skipToPrevious(): Song
-    fun skipToItem(toIndex: Int): Song
+    fun skipToNext(): Song?
+    fun skipToPrevious(): Song?
+    fun skipToItem(toIndex: Int): Song?
 
     fun addItem(index: Int, song: Song)
     fun addItems(index: Int, songs: List<Song>)
@@ -59,19 +59,19 @@ class QueueManagerImpl @Inject constructor(
             )
         }
 
-    override fun skipToNext(): Song {
+    override fun skipToNext(): Song? {
         _index.value = if (currentQueue.size > index + 1) index + 1 else 0
-        return musicRepository.getSong(currentQueue[index])!!
+        return currentQueue.elementAtOrNull(index)?.let { musicRepository.getSong(it) }
     }
 
-    override fun skipToPrevious(): Song {
+    override fun skipToPrevious(): Song? {
         _index.value = if (index - 1 >= 0) index - 1 else currentQueue.size - 1
-        return musicRepository.getSong(currentQueue[index])!!
+        return currentQueue.elementAtOrNull(index)?.let { musicRepository.getSong(it) }
     }
 
-    override fun skipToItem(toIndex: Int): Song {
+    override fun skipToItem(toIndex: Int): Song? {
         _index.value = toIndex
-        return musicRepository.getSong(currentQueue[index])!!
+        return currentQueue.elementAtOrNull(index)?.let { musicRepository.getSong(it) }
     }
 
     override fun addItem(index: Int, song: Song) {
