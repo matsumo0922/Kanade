@@ -5,7 +5,7 @@ import io.ktor.client.statement.HttpResponse
 
 suspend inline fun <reified T> HttpResponse.parse(
     allowRange: IntRange = 200..299,
-    f: ((T?) -> (Unit)) = {}
+    f: ((T?) -> (Unit)) = {},
 ): T? {
     return (if (this.status.value in allowRange) this.body<T>() else null).also(f)
 }

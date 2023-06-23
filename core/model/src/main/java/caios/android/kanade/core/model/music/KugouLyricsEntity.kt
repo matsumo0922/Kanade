@@ -1,6 +1,5 @@
 package caios.android.kanade.music.lyrics.entity
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,5 +20,5 @@ data class KugouLyricsEntity(
     @SerialName("_source")
     val source: String,
     @SerialName("status")
-    val status: Int
+    val status: Int,
 )

@@ -80,7 +80,7 @@ fun AppController(
             onClickSleepTimer = navigateToSleepTimer,
             onClickQueue = navigateToQueue,
             onClickKaraoke = navigateToKaraoke,
-            onRequestLyrics = onRequestLyrics
+            onRequestLyrics = onRequestLyrics,
         )
     }
 }

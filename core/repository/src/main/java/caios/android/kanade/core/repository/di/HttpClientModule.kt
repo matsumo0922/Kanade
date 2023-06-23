@@ -34,7 +34,7 @@ object HttpClientModule {
                         ignoreUnknownKeys = true
                         coerceInputValues = true
                         encodeDefaults = true
-                    }
+                    },
                 )
             }
         }

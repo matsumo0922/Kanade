@@ -241,7 +241,7 @@ private fun Preview() {
             onClickSleepTimer = { },
             onClickQueue = { },
             onClickKaraoke = { },
-            onRequestLyrics = {}
+            onRequestLyrics = {},
         )
     }
 }

@@ -59,7 +59,7 @@ internal fun parseLrc(song: Song, input: String): Lyrics? {
             album = album,
             duration = song.duration,
             lines = lines.toList(),
-            isSynchronized = true
+            isSynchronized = true,
         )
     } catch (e: Throwable) {
         return null

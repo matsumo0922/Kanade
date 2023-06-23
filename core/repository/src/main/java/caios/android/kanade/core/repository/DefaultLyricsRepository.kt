@@ -18,7 +18,7 @@ import javax.inject.Inject
 class DefaultLyricsRepository @Inject constructor(
     private val client: HttpClient,
     private val lyricsPreference: LyricsPreference,
-): LyricsRepository {
+) : LyricsRepository {
 
     override fun get(song: Song): Lyrics? {
         return lyricsPreference.data.find { it.songId == song.id }
@@ -62,7 +62,7 @@ class DefaultLyricsRepository @Inject constructor(
 
     private suspend fun fetchSynchronizedLyrics(
         kugouSongId: String,
-        accessKey: String
+        accessKey: String,
     ): KugouLyricsEntity? {
         return client.get {
             url(DOWNLOAD_ENDPOINT)

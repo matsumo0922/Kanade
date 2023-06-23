@@ -65,6 +65,4 @@ interface RepositoryModule {
     fun bindLyricsRepository(
         lyricsRepository: DefaultLyricsRepository,
     ): LyricsRepository
-
-
 }
