@@ -6,9 +6,11 @@ import caios.android.kanade.core.repository.ArtworkRepository
 import caios.android.kanade.core.repository.DefaultAlbumRepository
 import caios.android.kanade.core.repository.DefaultArtistRepository
 import caios.android.kanade.core.repository.DefaultArtworkRepository
+import caios.android.kanade.core.repository.DefaultLyricsRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
+import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.SongRepository
 import caios.android.kanade.core.repository.UserDataRepository
@@ -57,4 +59,12 @@ interface RepositoryModule {
     fun bindArtworkRepository(
         artworkRepository: DefaultArtworkRepository,
     ): ArtworkRepository
+
+    @Singleton
+    @Binds
+    fun bindLyricsRepository(
+        lyricsRepository: DefaultLyricsRepository,
+    ): LyricsRepository
+
+
 }

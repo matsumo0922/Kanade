@@ -6,6 +6,7 @@ import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
+import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
@@ -23,6 +24,7 @@ class DefaultMusicRepository @Inject constructor(
     private val artistRepository: ArtistRepository,
     private val albumRepository: AlbumRepository,
     private val artworkRepository: ArtworkRepository,
+    private val lyricsRepository: LyricsRepository,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
 ) : MusicRepository {
 
@@ -55,6 +57,10 @@ class DefaultMusicRepository @Inject constructor(
 
     override fun getAlbum(albumId: Long): Album? {
         return albumRepository.get(albumId) ?: albums.find { it.albumId == albumId }
+    }
+
+    override fun getLyrics(song: Song): Lyrics? {
+        return lyricsRepository.get(song)
     }
 
     override suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
@@ -90,6 +96,10 @@ class DefaultMusicRepository @Inject constructor(
         artworkRepository.fetchAlbumArtwork(albums)
         songRepository.fetchArtwork()
         albumRepository.fetchArtwork()
+    }
+
+    override suspend fun fetchLyrics(song: Song) {
+        lyricsRepository.lyrics(song)
     }
 
     override suspend fun setShuffleMode(mode: ShuffleMode) {

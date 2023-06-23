@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicUiState
 
@@ -23,6 +24,7 @@ fun AppController(
     onControllerEvent: (event: PlayerEvent) -> Unit,
     onClickBottomController: () -> Unit,
     onClickCloseExpanded: () -> Unit,
+    onRequestLyrics: (Song) -> Unit,
     navigateToLyrics: () -> Unit,
     navigateToFavorite: () -> Unit,
     navigateToSleepTimer: () -> Unit,
@@ -78,6 +80,7 @@ fun AppController(
             onClickSleepTimer = navigateToSleepTimer,
             onClickQueue = navigateToQueue,
             onClickKaraoke = navigateToKaraoke,
+            onRequestLyrics = onRequestLyrics
         )
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- デファルトの設定 -->
+    <base-config cleartextTrafficPermitted="false" />
+    <!-- ドメイン毎の設定 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">lyrics.kugou.com</domain>
+    </domain-config>
+</network-security-config>

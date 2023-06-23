@@ -14,5 +14,7 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:database"))
 
+    implementation(libs.bundles.ktor)
+
     implementation(libs.androidx.media)
 }

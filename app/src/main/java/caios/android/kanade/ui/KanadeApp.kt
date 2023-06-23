@@ -178,6 +178,11 @@ fun KanadeApp(
                                     scaffoldState.bottomSheetState.partialExpand()
                                 }
                             },
+                            onRequestLyrics = {
+                                scope.launch {
+                                    musicViewModel.fetchLyrics(it)
+                                }
+                            },
                             navigateToLyrics = { },
                             navigateToFavorite = { },
                             navigateToSleepTimer = { },

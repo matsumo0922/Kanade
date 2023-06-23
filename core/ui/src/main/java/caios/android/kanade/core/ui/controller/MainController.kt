@@ -77,6 +77,7 @@ fun MainController(
     onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
     onClickKaraoke: () -> Unit,
+    onRequestLyrics: (Song) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -156,7 +157,10 @@ fun MainController(
                 .fillMaxWidth()
                 .wrapContentSize(),
             isFavorite = false,
-            onClickLyrics = onClickLyrics,
+            onClickLyrics = {
+                onClickLyrics.invoke()
+                uiState.song?.let { onRequestLyrics.invoke(it) }
+            },
             onClickFavorite = onClickFavorite,
             onClickSleepTimer = onClickSleepTimer,
             onClickQueue = onClickQueue,
@@ -237,6 +241,7 @@ private fun Preview() {
             onClickSleepTimer = { },
             onClickQueue = { },
             onClickKaraoke = { },
+            onRequestLyrics = {}
         )
     }
 }

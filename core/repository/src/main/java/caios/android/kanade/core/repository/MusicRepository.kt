@@ -3,6 +3,7 @@ package caios.android.kanade.core.repository
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
+import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
@@ -26,6 +27,7 @@ interface MusicRepository {
     fun getSong(songId: Long): Song?
     fun getArtist(artistId: Long): Artist?
     fun getAlbum(albumId: Long): Album?
+    fun getLyrics(song: Song): Lyrics?
 
     suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int)
     suspend fun saveProgress(progress: Long)
@@ -35,6 +37,7 @@ interface MusicRepository {
     suspend fun fetchAlbums(musicConfig: MusicConfig? = null)
     suspend fun fetchArtistArtwork()
     suspend fun fetchAlbumArtwork()
+    suspend fun fetchLyrics(song: Song)
 
     suspend fun setShuffleMode(mode: ShuffleMode)
     suspend fun setRepeatMode(mode: RepeatMode)

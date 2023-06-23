@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
@@ -56,6 +57,7 @@ class MusicViewModel @Inject constructor(
                 uiState.copy(
                     userData = userData,
                     song = song,
+                    lyrics = song?.let { musicRepository.getLyrics(it) },
                     queueItems = queue?.items ?: emptyList(),
                     queueIndex = queue?.index ?: 0,
                     progress = position,
@@ -83,6 +85,10 @@ class MusicViewModel @Inject constructor(
         musicController.playerEvent(event)
     }
 
+    suspend fun fetchLyrics(song: Song) {
+        musicRepository.fetchLyrics(song)
+    }
+
     fun addToQueue(songs: List<Song>, index: Int? = null) {
         musicController.addToQueue(songs, index)
     }
@@ -92,6 +98,7 @@ class MusicViewModel @Inject constructor(
 data class MusicUiState(
     val userData: UserData? = null,
     val song: Song? = null,
+    val lyrics: Lyrics? = null,
     val queueItems: List<Song> = emptyList(),
     val queueIndex: Int = 0,
     val progress: Long = 0L,

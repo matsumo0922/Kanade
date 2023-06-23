@@ -209,7 +209,6 @@ class KanadePreferencesDataStore @Inject constructor(
                         MusicOrderOption.Album.YEAR -> AlbumOrderProto.ALBUM_ASC_YEAR
                         else -> error("Invalid album order option. $musicOrder")
                     }
-
                     Order.DESC -> when (musicOrder.musicOrderOption) {
                         MusicOrderOption.Album.NAME -> AlbumOrderProto.ALBUM_DESC_NAME
                         MusicOrderOption.Album.ARTIST -> AlbumOrderProto.ALBUM_DESC_ARTIST
