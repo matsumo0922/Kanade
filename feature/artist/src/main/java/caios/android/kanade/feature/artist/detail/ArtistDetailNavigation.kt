@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Song
 
@@ -18,7 +19,7 @@ fun NavController.navigateToArtistDetail(artistId: Long) {
 fun NavGraphBuilder.artistDetailScreen(
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
-    navigateToAlbumDetail: (Long) -> Unit,
+    navigateToAlbumDetail: (Album) -> Unit,
     terminate: () -> Unit,
 ) {
     composable(

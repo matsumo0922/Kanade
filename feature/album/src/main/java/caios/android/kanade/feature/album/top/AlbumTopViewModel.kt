@@ -27,7 +27,7 @@ class AlbumTopViewModel @Inject constructor(
 
         ScreenState.Idle(
             AlbumTopUiState(
-                albums = musicRepository.albums,
+                albums = musicRepository.sortedAlbums(it),
                 sortOrder = it.albumOrder,
             ),
         )

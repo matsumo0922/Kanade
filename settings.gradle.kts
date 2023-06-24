@@ -33,4 +33,4 @@ include(":feature:song")
 include(":feature:artist")
 include(":feature:album")
 include(":feature:menu")
-
+include(":feature:queue")

@@ -1,6 +1,5 @@
 package caios.android.kanade.core.ui.controller
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,10 +31,6 @@ fun AppController(
     navigateToKaraoke: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BackHandler(offsetRate == 0f) {
-        onClickCloseExpanded()
-    }
-
     Box(modifier.fillMaxSize()) {
         BottomController(
             modifier = Modifier

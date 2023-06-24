@@ -44,20 +44,15 @@ class DefaultLyricsRepository @Inject constructor(
         artist: String,
         duration: Long,
     ): KugouSongEntity? {
-        try {
-            return client.get {
-                url(SEARCH_ENDPOINT)
-                parameter("ver", 1)
-                parameter("client", "pc")
-                parameter("man", "yes")
-                parameter("hash", "")
-                parameter("keyword", "$artist - $title")
-                parameter("duration", "$duration")
-            }.parse()
-        } catch (e: Throwable) {
-            Timber.e(e)
-            return null
-        }
+        return client.get {
+            url(SEARCH_ENDPOINT)
+            parameter("ver", 1)
+            parameter("client", "pc")
+            parameter("man", "yes")
+            parameter("hash", "")
+            parameter("keyword", "$artist - $title")
+            parameter("duration", "$duration")
+        }.parse()
     }
 
     private suspend fun fetchSynchronizedLyrics(
