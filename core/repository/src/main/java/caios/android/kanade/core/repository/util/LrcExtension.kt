@@ -2,6 +2,7 @@ package caios.android.kanade.core.repository.util
 
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Song
+import timber.log.Timber
 
 internal fun parseLrc(song: Song, input: String): Lyrics? {
     if (input.isEmpty()) return null
@@ -62,6 +63,7 @@ internal fun parseLrc(song: Song, input: String): Lyrics? {
             isSynchronized = true,
         )
     } catch (e: Throwable) {
+        Timber.w(e)
         return null
     }
 }

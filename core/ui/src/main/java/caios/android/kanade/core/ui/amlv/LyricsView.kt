@@ -43,11 +43,9 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.packInts
 import androidx.compose.ui.util.unpackInt1
@@ -80,8 +78,6 @@ fun LyricsView(
     darkTheme: Boolean = false,
     fadingEdge: FadingEdge = FadingEdge.None,
     fontSize: TextUnit = 32.sp,
-    fontWeight: FontWeight = FontWeight.Bold,
-    lineHeight: TextUnit = 1.2.em,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -112,9 +108,9 @@ fun LyricsView(
         val scrollY = scrollState.value
         var start = -1
         var end = -1
+
         for (i in lines.indices) {
             val itemInfo = itemsInfo[i] ?: continue
-
             val itemTop = itemInfo.offsetY
             val itemHeight = itemInfo.height
             val itemBottom = itemTop + itemHeight
@@ -158,7 +154,7 @@ fun LyricsView(
             val targetScrollY = targetItemTop.coerceAtMost(scrollState.maxValue)
             val diff = targetScrollY - scrollState.value
 
-            if (diff >= 0) {
+            /*if (diff >= 0) {
                 val diffItems = itemsInfo.values.toList().subList(targetItemIndex, (targetItemIndex + 7).coerceAtMost(itemsInfo.size - 1))
                 val diffItemHeight = diffItems.sumOf { it.height }
 
@@ -168,7 +164,7 @@ fun LyricsView(
                 val diffItemHeight = -diffItems.sumOf { it.height }
 
                 if (diff < diffItemHeight && scrollState.value != 0) return@launch
-            }
+            }*/
 
             // 1) Find items to animate
             animationItemsRange = getAnimationItemsRange(targetItemIndex)
@@ -184,7 +180,7 @@ fun LyricsView(
             animate(
                 initialValue = diff.toFloat(),
                 targetValue = 0f,
-                animationSpec = tween(durationMillis = 1000),
+                animationSpec = tween(durationMillis = 750),
             ) { value, _ ->
                 currItemsOffsetY = value.toInt()
             }
@@ -215,8 +211,8 @@ fun LyricsView(
                         content = line.content,
                         contentColor = if (darkTheme) Color.White else Color.Black,
                         fontSize = if (state.lyrics?.isSynchronized == false) 22.sp else fontSize,
-                        fontWeight = fontWeight,
-                        lineHeight = if (state.lyrics?.isSynchronized == false) 0.8.em else lineHeight,
+                        // fontWeight = fontWeight,
+                        // lineHeight = if (state.lyrics?.isSynchronized == false) 0.8.em else lineHeight,
                         onClick = { state.seekToLine(index) },
                         offsetYProvider = { getItemOffsetY(index) },
                         modifier = Modifier.onGloballyPositioned { updateItemInfo(index, it) },
@@ -227,14 +223,13 @@ fun LyricsView(
     }
 }
 
+@Suppress("SwallowedException")
 @Composable
 private fun LyricsViewLine(
     isActive: Boolean,
     content: String,
     contentColor: Color,
     fontSize: TextUnit,
-    fontWeight: FontWeight,
-    lineHeight: TextUnit,
     onClick: () -> Unit,
     offsetYProvider: () -> Int,
     modifier: Modifier = Modifier,

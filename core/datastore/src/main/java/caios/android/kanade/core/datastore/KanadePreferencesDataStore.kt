@@ -43,7 +43,7 @@ class KanadePreferencesDataStore @Inject constructor(
                 repeatMode = when (it.repeatMode) {
                     RepeatModeProto.REPEAT_ONE -> RepeatMode.ONE
                     RepeatModeProto.REPEAT_ALL -> RepeatMode.ALL
-                    RepeatModeProto.REPEAT_OFF-> RepeatMode.OFF
+                    RepeatModeProto.REPEAT_OFF -> RepeatMode.OFF
                     else -> RepeatMode.OFF
                 },
                 songOrder = when (it.songOrder) {
