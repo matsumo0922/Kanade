@@ -6,12 +6,12 @@
     android:viewportHeight="24">
     <path
         android:name="path"
-        android:fillColor="#888"
+        android:fillColor="@color/colorIcon"
         android:pathData="M 11.1 12.08 C 8.77 7.57 10.6 3.6 11.63 2.01 C 6.27 2.2 1.98 6.59 1.98 12 C 1.98 12.14 2 12.28 2 12.42 C 2.62 12.15 3.29 12 4 12 C 5.66 12 7.18 12.83 8.1 14.15 C 9.77 14.63 11 16.17 11 18 C 11 19.52 10.13 20.83 8.88 21.51 C 9.86 21.83 10.91 22.01 11.99 22.01 C 15.49 22.01 18.57 20.21 20.36 17.49 C 18 17.72 13.38 16.52 11.1 12.08 Z"
         android:strokeWidth="1" />
     <path
         android:name="path_2"
-        android:fillColor="#888"
+        android:fillColor="@color/colorIcon"
         android:pathData="M 7 16 L 6.82 16 C 6.4 14.84 5.3 14 4 14 C 2.34 14 1 15.34 1 17 C 1 18.66 2.34 20 4 20 L 7 20 C 8.1 20 9 19.1 9 18 C 9 16.9 8.1 16 7 16 Z"
         android:strokeWidth="1" />
 </vector>

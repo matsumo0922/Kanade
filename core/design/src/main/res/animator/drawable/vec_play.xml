@@ -8,10 +8,10 @@
         android:name="path_2"
         android:pathData="M 48.298 3.914 C 36.565 3.914 25.3 8.58 17.003 16.877 C 8.707 25.174 4.041 36.438 4.041 48.172 C 4.041 59.905 8.707 71.17 17.003 79.466 C 25.3 87.763 36.565 92.429 48.298 92.429 C 60.031 92.429 71.296 87.763 79.593 79.466 C 87.889 71.17 92.555 59.905 92.555 48.172 C 92.555 36.438 87.889 25.174 79.593 16.877 C 71.296 8.58 60.031 3.914 48.298 3.914 Z"
         android:strokeWidth="2.5"
-        android:strokeColor="#888" />
+        android:strokeColor="@color/colorIcon" />
     <path
         android:name="path_3"
-        android:fillColor="#888"
+        android:fillColor="@color/colorIcon"
         android:pathData="M 35.963 29.974 L 35.963 66.37 L 69.885 48.172 Z"
         android:strokeWidth="1" />
 </vector>

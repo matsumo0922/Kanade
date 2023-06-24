@@ -9,7 +9,7 @@
         <group android:name="vector_1">
             <path
                 android:name="path"
-                android:fillColor="#888"
+                android:fillColor="@color/colorIcon"
                 android:pathData="M 12 3 L 4 9 L 4 21 L 20 21 L 20 9 Z M 18 19 L 6 19 L 6 10 L 12 5.5 L 18 10 Z"
                 android:strokeWidth="1.0" />
             <group android:name="group">
@@ -19,7 +19,7 @@
                 <group android:name="group_1">
                     <path
                         android:name="path_1"
-                        android:fillColor="#888"
+                        android:fillColor="@color/colorIcon"
                         android:pathData="M 4 3 L 20 3 L 20 21 L 4 21 Z"
                         android:strokeWidth="1.0" />
                 </group>

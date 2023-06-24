@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorIcon">#3C4043</color>
+    <color name="colorIconDisable">#613C4043</color>
+</resources>

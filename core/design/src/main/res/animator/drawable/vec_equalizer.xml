@@ -9,20 +9,20 @@
         android:name="path"
         android:pathData="M 18 20 L 18 4"
         android:strokeWidth="4.0"
-        android:strokeColor="#888"
+        android:strokeColor="@color/colorIcon"
         android:strokeMiterLimit="10.0"
         android:trimPathEnd="0.7" />
     <path
         android:name="path_1"
         android:pathData="M 12 4 L 12 20"
         android:strokeWidth="4.0"
-        android:strokeColor="#888"
+        android:strokeColor="@color/colorIcon"
         android:strokeMiterLimit="10.0" />
     <path
         android:name="path_2"
         android:pathData="M 6 4 L 6 20"
         android:strokeWidth="4.0"
-        android:strokeColor="#888"
+        android:strokeColor="@color/colorIcon"
         android:strokeMiterLimit="10.0"
         android:trimPathStart="0.5" />
 </vector>

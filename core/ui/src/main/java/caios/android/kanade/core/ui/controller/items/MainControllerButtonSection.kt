@@ -17,12 +17,10 @@ import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -127,11 +125,6 @@ private fun ShuffleButton(
         ShuffleMode.ON -> android.R.attr.state_checked
     }
 
-    val color = when (shuffleMode) {
-        ShuffleMode.OFF -> MaterialTheme.colorScheme.onSurfaceVariant
-        ShuffleMode.ON -> MaterialTheme.colorScheme.onSurface
-    }
-
     AndroidView(
         modifier = modifier
             .clickable {
@@ -151,7 +144,6 @@ private fun ShuffleButton(
         },
         update = {
             it.setImageState(intArrayOf(state), true)
-            it.setColorFilter(color.toArgb())
         },
     )
 }
@@ -166,12 +158,6 @@ private fun RepeatButton(
         RepeatMode.OFF -> android.R.attr.state_first
         RepeatMode.ALL -> android.R.attr.state_middle
         RepeatMode.ONE -> android.R.attr.state_last
-    }
-
-    val color = when (repeatMode) {
-        RepeatMode.OFF -> MaterialTheme.colorScheme.onSurfaceVariant
-        RepeatMode.ALL -> MaterialTheme.colorScheme.onSurface
-        RepeatMode.ONE -> MaterialTheme.colorScheme.onSurface
     }
 
     AndroidView(
@@ -194,7 +180,6 @@ private fun RepeatButton(
         },
         update = {
             it.setImageState(intArrayOf(state), true)
-            it.setColorFilter(color.toArgb())
         },
     )
 }

@@ -8,15 +8,15 @@
         android:name="path"
         android:pathData="M 94.058 48.55 C 94.058 56.593 91.94 64.496 87.918 71.462 C 83.897 78.428 78.111 84.213 71.146 88.235 C 64.18 92.256 56.277 94.374 48.234 94.374 C 40.19 94.374 32.287 92.256 25.322 88.235 C 18.356 84.213 12.571 78.428 8.549 71.462 C 4.527 64.496 2.41 56.593 2.41 48.55 C 2.41 40.507 4.527 32.604 8.549 25.638 C 12.571 18.672 18.356 12.887 25.322 8.865 C 32.287 4.844 40.19 2.726 48.234 2.726 C 56.277 2.726 64.18 4.844 71.146 8.865 C 78.111 12.887 83.897 18.672 87.918 25.638 C 91.94 32.604 94.058 40.507 94.058 48.55 Z"
         android:strokeWidth="2.8"
-        android:strokeColor="#888" />
+        android:strokeColor="@color/colorIcon" />
     <path
         android:name="path_1"
-        android:fillColor="#888"
+        android:fillColor="@color/colorIcon"
         android:pathData="M 26.186 34.842 L 26.186 62.258 L 47.728 48.55 Z"
         android:strokeWidth="0.999685" />
     <path
         android:name="path_4"
-        android:fillColor="#888"
+        android:fillColor="@color/colorIcon"
         android:pathData="M 49.988 61.55 L 68.405 48.55 L 49.988 35.55 Z M 71.655 35.55 L 71.655 61.55 L 75.988 61.55 L 75.988 35.55 Z"
         android:strokeWidth="1" />
 </vector>
