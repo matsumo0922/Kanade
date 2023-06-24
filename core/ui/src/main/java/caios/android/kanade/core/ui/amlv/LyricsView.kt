@@ -158,16 +158,16 @@ fun LyricsView(
             val targetScrollY = targetItemTop.coerceAtMost(scrollState.maxValue)
             val diff = targetScrollY - scrollState.value
 
-            if(diff >= 0) {
+            if (diff >= 0) {
                 val diffItems = itemsInfo.values.toList().subList(targetItemIndex, (targetItemIndex + 7).coerceAtMost(itemsInfo.size - 1))
                 val diffItemHeight = diffItems.sumOf { it.height }
 
-                if(diff > diffItemHeight && scrollState.value != 0) return@launch
+                if (diff > diffItemHeight && scrollState.value != 0) return@launch
             } else {
                 val diffItems = itemsInfo.values.toList().subList((targetItemIndex - 2).coerceAtLeast(0), targetItemIndex)
                 val diffItemHeight = -diffItems.sumOf { it.height }
 
-                if(diff < diffItemHeight && scrollState.value != 0) return@launch
+                if (diff < diffItemHeight && scrollState.value != 0) return@launch
             }
 
             // 1) Find items to animate
@@ -211,12 +211,12 @@ fun LyricsView(
                 val lines = state.lyrics?.lines ?: emptyList()
                 for ((index, line) in lines.withIndex()) {
                     LyricsViewLine(
-                        isActive = (index == state.currentLineIndex  || (state.lyrics?.isSynchronized == false)),
+                        isActive = (index == state.currentLineIndex || (state.lyrics?.isSynchronized == false)),
                         content = line.content,
                         contentColor = if (darkTheme) Color.White else Color.Black,
-                        fontSize = if(state.lyrics?.isSynchronized == false) 22.sp else fontSize,
+                        fontSize = if (state.lyrics?.isSynchronized == false) 22.sp else fontSize,
                         fontWeight = fontWeight,
-                        lineHeight = if(state.lyrics?.isSynchronized == false) 0.8.em else lineHeight,
+                        lineHeight = if (state.lyrics?.isSynchronized == false) 0.8.em else lineHeight,
                         onClick = { state.seekToLine(index) },
                         offsetYProvider = { getItemOffsetY(index) },
                         modifier = Modifier.onGloballyPositioned { updateItemInfo(index, it) },
@@ -257,7 +257,7 @@ private fun LyricsViewLine(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioLowBouncy,
                     stiffness = Spring.StiffnessLow,
-                )
+                ),
             ) { value, _ ->
                 scale = value
             }
@@ -307,20 +307,23 @@ private fun LyricsViewLine(
                 bottom = 16.dp,
             ),
     ) {
-        AndroidView(factory = { context ->
-            TextView(context).apply {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) lineBreakWordStyle = LineBreakConfig.LINE_BREAK_WORD_STYLE_PHRASE
+        AndroidView(
+            factory = { context ->
+                TextView(context).apply {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) lineBreakWordStyle = LineBreakConfig.LINE_BREAK_WORD_STYLE_PHRASE
 
-                text = content
-                textSize = fontSize.value
-                typeface = Typeface.DEFAULT_BOLD
-                setTextColor(android.graphics.Color.argb(contentColor.alpha, contentColor.red, contentColor.green, contentColor.blue))
-            }
-        }, modifier = Modifier.graphicsLayer {
-            transformOrigin = TransformOrigin(0f, 1f)
-            scaleX = scale
-            scaleY = scale
-            this.alpha = alpha
-        })
+                    text = content
+                    textSize = fontSize.value
+                    typeface = Typeface.DEFAULT_BOLD
+                    setTextColor(android.graphics.Color.argb(contentColor.alpha, contentColor.red, contentColor.green, contentColor.blue))
+                }
+            },
+            modifier = Modifier.graphicsLayer {
+                transformOrigin = TransformOrigin(0f, 1f)
+                scaleX = scale
+                scaleY = scale
+                this.alpha = alpha
+            },
+        )
     }
 }

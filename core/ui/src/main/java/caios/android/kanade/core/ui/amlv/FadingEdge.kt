@@ -78,37 +78,37 @@ internal fun Modifier.fadingEdges(
                 Brush.horizontalGradient(
                     colors = colorsB2T,
                     startX = width - startEdgeLengthPx,
-                    endX = width
+                    endX = width,
                 )
             } else {
                 Brush.horizontalGradient(
                     colors = colorsT2B,
                     startX = 0f,
-                    endX = startEdgeLengthPx
+                    endX = startEdgeLengthPx,
                 )
             }
             val endBrush = if (isRtl) {
                 Brush.horizontalGradient(
                     colors = colorsT2B,
                     startX = 0f,
-                    endX = endEdgeLengthPx
+                    endX = endEdgeLengthPx,
                 )
             } else {
                 Brush.horizontalGradient(
                     colors = colorsB2T,
                     startX = width - endEdgeLengthPx,
-                    endX = width
+                    endX = width,
                 )
             }
             val topBrush = Brush.verticalGradient(
                 colors = colorsT2B,
                 startY = 0f,
-                endY = topEdgeLengthPx
+                endY = topEdgeLengthPx,
             )
             val bottomBrush = Brush.verticalGradient(
                 colors = colorsB2T,
                 startY = height - bottomEdgeLengthPx,
-                endY = height
+                endY = height,
             )
             onDrawWithContent {
                 drawContent()
@@ -120,14 +120,14 @@ internal fun Modifier.fadingEdges(
                             startBrush,
                             topLeft = Offset(0f, width - startEdgeLengthPx),
                             size = size,
-                            blendMode = BlendMode.DstIn
+                            blendMode = BlendMode.DstIn,
                         )
                     } else {
                         drawRect(
                             startBrush,
                             topLeft = Offset(0f, 0f),
                             size = size,
-                            blendMode = BlendMode.DstIn
+                            blendMode = BlendMode.DstIn,
                         )
                     }
                 }
@@ -140,7 +140,7 @@ internal fun Modifier.fadingEdges(
                             brush = endBrush,
                             topLeft = Offset(0f, 0f),
                             size = size,
-                            blendMode = BlendMode.DstIn
+                            blendMode = BlendMode.DstIn,
                         )
                     } else {
                         drawRect(
@@ -158,7 +158,7 @@ internal fun Modifier.fadingEdges(
                         brush = topBrush,
                         topLeft = Offset(0f, 0f),
                         size = Size(width, topEdgeLengthPx),
-                        blendMode = BlendMode.DstIn
+                        blendMode = BlendMode.DstIn,
                     )
                 }
 
@@ -168,7 +168,7 @@ internal fun Modifier.fadingEdges(
                         brush = bottomBrush,
                         topLeft = Offset(0f, height - bottomEdgeLengthPx),
                         size = Size(width, bottomEdgeLengthPx),
-                        blendMode = BlendMode.DstIn
+                        blendMode = BlendMode.DstIn,
                     )
                 }
             }

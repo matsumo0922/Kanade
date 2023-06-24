@@ -99,11 +99,14 @@ fun MainController(
         animationSpec = tween(300, 0, LinearEasing),
     )
 
-    val state = rememberLyricsViewState(uiState.lyrics, object : LyricsViewState.Listener {
-        override fun onSeek(position: Long) {
-            onClickSeek((position).coerceAtLeast(0).toFloat() / (uiState.song?.duration ?: 1))
-        }
-    })
+    val state = rememberLyricsViewState(
+        uiState.lyrics,
+        object : LyricsViewState.Listener {
+            override fun onSeek(position: Long) {
+                onClickSeek((position).coerceAtLeast(0).toFloat() / (uiState.song?.duration ?: 1))
+            }
+        },
+    )
 
     when (uiState.isPlaying) {
         true -> state.play()
@@ -144,13 +147,13 @@ fun MainController(
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f),
         ) {
             androidx.compose.animation.AnimatedVisibility(
                 modifier = Modifier.fillMaxSize(),
                 visible = isLyricsVisible,
                 enter = fadeIn(),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 LyricsView(
                     state = state,
@@ -171,7 +174,7 @@ fun MainController(
                 modifier = Modifier.fillMaxSize(),
                 visible = !isLyricsVisible,
                 enter = fadeIn(),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 Column {
                     MainControllerArtworkSection(
@@ -224,7 +227,7 @@ fun MainController(
                 .navigationBarsPadding()
                 .padding(
                     top = 8.dp,
-                    bottom = 24.dp
+                    bottom = 24.dp,
                 )
                 .fillMaxWidth()
                 .wrapContentSize(),
