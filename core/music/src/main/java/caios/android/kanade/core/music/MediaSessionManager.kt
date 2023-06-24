@@ -43,6 +43,7 @@ class MediaSessionManager(
     }
 
     private val audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { type ->
+        Timber.d("onAudioFocusChange: type = $type")
         when (type) {
             AudioManager.AUDIOFOCUS_LOSS -> {
                 musicController.playerEvent(PlayerEvent.Pause)
@@ -56,6 +57,9 @@ class MediaSessionManager(
             AudioManager.AUDIOFOCUS_GAIN -> {
                 musicController.playerEvent(PlayerEvent.Dack(false))
                 musicController.playerEvent(PlayerEvent.Play)
+            }
+            else -> {
+                musicController.playerEvent(PlayerEvent.Pause)
             }
         }
     }

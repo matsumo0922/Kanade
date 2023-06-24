@@ -81,6 +81,10 @@ class MusicViewModel @Inject constructor(
         }
     }
 
+    fun setControllerState(isExpanded: Boolean) {
+        uiState = uiState.copy(isExpandedController = isExpanded)
+    }
+
     fun playerEvent(event: PlayerEvent) {
         musicController.playerEvent(event)
     }
@@ -105,6 +109,7 @@ data class MusicUiState(
     val state: PlayerState = PlayerState.Initialize,
     val shuffleMode: ShuffleMode = ShuffleMode.OFF,
     val repeatMode: RepeatMode = RepeatMode.OFF,
+    val isExpandedController: Boolean = false,
 ) {
     val isPlaying
         get() = (state == PlayerState.Playing)

@@ -1,5 +1,6 @@
 package caios.android.kanade
 
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -23,6 +24,7 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.ui.KanadeApp
+import caios.android.kanade.ui.rememberKanadeAppState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -58,6 +60,8 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
+            val windowSize = calculateWindowSizeClass(this)
+            val appState = rememberKanadeAppState(windowSize)
             val systemUiController = rememberSystemUiController()
             val shouldUseDarkTheme = shouldUseDarkTheme(screenState)
 
@@ -74,10 +78,23 @@ class MainActivity : ComponentActivity() {
                     KanadeApp(
                         musicViewModel = musicViewModel,
                         userData = userData,
-                        windowSize = calculateWindowSizeClass(this),
+                        appState = appState,
                     )
                 }
             }
+        }
+
+        if (intent?.extras?.getBoolean("notify") == true) {
+            musicViewModel.setControllerState(true)
+            intent?.extras?.remove("notify")
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent?.extras?.getBoolean("notify") == true) {
+            musicViewModel.setControllerState(true)
         }
     }
 

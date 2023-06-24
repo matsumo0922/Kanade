@@ -48,8 +48,6 @@ class NotificationManager(
 
     @SuppressLint("MissingPermission")
     suspend fun setForegroundService(isForeground: Boolean) {
-        Timber.d("setForegroundService: $isForeground")
-
         val notification = createMusicNotification(
             context = service.baseContext,
             song = musicController.currentSong.first(),
@@ -69,6 +67,12 @@ class NotificationManager(
 
     @SuppressLint("WrongConstant")
     private suspend fun createMusicNotification(context: Context, song: Song?): Notification {
+        val mainIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra("notify", true)
+        }
+        val mainPendingIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
@@ -84,6 +88,7 @@ class NotificationManager(
             .setColorized(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setCategory(Notification.CATEGORY_SERVICE)
+            .setContentIntent(mainPendingIntent)
 
         val isPlaying = (musicController.playerState.first() == PlayerState.Playing)
         val pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

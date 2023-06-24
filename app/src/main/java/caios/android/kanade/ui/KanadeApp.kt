@@ -28,7 +28,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -66,9 +65,8 @@ import kotlinx.coroutines.launch
 fun KanadeApp(
     musicViewModel: MusicViewModel,
     userData: UserData?,
-    windowSize: WindowSizeClass,
+    appState: KanadeAppState,
     modifier: Modifier = Modifier,
-    appState: KanadeAppState = rememberKanadeAppState(windowSize),
 ) {
     KanadeBackground(Modifier.fillMaxSize()) {
         val density = LocalDensity.current
@@ -122,6 +120,16 @@ fun KanadeApp(
                 (offset / defaultHeight).coerceIn(0f, 1f)
             } catch (e: Throwable) {
                 1f
+            }
+
+            LaunchedEffect(musicViewModel.uiState.isExpandedController) {
+                scope.launch {
+                    if (musicViewModel.uiState.isExpandedController) {
+                        scaffoldState.bottomSheetState.expand()
+                    } else {
+                        scaffoldState.bottomSheetState.partialExpand()
+                    }
+                }
             }
 
             Scaffold(

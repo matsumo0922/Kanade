@@ -5,10 +5,14 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -28,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.palette.graphics.Palette
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.Blue40
@@ -41,10 +46,15 @@ import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicUiState
 import caios.android.kanade.core.music.MusicUiState.Companion.isDarkMode
+import caios.android.kanade.core.ui.amlv.FadingEdge
+import caios.android.kanade.core.ui.amlv.LyricsView
+import caios.android.kanade.core.ui.amlv.LyricsViewState
+import caios.android.kanade.core.ui.amlv.rememberLyricsViewState
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
+import caios.android.kanade.core.ui.controller.items.MainControllerTextSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -82,11 +92,25 @@ fun MainController(
 ) {
     val context = LocalContext.current
     val isDarkMode = uiState.userData?.isDarkMode()
+    var isLyricsVisible by remember { mutableStateOf(false) }
     var artworkColor by remember { mutableStateOf(Color.Transparent) }
     val gradientColor by animateColorAsState(
         targetValue = artworkColor,
         animationSpec = tween(300, 0, LinearEasing),
     )
+
+    val state = rememberLyricsViewState(uiState.lyrics, object : LyricsViewState.Listener {
+        override fun onSeek(position: Long) {
+            onClickSeek((position).coerceAtLeast(0).toFloat() / (uiState.song?.duration ?: 1))
+        }
+    })
+
+    when (uiState.isPlaying) {
+        true -> state.play()
+        false -> state.pause()
+    }
+
+    state.position = uiState.progress
 
     LaunchedEffect(uiState.song) {
         val artwork = uiState.song?.artwork ?: return@LaunchedEffect
@@ -99,7 +123,6 @@ fun MainController(
                 listOf(gradientColor, Color.Transparent),
             ),
         ),
-        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         MainControllerToolBarSection(
             modifier = Modifier
@@ -117,19 +140,62 @@ fun MainController(
             onClickMenuDetailInfo = onClickMenuDetailInfo,
         )
 
-        MainControllerArtworkSection(
+        Box(
             modifier = Modifier
-                .padding(bottom = 12.dp)
+                .padding(bottom = 16.dp)
                 .fillMaxWidth()
-                .wrapContentHeight(),
-            songs = uiState.queueItems.toImmutableList(),
-            index = uiState.queueIndex,
-            onSwipeArtwork = onClickSkipToQueue,
-        )
+                .weight(1f)
+        ) {
+            androidx.compose.animation.AnimatedVisibility(
+                modifier = Modifier.fillMaxSize(),
+                visible = isLyricsVisible,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                LyricsView(
+                    state = state,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(
+                        top = 24.dp,
+                        bottom = 32.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                    ),
+                    darkTheme = isDarkMode ?: false,
+                    fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
+                    fontSize = 28.sp,
+                )
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
+                modifier = Modifier.fillMaxSize(),
+                visible = !isLyricsVisible,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Column {
+                    MainControllerArtworkSection(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .weight(1f),
+                        songs = uiState.queueItems.toImmutableList(),
+                        index = uiState.queueIndex,
+                        onSwipeArtwork = onClickSkipToQueue,
+                    )
+
+                    MainControllerTextSection(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        song = uiState.song,
+                    )
+                }
+            }
+        }
 
         MainControllerInfoSection(
             modifier = Modifier
-                .padding(top = 12.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
             uiState = uiState,
@@ -138,7 +204,10 @@ fun MainController(
 
         MainControllerControlButtonSection(
             modifier = Modifier
-                .padding(vertical = 12.dp)
+                .padding(
+                    top = 16.dp,
+                    bottom = 24.dp,
+                )
                 .fillMaxWidth()
                 .wrapContentHeight(),
             uiState = uiState,
@@ -153,12 +222,15 @@ fun MainController(
         MainControllerBottomButtonSection(
             modifier = Modifier
                 .navigationBarsPadding()
-                .padding(bottom = 24.dp)
+                .padding(
+                    top = 8.dp,
+                    bottom = 24.dp
+                )
                 .fillMaxWidth()
                 .wrapContentSize(),
             isFavorite = false,
             onClickLyrics = {
-                onClickLyrics.invoke()
+                isLyricsVisible = !isLyricsVisible
                 uiState.song?.let { onRequestLyrics.invoke(it) }
             },
             onClickFavorite = onClickFavorite,

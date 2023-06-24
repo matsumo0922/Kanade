@@ -22,6 +22,7 @@
 
 # See https://github.com/protocolbuffers/protobuf/issues/6463
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+-dontwarn org.slf4j.impl.StaticLoggerBinder
 
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt # core serialization annotations
@@ -42,3 +43,9 @@
 -keepclasseswithmembers class caios.android.kanade.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+
+# See https://qiita.com/Nabe1216/items/05c9981fd12eb2fa1df0
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**

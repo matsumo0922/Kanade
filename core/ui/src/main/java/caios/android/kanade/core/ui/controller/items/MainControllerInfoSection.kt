@@ -17,19 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.MusicUiState
-import caios.android.kanade.core.ui.util.marquee
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,49 +34,15 @@ internal fun MainControllerInfoSection(
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier) {
-        val (title, artist, slider, progress, remain) = createRefs()
+        val (slider, progress, remain) = createRefs()
 
         val interactionSource = remember { MutableInteractionSource() }
         var sliderPosition by remember { mutableStateOf<Float?>(null) }
         val position by animateFloatAsState(sliderPosition ?: uiState.progressParent)
 
-        Text(
-            modifier = Modifier
-                .marquee()
-                .constrainAs(title) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start, 16.dp)
-                    end.linkTo(parent.end, 16.dp)
-
-                    width = Dimension.fillToConstraints
-                },
-            text = uiState.song?.title ?: stringResource(R.string.music_unknown_title),
-            style = MaterialTheme.typography.titleLarge.center(),
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-
-        Text(
-            modifier = Modifier
-                .marquee()
-                .constrainAs(artist) {
-                    top.linkTo(title.bottom, 8.dp)
-                    start.linkTo(parent.start, 16.dp)
-                    end.linkTo(parent.end, 16.dp)
-
-                    width = Dimension.fillToConstraints
-                },
-            text = uiState.song?.artist ?: stringResource(R.string.music_unknown_artist),
-            style = MaterialTheme.typography.bodyMedium.center(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-
         Slider(
             modifier = Modifier.constrainAs(slider) {
-                top.linkTo(artist.bottom, 24.dp)
+                top.linkTo(parent.top, 16.dp)
                 start.linkTo(parent.start, 16.dp)
                 end.linkTo(parent.end, 16.dp)
 
@@ -112,7 +73,7 @@ internal fun MainControllerInfoSection(
             modifier = Modifier.constrainAs(progress) {
                 top.linkTo(slider.bottom, 2.dp)
                 start.linkTo(parent.start, 24.dp)
-                bottom.linkTo(parent.bottom)
+                bottom.linkTo(parent.bottom, 16.dp)
             },
             text = uiState.progressString,
             style = MaterialTheme.typography.bodyMedium,
@@ -123,7 +84,7 @@ internal fun MainControllerInfoSection(
             modifier = Modifier.constrainAs(remain) {
                 top.linkTo(slider.bottom, 2.dp)
                 end.linkTo(parent.end, 24.dp)
-                bottom.linkTo(parent.bottom)
+                bottom.linkTo(parent.bottom, 16.dp)
             },
             text = uiState.song?.duration?.toDurationString() ?: "--:--",
             style = MaterialTheme.typography.bodyMedium,
