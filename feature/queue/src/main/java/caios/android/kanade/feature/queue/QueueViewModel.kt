@@ -41,7 +41,7 @@ class QueueViewModel @Inject constructor(
 
     fun onSkipToQueue(index: Int) {
         musicController.playerEvent(
-            PlayerEvent.SkipToQueue(index)
+            PlayerEvent.SkipToQueue(index),
         )
     }
 

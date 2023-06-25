@@ -173,8 +173,8 @@ private fun getDurationTime(duration: Long): String {
     } else {
         String.format(Locale.getDefault(), "%02d:%02d", minute, second % 60)
     }
-
 }
+
 @Preview
 @Composable
 private fun QueueListItemPreview() {

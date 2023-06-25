@@ -106,7 +106,7 @@ private fun AlbumMenuHeaderPreview() {
     KanadeBackground {
         AlbumMenuHeader(
             modifier = Modifier.fillMaxWidth(),
-            album = Album.dummy()
+            album = Album.dummy(),
         )
     }
 }

@@ -40,7 +40,7 @@ private fun QueueDialog(
     val scope = rememberCoroutineScope()
     val state = rememberReorderableLazyListState(
         onMove = { from, to -> data = data.apply { add(from.index, removeAt(to.index)) } },
-        onDragEnd = { fromIndex, toIndex -> onMoveQueue.invoke(fromIndex, toIndex) }
+        onDragEnd = { fromIndex, toIndex -> onMoveQueue.invoke(fromIndex, toIndex) },
     )
 
     Column(modifier) {
@@ -61,7 +61,7 @@ private fun QueueDialog(
                 scope.launch {
                     state.listState.animateScrollToItem(uiState.index)
                 }
-            }
+            },
         )
 
         QueueListSection(

@@ -211,7 +211,7 @@ fun PreviewExpandFloatingActionButton() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .expandedFloatingActionButtonContainer(state)
+                .expandedFloatingActionButtonContainer(state),
         ) {
             ExpandFloatingActionButton(
                 modifier = Modifier
@@ -225,19 +225,19 @@ fun PreviewExpandFloatingActionButton() {
                     ExpandFloatingActionButtonItem(
                         icon = Icons.Default.FavoriteBorder,
                         name = "お気に入り",
-                        onClick = {}
+                        onClick = {},
                     ),
                     ExpandFloatingActionButtonItem(
                         icon = Icons.Default.Folder,
                         name = "外部プレイリスト",
-                        onClick = {}
+                        onClick = {},
                     ),
                     ExpandFloatingActionButtonItem(
                         icon = Icons.Default.SimCardDownload,
                         name = "m3uファイル",
-                        onClick = {}
+                        onClick = {},
                     ),
-                )
+                ),
             )
         }
     }

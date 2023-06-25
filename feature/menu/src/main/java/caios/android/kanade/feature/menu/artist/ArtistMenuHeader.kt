@@ -54,7 +54,7 @@ private fun ArtistMenuHeaderPreview() {
     KanadeBackground {
         ArtistMenuHeader(
             modifier = Modifier.fillMaxWidth(),
-            artist = Artist.dummy()
+            artist = Artist.dummy(),
         )
     }
 }

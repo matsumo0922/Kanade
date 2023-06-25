@@ -59,8 +59,8 @@ internal fun QueueListSection(
             ),
         ) {
             itemsIndexed(
-                items =queue,
-                key = { i, item -> item.id }
+                items = queue,
+                key = { i, item -> item.id },
             ) { i, item ->
                 ReorderableItem(
                     reorderableState = state,
@@ -68,12 +68,13 @@ internal fun QueueListSection(
                 ) { isDragging ->
                     val dismissState = rememberDismissState(
                         confirmValueChange = {
-                            if (it.ordinal == index) false
-                            else {
+                            if (it.ordinal == index) {
+                                false
+                            } else {
                                 onDeleteItem.invoke(it.ordinal)
                                 true
                             }
-                        }
+                        },
                     )
                     val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
                     val background = animateColorAsState(if (index == i) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface)
@@ -81,7 +82,6 @@ internal fun QueueListSection(
                     SwipeToDismiss(
                         state = dismissState,
                         background = {
-
                         },
                         dismissContent = {
                             QueueListItem(
@@ -111,9 +111,9 @@ internal fun QueueListSection(
                         colors = listOf(
                             MaterialTheme.colorScheme.surface,
                             Color.Transparent,
-                        )
-                    )
-                )
+                        ),
+                    ),
+                ),
         )
     }
 }

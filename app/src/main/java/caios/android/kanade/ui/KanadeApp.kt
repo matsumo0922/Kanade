@@ -208,7 +208,7 @@ fun KanadeApp(
                                             userData = userData,
                                             song = song,
                                         )
-                                    }
+                                    },
                                 )
                             },
                             navigateToKaraoke = { },
