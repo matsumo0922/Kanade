@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -52,6 +54,8 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
+import caios.android.kanade.feature.menu.song.showSongMenuDialog
+import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -70,6 +74,7 @@ fun KanadeApp(
 ) {
     KanadeBackground(Modifier.fillMaxSize()) {
         val density = LocalDensity.current
+        val activity = (LocalContext.current as Activity)
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
         ModalNavigationDrawer(
@@ -194,7 +199,18 @@ fun KanadeApp(
                             navigateToLyrics = { },
                             navigateToFavorite = { },
                             navigateToSleepTimer = { },
-                            navigateToQueue = { },
+                            navigateToQueue = {
+                                activity.showQueueDialog(
+                                    userData = userData,
+                                    navigateToSongMenu = { song ->
+                                        activity.showSongMenuDialog(
+                                            musicViewModel = musicViewModel,
+                                            userData = userData,
+                                            song = song,
+                                        )
+                                    }
+                                )
+                            },
                             navigateToKaraoke = { },
                         )
                     },

@@ -95,7 +95,7 @@ class QueueManagerImpl @Inject constructor(
     }
 
     override fun moveItem(fromIndex: Int, toIndex: Int) {
-        val song = currentQueue[fromIndex]
+        val song = currentQueue[index]
 
         _currentQueue.value.apply { add(toIndex, removeAt(fromIndex)) }
         _index.value = currentQueue.indexOf(song)

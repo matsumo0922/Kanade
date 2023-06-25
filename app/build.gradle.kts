@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":feature:song"))
     implementation(project(":feature:home"))
     implementation(project(":feature:menu"))
+    implementation(project(":feature:queue"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))

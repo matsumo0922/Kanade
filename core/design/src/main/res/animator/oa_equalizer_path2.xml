@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:duration="271"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:valueFrom="0.5"
+        android:valueTo="0.3"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="372"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:startOffset="271"
+        android:valueFrom="0.3"
+        android:valueTo="0.7"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="279"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:startOffset="643"
+        android:valueFrom="0.7"
+        android:valueTo="0.2"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="375"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:startOffset="922"
+        android:valueFrom="0.2"
+        android:valueTo="0.5"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="329"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:startOffset="1297"
+        android:valueFrom="0.5"
+        android:valueTo="0.1"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="374"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="trimPathStart"
+        android:startOffset="1626"
+        android:valueFrom="0.1"
+        android:valueTo="0.5"
+        android:valueType="floatType" />
+</set>

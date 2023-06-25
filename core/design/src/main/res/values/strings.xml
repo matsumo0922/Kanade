@@ -93,4 +93,9 @@
     <string name="song_header_most_played">再生回数トップ</string>
     <string name="song_header_shuffle">シャッフル</string>
     <string name="song_header_see_all">すべて表示</string>
+
+    <!-- Queue -->
+    <string name="queue_title">再生待ちリスト</string>
+    <string name="queue_menu_add_to_playlist">プレイリストに追加</string>
+    <string name="queue_menu_share">共有</string>
 </resources>

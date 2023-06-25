@@ -50,6 +50,8 @@ interface MusicController {
     fun setPlayerPosition(position: Long)
 
     fun addToQueue(songs: List<Song>, index: Int? = null)
+    fun removeFromQueue(index: Int)
+    fun moveQueue(fromIndex: Int, toIndex: Int)
 
     fun playerEvent(event: PlayerEvent)
 }
@@ -193,6 +195,14 @@ class MusicControllerImpl @Inject constructor(
 
     override fun addToQueue(songs: List<Song>, index: Int?) {
         queueManager.addItems(index ?: currentQueue.value?.items?.size ?: 0, songs)
+    }
+
+    override fun removeFromQueue(index: Int) {
+        queueManager.removeItem(index)
+    }
+
+    override fun moveQueue(fromIndex: Int, toIndex: Int) {
+        queueManager.moveItem(fromIndex, toIndex)
     }
 
     override fun playerEvent(event: PlayerEvent) {

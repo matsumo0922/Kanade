@@ -1,6 +1,7 @@
 package caios.android.kanade.core.design.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -109,3 +110,6 @@ fun TextStyle.end() = this.merge(TextStyle(textAlign = TextAlign.End))
 fun TextStyle.bold() = this.merge(TextStyle(fontWeight = FontWeight.Bold))
 fun TextStyle.extraBold() = this.merge(TextStyle(fontWeight = FontWeight.ExtraBold))
 fun TextStyle.italic() = this.merge(TextStyle(fontStyle = FontStyle.Italic))
+
+// Padding
+fun TextStyle.excludeFontPadding() = this.merge(TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)))
