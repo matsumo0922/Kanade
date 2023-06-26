@@ -2,6 +2,7 @@ package caios.android.kanade.feature.queue.items
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,17 +27,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Song
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.ReorderableLazyListState
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun QueueListSection(
     state: ReorderableLazyListState,
-    queue: List<Song>,
+    queue: ImmutableList<Song>,
     index: Int,
     onDeleteItem: (Int) -> Unit,
     onSkipToQueue: (Int) -> Unit,
@@ -60,7 +63,7 @@ internal fun QueueListSection(
         ) {
             itemsIndexed(
                 items = queue,
-                key = { i, item -> item.id },
+                key = { _, item -> item.id },
             ) { i, item ->
                 ReorderableItem(
                     reorderableState = state,
@@ -68,7 +71,7 @@ internal fun QueueListSection(
                 ) { isDragging ->
                     val dismissState = rememberDismissState(
                         confirmValueChange = {
-                            if (it.ordinal == index) {
+                            if (i == index) {
                                 false
                             } else {
                                 onDeleteItem.invoke(it.ordinal)
@@ -80,6 +83,7 @@ internal fun QueueListSection(
                     val background = animateColorAsState(if (index == i) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface)
 
                     SwipeToDismiss(
+                        modifier = Modifier.animateItemPlacement(),
                         state = dismissState,
                         background = {
                         },
@@ -124,7 +128,7 @@ private fun QueueListSectionPreview() {
     KanadeBackground(Modifier.background(MaterialTheme.colorScheme.surface)) {
         QueueListSection(
             modifier = Modifier.fillMaxWidth(),
-            queue = Song.dummies(5),
+            queue = Song.dummies(5).toImmutableList(),
             index = 2,
             state = rememberReorderableLazyListState(onMove = { _, _ -> }),
             onSkipToQueue = { },

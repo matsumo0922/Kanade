@@ -21,8 +21,10 @@ import caios.android.kanade.core.ui.dialog.showAsButtonSheet
 import caios.android.kanade.feature.queue.items.QueueCurrentItemSection
 import caios.android.kanade.feature.queue.items.QueueHeaderSection
 import caios.android.kanade.feature.queue.items.QueueListSection
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import timber.log.Timber
 
 @Composable
 private fun QueueDialog(
@@ -42,6 +44,8 @@ private fun QueueDialog(
         onMove = { from, to -> data = data.apply { add(from.index, removeAt(to.index)) } },
         onDragEnd = { fromIndex, toIndex -> onMoveQueue.invoke(fromIndex, toIndex) },
     )
+
+    Timber.d(data.size.toString())
 
     Column(modifier) {
         QueueHeaderSection(
@@ -66,7 +70,7 @@ private fun QueueDialog(
 
         QueueListSection(
             modifier = Modifier.fillMaxWidth(),
-            queue = data,
+            queue = data.toImmutableList(),
             index = uiState.index,
             state = state,
             onClickSongMenu = { onClickSongMenu.invoke(it) },

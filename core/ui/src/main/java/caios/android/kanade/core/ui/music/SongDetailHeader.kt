@@ -37,7 +37,7 @@ fun SongDetailHeader(
                 .padding(start = 8.dp)
                 .weight(1f),
             text = stringResource(R.string.common_songs),
-            style = MaterialTheme.typography.titleMedium.bold(),
+            style = MaterialTheme.typography.titleLarge.bold(),
             color = MaterialTheme.colorScheme.onSurface,
         )
 

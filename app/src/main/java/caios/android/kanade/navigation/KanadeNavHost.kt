@@ -76,7 +76,7 @@ fun KanadeNavHost(
             navigateToArtistMenu = {
                 activity.showArtistMenuDialog(musicViewModel, userData, it)
             },
-            navigateToAlbumDetail = {
+            navigateToAlbumMenu = {
                 activity.showAlbumMenuDialog(musicViewModel, userData, it)
             },
             terminate = {

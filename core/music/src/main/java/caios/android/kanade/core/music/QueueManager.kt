@@ -87,6 +87,7 @@ class QueueManagerImpl @Inject constructor(
     }
 
     override fun removeItem(index: Int) {
+        Timber.d("removeItem: index=$index")
         val song = currentQueue[this.index]
 
         _currentQueue.value.removeAt(index)

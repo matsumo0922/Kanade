@@ -8,7 +8,6 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicController
-import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -18,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class QueueViewModel @Inject constructor(
     private val musicController: MusicController,
-    private val musicRepository: MusicRepository,
 ) : ViewModel() {
 
     val screenState = musicController.currentQueue.map {

@@ -19,7 +19,7 @@ fun NavController.navigateToArtistDetail(artistId: Long) {
 fun NavGraphBuilder.artistDetailScreen(
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
-    navigateToAlbumDetail: (Album) -> Unit,
+    navigateToAlbumMenu: (Album) -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
@@ -32,6 +32,7 @@ fun NavGraphBuilder.artistDetailScreen(
             artistId = it.arguments?.getLong(ArtistDetailId) ?: -1L,
             navigateToArtistMenu = navigateToArtistMenu,
             navigateToSongMenu = navigateToSongMenu,
+            navigateToAlbumMenu = navigateToAlbumMenu,
             terminate = terminate,
         )
     }
