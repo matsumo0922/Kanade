@@ -1,5 +1,12 @@
 package caios.android.kanade.feature.playlist.top
 
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -15,8 +22,18 @@ fun NavController.navigateToPlaylistTop(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.playlistTopScreen(
     topMargin: Dp,
 ) {
-    composable(route = PlaylistTopRoute) {
+    composable(
+        route = PlaylistTopRoute,
+        enterTransition = {
+            fadeIn(tween(240)) + scaleIn(
+                initialScale = 0.92f,
+                transformOrigin = TransformOrigin.Center,
+                animationSpec = tween(240, 0, CubicBezierEasing(0.0f, 0.0f, 0.0f, 1.0f))
+            )
+        },
+    ) {
         PlaylistTopRoute(
+            modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
         )
     }

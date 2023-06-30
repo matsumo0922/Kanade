@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
@@ -64,7 +65,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("SwallowedException")
 @Composable
 fun KanadeApp(
@@ -106,11 +107,19 @@ fun KanadeApp(
                     72.dp + with(density) { bottomBarHeight.toDp() }
                 },
                 label = "bottomSheetPeekHeight",
+                animationSpec = tween(
+                    durationMillis = 240,
+                    easing = NavigateAnimation.decelerateEasing,
+                )
             )
 
             val bottomBarOffset by animateDpAsState(
                 targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
                 label = "bottomBarOffset",
+                animationSpec = tween(
+                    durationMillis = 240,
+                    easing = NavigateAnimation.decelerateEasing,
+                )
             )
 
             val scope = rememberCoroutineScope()

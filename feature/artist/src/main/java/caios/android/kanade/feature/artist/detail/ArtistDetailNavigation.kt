@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Song
@@ -27,6 +28,8 @@ fun NavGraphBuilder.artistDetailScreen(
         arguments = listOf(
             navArgument(ArtistDetailId) { type = NavType.LongType },
         ),
+        enterTransition = { NavigateAnimation.Detail.enter },
+        exitTransition = { NavigateAnimation.Detail.exit },
     ) {
         ArtistDetailRoute(
             artistId = it.arguments?.getLong(ArtistDetailId) ?: -1L,

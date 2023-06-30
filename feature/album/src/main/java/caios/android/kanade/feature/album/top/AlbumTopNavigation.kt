@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import caios.android.kanade.core.design.animation.NavigateAnimation
 
 const val AlbumTopRoute = "albumTop"
 
@@ -16,7 +17,21 @@ fun NavGraphBuilder.albumTopScreen(
     topMargin: Dp,
     navigateToAlbumDetail: (Long) -> Unit,
 ) {
-    composable(route = AlbumTopRoute) {
+    composable(
+        route = AlbumTopRoute,
+        enterTransition = {
+            when (initialState.destination.route) {
+                "homeTop", "playlistTop", "songTop", "artistTop" -> NavigateAnimation.Library.enter
+                else -> NavigateAnimation.Detail.popEnter
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                "homeTop", "playlistTop", "songTop", "artistTop" -> NavigateAnimation.Library.exit
+                else -> NavigateAnimation.Detail.popExit
+            }
+        }
+    ) {
         AlbumTopRoute(
             topMargin = topMargin,
             navigateToAlbumDetail = navigateToAlbumDetail,
