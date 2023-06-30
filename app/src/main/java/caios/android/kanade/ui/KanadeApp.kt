@@ -32,6 +32,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -87,13 +88,14 @@ fun KanadeApp(
             },
             gesturesEnabled = true,
         ) {
-            var topBarHeight by remember { mutableStateOf(0f) }
-            var bottomBarHeight by remember { mutableStateOf(0f) }
-            var bottomSheetHeight by remember { mutableStateOf(0f) }
-            var bottomSheetOffsetRate by remember { mutableStateOf(-1f) }
+            var topBarHeight by remember { mutableFloatStateOf(0f) }
+            var bottomBarHeight by remember { mutableFloatStateOf(0f) }
+            var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
+            var bottomSheetOffsetRate by remember { mutableFloatStateOf(-1f) }
 
             val topBarAlpha by animateFloatAsState(
                 targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
+                label = "topBarAlpha",
             )
 
             val bottomSheetPeekHeight by animateDpAsState(
@@ -103,10 +105,12 @@ fun KanadeApp(
                 } else {
                     72.dp + with(density) { bottomBarHeight.toDp() }
                 },
+                label = "bottomSheetPeekHeight",
             )
 
             val bottomBarOffset by animateDpAsState(
                 targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
+                label = "bottomBarOffset"
             )
 
             val scope = rememberCoroutineScope()

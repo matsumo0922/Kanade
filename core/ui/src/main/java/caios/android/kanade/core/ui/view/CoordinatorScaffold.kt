@@ -33,6 +33,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,8 +71,8 @@ fun CoordinatorScaffold(
     content: LazyListScope.() -> Unit,
 ) {
     val listState = rememberLazyListState()
-    var appBarAlpha by remember { mutableStateOf(0f) }
-    var topSectionHeight by remember { mutableStateOf(100) }
+    var appBarAlpha by remember { mutableFloatStateOf(0f) }
+    var topSectionHeight by remember { mutableIntStateOf(100) }
 
     Box(modifier.background(color)) {
         LazyColumn(

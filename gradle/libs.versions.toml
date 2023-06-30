@@ -9,14 +9,14 @@ targetSdk = "33"
 compileSdk = "33"
 
 # Gradle
-gradle = "8.0.2"
+gradle = "8.1.0-rc01"
 
 # Kotlin
-kotlin = "1.8.21"
-kotlinCompiler = "1.4.7"
+kotlin = "1.8.22"
+kotlinCompiler = "1.4.8"
 
 # KotlinX
-kotlinxCoroutines = "1.6.4"
+kotlinxCoroutines = "1.7.1"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.5.1"
 kotlinxImmutable = "0.3.5"
@@ -29,20 +29,20 @@ androidxActivity = "1.7.1"
 androidxFragment = "1.5.7"
 androidxTransition = "1.4.1"
 androidxConstraintLayout = "2.1.4"
-androidxRecyclerView = "1.2.1"
+androidxRecyclerView = "1.3.0"
 androidxCardView = "1.0.0"
-androidxViewPager2 = "1.1.0-beta01"
+androidxViewPager2 = "1.1.0-beta02"
 androidxPreference = "1.2.0"
 androidxDataStore = "1.0.0"
 androidxPalette = "1.0.0"
 androidxLifecycle = "2.6.1"
-androidxRoom = "2.5.1"
+androidxRoom = "2.5.2"
 androidxMedia = "1.6.0"
 androidxAnnotation = "1.6.0"
-androidxNavigation = "2.5.3"
-androidxCompose = "2023.05.01"
-androidxComposeConstraintLayout = "1.1.0-alpha06"
-androidxComposeNavigation = "2.5.3"
+androidxNavigation = "2.6.0"
+androidxCompose = "2023.06.01"
+androidxComposeConstraintLayout = "1.1.0-alpha10"
+androidxComposeNavigation = "2.6.0"
 androidxHiltNavigationCompose = "1.0.0"
 
 # Google
@@ -65,6 +65,7 @@ balloon = "1.5.3"
 twitterComposeRule = "0.0.26"
 
 # Debugs
+firebase = "32.1.1"
 leakCanary = "2.10"
 flipper = "0.190.0"
 timber = "5.0.1"
@@ -85,7 +86,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 gms-services = { group = "com.google.gms", name = "google-services", version = "4.3.15" }
 gms-oss = { group = "com.google.android.gms", name = "oss-licenses-plugin", version = "0.10.6" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.4" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.6" }
 secret-gradlePlugin = { group = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", name = "secrets-gradle-plugin", version = "2.0.1" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
@@ -133,7 +134,6 @@ androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragme
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
-
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
@@ -161,7 +161,7 @@ accompanist-compose-theme-adapter3 = { module = "com.google.accompanist:accompan
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 
 # Firebase
-firebase-bom = { module = "com.google.firebase:firebase-bom", version = "30.5.0" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-appindexing = { module = "com.google.firebase:firebase-appindexing" }
@@ -182,9 +182,9 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 # Others
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
-coil-compose = { module = "io.coil-kt:coil-compose", version = "2.2.2" }
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.4.0" }
 skrapeit = { module = "it.skrape:skrapeit", version = "1.3.0-alpha.1" }
-desugar = { module = "com.android.tools:desugar_jdk_libs", version = "1.2.3" }
+desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.3" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon" }
 spell-checker = { module = "org.apache.lucene:lucene-spellchecker", version = "3.6.2" }
@@ -199,7 +199,6 @@ facebook-soloader = { module = "com.facebook.soloader:soloader", version = "0.10
 facebook-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipper" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakCanary" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-
 
 [bundles]
 infra-api = [
@@ -256,7 +255,6 @@ ui-kapt = [
 firebase = [
     "firebase-analytics",
     "firebase-messaging",
-    "firebase-appindexing",
     "firebase-config",
     "firebase-dynamiclinks",
 ]

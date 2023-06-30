@@ -27,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -83,13 +85,13 @@ fun LyricsView(
 
     val scrollState = rememberScrollState()
 
-    var lyricsHeight by remember { mutableStateOf(0) }
+    var lyricsHeight by remember { mutableIntStateOf(0) }
 
     val itemsInfo = remember { mutableMapOf<Int, ItemInfo>() }
 
-    var initialItemsOffsetY by remember { mutableStateOf(0) }
+    var initialItemsOffsetY by remember { mutableIntStateOf(0) }
 
-    var currItemsOffsetY by remember { mutableStateOf(0) }
+    var currItemsOffsetY by remember { mutableIntStateOf(0) }
 
     var animationItemsRange by remember { mutableStateOf(-1..-1) }
 
@@ -238,8 +240,8 @@ private fun LyricsViewLine(
     activeAlpha: Float = 1f,
     inactiveAlpha: Float = 0.35f,
 ) {
-    var scale by remember { mutableStateOf(if (isActive) activeScale else inactiveScale) }
-    var alpha by remember { mutableStateOf(if (isActive) activeAlpha else inactiveAlpha) }
+    var scale by remember { mutableFloatStateOf(if (isActive) activeScale else inactiveScale) }
+    var alpha by remember { mutableFloatStateOf(if (isActive) activeAlpha else inactiveAlpha) }
 
     val interactionSource = remember { MutableInteractionSource() }
     val indication = rememberRipple(color = contentColor)

@@ -3,6 +3,8 @@ package caios.android.kanade.core.ui.amlv
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,9 +30,9 @@ class LyricsViewState(
 
     private val lineCount = lyrics?.lines?.size ?: 0
 
-    var position by mutableStateOf(0L)
+    var position by mutableLongStateOf(0L)
 
-    internal var currentLineIndex by mutableStateOf(-1)
+    internal var currentLineIndex by mutableIntStateOf(-1)
         private set
 
     var isPlaying by mutableStateOf(false)

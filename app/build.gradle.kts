@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -86,12 +88,7 @@ dependencies {
     debugImplementation(libs.facebook.flipper.network)
     debugImplementation(libs.facebook.flipper.leakcanary)
     debugImplementation(libs.facebook.soloader)
-
     debugImplementation(libs.leakcanary)
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
 plugins.apply("com.google.gms.google-services")

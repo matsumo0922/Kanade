@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -42,8 +42,8 @@ internal fun MainControllerArtworkSection(
     modifier: Modifier = Modifier,
 ) {
     val dummyPagerCount = songs.size + 2
-    val pagerState = rememberPagerState(initialPage = index + 1)
-    var lastPlayedIndex by remember { mutableStateOf(index) }
+    val pagerState = rememberPagerState(initialPage = index + 1) { dummyPagerCount }
+    var lastPlayedIndex by remember { mutableIntStateOf(index) }
 
     LaunchedEffect(index) {
         snapshotFlow { index }.collect {
@@ -79,7 +79,6 @@ internal fun MainControllerArtworkSection(
 
     HorizontalPager(
         modifier = modifier,
-        pageCount = dummyPagerCount,
         state = pagerState,
     ) { dummyIndex ->
         val realIndex = when (dummyIndex) {
