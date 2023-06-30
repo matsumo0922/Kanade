@@ -28,7 +28,7 @@ fun NavGraphBuilder.artistTopScreen(
         exitTransition = {
             when (targetState.destination.route) {
                 "homeTop", "playlistTop", "songTop", "albumTop" -> NavigateAnimation.Library.exit
-                else -> NavigateAnimation.Detail.popExit
+                else -> NavigateAnimation.Detail.exit
             }
         },
     ) {

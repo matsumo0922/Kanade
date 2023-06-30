@@ -29,7 +29,7 @@ fun NavGraphBuilder.playlistTopScreen(
         exitTransition = {
             when (targetState.destination.route) {
                 "homeTop", "songTop", "artistTop", "albumTop" -> NavigateAnimation.Library.exit
-                else -> NavigateAnimation.Detail.popExit
+                else -> NavigateAnimation.Detail.exit
             }
         },
     ) {

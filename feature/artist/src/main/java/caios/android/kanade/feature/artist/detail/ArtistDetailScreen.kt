@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,10 +35,12 @@ import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SongDetailHeader
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
+import caios.android.kanade.feature.artist.R
 
 @Composable
 internal fun ArtistDetailRoute(
     artistId: Long,
+    navigateToSongDetail: (String, List<Long>) -> Unit,
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
@@ -56,6 +59,7 @@ internal fun ArtistDetailRoute(
             ArtistDetailScreen(
                 modifier = modifier,
                 artist = it.artist,
+                onClickSeeAll = navigateToSongDetail,
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
                 onClickAlbumMenu = navigateToAlbumMenu,
@@ -70,6 +74,7 @@ internal fun ArtistDetailRoute(
 @Composable
 private fun ArtistDetailScreen(
     artist: Artist,
+    onClickSeeAll: (String, List<Long>) -> Unit,
     onClickSongHolder: (List<Song>, Int) -> Unit,
     onClickSongMenu: (Song) -> Unit,
     onClickAlbumMenu: (Album) -> Unit,
@@ -91,7 +96,7 @@ private fun ArtistDetailScreen(
             item {
                 SongDetailHeader(
                     modifier = Modifier.fillMaxWidth(),
-                    onClickSeeAll = { /*TODO*/ },
+                    onClickSeeAll = { onClickSeeAll.invoke(artist.artist, artist.songs.map { it.id }) },
                 )
             }
 

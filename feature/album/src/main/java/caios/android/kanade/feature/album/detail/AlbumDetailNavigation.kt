@@ -27,7 +27,7 @@ fun NavGraphBuilder.albumDetailScreen(
             navArgument(AlbumDetailId) { type = NavType.LongType },
         ),
         enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
+        exitTransition = { NavigateAnimation.Detail.popExit },
     ) {
         AlbumDetailRoute(
             albumId = it.arguments?.getLong(AlbumDetailId) ?: -1L,

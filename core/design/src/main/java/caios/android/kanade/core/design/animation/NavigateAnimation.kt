@@ -29,7 +29,7 @@ object NavigateAnimation {
             initialOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
 
-        val exit = fadeOut(tween(200)) + slideOut(
+        val popExit = fadeOut(tween(200)) + slideOut(
             animationSpec = tween(220, 0, decelerateEasing),
             targetOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
@@ -39,7 +39,7 @@ object NavigateAnimation {
             initialOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )
 
-        val popExit = fadeOut(tween(200)) + slideOut(
+        val exit = fadeOut(tween(200)) + slideOut(
             animationSpec = tween(220, 0, decelerateEasing),
             targetOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )

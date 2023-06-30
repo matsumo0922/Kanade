@@ -18,6 +18,7 @@ fun NavController.navigateToArtistDetail(artistId: Long) {
 }
 
 fun NavGraphBuilder.artistDetailScreen(
+    navigateToSongDetail: (String, List<Long>) -> Unit,
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
@@ -30,9 +31,12 @@ fun NavGraphBuilder.artistDetailScreen(
         ),
         enterTransition = { NavigateAnimation.Detail.enter },
         exitTransition = { NavigateAnimation.Detail.exit },
+        popEnterTransition = { NavigateAnimation.Detail.popEnter },
+        popExitTransition = { NavigateAnimation.Detail.popExit },
     ) {
         ArtistDetailRoute(
             artistId = it.arguments?.getLong(ArtistDetailId) ?: -1L,
+            navigateToSongDetail = navigateToSongDetail,
             navigateToArtistMenu = navigateToArtistMenu,
             navigateToSongMenu = navigateToSongMenu,
             navigateToAlbumMenu = navigateToAlbumMenu,
