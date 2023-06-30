@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("kanade.application")
     id("kanade.application.compose")
@@ -5,22 +7,36 @@ plugins {
     id("kanade.detekt")
 }
 
-apply(from =  "${project.rootDir}/gradle/keystore/default.gradle")
-
 android {
     namespace = "caios.android.kanade"
 
+    signingConfigs {
+        val localProperties = Properties().apply {
+            load(project.rootDir.resolve("local.properties").inputStream())
+        }
+
+        getByName("debug") {
+            storeFile = file("${project.rootDir}/gradle/keystore/debug.keystore")
+        }
+        create("release") {
+            storeFile = file("${project.rootDir}/gradle/keystore/release.jks")
+            storePassword = localProperties.getProperty("storePassword") ?: System.getenv("RELEASE_STORE_PASSWORD")
+            keyPassword = localProperties.getProperty("keyPassword") ?: System.getenv("RELEASE_KEY_PASSWORD")
+            keyAlias = localProperties.getProperty("keyAlias") ?: System.getenv("RELEASE_KEY_ALIAS")
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
+            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             versionNameSuffix = ".D"
             applicationIdSuffix = ".debug3"
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
