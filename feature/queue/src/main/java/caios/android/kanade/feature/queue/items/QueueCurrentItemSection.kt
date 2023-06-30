@@ -16,6 +16,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +34,7 @@ import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
 import caios.android.kanade.core.ui.util.marquee
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
@@ -38,6 +44,20 @@ internal fun QueueCurrentItemSection(
     onClickHolder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var atEnd by remember { mutableStateOf(false) }
+    val image = AnimatedImageVector.animatedVectorResource(R.drawable.av_equalizer)
+    
+    suspend fun runAnimation() {
+        while (isPlaying) {
+            atEnd = !atEnd
+            delay(2000)
+        }
+    }
+    
+    LaunchedEffect(isPlaying) {
+        runAnimation()
+    }
+
     ConstraintLayout(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -45,7 +65,6 @@ internal fun QueueCurrentItemSection(
             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
             .clickable { onClickHolder.invoke() },
     ) {
-        val image = AnimatedImageVector.animatedVectorResource(R.drawable.av_equalizer)
         val (artwork, title, artist, icon) = createRefs()
 
         Card(
@@ -106,7 +125,7 @@ internal fun QueueCurrentItemSection(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end, 16.dp)
                 },
-            painter = rememberAnimatedVectorPainter(image, isPlaying),
+            painter = rememberAnimatedVectorPainter(image, atEnd),
             contentDescription = null,
             tint = Red40,
         )
