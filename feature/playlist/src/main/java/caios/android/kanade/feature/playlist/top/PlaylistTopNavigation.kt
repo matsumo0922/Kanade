@@ -1,17 +1,13 @@
 package caios.android.kanade.feature.playlist.top
 
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import caios.android.kanade.core.design.animation.NavigateAnimation
 
 const val PlaylistTopRoute = "playlistTop"
 
@@ -25,11 +21,16 @@ fun NavGraphBuilder.playlistTopScreen(
     composable(
         route = PlaylistTopRoute,
         enterTransition = {
-            fadeIn(tween(240)) + scaleIn(
-                initialScale = 0.92f,
-                transformOrigin = TransformOrigin.Center,
-                animationSpec = tween(240, 0, CubicBezierEasing(0.0f, 0.0f, 0.0f, 1.0f)),
-            )
+            when (initialState.destination.route) {
+                "homeTop", "songTop", "artistTop", "albumTop" -> NavigateAnimation.Library.enter
+                else -> NavigateAnimation.Detail.popEnter
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                "homeTop", "songTop", "artistTop", "albumTop" -> NavigateAnimation.Library.exit
+                else -> NavigateAnimation.Detail.popExit
+            }
         },
     ) {
         PlaylistTopRoute(
