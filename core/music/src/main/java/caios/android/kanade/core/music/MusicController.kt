@@ -127,7 +127,6 @@ class MusicControllerImpl @Inject constructor(
     init {
         scope.launch {
             queueManager.queue.collectLatest {
-                Timber.d("Queue changed. index: ${it.index}, size: ${it.items.size}")
                 _currentQueue.value = it
 
                 if (it.items.isNotEmpty()) {

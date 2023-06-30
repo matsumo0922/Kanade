@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
-import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -19,13 +21,13 @@ class QueueViewModel @Inject constructor(
     private val musicController: MusicController,
 ) : ViewModel() {
 
-    val screenState = musicController.currentQueue.map {
-        if (it != null) {
+    val screenState = combine(musicController.currentQueue, musicController.playerState, ::Pair).map { (queue, state) ->
+        if (queue != null) {
             ScreenState.Idle(
                 QueueUiState(
-                    queue = it.items,
-                    index = it.index,
-                    isPlaying = false,
+                    queue = queue.items.mapIndexed { index, song -> QueueItem(song, index) },
+                    index = queue.index,
+                    isPlaying = state == PlayerState.Playing,
                 ),
             )
         } else {
@@ -54,7 +56,7 @@ class QueueViewModel @Inject constructor(
 
 @Stable
 data class QueueUiState(
-    val queue: List<Song>,
+    val queue: List<QueueItem>,
     val index: Int,
     val isPlaying: Boolean,
 )

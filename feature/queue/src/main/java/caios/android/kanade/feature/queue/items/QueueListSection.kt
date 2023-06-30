@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -39,15 +41,19 @@ import org.burnoutcrew.reorderable.reorderable
 @Composable
 internal fun QueueListSection(
     state: ReorderableLazyListState,
-    queue: ImmutableList<Song>,
+    queue: ImmutableList<QueueItem>,
     index: Int,
-    onDeleteItem: (Int) -> Unit,
+    onDeleteItem: (QueueItem) -> Boolean,
     onSkipToQueue: (Int) -> Unit,
     onClickSongMenu: (Song) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
     val navigationBarsPadding = WindowInsets.navigationBars.getBottom(density)
+
+    fun getItemIndex(item: QueueItem): Int {
+        return queue.indexOfFirst { it.index == item.index }
+    }
 
     Box(modifier) {
         LazyColumn(
@@ -61,40 +67,39 @@ internal fun QueueListSection(
                 bottom = with(density) { navigationBarsPadding.toDp() },
             ),
         ) {
-            itemsIndexed(
+            items(
                 items = queue,
-                key = { _, item -> item.id },
-            ) { i, item ->
+                key = { item -> item.index },
+            ) { item ->
                 ReorderableItem(
                     reorderableState = state,
-                    key = "${item.id}:$i",
+                    key = "${item.index}",
                 ) { isDragging ->
                     val dismissState = rememberDismissState(
-                        confirmValueChange = {
-                            if (i == index) {
-                                false
-                            } else {
-                                onDeleteItem.invoke(it.ordinal)
-                                true
-                            }
-                        },
+                        confirmValueChange = { onDeleteItem(item) },
                     )
-                    val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
-                    val background = animateColorAsState(if (index == i) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface)
+                    val elevation = animateDpAsState(
+                        targetValue = if (isDragging) 16.dp else 0.dp,
+                        label = "elevation",
+                    )
+                    val background = animateColorAsState(
+                        targetValue = if (index == getItemIndex(item)) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface,
+                        label = "background",
+                    )
 
                     SwipeToDismiss(
                         modifier = Modifier.animateItemPlacement(),
                         state = dismissState,
-                        background = {
-                        },
+                        background = { },
                         dismissContent = {
                             QueueListItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .zIndex(if (isDragging) 1f else 0f)
                                     .background(background.value)
                                     .shadow(elevation.value),
-                                song = item,
-                                index = i,
+                                song = item.song,
+                                index = getItemIndex(item),
                                 state = state,
                                 onClickHolder = onSkipToQueue,
                                 onClickMenu = onClickSongMenu,
@@ -128,11 +133,11 @@ private fun QueueListSectionPreview() {
     KanadeBackground(Modifier.background(MaterialTheme.colorScheme.surface)) {
         QueueListSection(
             modifier = Modifier.fillMaxWidth(),
-            queue = Song.dummies(5).toImmutableList(),
+            queue = Song.dummies(10).mapIndexed { index, song -> QueueItem(song, index) }.toImmutableList(),
             index = 2,
             state = rememberReorderableLazyListState(onMove = { _, _ -> }),
             onSkipToQueue = { },
-            onDeleteItem = { },
+            onDeleteItem = { true },
             onClickSongMenu = { },
         )
     }

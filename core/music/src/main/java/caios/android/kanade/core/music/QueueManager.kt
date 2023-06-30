@@ -75,30 +75,38 @@ class QueueManagerImpl @Inject constructor(
     }
 
     override fun addItem(index: Int, song: Song) {
-        _currentQueue.value.add(index, song.id)
-        _originalQueue.value.add(song.id)
+        val current = currentQueue.toMutableList()
+        val original = originalQueue.toMutableList()
+
+        _currentQueue.value = current.apply { add(index, song.id) }
+        _originalQueue.value = original.apply { add(song.id) }
         _index.value = if (index <= this.index) this.index + 1 else this.index
     }
 
     override fun addItems(index: Int, songs: List<Song>) {
-        _currentQueue.value.addAll(index, songs.map { it.id })
-        _originalQueue.value.addAll(songs.map { it.id })
+        val current = currentQueue.toMutableList()
+        val original = originalQueue.toMutableList()
+
+        _currentQueue.value = current.apply { addAll(index, songs.map { it.id }) }
+        _originalQueue.value = original.apply { addAll(songs.map { it.id }) }
         _index.value = if (index <= this.index) this.index + songs.size else this.index
     }
 
     override fun removeItem(index: Int) {
-        Timber.d("removeItem: index=$index")
         val song = currentQueue[this.index]
+        val current = currentQueue.toMutableList()
+        val original = originalQueue.toMutableList()
 
-        _currentQueue.value.removeAt(index)
-        _originalQueue.value.remove(song)
+        _currentQueue.value = current.apply { removeAt(index) }
+        _originalQueue.value = original.apply { remove(song) }
         _index.value = if (index <= this.index) this.index - 1 else this.index
     }
 
     override fun moveItem(fromIndex: Int, toIndex: Int) {
         val song = currentQueue[index]
+        val current = currentQueue.toMutableList()
 
-        _currentQueue.value.apply { add(toIndex, removeAt(fromIndex)) }
+        _currentQueue.value = current.apply { add(toIndex, removeAt(fromIndex)) }
         _index.value = currentQueue.indexOf(song)
     }
 
@@ -141,7 +149,7 @@ class QueueManagerImpl @Inject constructor(
     }
 
     override fun build(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
-        Timber.d("build: current=${currentQueue.size}, originalQueue=${originalQueue.size}, index=$index")
+        Timber.d("queue build: current=${currentQueue.size}, originalQueue=${originalQueue.size}, index=$index")
 
         _currentQueue.value = currentQueue.map { it.id }.toMutableList()
         _originalQueue.value = originalQueue.map { it.id }.toMutableList()

@@ -50,8 +50,11 @@ fun BottomController(
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier) {
-        val position by animateFloatAsState(targetValue = uiState.progressParent)
         val (indicator, artwork, title, artist, buttons) = createRefs()
+        val position by animateFloatAsState(
+            targetValue = uiState.progressParent,
+            label = "bottomSliderPosition",
+        )
 
         LinearProgressIndicator(
             modifier = Modifier.constrainAs(indicator) {

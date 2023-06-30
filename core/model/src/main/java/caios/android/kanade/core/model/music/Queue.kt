@@ -5,6 +5,11 @@ data class Queue(
     val index: Int,
 )
 
+data class QueueItem(
+    val song: Song,
+    val index: Int,
+)
+
 data class LastQueue(
     val originalItems: List<Long>,
     val currentItems: List<Long>,

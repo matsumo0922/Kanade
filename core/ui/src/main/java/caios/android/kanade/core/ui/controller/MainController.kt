@@ -273,6 +273,7 @@ private suspend fun getArtworkColor(context: Context, artwork: Artwork, isDarkMo
             palette.lightVibrantSwatch,
             palette.vibrantSwatch,
             palette.darkVibrantSwatch,
+            palette.darkMutedSwatch,
         )
 
         return Color((if (isDarkMode) list.last() else list.first()).rgb)

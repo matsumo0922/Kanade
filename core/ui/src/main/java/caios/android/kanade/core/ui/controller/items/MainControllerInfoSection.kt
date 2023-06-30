@@ -38,7 +38,10 @@ internal fun MainControllerInfoSection(
 
         val interactionSource = remember { MutableInteractionSource() }
         var sliderPosition by remember { mutableStateOf<Float?>(null) }
-        val position by animateFloatAsState(sliderPosition ?: uiState.progressParent)
+        val position by animateFloatAsState(
+            targetValue = sliderPosition ?: uiState.progressParent,
+            label = "sliderPosition",
+        )
 
         Slider(
             modifier = Modifier.constrainAs(slider) {

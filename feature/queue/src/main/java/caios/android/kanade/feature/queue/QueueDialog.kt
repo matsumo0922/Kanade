@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
@@ -24,7 +27,6 @@ import caios.android.kanade.feature.queue.items.QueueListSection
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import timber.log.Timber
 
 @Composable
 private fun QueueDialog(
@@ -38,14 +40,17 @@ private fun QueueDialog(
     onMoveQueue: (Int, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var index by remember { mutableIntStateOf(uiState.index) }
     var data = remember { mutableStateListOf(*uiState.queue.toTypedArray()) }
     val scope = rememberCoroutineScope()
     val state = rememberReorderableLazyListState(
-        onMove = { from, to -> data = data.apply { add(from.index, removeAt(to.index)) } },
+        onMove = { from, to ->
+            val currentSong = data[index]
+            data = data.apply { add(to.index, removeAt(from.index)) }
+            index = data.indexOf(currentSong)
+        },
         onDragEnd = { fromIndex, toIndex -> onMoveQueue.invoke(fromIndex, toIndex) },
     )
-
-    Timber.d(data.size.toString())
 
     Column(modifier) {
         QueueHeaderSection(
@@ -53,13 +58,13 @@ private fun QueueDialog(
                 .statusBarsPadding()
                 .fillMaxWidth(),
             onClickDismiss = onClickDismiss,
-            onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue) },
-            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue) },
+            onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue.map { it.song }) },
+            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue.map { it.song }) },
         )
 
         QueueCurrentItemSection(
             modifier = Modifier.fillMaxWidth(),
-            song = uiState.queue[uiState.index],
+            song = uiState.queue[uiState.index].song,
             isPlaying = uiState.isPlaying,
             onClickHolder = {
                 scope.launch {
@@ -71,11 +76,26 @@ private fun QueueDialog(
         QueueListSection(
             modifier = Modifier.fillMaxWidth(),
             queue = data.toImmutableList(),
-            index = uiState.index,
+            index = index,
             state = state,
             onClickSongMenu = { onClickSongMenu.invoke(it) },
-            onDeleteItem = onDeleteItem,
-            onSkipToQueue = onClickSkipToQueue,
+            onSkipToQueue = {
+                index = it
+                onClickSkipToQueue.invoke(it)
+            },
+            onDeleteItem = {
+                val currentItem = data[index]
+                val deleteIndex = data.indexOf(it)
+
+                if (index == deleteIndex) return@QueueListSection false
+
+                data = data.apply { removeAt(deleteIndex) }
+                index = data.indexOf(currentItem)
+
+                onDeleteItem.invoke(deleteIndex)
+
+                return@QueueListSection true
+            },
         )
     }
 }
@@ -115,7 +135,7 @@ private fun QueueDialogPreview() {
     QueueDialog(
         modifier = Modifier.fillMaxSize(),
         uiState = QueueUiState(
-            queue = Song.dummies(10),
+            queue = Song.dummies(10).mapIndexed { index, song -> QueueItem(song, index) },
             index = 2,
             isPlaying = false,
         ),
