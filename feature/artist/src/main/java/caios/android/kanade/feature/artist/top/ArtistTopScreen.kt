@@ -20,9 +20,6 @@ import caios.android.kanade.core.ui.music.ArtistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun ArtistTopRoute(
@@ -36,7 +33,7 @@ internal fun ArtistTopRoute(
     AsyncLoadContents(screenState) { uiState ->
         ArtistTopScreen(
             modifier = modifier.background(MaterialTheme.colorScheme.surface),
-            artists = uiState?.artists?.toImmutableList() ?: persistentListOf(),
+            artists = uiState?.artists ?: emptyList(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
             onClickSort = { /*TODO*/ },
             onClickArtist = navigateToArtistDetail,
@@ -47,7 +44,7 @@ internal fun ArtistTopRoute(
 
 @Composable
 internal fun ArtistTopScreen(
-    artists: ImmutableList<Artist>,
+    artists: List<Artist>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
     onClickArtist: (Long) -> Unit,
