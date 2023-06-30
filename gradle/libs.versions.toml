@@ -5,8 +5,8 @@ versionCode = "132"
 
 # SDK
 minSdk = "26"
-targetSdk = "33"
-compileSdk = "33"
+targetSdk = "34"
+compileSdk = "34"
 
 # Gradle
 gradle = "8.1.0-rc01"
@@ -144,8 +144,8 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
 androidx-compose-animation-graphics = { module = "androidx.compose.animation:animation-graphics" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
-androidx-compose-material3-window = { module = "androidx.compose.material3:material3-window-size-class" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version = "1.2.0-alpha03" }
+androidx-compose-material3-window = { module = "androidx.compose.material3:material3-window-size-class", version = "1.2.0-alpha03" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }

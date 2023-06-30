@@ -84,7 +84,7 @@ fun Activity.showQueueDialog(
     userData: UserData?,
     navigateToSongMenu: (Song) -> Unit,
 ) {
-    showAsButtonSheet(userData) { onDismiss ->
+    showAsButtonSheet(userData, willFullScreen = true) { onDismiss ->
         val viewModel = hiltViewModel<QueueViewModel>()
         val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
