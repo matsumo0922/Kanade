@@ -64,10 +64,10 @@ private fun BottomSheetWrapper(
             containerColor = MaterialTheme.colorScheme.surface,
             shape = RoundedCornerShape(
                 topStart = cornerRadius.value,
-                topEnd = cornerRadius.value
+                topEnd = cornerRadius.value,
             ),
             windowInsets = WindowInsets(0, 0, 0, 0),
-            onDismissRequest = { isOpen = false }
+            onDismissRequest = { isOpen = false },
         ) {
             content {
                 scope.launch {
@@ -108,7 +108,7 @@ fun Activity.showAsButtonSheet(
                         skipPartiallyExpanded = skipPartiallyExpanded,
                         willFullScreen = willFullScreen,
                         content = content,
-                        )
+                    )
                 }
             }
         }

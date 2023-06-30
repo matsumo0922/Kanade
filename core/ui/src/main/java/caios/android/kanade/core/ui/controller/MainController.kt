@@ -97,7 +97,7 @@ fun MainController(
     val gradientColor by animateColorAsState(
         targetValue = artworkColor,
         animationSpec = tween(300, 0, LinearEasing),
-        label = "gradientColor"
+        label = "gradientColor",
     )
 
     val state = rememberLyricsViewState(

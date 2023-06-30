@@ -110,7 +110,7 @@ fun KanadeApp(
 
             val bottomBarOffset by animateDpAsState(
                 targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
-                label = "bottomBarOffset"
+                label = "bottomBarOffset",
             )
 
             val scope = rememberCoroutineScope()
