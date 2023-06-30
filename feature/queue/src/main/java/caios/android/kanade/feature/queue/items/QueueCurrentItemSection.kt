@@ -46,14 +46,14 @@ internal fun QueueCurrentItemSection(
 ) {
     var atEnd by remember { mutableStateOf(false) }
     val image = AnimatedImageVector.animatedVectorResource(R.drawable.av_equalizer)
-    
+
     suspend fun runAnimation() {
         while (isPlaying) {
             atEnd = !atEnd
             delay(2000)
         }
     }
-    
+
     LaunchedEffect(isPlaying) {
         runAnimation()
     }

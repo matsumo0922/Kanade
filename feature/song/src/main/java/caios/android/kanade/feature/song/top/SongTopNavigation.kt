@@ -28,9 +28,9 @@ fun NavGraphBuilder.songTopScreen(
             fadeIn(tween(240)) + scaleIn(
                 initialScale = 0.92f,
                 transformOrigin = TransformOrigin.Center,
-                animationSpec = tween(240, 0, CubicBezierEasing(0.0f, 0.0f, 0.0f, 1.0f))
+                animationSpec = tween(240, 0, CubicBezierEasing(0.0f, 0.0f, 0.0f, 1.0f)),
             )
-        }
+        },
     ) {
         SongTopRoute(
             topMargin = topMargin,

@@ -30,7 +30,7 @@ fun NavGraphBuilder.albumTopScreen(
                 "homeTop", "playlistTop", "songTop", "artistTop" -> NavigateAnimation.Library.exit
                 else -> NavigateAnimation.Detail.popExit
             }
-        }
+        },
     ) {
         AlbumTopRoute(
             topMargin = topMargin,

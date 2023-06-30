@@ -110,7 +110,7 @@ fun KanadeApp(
                 animationSpec = tween(
                     durationMillis = 240,
                     easing = NavigateAnimation.decelerateEasing,
-                )
+                ),
             )
 
             val bottomBarOffset by animateDpAsState(
@@ -119,7 +119,7 @@ fun KanadeApp(
                 animationSpec = tween(
                     durationMillis = 240,
                     easing = NavigateAnimation.decelerateEasing,
-                )
+                ),
             )
 
             val scope = rememberCoroutineScope()

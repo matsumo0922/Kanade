@@ -17,7 +17,7 @@ object NavigateAnimation {
         val enter = fadeIn(tween(240)) + scaleIn(
             initialScale = 0.92f,
             transformOrigin = TransformOrigin.Center,
-            animationSpec = tween(240, 0, decelerateEasing)
+            animationSpec = tween(240, 0, decelerateEasing),
         )
 
         val exit = fadeOut(tween(240))
@@ -26,22 +26,22 @@ object NavigateAnimation {
     object Detail {
         val enter = fadeIn(tween(200)) + slideIn(
             animationSpec = tween(220, 0, decelerateEasing),
-            initialOffset = { IntOffset(0, (-it.height * 0.1).toInt()) }
+            initialOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
 
         val exit = fadeOut(tween(200)) + slideOut(
             animationSpec = tween(220, 0, decelerateEasing),
-            targetOffset = { IntOffset(0, (-it.height * 0.1).toInt()) }
+            targetOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
 
         val popEnter = fadeIn(tween(200)) + slideIn(
             animationSpec = tween(220, 0, decelerateEasing),
-            initialOffset = { IntOffset(0, (it.height * 0.1).toInt()) }
+            initialOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )
 
         val popExit = fadeOut(tween(200)) + slideOut(
             animationSpec = tween(220, 0, decelerateEasing),
-            targetOffset = { IntOffset(0, (it.height * 0.1).toInt()) }
+            targetOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )
     }
 }
