@@ -1,6 +1,11 @@
 package caios.android.kanade.core.design.theme
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.LocalTonalElevationEnabled
+import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 
 val Blue10 = Color(0xFF001F28)
 val Blue20 = Color(0xFF003544)
@@ -72,3 +77,13 @@ val Teal30 = Color(0xFF214D56)
 val Teal40 = Color(0xFF3A656F)
 val Teal80 = Color(0xFFA2CED9)
 val Teal90 = Color(0xFFBEEAF6)
+
+@Composable
+fun ColorScheme.applyTonalElevation(backgroundColor: Color, elevation: Dp): Color {
+    val tonalElevationEnabled = LocalTonalElevationEnabled.current
+    return if (backgroundColor == surface && tonalElevationEnabled) {
+        surfaceColorAtElevation(elevation)
+    } else {
+        backgroundColor
+    }
+}

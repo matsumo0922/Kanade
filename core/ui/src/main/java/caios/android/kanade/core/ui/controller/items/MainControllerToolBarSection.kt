@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.applyTonalElevation
 
 @Composable
 internal fun MainControllerToolBarSection(
@@ -91,7 +92,12 @@ internal fun MainControllerToolBarSection(
             DropdownMenu(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(
+                        MaterialTheme.colorScheme.applyTonalElevation(
+                            backgroundColor = MaterialTheme.colorScheme.surface,
+                            elevation = 3.dp,
+                        )
+                    ),
                 expanded = isExpandedMenu,
                 onDismissRequest = { isExpandedMenu = false },
             ) {

@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.applyTonalElevation
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Artwork
@@ -100,7 +101,10 @@ fun CoordinatorScaffold(
         CoordinatorToolBar(
             modifier = Modifier.fillMaxWidth(),
             title = title,
-            color = color,
+            color = MaterialTheme.colorScheme.applyTonalElevation(
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                elevation = 3.dp,
+            ),
             backgroundAlpha = appBarAlpha,
             onClickNavigateUp = onClickNavigateUp,
             onClickMenu = onClickMenu,

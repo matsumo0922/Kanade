@@ -1,5 +1,10 @@
 package caios.android.kanade.feature.artist.detail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,9 +25,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,7 +42,6 @@ import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SongDetailHeader
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
-import caios.android.kanade.feature.artist.R
 
 @Composable
 internal fun ArtistDetailRoute(
@@ -83,6 +89,12 @@ private fun ArtistDetailScreen(
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isVisibleFAB by remember { mutableStateOf(false) }
+
+    LaunchedEffect(artist) {
+        isVisibleFAB = true
+    }
+
     Box(modifier) {
         CoordinatorScaffold(
             modifier = Modifier.fillMaxSize(),
@@ -158,17 +170,23 @@ private fun ArtistDetailScreen(
             }
         }
 
-        FloatingActionButton(
+        AnimatedVisibility(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.BottomEnd),
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            onClick = { onClickShuffle.invoke(artist.songs) },
+            visible = isVisibleFAB,
+            enter = fadeIn() + scaleIn(),
+            exit = fadeOut() + scaleOut(),
         ) {
-            Icon(
-                imageVector = Icons.Default.Shuffle,
-                contentDescription = null,
-            )
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                onClick = { onClickShuffle.invoke(artist.songs) },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Shuffle,
+                    contentDescription = null,
+                )
+            }
         }
     }
 }

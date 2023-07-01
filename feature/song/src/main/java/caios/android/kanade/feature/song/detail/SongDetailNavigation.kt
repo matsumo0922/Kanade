@@ -38,6 +38,7 @@ fun NavGraphBuilder.songDetailScreen(
             title = it.arguments?.getString(SongDetailTitle) ?: "Songs",
             songIds = (it.arguments?.getString(SongDetailIds) ?: "").split(",").map { id -> id.toLong() },
             navigateToSongMenu = navigateToSongMenu,
+            navigateToAddToPlaylist = { },
             terminate = terminate,
         )
     }

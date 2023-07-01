@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.design.theme.applyTonalElevation
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
 
@@ -77,7 +78,12 @@ internal fun QueueHeaderSection(
             DropdownMenu(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(
+                        MaterialTheme.colorScheme.applyTonalElevation(
+                            backgroundColor = MaterialTheme.colorScheme.surface,
+                            elevation = 3.dp,
+                        )
+                    ),
                 expanded = isExpandedMenu,
                 onDismissRequest = { isExpandedMenu = false },
             ) {

@@ -8,6 +8,7 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +44,19 @@ class AlbumDetailViewModel @Inject constructor(
                 playWhenReady = true,
             ),
         )
+    }
+
+    fun onShufflePlay(songs: List<Song>) {
+        viewModelScope.launch {
+            musicRepository.setShuffleMode(ShuffleMode.ON)
+            musicController.playerEvent(
+                PlayerEvent.NewPlay(
+                    index = 0,
+                    queue = songs,
+                    playWhenReady = true,
+                ),
+            )
+        }
     }
 }
 
