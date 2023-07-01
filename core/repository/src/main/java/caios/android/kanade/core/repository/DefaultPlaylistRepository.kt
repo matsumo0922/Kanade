@@ -13,6 +13,9 @@ import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.sortList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
@@ -24,29 +27,49 @@ class DefaultPlaylistRepository @Inject constructor(
 ) : PlaylistRepository {
 
     private val cache = ConcurrentHashMap<Long, Playlist>()
+    private val _data = MutableStateFlow(emptyList<Playlist>())
+
+    override val data: SharedFlow<List<Playlist>> = _data.asSharedFlow()
 
     override fun get(playlistId: Long): Playlist? = cache[playlistId]
 
     override fun gets(): List<Playlist> = cache.values.toList()
 
+    private suspend fun fetchPlaylist() = withContext(dispatcher) {
+        cache.clear()
+
+        playlistDao.loadAll().map { it.toData() }.onEach {
+            cache[it.id] = it
+            _data.value = cache.values.toList()
+        }
+    }
+
     override suspend fun playlist(playlistId: Long): Playlist? = withContext(dispatcher) {
-        playlistDao.load(playlistId)?.toData()?.also { cache[playlistId] = it }
+        playlistDao.load(playlistId)?.toData()?.also {
+            cache[playlistId] = it
+            _data.value = cache.values.toList()
+        }
     }
 
     override suspend fun playlists(musicConfig: MusicConfig): List<Playlist> = withContext(dispatcher) {
-        val playlists = playlistDao.loadAll().map { it.toData() }.onEach { cache[it.id] = it }
+        val playlists = playlistDao.loadAll().map { it.toData() }.onEach {
+            cache[it.id] = it
+            _data.value = cache.values.toList()
+        }
         playlistSort(playlists, musicConfig)
     }
 
-    override suspend fun create(playlist: Playlist) = withContext(dispatcher) {
+    override suspend fun create(playlist: Playlist): Unit = withContext(dispatcher) {
         val model = playlist.toModel()
         val playlistId = playlistDao.insertPlaylist(model.playlist)
 
         playlistDao.insertPlaylistItem(*model.items.map { it.copy(playlistId = playlistId) }.toTypedArray())
+        fetchPlaylist()
     }
 
     override suspend fun delete(playlist: Playlist): Unit = withContext(dispatcher) {
         playlistDao.deletePlaylist(playlist.toModel().playlist)
+        fetchPlaylist()
     }
 
     override suspend fun addItems(playlistId: Long, songs: List<Song>) = withContext(dispatcher) {
@@ -61,6 +84,7 @@ class DefaultPlaylistRepository @Inject constructor(
         }
 
         playlistDao.insertPlaylistItem(*items.toTypedArray())
+        fetchPlaylist()
     }
 
     override suspend fun removeItem(playlistId: Long, index: Int) = withContext(dispatcher) {
@@ -73,6 +97,7 @@ class DefaultPlaylistRepository @Inject constructor(
 
         playlistDao.deleteItem(playlist.items.find { it.index == index }!!.id)
         playlistDao.updatePlaylistItem(*items.toTypedArray())
+        fetchPlaylist()
     }
 
     override suspend fun isFavorite(song: Song): Boolean {
@@ -81,12 +106,17 @@ class DefaultPlaylistRepository @Inject constructor(
     }
 
     override suspend fun addToFavorite(song: Song) {
-        val favorite = cache.values.find { it.isSystemPlaylist } ?: createFavoritePlaylist()
-        addItems(favorite.id, listOf(song))
+        val favorite = cache.values.find { it.isSystemPlaylist }
+
+        if (favorite != null) {
+            addItems(favorite.id, listOf(song))
+        } else {
+            createFavoritePlaylist(song)
+        }
     }
 
     override suspend fun removeFromFavorite(song: Song) {
-        val favorite = cache.values.find { it.isSystemPlaylist } ?: createFavoritePlaylist()
+        val favorite = cache.values.find { it.isSystemPlaylist } ?: return
         removeItem(favorite.id, favorite.items.find { it.song.id == song.id }!!.index)
     }
 
@@ -102,11 +132,17 @@ class DefaultPlaylistRepository @Inject constructor(
         }
     }
 
-    private suspend fun createFavoritePlaylist(): Playlist {
+    private suspend fun createFavoritePlaylist(song: Song): Playlist {
         val favorite = Playlist(
             id = 0,
             name = "Favorite",
-            items = emptySet(),
+            items = setOf(
+                PlaylistItem(
+                    id = 0,
+                    song = song,
+                    index = 0,
+                )
+            ),
             isSystemPlaylist = true,
         )
 

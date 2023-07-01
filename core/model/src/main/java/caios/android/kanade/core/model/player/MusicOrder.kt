@@ -39,6 +39,13 @@ data class MusicOrder(
                 musicOrderOption = MusicOrderOption.Album.NAME,
             )
         }
+
+        fun playlistDefault(): MusicOrder {
+            return MusicOrder(
+                order = Order.ASC,
+                musicOrderOption = MusicOrderOption.Playlist.NAME,
+            )
+        }
     }
 }
 

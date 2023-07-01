@@ -67,6 +67,7 @@ fun SortInfo(
                 is MusicOrderOption.Song -> stringResource(R.string.unit_song, itemSize)
                 is MusicOrderOption.Artist -> stringResource(R.string.unit_artist, itemSize)
                 is MusicOrderOption.Album -> stringResource(R.string.unit_album, itemSize)
+                is MusicOrderOption.Playlist -> stringResource(R.string.unit_playlist, itemSize)
                 else -> stringResource(R.string.common_unknown)
             },
             style = MaterialTheme.typography.bodyMedium.end(),

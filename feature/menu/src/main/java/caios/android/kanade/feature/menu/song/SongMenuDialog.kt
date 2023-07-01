@@ -24,6 +24,12 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +43,7 @@ import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
 import caios.android.kanade.feature.menu.MenuItemSection
+import kotlinx.coroutines.launch
 
 @Composable
 private fun SongMenuDialog(
@@ -54,10 +61,16 @@ private fun SongMenuDialog(
     onClickMusicDetailInfo: (Song) -> Unit,
     onClickShare: (Song) -> Unit,
     onClickDelete: (Song) -> Unit,
+    onFetchFavorite: suspend (Song) -> Boolean,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    var isFavorite by remember { mutableStateOf(false) }
+
+    LaunchedEffect(song) {
+        isFavorite = onFetchFavorite.invoke(song)
+    }
 
     Column(
         modifier = modifier
@@ -67,8 +80,11 @@ private fun SongMenuDialog(
         SongMenuHeader(
             modifier = Modifier.fillMaxWidth(),
             song = song,
-            isFavorite = false,
-            onClickFavorite = onClickFavorite,
+            isFavorite = isFavorite,
+            onClickFavorite = {
+                isFavorite = it
+                onClickFavorite.invoke(it)
+            },
         )
 
         Divider()
@@ -210,14 +226,20 @@ fun Activity.showSongMenuDialog(
     song: Song,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
+        val scope = rememberCoroutineScope()
+
         SongMenuDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             song = song,
-            onClickFavorite = { /*TODO*/ },
+            onClickFavorite = {
+                scope.launch {
+                    musicViewModel.onFavorite(song)
+                }
+            },
             onClickPlayNext = {
                 musicViewModel.addToQueue(
                     songs = listOf(song),
-                    index = musicViewModel.uiState.queueIndex + 1,
+                    index = musicViewModel.uiState.queueIndex,
                 )
             },
             onClickPlayOnly = {
@@ -241,6 +263,7 @@ fun Activity.showSongMenuDialog(
             onClickMusicDetailInfo = { /*TODO*/ },
             onClickShare = { /*TODO*/ },
             onClickDelete = { /*TODO*/ },
+            onFetchFavorite = { musicViewModel.fetchFavorite(song) },
             onDismiss = onDismiss,
         )
     }
@@ -267,6 +290,7 @@ private fun SongMenuDialogPreview() {
             onClickShare = {},
             onClickDelete = {},
             onDismiss = {},
+            onFetchFavorite = { true }
         )
     }
 }

@@ -72,6 +72,7 @@ private fun BottomSheetWrapper(
             content {
                 scope.launch {
                     state.hide()
+                    isOpen = false
                 }
             }
         }

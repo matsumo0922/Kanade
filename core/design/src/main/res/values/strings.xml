@@ -27,6 +27,7 @@
     <string name="unit_song">%1$s 曲</string>
     <string name="unit_artist">%1$s 名</string>
     <string name="unit_album">%1$s 枚</string>
+    <string name="unit_playlist">%1$s 枚</string>
 
     <!-- Common Error -->
     <string name="error_unknown">不明なエラーが発生しました</string>

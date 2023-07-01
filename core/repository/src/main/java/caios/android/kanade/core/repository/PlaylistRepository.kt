@@ -3,8 +3,11 @@ package caios.android.kanade.core.repository
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
+import kotlinx.coroutines.flow.SharedFlow
 
 interface PlaylistRepository {
+
+    val data: SharedFlow<List<Playlist>>
 
     fun get(playlistId: Long): Playlist?
     fun gets(): List<Playlist>

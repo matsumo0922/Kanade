@@ -41,7 +41,7 @@ data class Song(
                 title = "サンプル楽曲$id",
                 artist = "CAIOS",
                 artistId = -1,
-                album = "テストアルバム",
+                album = "テストアルバム$id",
                 albumId = -1,
                 duration = 217392,
                 year = -1,

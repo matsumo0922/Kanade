@@ -87,11 +87,13 @@ fun MainController(
     onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
     onClickKaraoke: () -> Unit,
+    onFetchFavorite: suspend (Song) -> Boolean,
     onRequestLyrics: (Song) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val isDarkMode = uiState.userData?.isDarkMode()
+    var isFavorite by remember { mutableStateOf(false) }
     var isLyricsVisible by remember { mutableStateOf(false) }
     var artworkColor by remember { mutableStateOf(Color.Transparent) }
     val gradientColor by animateColorAsState(
@@ -117,8 +119,11 @@ fun MainController(
     state.position = uiState.progress
 
     LaunchedEffect(uiState.song) {
-        val artwork = uiState.song?.artwork ?: return@LaunchedEffect
+        val song = uiState.song ?: return@LaunchedEffect
+        val artwork = song.artwork
+
         artworkColor = getArtworkColor(context, artwork, isDarkMode ?: false)
+        isFavorite = onFetchFavorite.invoke(song)
     }
 
     Column(
@@ -232,12 +237,15 @@ fun MainController(
                 )
                 .fillMaxWidth()
                 .wrapContentSize(),
-            isFavorite = false,
+            isFavorite = isFavorite,
             onClickLyrics = {
                 isLyricsVisible = !isLyricsVisible
                 uiState.song?.let { onRequestLyrics.invoke(it) }
             },
-            onClickFavorite = onClickFavorite,
+            onClickFavorite = {
+                isFavorite = !isFavorite
+                onClickFavorite.invoke()
+            },
             onClickSleepTimer = onClickSleepTimer,
             onClickQueue = onClickQueue,
             onClickKaraoke = onClickKaraoke,
@@ -318,7 +326,8 @@ private fun Preview() {
             onClickSleepTimer = { },
             onClickQueue = { },
             onClickKaraoke = { },
-            onRequestLyrics = {},
+            onRequestLyrics = { },
+            onFetchFavorite = { true },
         )
     }
 }

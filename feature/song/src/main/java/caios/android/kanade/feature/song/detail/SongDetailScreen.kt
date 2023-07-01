@@ -103,7 +103,7 @@ private fun SongDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = title,
                 behavior = behavior,
-                onClickMenuPlayNext = { onClickMenuAddToQueue.invoke(songs, queue?.index?.plus(1)) },
+                onClickMenuPlayNext = { onClickMenuAddToQueue.invoke(songs, queue?.index) },
                 onClickMenuAddToQueue = { onClickMenuAddToQueue.invoke(songs, null) },
                 onClickMenuAddToPlaylist = { onClickMenuAddToPlaylist.invoke(songs) },
                 onTerminate = onTerminate,

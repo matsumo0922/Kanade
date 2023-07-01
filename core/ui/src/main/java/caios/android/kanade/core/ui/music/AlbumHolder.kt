@@ -128,7 +128,7 @@ private fun PlayButton(
 
 @Preview(showBackground = true)
 @Composable
-fun AlbumHolderPreview() {
+private fun AlbumHolderPreview() {
     KanadeBackground {
         AlbumHolder(
             modifier = Modifier.width(256.dp),

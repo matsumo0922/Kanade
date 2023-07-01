@@ -44,7 +44,7 @@ interface MusicRepository {
     suspend fun fetchAlbumArtwork()
     suspend fun fetchLyrics(song: Song)
 
-    suspend fun isFavorite(song: Song)
+    suspend fun isFavorite(song: Song): Boolean
     suspend fun addToFavorite(song: Song)
     suspend fun removeFromFavorite(song: Song)
 

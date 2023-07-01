@@ -23,9 +23,10 @@ fun AppController(
     onControllerEvent: (event: PlayerEvent) -> Unit,
     onClickBottomController: () -> Unit,
     onClickCloseExpanded: () -> Unit,
+    onClickFavorite: (Song) -> Unit,
     onRequestLyrics: (Song) -> Unit,
+    onFetchFavorite: suspend (Song) -> Boolean,
     navigateToLyrics: () -> Unit,
-    navigateToFavorite: () -> Unit,
     navigateToSleepTimer: () -> Unit,
     navigateToQueue: () -> Unit,
     navigateToKaraoke: () -> Unit,
@@ -71,11 +72,12 @@ fun AppController(
             onClickRepeat = { onControllerEvent.invoke(PlayerEvent.Repeat(it)) },
             onClickSeek = { onControllerEvent.invoke(PlayerEvent.Seek(it)) },
             onClickLyrics = navigateToLyrics,
-            onClickFavorite = navigateToFavorite,
+            onClickFavorite = { uiState.song?.let { onClickFavorite.invoke(it) } },
             onClickSleepTimer = navigateToSleepTimer,
             onClickQueue = navigateToQueue,
             onClickKaraoke = navigateToKaraoke,
             onRequestLyrics = onRequestLyrics,
+            onFetchFavorite = onFetchFavorite,
         )
     }
 }

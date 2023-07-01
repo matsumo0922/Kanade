@@ -204,13 +204,20 @@ fun KanadeApp(
                                     scaffoldState.bottomSheetState.partialExpand()
                                 }
                             },
+                            onClickFavorite = {
+                                scope.launch {
+                                    musicViewModel.onFavorite(it)
+                                }
+                            },
                             onRequestLyrics = {
                                 scope.launch {
                                     musicViewModel.fetchLyrics(it)
                                 }
                             },
+                            onFetchFavorite = {
+                                musicViewModel.fetchFavorite(it)
+                            },
                             navigateToLyrics = { },
-                            navigateToFavorite = { },
                             navigateToSleepTimer = { },
                             navigateToQueue = {
                                 activity.showQueueDialog(

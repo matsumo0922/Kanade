@@ -117,8 +117,8 @@ class DefaultMusicRepository @Inject constructor(
         lyricsRepository.lyrics(song)
     }
 
-    override suspend fun isFavorite(song: Song) {
-        playlistRepository.isFavorite(song)
+    override suspend fun isFavorite(song: Song): Boolean {
+        return playlistRepository.isFavorite(song)
     }
 
     override suspend fun addToFavorite(song: Song) {

@@ -76,6 +76,7 @@ class MusicViewModel @Inject constructor(
             musicRepository.fetchArtists()
             musicRepository.fetchAlbums()
             musicRepository.fetchSongs()
+            musicRepository.fetchPlaylist()
             musicRepository.fetchArtistArtwork()
             musicRepository.fetchAlbumArtwork()
         }
@@ -91,6 +92,18 @@ class MusicViewModel @Inject constructor(
 
     suspend fun fetchLyrics(song: Song) {
         musicRepository.fetchLyrics(song)
+    }
+
+    suspend fun fetchFavorite(song: Song): Boolean {
+        return musicRepository.isFavorite(song)
+    }
+
+    suspend fun onFavorite(song: Song) {
+        if (fetchFavorite(song)) {
+            musicRepository.removeFromFavorite(song)
+        } else {
+            musicRepository.addToFavorite(song)
+        }
     }
 
     fun addToQueue(songs: List<Song>, index: Int? = null) {

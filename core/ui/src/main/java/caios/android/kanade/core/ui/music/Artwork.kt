@@ -36,12 +36,15 @@ import coil.compose.AsyncImage
 fun Artwork(
     artwork: Artwork,
     modifier: Modifier = Modifier,
+    isLockAspect: Boolean = true,
 ) {
+    val artworkModifier = if (isLockAspect) modifier.aspectRatio(1f) else modifier
+
     when (artwork) {
-        is Artwork.Internal -> ArtworkFromInternal(artwork, modifier)
-        is Artwork.MediaStore -> ArtworkFromMediaStore(artwork, modifier)
-        is Artwork.Web -> ArtworkFromWeb(artwork, modifier)
-        is Artwork.Unknown -> ArtworkFromUnknown(modifier)
+        is Artwork.Internal -> ArtworkFromInternal(artwork, artworkModifier)
+        is Artwork.MediaStore -> ArtworkFromMediaStore(artwork, artworkModifier)
+        is Artwork.Web -> ArtworkFromWeb(artwork, artworkModifier)
+        is Artwork.Unknown -> ArtworkFromUnknown(artworkModifier)
     }
 }
 
@@ -51,7 +54,7 @@ private fun ArtworkFromWeb(
     modifier: Modifier = Modifier,
 ) {
     AsyncImage(
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier,
         model = artwork.url,
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -64,7 +67,7 @@ private fun ArtworkFromMediaStore(
     modifier: Modifier = Modifier,
 ) {
     AsyncImage(
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier,
         model = artwork.uri,
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -72,9 +75,11 @@ private fun ArtworkFromMediaStore(
 }
 
 @Composable
-private fun ArtworkFromUnknown(modifier: Modifier = Modifier) {
+private fun ArtworkFromUnknown(
+    modifier: Modifier = Modifier,
+) {
     Image(
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier,
         painter = painterResource(R.drawable.im_default_artwork),
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -103,7 +108,6 @@ private fun ArtworkFromInternal(
 
     BoxWithConstraints(
         modifier = modifier
-            .aspectRatio(1f)
             .background(backgroundColor)
             .clipToBounds(),
     ) {

@@ -5,11 +5,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
@@ -25,22 +28,50 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.music.PlaylistHolder
+import caios.android.kanade.core.ui.music.SortInfo
+import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
+import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun PlaylistTopRoute(
     topMargin: Dp,
     modifier: Modifier = Modifier,
+    viewModel: PlaylistTopViewModel = hiltViewModel(),
 ) {
-    PlaylistTopScreen(
-        modifier = modifier,
-        contentPadding = PaddingValues(top = topMargin),
-        onClickEdit = { },
-    )
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    AsyncLoadContents(screenState) { uiState ->
+        PlaylistTopScreen(
+            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            contentPadding = PaddingValues(top = topMargin),
+            playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
+            sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),
+            onClickSort = { },
+            onClickEdit = { },
+            onClickPlaylist = { },
+            onClickPlay = viewModel::onNewPlay,
+            onClickMenu = { },
+        )
+    }
 }
 
 @Composable
 internal fun PlaylistTopScreen(
+    playlists: List<Playlist>,
+    sortOrder: MusicOrder,
+    onClickSort: (MusicOrder) -> Unit,
     onClickEdit: () -> Unit,
+    onClickPlaylist: (Long) -> Unit,
+    onClickPlay: (Playlist) -> Unit,
+    onClickMenu: (Playlist) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -51,10 +82,35 @@ internal fun PlaylistTopScreen(
     }
 
     Box(modifier) {
-        LazyColumn(
+        LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
+            columns = FixedWithEdgeSpace(
+                count = 2,
+                edgeSpace = 8.dp,
+            ),
         ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                SortInfo(
+                    sortOrder = sortOrder,
+                    itemSize = playlists.size,
+                    onClickSort = onClickSort,
+                )
+            }
+
+            itemsWithEdgeSpace(
+                spanCount = 2,
+                items = playlists,
+                key = { it.id },
+            ) { playlist ->
+                PlaylistHolder(
+                    modifier = Modifier.fillMaxWidth(),
+                    playlist = playlist,
+                    onClickHolder = { onClickPlaylist.invoke(playlist.id) },
+                    onClickPlay = { onClickPlay.invoke(playlist) },
+                    onClickMenu = { onClickMenu.invoke(playlist) },
+                )
+            }
         }
 
         AnimatedVisibility(
