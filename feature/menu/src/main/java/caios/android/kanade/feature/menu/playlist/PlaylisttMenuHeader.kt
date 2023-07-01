@@ -45,7 +45,7 @@ internal fun PlaylistMenuHeader(
         ) {
             MultiArtwork(
                 modifier = Modifier.size(48.dp),
-                songs = playlist.songs
+                songs = playlist.songs,
             )
         }
 

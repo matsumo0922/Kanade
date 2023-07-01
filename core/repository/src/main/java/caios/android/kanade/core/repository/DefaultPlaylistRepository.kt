@@ -141,7 +141,7 @@ class DefaultPlaylistRepository @Inject constructor(
                     id = 0,
                     song = song,
                     index = 0,
-                )
+                ),
             ),
             isSystemPlaylist = true,
         )

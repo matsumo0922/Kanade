@@ -60,7 +60,7 @@ internal fun PlaylistTopRoute(
             onClickEdit = navigateToPlaylistEdit,
             onClickPlaylist = { },
             onClickPlay = viewModel::onNewPlay,
-            onClickMenu = navigateToPlaylistMenu
+            onClickMenu = navigateToPlaylistMenu,
         )
     }
 }

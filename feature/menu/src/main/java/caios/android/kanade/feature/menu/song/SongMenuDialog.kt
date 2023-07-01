@@ -290,7 +290,7 @@ private fun SongMenuDialogPreview() {
             onClickShare = {},
             onClickDelete = {},
             onDismiss = {},
-            onFetchFavorite = { true }
+            onFetchFavorite = { true },
         )
     }
 }

@@ -26,7 +26,7 @@ fun MultiArtwork(
     if (a1 == null) {
         Artwork(
             modifier = modifier,
-            artwork = Artwork.Unknown
+            artwork = Artwork.Unknown,
         )
 
         return
@@ -64,10 +64,12 @@ fun MultiArtwork(
                 isLockAspect = false,
             )
         } else {
-            Box(Modifier.constrainAs(artwork2) {
-                top.linkTo(parent.top)
-                end.linkTo(parent.end)
-            })
+            Box(
+                Modifier.constrainAs(artwork2) {
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                },
+            )
         }
 
         if (a3 != null) {
@@ -85,10 +87,12 @@ fun MultiArtwork(
                 isLockAspect = false,
             )
         } else {
-            Box(Modifier.constrainAs(artwork3) {
-                start.linkTo(parent.start)
-                bottom.linkTo(parent.bottom)
-            })
+            Box(
+                Modifier.constrainAs(artwork3) {
+                    start.linkTo(parent.start)
+                    bottom.linkTo(parent.bottom)
+                },
+            )
         }
 
         if (a4 != null) {
@@ -106,10 +110,12 @@ fun MultiArtwork(
                 isLockAspect = false,
             )
         } else {
-            Box(Modifier.constrainAs(artwork4) {
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-            })
+            Box(
+                Modifier.constrainAs(artwork4) {
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                },
+            )
         }
     }
 }

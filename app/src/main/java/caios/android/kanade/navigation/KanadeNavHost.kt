@@ -52,7 +52,7 @@ fun KanadeNavHost(
             navigateToPlaylistMenu = {
                 activity.showPlaylistMenuDialog(musicViewModel, userData, it)
             },
-            navigateToPlaylistEdit = { }
+            navigateToPlaylistEdit = { },
         )
 
         songTopScreen(
