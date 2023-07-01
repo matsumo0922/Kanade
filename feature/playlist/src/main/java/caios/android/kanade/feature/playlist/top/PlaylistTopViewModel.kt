@@ -22,7 +22,7 @@ class PlaylistTopViewModel @Inject constructor(
     val screenState = musicRepository.config.map {
         ScreenState.Idle(
             PlaylistTopUiState(
-                sortOrder = it.playlistOrder
+                sortOrder = it.playlistOrder,
             ),
         )
     }.stateIn(

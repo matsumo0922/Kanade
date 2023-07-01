@@ -1,4 +1,4 @@
-package caios.android.kanade.db.playlist
+package caios.android.kanade.core.database.playlist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

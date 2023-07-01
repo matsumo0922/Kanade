@@ -4,7 +4,7 @@ data class Playlist(
     val id: Long,
     val name: String,
     val items: Set<PlaylistItem>,
-    val isSystemPlaylist: Boolean = false
+    val isSystemPlaylist: Boolean = false,
 )
 
 data class PlaylistItem(

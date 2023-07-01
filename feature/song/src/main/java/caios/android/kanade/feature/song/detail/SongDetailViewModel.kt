@@ -34,7 +34,7 @@ class SongDetailViewModel @Inject constructor(
                     SongDetailUiState(
                         songs = songs.filterNotNull(),
                         queue = queue,
-                    )
+                    ),
                 )
             } else {
                 ScreenState.Error(message = R.string.error_no_data)

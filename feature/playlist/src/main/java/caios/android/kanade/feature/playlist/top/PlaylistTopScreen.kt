@@ -34,14 +34,14 @@ internal fun PlaylistTopRoute(
     PlaylistTopScreen(
         modifier = modifier,
         contentPadding = PaddingValues(top = topMargin),
-        onClickEdit = { }
+        onClickEdit = { },
     )
 }
 
 @Composable
 internal fun PlaylistTopScreen(
-    modifier: Modifier = Modifier,
     onClickEdit: () -> Unit,
+    modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     var isVisibleFAB by remember { mutableStateOf(false) }
@@ -55,7 +55,6 @@ internal fun PlaylistTopScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
         ) {
-
         }
 
         AnimatedVisibility(

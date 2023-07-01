@@ -1,4 +1,4 @@
-package caios.android.kanade.db.playlist
+package caios.android.kanade.core.database.playlist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["playlist_id"],
             onDelete = ForeignKey.CASCADE,
-        )
-    ]
+        ),
+    ],
 )
 data class PlaylistItemEntity(
     @PrimaryKey(autoGenerate = true)

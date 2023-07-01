@@ -96,7 +96,7 @@ internal fun MainControllerToolBarSection(
                         MaterialTheme.colorScheme.applyTonalElevation(
                             backgroundColor = MaterialTheme.colorScheme.surface,
                             elevation = 3.dp,
-                        )
+                        ),
                     ),
                 expanded = isExpandedMenu,
                 onDismissRequest = { isExpandedMenu = false },

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.model.music.Song
+import kotlinx.collections.immutable.toImmutableList
 
 const val SongDetailTitle = "songDetailTitle"
 const val SongDetailIds = "songDetailIds"
@@ -36,7 +37,7 @@ fun NavGraphBuilder.songDetailScreen(
         SongDetailRoute(
             modifier = Modifier.fillMaxSize(),
             title = it.arguments?.getString(SongDetailTitle) ?: "Songs",
-            songIds = (it.arguments?.getString(SongDetailIds) ?: "").split(",").map { id -> id.toLong() },
+            songIds = (it.arguments?.getString(SongDetailIds) ?: "").split(",").map { id -> id.toLong() }.toImmutableList(),
             navigateToSongMenu = navigateToSongMenu,
             navigateToAddToPlaylist = { },
             terminate = terminate,

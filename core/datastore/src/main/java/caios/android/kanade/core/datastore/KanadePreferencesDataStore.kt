@@ -85,7 +85,7 @@ class KanadePreferencesDataStore @Inject constructor(
                     PlaylistOrderProto.PLAYLIST_DESC_NAME -> MusicOrder(Order.DESC, MusicOrderOption.Playlist.NAME)
                     PlaylistOrderProto.PLAYLIST_DESC_NUM_TRACKS -> MusicOrder(Order.DESC, MusicOrderOption.Playlist.TRACKS)
                     else -> MusicOrder(Order.ASC, MusicOrderOption.Playlist.NAME)
-                }
+                },
             )
         }
 

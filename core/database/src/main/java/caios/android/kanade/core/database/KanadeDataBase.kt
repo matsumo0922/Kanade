@@ -12,9 +12,9 @@ import caios.android.kanade.core.database.artist_detail.ArtistTagEntity
 import caios.android.kanade.core.database.artist_detail.SimilarArtistEntity
 import caios.android.kanade.core.database.artwork.ArtworkDao
 import caios.android.kanade.core.database.artwork.ArtworkEntity
-import caios.android.kanade.db.playlist.PlaylistDao
-import caios.android.kanade.db.playlist.PlaylistEntity
-import caios.android.kanade.db.playlist.PlaylistItemEntity
+import caios.android.kanade.core.database.playlist.PlaylistDao
+import caios.android.kanade.core.database.playlist.PlaylistEntity
+import caios.android.kanade.core.database.playlist.PlaylistItemEntity
 
 @Database(
     entities = [

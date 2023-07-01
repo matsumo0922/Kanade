@@ -37,11 +37,13 @@ import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun SongDetailRoute(
     title: String,
-    songIds: List<Long>,
+    songIds: ImmutableList<Long>,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAddToPlaylist: (List<Song>) -> Unit,
     terminate: () -> Unit,
@@ -59,7 +61,7 @@ internal fun SongDetailRoute(
             SongDetailScreen(
                 modifier = modifier,
                 title = title,
-                songs = it.songs,
+                songs = it.songs.toImmutableList(),
                 queue = it.queue,
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
@@ -76,7 +78,7 @@ internal fun SongDetailRoute(
 @Composable
 private fun SongDetailScreen(
     title: String,
-    songs: List<Song>,
+    songs: ImmutableList<Song>,
     queue: Queue?,
     onClickSongHolder: (List<Song>, Int) -> Unit,
     onClickSongMenu: (Song) -> Unit,
@@ -106,7 +108,7 @@ private fun SongDetailScreen(
                 onClickMenuAddToPlaylist = { onClickMenuAddToPlaylist.invoke(songs) },
                 onTerminate = onTerminate,
             )
-        }
+        },
     ) { paddingValues ->
         Box(Modifier.padding(paddingValues)) {
             LazyColumn(Modifier.fillMaxSize()) {

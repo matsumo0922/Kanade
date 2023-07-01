@@ -4,7 +4,6 @@ import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 
-
 interface PlaylistRepository {
 
     fun get(playlistId: Long): Playlist?

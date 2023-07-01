@@ -2,16 +2,16 @@ package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.database.playlist.PlaylistDao
+import caios.android.kanade.core.database.playlist.PlaylistEntity
+import caios.android.kanade.core.database.playlist.PlaylistItemEntity
+import caios.android.kanade.core.database.playlist.PlaylistModel
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.sortList
-import caios.android.kanade.db.playlist.PlaylistDao
-import caios.android.kanade.db.playlist.PlaylistEntity
-import caios.android.kanade.db.playlist.PlaylistItemEntity
-import caios.android.kanade.db.playlist.PlaylistModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
@@ -68,7 +68,7 @@ class DefaultPlaylistRepository @Inject constructor(
         val items = playlist.items.toMutableList().apply {
             removeIf { it.index == index }
             sortedBy { it.index }
-            mapIndexed { i, item -> item.copy(index = i)  }
+            mapIndexed { i, item -> item.copy(index = i) }
         }
 
         playlistDao.deleteItem(playlist.items.find { it.index == index }!!.id)
@@ -128,7 +128,7 @@ class DefaultPlaylistRepository @Inject constructor(
                     )
                 }
             }.toSet(),
-            isSystemPlaylist = playlist.isSystemPlaylist
+            isSystemPlaylist = playlist.isSystemPlaylist,
         )
     }
 
