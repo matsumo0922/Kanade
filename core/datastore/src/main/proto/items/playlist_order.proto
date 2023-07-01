@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum PlaylistOrderProto {
+  PLAYLIST_UNSPECIFIED = 0;
+
+  PLAYLIST_ASC_NAME = 1;
+  PLAYLIST_ASC_NUM_TRACKS = 2;
+
+  PLAYLIST_DESC_NAME = 3;
+  PLAYLIST_DESC_NUM_TRACKS = 4;
+}

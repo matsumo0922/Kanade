@@ -8,10 +8,12 @@ import caios.android.kanade.core.repository.DefaultArtistRepository
 import caios.android.kanade.core.repository.DefaultArtworkRepository
 import caios.android.kanade.core.repository.DefaultLyricsRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
+import caios.android.kanade.core.repository.DefaultPlaylistRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
 import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
+import caios.android.kanade.core.repository.PlaylistRepository
 import caios.android.kanade.core.repository.SongRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.Binds
@@ -53,6 +55,12 @@ interface RepositoryModule {
     fun bindAlbumRepository(
         albumRepository: DefaultAlbumRepository,
     ): AlbumRepository
+
+    @Singleton
+    @Binds
+    fun bindPlaylistRepository(
+        playlistRepository: DefaultPlaylistRepository,
+    ): PlaylistRepository
 
     @Singleton
     @Binds

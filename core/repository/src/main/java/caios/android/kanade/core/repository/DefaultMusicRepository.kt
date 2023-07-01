@@ -7,6 +7,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
+import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
@@ -23,6 +24,7 @@ class DefaultMusicRepository @Inject constructor(
     private val songRepository: SongRepository,
     private val artistRepository: ArtistRepository,
     private val albumRepository: AlbumRepository,
+    private val playlistRepository: PlaylistRepository,
     private val artworkRepository: ArtworkRepository,
     private val lyricsRepository: LyricsRepository,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
@@ -34,6 +36,7 @@ class DefaultMusicRepository @Inject constructor(
     override val songs: List<Song> get() = songRepository.gets()
     override val artists: List<Artist> get() = artistRepository.gets()
     override val albums: List<Album> get() = albumRepository.gets()
+    override val playlists: List<Playlist> get() = playlistRepository.gets()
 
     override fun sortedSongs(musicConfig: MusicConfig): List<Song> {
         return songRepository.songsSort(songs, musicConfig)
@@ -47,6 +50,10 @@ class DefaultMusicRepository @Inject constructor(
         return albumRepository.albumsSort(albums, musicConfig)
     }
 
+    override fun sortedPlaylist(musicConfig: MusicConfig): List<Playlist> {
+        return playlistRepository.playlistSort(playlists, musicConfig)
+    }
+
     override fun getSong(songId: Long): Song? {
         return songRepository.get(songId) ?: songs.find { it.id == songId }
     }
@@ -57,6 +64,10 @@ class DefaultMusicRepository @Inject constructor(
 
     override fun getAlbum(albumId: Long): Album? {
         return albumRepository.get(albumId) ?: albums.find { it.albumId == albumId }
+    }
+
+    override fun getPlaylist(playlistId: Long): Playlist? {
+        return playlistRepository.get(playlistId) ?: playlists.find { it.id == playlistId }
     }
 
     override fun getLyrics(song: Song): Lyrics? {
@@ -87,6 +98,10 @@ class DefaultMusicRepository @Inject constructor(
         albumRepository.albums(musicConfig ?: config.first())
     }
 
+    override suspend fun fetchPlaylist(musicConfig: MusicConfig?) {
+        playlistRepository.playlists(musicConfig ?: config.first())
+    }
+
     override suspend fun fetchArtistArtwork() {
         artworkRepository.fetchArtistArtwork(artists)
         artistRepository.fetchArtwork()
@@ -100,6 +115,18 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun fetchLyrics(song: Song) {
         lyricsRepository.lyrics(song)
+    }
+
+    override suspend fun isFavorite(song: Song) {
+        playlistRepository.isFavorite(song)
+    }
+
+    override suspend fun addToFavorite(song: Song) {
+        playlistRepository.addToFavorite(song)
+    }
+
+    override suspend fun removeFromFavorite(song: Song) {
+        playlistRepository.removeFromFavorite(song)
     }
 
     override suspend fun setShuffleMode(mode: ShuffleMode) {

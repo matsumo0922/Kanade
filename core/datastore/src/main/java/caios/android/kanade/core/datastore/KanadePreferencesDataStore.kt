@@ -79,6 +79,13 @@ class KanadePreferencesDataStore @Inject constructor(
                     AlbumOrderProto.ALBUM_DESC_YEAR -> MusicOrder(Order.DESC, MusicOrderOption.Album.YEAR)
                     else -> MusicOrder(Order.ASC, MusicOrderOption.Album.NAME)
                 },
+                playlistOrder = when (it.playlistOrder) {
+                    PlaylistOrderProto.PLAYLIST_ASC_NAME -> MusicOrder(Order.ASC, MusicOrderOption.Playlist.NAME)
+                    PlaylistOrderProto.PLAYLIST_ASC_NUM_TRACKS -> MusicOrder(Order.ASC, MusicOrderOption.Playlist.TRACKS)
+                    PlaylistOrderProto.PLAYLIST_DESC_NAME -> MusicOrder(Order.DESC, MusicOrderOption.Playlist.NAME)
+                    PlaylistOrderProto.PLAYLIST_DESC_NUM_TRACKS -> MusicOrder(Order.DESC, MusicOrderOption.Playlist.TRACKS)
+                    else -> MusicOrder(Order.ASC, MusicOrderOption.Playlist.NAME)
+                }
             )
         }
 

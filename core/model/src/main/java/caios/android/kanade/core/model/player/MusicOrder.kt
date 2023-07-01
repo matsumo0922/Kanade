@@ -12,6 +12,7 @@ data class MusicOrder(
             is MusicOrderOption.Artist -> musicOrderOption.option
             is MusicOrderOption.Album -> musicOrderOption.option
             is MusicOrderOption.Song -> musicOrderOption.option
+            is MusicOrderOption.Playlist -> musicOrderOption.option
         }
 
         return if (order == Order.ASC) option else "$option DESC"
@@ -63,5 +64,10 @@ sealed interface MusicOrderOption {
         DURATION(MediaStore.Audio.Media.DURATION),
         YEAR(MediaStore.Audio.Media.YEAR),
         TRACK(MediaStore.Audio.Media.TRACK),
+    }
+
+    enum class Playlist(val option: String) : MusicOrderOption {
+        NAME(MediaStore.Audio.Playlists.DEFAULT_SORT_ORDER),
+        TRACKS(MediaStore.Audio.Playlists.NUM_TRACKS),
     }
 }

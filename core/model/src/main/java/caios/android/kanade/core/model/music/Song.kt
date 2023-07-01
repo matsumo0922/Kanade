@@ -61,10 +61,11 @@ data class Song(
 }
 
 fun Song.toMediaItem(): MediaBrowserCompat.MediaItem {
-    return MediaBrowserCompat.MediaItem(this.toMetadata().description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
+    val metadata = getMetadataBuilder()
+    return MediaBrowserCompat.MediaItem(metadata.build().description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
 }
 
-fun Song.toMetadata(): MediaMetadataCompat {
+fun Song.getMetadataBuilder(): MediaMetadataCompat.Builder {
     return MediaMetadataCompat.Builder()
         .putText(MediaMetadataCompat.METADATA_KEY_TITLE, title)
         .putText(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
@@ -73,5 +74,4 @@ fun Song.toMetadata(): MediaMetadataCompat {
         .putLong(MediaMetadataCompat.METADATA_KEY_YEAR, year.toLong())
         .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, track.toLong())
         .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, id.toString())
-        .build()
 }

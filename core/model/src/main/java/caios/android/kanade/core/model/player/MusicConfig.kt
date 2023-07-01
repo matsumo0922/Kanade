@@ -6,4 +6,5 @@ data class MusicConfig(
     val songOrder: MusicOrder,
     val artistOrder: MusicOrder,
     val albumOrder: MusicOrder,
+    val playlistOrder: MusicOrder,
 )

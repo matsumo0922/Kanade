@@ -230,12 +230,14 @@ class MusicControllerImpl @Inject constructor(
     private suspend fun onNewPlay(event: PlayerEvent.NewPlay) {
         val config = musicRepository.config.first()
         val originalQueue = event.queue
+        val originalItem = originalQueue[event.index]
         val currentQueue = if (config.shuffleMode == ShuffleMode.ON) originalQueue.shuffled() else originalQueue
+        val currentIndex = if (config.shuffleMode == ShuffleMode.ON) currentQueue.indexOf(originalItem) else event.index
 
         queueManager.build(
             currentQueue = currentQueue,
             originalQueue = originalQueue,
-            index = event.index,
+            index = currentIndex,
         )
 
         val args = buildBundle {

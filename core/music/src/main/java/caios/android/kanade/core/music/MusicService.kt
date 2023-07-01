@@ -123,6 +123,7 @@ class MusicService : MediaBrowserServiceCompat() {
             mediaSession = mediaSession,
             musicController = musicController,
             queueManager = queueManager,
+            scope = scope,
         )
 
         mediaSession.setCallback(mediaSessionManager.callback)

@@ -25,6 +25,7 @@ class SongTopViewModel @Inject constructor(
 
     var screenState = musicRepository.config.map {
         musicRepository.fetchSongs(it)
+        musicRepository.fetchAlbumArtwork()
 
         ScreenState.Idle(
             SongTopUiState(
