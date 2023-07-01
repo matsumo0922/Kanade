@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.menu.artist
+package caios.android.kanade.feature.menu.playlist
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoubleArrow
 import androidx.compose.material.icons.filled.LibraryAdd
 import androidx.compose.material.icons.filled.NavigateNext
-import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -26,21 +25,21 @@ import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.UserData
-import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
 import caios.android.kanade.feature.menu.MenuItemSection
 
 @Composable
-fun ArtistMenuDialog(
-    artist: Artist,
+fun PlaylistMenuDialog(
+    playlist: Playlist,
     onClickPlayNext: () -> Unit,
     onClickPlayOnly: () -> Unit,
     onClickAddToQueue: () -> Unit,
-    onClickAddToPlaylist: (Artist) -> Unit,
-    onClickShare: (Artist) -> Unit,
-    onClickDelete: (Artist) -> Unit,
+    onClickRename: (Playlist) -> Unit,
+    onClickShare: (Playlist) -> Unit,
+    onClickDelete: (Playlist) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -51,9 +50,9 @@ fun ArtistMenuDialog(
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding(),
     ) {
-        ArtistMenuHeader(
+        PlaylistMenuHeader(
             modifier = Modifier.fillMaxWidth(),
-            artist = artist,
+            playlist = playlist,
         )
 
         Divider()
@@ -69,7 +68,7 @@ fun ArtistMenuDialog(
         )
 
         MenuItemSection(
-            titleRes = R.string.menu_play_only_artist,
+            titleRes = R.string.menu_play_only_playlist,
             imageVector = Icons.Default.NavigateNext,
             onClick = {
                 ToastUtil.show(context, R.string.menu_toast_add_to_queue)
@@ -88,15 +87,6 @@ fun ArtistMenuDialog(
             },
         )
 
-        MenuItemSection(
-            titleRes = R.string.menu_add_to_playlist,
-            imageVector = Icons.Default.PlaylistAdd,
-            onClick = {
-                onDismiss.invoke()
-                onClickAddToPlaylist.invoke(artist)
-            },
-        )
-
         Divider(
             modifier = Modifier
                 .padding(
@@ -107,37 +97,46 @@ fun ArtistMenuDialog(
         )
 
         MenuItemSection(
-            titleRes = R.string.menu_share,
+            titleRes = R.string.menu_rename,
             imageVector = Icons.Default.Share,
             onClick = {
                 onDismiss.invoke()
-                onClickShare.invoke(artist)
+                onClickRename.invoke(playlist)
             },
         )
 
         MenuItemSection(
-            titleRes = R.string.menu_delete,
+            titleRes = R.string.menu_share,
+            imageVector = Icons.Default.Share,
+            onClick = {
+                onDismiss.invoke()
+                onClickShare.invoke(playlist)
+            },
+        )
+
+        MenuItemSection(
+            titleRes = R.string.menu_delete_playlist,
             imageVector = Icons.Default.Delete,
             onClick = {
                 onDismiss.invoke()
-                onClickDelete.invoke(artist)
+                onClickDelete.invoke(playlist)
             },
         )
     }
 }
 
-fun Activity.showArtistMenuDialog(
+fun Activity.showPlaylistMenuDialog(
     musicViewModel: MusicViewModel,
     userData: UserData?,
-    artist: Artist,
+    playlist: Playlist,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
-        ArtistMenuDialog(
+        PlaylistMenuDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            artist = artist,
+            playlist = playlist,
             onClickPlayNext = {
                 musicViewModel.addToQueue(
-                    songs = artist.songs,
+                    songs = playlist.songs,
                     index = musicViewModel.uiState.queueIndex,
                 )
             },
@@ -145,15 +144,15 @@ fun Activity.showArtistMenuDialog(
                 musicViewModel.playerEvent(
                     PlayerEvent.NewPlay(
                         index = 0,
-                        queue = artist.songs,
+                        queue = playlist.songs,
                         playWhenReady = true,
                     ),
                 )
             },
             onClickAddToQueue = {
-                musicViewModel.addToQueue(artist.songs)
+                musicViewModel.addToQueue(playlist.songs)
             },
-            onClickAddToPlaylist = {},
+            onClickRename = {},
             onClickShare = {},
             onClickDelete = {},
             onDismiss = onDismiss,
@@ -163,15 +162,15 @@ fun Activity.showArtistMenuDialog(
 
 @Preview(showBackground = true)
 @Composable
-private fun ArtistMenuDialogPreview() {
+private fun PlaylistMenuDialogPreview() {
     KanadeBackground {
-        ArtistMenuDialog(
+        PlaylistMenuDialog(
             modifier = Modifier.fillMaxWidth(),
-            artist = Artist.dummy(),
+            playlist = Playlist.dummy(),
             onClickPlayNext = {},
             onClickPlayOnly = {},
             onClickAddToQueue = {},
-            onClickAddToPlaylist = {},
+            onClickRename = {},
             onClickShare = {},
             onClickDelete = {},
             onDismiss = {},

@@ -1,6 +1,7 @@
 package caios.android.kanade.feature.menu.album
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -131,7 +133,7 @@ fun Activity.showAlbumMenuDialog(
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         AlbumMenuDialog(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             album = album,
             onClickPlayNext = {
                 musicViewModel.addToQueue(

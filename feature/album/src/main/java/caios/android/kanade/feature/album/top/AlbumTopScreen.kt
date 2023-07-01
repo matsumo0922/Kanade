@@ -28,6 +28,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun AlbumTopRoute(
     topMargin: Dp,
     navigateToAlbumDetail: (Long) -> Unit,
+    navigateToAlbumMenu: (Album) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AlbumTopViewModel = hiltViewModel(),
 ) {
@@ -41,7 +42,7 @@ internal fun AlbumTopRoute(
             onClickSort = { /*TODO*/ },
             onClickAlbum = navigateToAlbumDetail,
             onClickPlay = viewModel::onNewPlay,
-            onClickMenu = { },
+            onClickMenu = navigateToAlbumMenu,
             contentPadding = PaddingValues(top = topMargin),
         )
     }

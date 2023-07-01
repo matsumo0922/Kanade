@@ -43,6 +43,8 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun PlaylistTopRoute(
     topMargin: Dp,
+    navigateToPlaylistMenu: (Playlist) -> Unit,
+    navigateToPlaylistEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PlaylistTopViewModel = hiltViewModel(),
 ) {
@@ -55,10 +57,10 @@ internal fun PlaylistTopRoute(
             playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),
             onClickSort = { },
-            onClickEdit = { },
+            onClickEdit = navigateToPlaylistEdit,
             onClickPlaylist = { },
             onClickPlay = viewModel::onNewPlay,
-            onClickMenu = { },
+            onClickMenu = navigateToPlaylistMenu
         )
     }
 }

@@ -6,6 +6,9 @@ data class Playlist(
     val items: Set<PlaylistItem>,
     val isSystemPlaylist: Boolean = false,
 ) {
+    val songs: List<Song>
+        get() = items.map { it.song }
+
     companion object {
         fun dummy(id: Long = 0, size: Int = 10): Playlist {
             return Playlist(

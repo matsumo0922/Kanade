@@ -18,6 +18,7 @@ import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
 import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
+import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
@@ -48,6 +49,10 @@ fun KanadeNavHost(
 
         playlistTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToPlaylistMenu = {
+                activity.showPlaylistMenuDialog(musicViewModel, userData, it)
+            },
+            navigateToPlaylistEdit = { }
         )
 
         songTopScreen(
@@ -68,6 +73,9 @@ fun KanadeNavHost(
             topMargin = libraryTopBarHeight,
             navigateToAlbumDetail = {
                 navController.navigateToAlbumDetail(it)
+            },
+            navigateToAlbumMenu = {
+                activity.showAlbumMenuDialog(musicViewModel, userData, it)
             },
         )
 

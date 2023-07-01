@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
+import caios.android.kanade.core.model.music.Playlist
 
 const val PlaylistTopRoute = "playlistTop"
 
@@ -17,6 +18,8 @@ fun NavController.navigateToPlaylistTop(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.playlistTopScreen(
     topMargin: Dp,
+    navigateToPlaylistMenu: (Playlist) -> Unit,
+    navigateToPlaylistEdit: () -> Unit,
 ) {
     composable(
         route = PlaylistTopRoute,
@@ -36,6 +39,8 @@ fun NavGraphBuilder.playlistTopScreen(
         PlaylistTopRoute(
             modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
+            navigateToPlaylistMenu = navigateToPlaylistMenu,
+            navigateToPlaylistEdit = navigateToPlaylistEdit,
         )
     }
 }

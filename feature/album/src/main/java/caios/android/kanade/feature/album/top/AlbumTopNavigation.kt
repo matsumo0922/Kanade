@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
+import caios.android.kanade.core.model.music.Album
 
 const val AlbumTopRoute = "albumTop"
 
@@ -16,6 +17,7 @@ fun NavController.navigateToAlbumTop(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.albumTopScreen(
     topMargin: Dp,
     navigateToAlbumDetail: (Long) -> Unit,
+    navigateToAlbumMenu: (Album) -> Unit,
 ) {
     composable(
         route = AlbumTopRoute,
@@ -35,6 +37,7 @@ fun NavGraphBuilder.albumTopScreen(
         AlbumTopRoute(
             topMargin = topMargin,
             navigateToAlbumDetail = navigateToAlbumDetail,
+            navigateToAlbumMenu = navigateToAlbumMenu,
         )
     }
 }
