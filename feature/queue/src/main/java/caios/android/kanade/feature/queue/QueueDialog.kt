@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
@@ -132,19 +134,21 @@ fun Activity.showQueueDialog(
 @Preview
 @Composable
 private fun QueueDialogPreview() {
-    QueueDialog(
-        modifier = Modifier.fillMaxSize(),
-        uiState = QueueUiState(
-            queue = Song.dummies(10).mapIndexed { index, song -> QueueItem(song, index) },
-            index = 2,
-            isPlaying = false,
-        ),
-        onClickDismiss = { },
-        onClickMenuAddPlaylist = { },
-        onClickMenuShare = { },
-        onClickSongMenu = { },
-        onClickSkipToQueue = { },
-        onDeleteItem = { },
-        onMoveQueue = { _, _ -> },
-    )
+    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+        QueueDialog(
+            modifier = Modifier.fillMaxSize(),
+            uiState = QueueUiState(
+                queue = Song.dummies(10).mapIndexed { index, song -> QueueItem(song, index) },
+                index = 2,
+                isPlaying = false,
+            ),
+            onClickDismiss = { },
+            onClickMenuAddPlaylist = { },
+            onClickMenuShare = { },
+            onClickSongMenu = { },
+            onClickSkipToQueue = { },
+            onDeleteItem = { },
+            onMoveQueue = { _, _ -> },
+        )
+    }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode
@@ -47,6 +48,8 @@ class PlaylistDetailViewModel @Inject constructor(
 
     fun fetch(playlistId: Long) {
         viewModelScope.launch {
+            screenState.value = ScreenState.Loading
+
             val playlist = musicRepository.getPlaylist(playlistId)
 
             screenState.value = if (playlist != null) {
@@ -73,6 +76,12 @@ class PlaylistDetailViewModel @Inject constructor(
     fun onMoveItem(playlist: Playlist, fromIndex: Int, toIndex: Int) {
         viewModelScope.launch {
             musicRepository.moveItemInPlaylist(playlist, fromIndex, toIndex)
+        }
+    }
+
+    fun onDeleteItem(item: PlaylistItem) {
+        viewModelScope.launch {
+
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.IndexedSongHolder
@@ -65,22 +71,27 @@ fun PlaylistDetailRoute(
         if (uiState != null) {
             PlaylistDetailScreen(
                 playlist = uiState.playlist,
+                onFetch = viewModel::fetch,
                 onClickPlay = viewModel::onNewPlay,
                 onClickMenu = navigateToPlaylistMenu,
                 onClickSongMenu = navigateToSongMenu,
                 onMoveItem = viewModel::onMoveItem,
+                onDeleteItem = viewModel::onDeleteItem,
                 onTerminate = terminate,
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun PlaylistDetailScreen(
     playlist: Playlist,
+    onFetch: (Long) -> Unit,
     onClickPlay: (List<Song>, Int) -> Unit,
     onClickMenu: (Playlist) -> Unit,
     onClickSongMenu: (Song) -> Unit,
+    onDeleteItem: (PlaylistItem) -> Unit,
     onMoveItem: (Playlist, Int, Int) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -100,6 +111,7 @@ private fun PlaylistDetailScreen(
             }
 
             onMoveItem.invoke(playlist, fromIndex - 1, toIndex - 1)
+            onFetch.invoke(playlist.id)
         },
     )
 
@@ -109,6 +121,10 @@ private fun PlaylistDetailScreen(
         summary = stringResource(R.string.unit_song, playlist.songs.size),
         artworks = playlist.songs.map { it.artwork },
     )
+
+    fun getItemIndex(item: PlaylistItem): Int {
+        return data.indexOfFirst { it.id == item.id }
+    }
 
     LaunchedEffect(playlist) {
         isVisibleFAB = true
@@ -133,13 +149,25 @@ private fun PlaylistDetailScreen(
                     reorderableState = state,
                     key = { item.id },
                 ) {
-                    IndexedSongHolder(
-                        modifier = Modifier.fillMaxWidth(),
-                        song = item.song,
-                        index = item.index,
-                        state = state,
-                        onClickHolder = { onClickPlay.invoke(playlist.songs, it) },
-                        onClickMenu = onClickSongMenu,
+                    val dismissState = rememberDismissState(
+                        confirmValueChange = { true },
+                    )
+
+                    SwipeToDismiss(
+                        modifier = Modifier.animateItemPlacement(),
+                        state = dismissState,
+                        background = { },
+                        dismissContent = {
+                            IndexedSongHolder(
+                                modifier = Modifier.fillMaxWidth(),
+                                song = item.song,
+                                index = getItemIndex(item),
+                                state = state,
+                                onClickHolder = { onClickPlay.invoke(playlist.songs, it) },
+                                onClickMenu = onClickSongMenu,
+                            )
+                        },
+                        directions = setOf(DismissDirection.EndToStart),
                     )
                 }
             }
