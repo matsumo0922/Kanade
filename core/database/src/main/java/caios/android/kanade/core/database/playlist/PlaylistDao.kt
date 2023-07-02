@@ -9,42 +9,61 @@ import androidx.room.Transaction
 import androidx.room.Update
 
 @Dao
-interface PlaylistDao {
+abstract class PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlaylist(entity: PlaylistEntity): Long
+    abstract fun insertPlaylist(entity: PlaylistEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlaylistItem(vararg entity: PlaylistItemEntity)
+    abstract fun insertPlaylistItem(vararg entity: PlaylistItemEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updatePlaylist(vararg entity: PlaylistEntity)
+    abstract fun updatePlaylist(vararg entity: PlaylistEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updatePlaylistItem(vararg entity: PlaylistItemEntity)
+    abstract fun updatePlaylistItem(vararg entity: PlaylistItemEntity)
 
     @Delete
-    fun deletePlaylist(vararg entity: PlaylistEntity)
+    abstract fun deletePlaylist(vararg entity: PlaylistEntity)
 
     @Delete
-    fun deletePlaylistItem(vararg entity: PlaylistItemEntity)
+    abstract fun deletePlaylistItem(vararg entity: PlaylistItemEntity)
 
     @Transaction
     @Query("DELETE FROM playlist WHERE id = :playlistId")
-    fun delete(playlistId: Long)
+    abstract fun delete(playlistId: Long)
 
     @Transaction
     @Query("DELETE FROM playlist_item WHERE id = :playlistItemId")
-    fun deleteItem(playlistItemId: Long)
+    abstract fun deleteItem(playlistItemId: Long)
 
     @Transaction
     @Query("SELECT * FROM playlist")
-    fun loadAll(): List<PlaylistModel>
+    abstract fun loadAll(): List<PlaylistModel>
 
     @Transaction
     @Query("SELECT * FROM playlist WHERE id = :playlistId")
-    fun load(playlistId: Long): PlaylistModel?
+    abstract fun load(playlistId: Long): PlaylistModel?
 
     @Transaction
     @Query("SELECT * FROM playlist_item WHERE id = :playlistId")
-    fun loadItem(playlistId: Long): PlaylistItemEntity
+    abstract fun loadItem(playlistId: Long): PlaylistItemEntity
+
+    @Transaction
+    open fun changeIndexTransaction(playlistId: Long, fromIndex: Int, toIndex: Int) {
+        val playlist = load(playlistId) ?: return
+        val items = playlist.items.toMutableList().apply {
+            add(toIndex, removeAt(fromIndex))
+        }
+
+        val model = PlaylistModel().apply {
+            this.playlist = playlist.playlist
+            this.items = items.mapIndexed { index, entity -> entity.copy(id = 0, index = index) }
+        }
+
+        delete(playlistId)
+
+        insertPlaylist(model.playlist).also {
+            insertPlaylistItem(*model.items.map { it.copy(playlistId = playlistId) }.toTypedArray())
+        }
+    }
 }

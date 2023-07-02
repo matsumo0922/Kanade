@@ -20,6 +20,7 @@ interface PlaylistRepository {
 
     suspend fun addItems(playlistId: Long, songs: List<Song>)
     suspend fun removeItem(playlistId: Long, index: Int)
+    suspend fun moveItem(playlistId: Long, fromIndex: Int, toIndex: Int)
 
     suspend fun isFavorite(song: Song): Boolean
     suspend fun addToFavorite(song: Song)

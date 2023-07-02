@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -60,6 +61,11 @@ class DefaultPlaylistRepository @Inject constructor(
     }
 
     override suspend fun create(playlist: Playlist): Unit = withContext(dispatcher) {
+        if (gets().any { it.name == playlist.name }) {
+            Timber.d("Playlist name is duplicated")
+            return@withContext
+        }
+
         val model = playlist.toModel()
         val playlistId = playlistDao.insertPlaylist(model.playlist)
 
@@ -98,6 +104,10 @@ class DefaultPlaylistRepository @Inject constructor(
         playlistDao.deleteItem(playlist.items.find { it.index == index }!!.id)
         playlistDao.updatePlaylistItem(*items.toTypedArray())
         fetchPlaylist()
+    }
+
+    override suspend fun moveItem(playlistId: Long, fromIndex: Int, toIndex: Int): Unit = withContext(dispatcher) {
+        playlistDao.changeIndexTransaction(playlistId, fromIndex, toIndex)
     }
 
     override suspend fun isFavorite(song: Song): Boolean {

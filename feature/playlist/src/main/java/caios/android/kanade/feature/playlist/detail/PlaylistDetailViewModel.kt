@@ -13,11 +13,9 @@ import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,17 +72,7 @@ class PlaylistDetailViewModel @Inject constructor(
 
     fun onMoveItem(playlist: Playlist, fromIndex: Int, toIndex: Int) {
         viewModelScope.launch {
-            val songs = playlist.items.map { it.song }.toMutableList().apply {
-                add(toIndex, removeAt(fromIndex))
-            }
-
-            Timber.d("onMoveItem: ${songs.map { it.title }}")
-
-            musicRepository.removePlaylist(playlist)
-
-            delay(1000)
-
-            musicRepository.createPlaylist(playlist.name, songs)
+            musicRepository.moveItemInPlaylist(playlist, fromIndex, toIndex)
         }
     }
 }

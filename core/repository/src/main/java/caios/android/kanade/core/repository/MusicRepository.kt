@@ -48,6 +48,7 @@ interface MusicRepository {
     suspend fun removePlaylist(playlist: Playlist)
     suspend fun addToPlaylist(playlist: Playlist, songs: List<Song>)
     suspend fun removeFromPlaylist(playlist: Playlist, index: Int)
+    suspend fun moveItemInPlaylist(playlist: Playlist, fromIndex: Int, toIndex: Int)
 
     suspend fun isFavorite(song: Song): Boolean
     suspend fun addToFavorite(song: Song)

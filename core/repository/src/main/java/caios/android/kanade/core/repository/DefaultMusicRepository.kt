@@ -137,6 +137,10 @@ class DefaultMusicRepository @Inject constructor(
         playlistRepository.removeItem(playlist.id, index)
     }
 
+    override suspend fun moveItemInPlaylist(playlist: Playlist, fromIndex: Int, toIndex: Int) {
+        playlistRepository.moveItem(playlist.id, fromIndex, toIndex)
+    }
+
     override suspend fun isFavorite(song: Song): Boolean {
         return playlistRepository.isFavorite(song)
     }
