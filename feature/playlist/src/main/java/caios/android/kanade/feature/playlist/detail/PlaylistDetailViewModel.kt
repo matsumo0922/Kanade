@@ -79,9 +79,9 @@ class PlaylistDetailViewModel @Inject constructor(
         }
     }
 
-    fun onDeleteItem(item: PlaylistItem) {
+    fun onDeleteItem(playlist: Playlist, index: Int) {
         viewModelScope.launch {
-
+            musicRepository.removeFromPlaylist(playlist, index)
         }
     }
 }

@@ -31,7 +31,7 @@ class PlaylistTopViewModel @Inject constructor(
 
         ScreenState.Idle(
             PlaylistTopUiState(
-                playlists = musicRepository.sortedPlaylists(config).filterNot { it.items.isEmpty() },
+                playlists = musicRepository.sortedPlaylists(config),
                 sortOrder = config.playlistOrder,
             ),
         )

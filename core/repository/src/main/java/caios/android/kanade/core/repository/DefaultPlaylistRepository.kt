@@ -39,10 +39,8 @@ class DefaultPlaylistRepository @Inject constructor(
     private suspend fun fetchPlaylist() = withContext(dispatcher) {
         cache.clear()
 
-        playlistDao.loadAll().map { it.toData() }.onEach {
-            cache[it.id] = it
-            _data.value = cache.values.toList()
-        }
+        playlistDao.loadAll().map { it.toData() }.onEach { cache[it.id] = it }
+        _data.value = cache.values.toList()
     }
 
     override suspend fun playlist(playlistId: Long): Playlist? = withContext(dispatcher) {
@@ -98,11 +96,10 @@ class DefaultPlaylistRepository @Inject constructor(
         val items = playlist.items.toMutableList().apply {
             removeIf { it.index == index }
             sortedBy { it.index }
-            mapIndexed { i, item -> item.copy(index = i) }
         }
 
         playlistDao.deleteItem(playlist.items.find { it.index == index }!!.id)
-        playlistDao.updatePlaylistItem(*items.toTypedArray())
+        playlistDao.updatePlaylistItem(*items.mapIndexed { i, item -> item.copy(index = i) }.toTypedArray())
         fetchPlaylist()
     }
 

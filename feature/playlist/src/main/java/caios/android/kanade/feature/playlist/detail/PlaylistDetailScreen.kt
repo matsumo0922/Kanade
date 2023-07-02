@@ -91,7 +91,7 @@ private fun PlaylistDetailScreen(
     onClickPlay: (List<Song>, Int) -> Unit,
     onClickMenu: (Playlist) -> Unit,
     onClickSongMenu: (Song) -> Unit,
-    onDeleteItem: (PlaylistItem) -> Unit,
+    onDeleteItem: (Playlist, Int) -> Unit,
     onMoveItem: (Playlist, Int, Int) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -150,7 +150,11 @@ private fun PlaylistDetailScreen(
                     key = { item.id },
                 ) {
                     val dismissState = rememberDismissState(
-                        confirmValueChange = { true },
+                        confirmValueChange = {
+                            onDeleteItem.invoke(playlist, getItemIndex(item))
+                            data = data.apply { remove(item) }
+                            true
+                        },
                     )
 
                     SwipeToDismiss(
