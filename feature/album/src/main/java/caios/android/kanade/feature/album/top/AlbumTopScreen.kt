@@ -39,7 +39,7 @@ internal fun AlbumTopRoute(
         screenState = screenState,
     ) { uiState ->
         AlbumTopScreen(
-            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.albumDefault(),
             onClickSort = { /*TODO*/ },

@@ -39,6 +39,7 @@ import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.MultiArtwork
 import caios.android.kanade.core.ui.util.marquee
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun AddToPlaylistDialog(
@@ -57,7 +58,7 @@ fun AddToPlaylistDialog(
         if (uiState != null) {
             AddToPlaylistDialog(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                playlists = uiState.playlists,
+                playlists = uiState.playlists.toImmutableList(),
                 onCreate = { navigateToCreatePlaylist.invoke(songIds) },
                 onRegister = {
                     val songs = songIds.mapNotNull { id -> uiState.songs.find { song -> song.id == id } }
@@ -71,7 +72,7 @@ fun AddToPlaylistDialog(
 
 @Composable
 private fun AddToPlaylistDialog(
-    playlists: List<Playlist>,
+    playlists: ImmutableList<Playlist>,
     onCreate: () -> Unit,
     onRegister: (Playlist) -> Unit,
     onTerminate: () -> Unit,
@@ -81,7 +82,7 @@ private fun AddToPlaylistDialog(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Text(
             modifier = Modifier
@@ -174,7 +175,7 @@ private fun MiniPlaylistHolder(
         ) {
             MultiArtwork(
                 modifier = Modifier.size(48.dp),
-                songs = playlist.songs,
+                songs = playlist.songs.toImmutableList(),
             )
         }
 
@@ -222,7 +223,7 @@ private fun AddToPlaylistDialogPreview() {
     KanadeBackground {
         AddToPlaylistDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            playlists = Playlist.dummies(3),
+            playlists = Playlist.dummies(3).toImmutableList(),
             onCreate = {},
             onRegister = {},
             onTerminate = {},

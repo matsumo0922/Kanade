@@ -11,10 +11,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
+@Suppress("ModifierReused")
 @Composable
 fun MultiArtwork(
-    songs: List<Song>,
+    songs: ImmutableList<Song>,
     modifier: Modifier = Modifier,
 ) {
     val artworks = songs.distinctBy { it.album }.map { it.artwork }
@@ -125,7 +128,7 @@ fun MultiArtwork(
 private fun MultiArtworkPreview1() {
     MultiArtwork(
         modifier = Modifier.size(512.dp),
-        songs = Song.dummies(1),
+        songs = Song.dummies(1).toImmutableList(),
     )
 }
 
@@ -134,7 +137,7 @@ private fun MultiArtworkPreview1() {
 private fun MultiArtworkPreview2() {
     MultiArtwork(
         modifier = Modifier.size(512.dp),
-        songs = Song.dummies(2),
+        songs = Song.dummies(2).toImmutableList(),
     )
 }
 
@@ -143,7 +146,7 @@ private fun MultiArtworkPreview2() {
 private fun MultiArtworkPreview3() {
     MultiArtwork(
         modifier = Modifier.size(512.dp),
-        songs = Song.dummies(3),
+        songs = Song.dummies(3).toImmutableList(),
     )
 }
 
@@ -152,6 +155,6 @@ private fun MultiArtworkPreview3() {
 private fun MultiArtworkPreview4() {
     MultiArtwork(
         modifier = Modifier.size(512.dp),
-        songs = Song.dummies(4),
+        songs = Song.dummies(4).toImmutableList(),
     )
 }

@@ -31,13 +31,16 @@ import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.ui.AsyncLoadContents
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CreatePlaylistDialog(
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
-    songIds: List<Long> = emptyList(),
-    viewModel: CreatePlaylistViewModel = hiltViewModel()
+    songIds: ImmutableList<Long> = persistentListOf(),
+    viewModel: CreatePlaylistViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -48,7 +51,7 @@ fun CreatePlaylistDialog(
         if (uiState != null) {
             CreatePlaylistDialog(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                playlists = uiState.playlists,
+                playlists = uiState.playlists.toImmutableList(),
                 onRegister = { name ->
                     val songs = songIds.mapNotNull { id -> uiState.songs.find { id == it.id } }
                     viewModel.createPlaylist(name, songs)
@@ -61,7 +64,7 @@ fun CreatePlaylistDialog(
 
 @Composable
 private fun CreatePlaylistDialog(
-    playlists: List<Playlist>,
+    playlists: ImmutableList<Playlist>,
     onRegister: (String) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -76,7 +79,7 @@ private fun CreatePlaylistDialog(
 
     Column(
         modifier = modifier.padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -138,7 +141,7 @@ private fun CreatePlaylistDialogPreview() {
     KanadeBackground {
         CreatePlaylistDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            playlists = Playlist.dummies(5),
+            playlists = Playlist.dummies(5).toImmutableList(),
             onRegister = { },
             onTerminate = { },
         )

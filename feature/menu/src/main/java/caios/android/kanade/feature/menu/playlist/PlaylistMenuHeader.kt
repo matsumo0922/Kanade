@@ -20,6 +20,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.ui.music.MultiArtwork
 import caios.android.kanade.core.ui.util.marquee
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun PlaylistMenuHeader(
@@ -45,7 +46,7 @@ internal fun PlaylistMenuHeader(
         ) {
             MultiArtwork(
                 modifier = Modifier.size(48.dp),
-                songs = playlist.songs,
+                songs = playlist.songs.toImmutableList(),
             )
         }
 

@@ -37,6 +37,7 @@ import caios.android.kanade.core.ui.music.PlaylistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -70,7 +71,7 @@ internal fun PlaylistTopRoute(
 
 @Composable
 internal fun PlaylistTopScreen(
-    playlists: List<Playlist>,
+    playlists: ImmutableList<Playlist>,
     sortOrder: MusicOrder,
     onClickSort: (MusicOrder) -> Unit,
     onClickEdit: () -> Unit,

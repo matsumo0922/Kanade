@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddToPlaylistViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
-): ViewModel() {
+) : ViewModel() {
 
     val screenState = musicRepository.config.map {
         musicRepository.fetchSongs(it)
@@ -27,7 +27,7 @@ class AddToPlaylistViewModel @Inject constructor(
             AddToPlaylistUiState(
                 songs = musicRepository.sortedSongs(it),
                 playlists = musicRepository.sortedPlaylists(it),
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,

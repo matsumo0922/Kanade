@@ -98,7 +98,7 @@ fun KanadeNavHost(
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
-            navigateToSongMenu = ::showSongMenuDialog
+            navigateToSongMenu = ::showSongMenuDialog,
         )
 
         artistTopScreen(

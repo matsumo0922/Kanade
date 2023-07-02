@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PlaylistHolder(
@@ -43,7 +44,7 @@ fun PlaylistHolder(
             .padding(4.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable { onClickHolder.invoke() },
-        ) {
+    ) {
         Column(
             modifier = Modifier.padding(bottom = 4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -59,7 +60,7 @@ fun PlaylistHolder(
                 Box(Modifier.fillMaxWidth()) {
                     MultiArtwork(
                         modifier = Modifier.fillMaxWidth(),
-                        songs = playlist.songs,
+                        songs = playlist.songs.toImmutableList(),
                     )
 
                     PlayButton(

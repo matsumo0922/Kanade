@@ -11,6 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
+import kotlinx.collections.immutable.toImmutableList
 
 const val CreatePlaylistSongs = "createPlaylistSongs"
 const val CreatePlaylistDialogRoute = "createPlaylist/{$CreatePlaylistSongs}"
@@ -33,7 +34,7 @@ fun NavGraphBuilder.createPlaylistDialog(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .clip(RoundedCornerShape(16.dp)),
-            songIds = (it.arguments?.getString(CreatePlaylistSongs) ?: "").split(",").map { id -> id.toLong() },
+            songIds = (it.arguments?.getString(CreatePlaylistSongs) ?: "").split(",").map { id -> id.toLong() }.toImmutableList(),
             onTerminate = terminate,
         )
     }
