@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoubleArrow
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LibraryAdd
 import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.filled.Share
@@ -98,7 +99,7 @@ fun PlaylistMenuDialog(
 
         MenuItemSection(
             titleRes = R.string.menu_rename,
-            imageVector = Icons.Default.Share,
+            imageVector = Icons.Default.Edit,
             onClick = {
                 onDismiss.invoke()
                 onClickRename.invoke(playlist)

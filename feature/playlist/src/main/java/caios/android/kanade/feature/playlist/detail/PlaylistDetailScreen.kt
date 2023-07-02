@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.album.detail
+package caios.android.kanade.feature.playlist.detail
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,43 +26,47 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.design.R
+import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
-import caios.android.kanade.core.ui.music.SongHolder
+import caios.android.kanade.core.ui.music.IndexedSongHolder
 import caios.android.kanade.core.ui.view.CoordinatorData
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
+import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorderAfterLongPress
+import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import org.burnoutcrew.reorderable.reorderable
 
 @Composable
-internal fun AlbumDetailRoute(
-    albumId: Long,
-    navigateToAlbumMenu: (Album) -> Unit,
+fun PlaylistDetailRoute(
+    playlistId: Long,
+    navigateToPlaylistMenu: (Playlist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AlbumDetailViewModel = hiltViewModel(),
+    viewModel: PlaylistDetailViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(albumId) {
-        viewModel.fetch(albumId)
+    LaunchedEffect(playlistId) {
+        viewModel.fetch(playlistId)
     }
 
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-    ) {
-        if (it != null) {
-            AlbumDetailScreen(
-                modifier = Modifier.fillMaxSize(),
-                album = it.album,
-                onClickSongHolder = viewModel::onNewPlay,
+    ) { uiState ->
+        if (uiState != null) {
+            PlaylistDetailScreen(
+                playlist = uiState.playlist,
+                onClickPlay = viewModel::onNewPlay,
+                onClickMenu = navigateToPlaylistMenu,
                 onClickSongMenu = navigateToSongMenu,
-                onClickMenu = navigateToAlbumMenu,
-                onClickShuffle = viewModel::onShufflePlay,
                 onTerminate = terminate,
             )
         }
@@ -70,39 +74,57 @@ internal fun AlbumDetailRoute(
 }
 
 @Composable
-private fun AlbumDetailScreen(
-    album: Album,
-    onClickSongHolder: (List<Song>, Int) -> Unit,
+private fun PlaylistDetailScreen(
+    playlist: Playlist,
+    onClickPlay: (List<Song>, Int) -> Unit,
+    onClickMenu: (Playlist) -> Unit,
     onClickSongMenu: (Song) -> Unit,
-    onClickMenu: (Album) -> Unit,
-    onClickShuffle: (List<Song>) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isVisibleFAB by remember { mutableStateOf(false) }
-    val coordinatorData = remember { CoordinatorData.Album(album.album, album.artist, album.artwork) }
+    val state = rememberReorderableLazyListState(
+        onMove = { from, to -> }
+    )
 
-    LaunchedEffect(album) {
+    var isVisibleFAB by remember { mutableStateOf(false) }
+    val coordinatorData = CoordinatorData.Playlist(
+        title = playlist.name,
+        summary = stringResource(R.string.unit_song, playlist.songs.size),
+        artworks = playlist.songs.map { it.artwork },
+    )
+
+    LaunchedEffect(playlist) {
         isVisibleFAB = true
     }
 
     Box(modifier) {
         CoordinatorScaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .reorderable(state)
+                .detectReorderAfterLongPress(state),
+            listState = state.listState,
             data = coordinatorData,
             onClickNavigateUp = onTerminate,
-            onClickMenu = { onClickMenu.invoke(album) },
+            onClickMenu = { onClickMenu.invoke(playlist) },
         ) {
-            itemsIndexed(
-                items = album.songs,
-                key = { _, song -> song.id },
-            ) { index, song ->
-                SongHolder(
-                    modifier = Modifier.fillMaxWidth(),
-                    song = song,
-                    onClickHolder = { onClickSongHolder.invoke(album.songs, index) },
-                    onClickMenu = { onClickSongMenu.invoke(song) },
-                )
+            items(
+                items = playlist.items.toList(),
+                key = { item -> item.id },
+            ) { item ->
+                ReorderableItem(
+                    reorderableState = state,
+                    key = { item.id },
+                ) {
+                    IndexedSongHolder(
+                        modifier = Modifier.fillMaxWidth(),
+                        song = item.song,
+                        index = item.index,
+                        state = state,
+                        onClickHolder = { onClickPlay.invoke(playlist.songs, it) },
+                        onClickMenu = onClickSongMenu,
+                    )
+                }
             }
 
             item {
@@ -134,10 +156,10 @@ private fun AlbumDetailScreen(
         ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { onClickShuffle.invoke(album.songs) },
+                onClick = { onClickPlay.invoke(playlist.songs, 0) },
             ) {
                 Icon(
-                    imageVector = Icons.Default.Shuffle,
+                    imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
                 )
             }

@@ -29,6 +29,7 @@ import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.ui.music.IndexedSongHolder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.burnoutcrew.reorderable.ReorderableItem
@@ -92,7 +93,7 @@ internal fun QueueListSection(
                         state = dismissState,
                         background = { },
                         dismissContent = {
-                            QueueListItem(
+                            IndexedSongHolder(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .zIndex(if (isDragging) 1f else 0f)

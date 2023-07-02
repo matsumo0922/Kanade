@@ -18,6 +18,7 @@ fun NavController.navigateToPlaylistTop(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.playlistTopScreen(
     topMargin: Dp,
+    navigateToPlaylistDetail: (Long) -> Unit,
     navigateToPlaylistMenu: (Playlist) -> Unit,
     navigateToPlaylistEdit: () -> Unit,
 ) {
@@ -39,6 +40,7 @@ fun NavGraphBuilder.playlistTopScreen(
         PlaylistTopRoute(
             modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
+            navigateToPlaylistDetail = navigateToPlaylistDetail,
             navigateToPlaylistMenu = navigateToPlaylistMenu,
             navigateToPlaylistEdit = navigateToPlaylistEdit,
         )

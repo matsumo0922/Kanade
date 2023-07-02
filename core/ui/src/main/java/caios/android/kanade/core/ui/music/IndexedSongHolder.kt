@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.queue.items
+package caios.android.kanade.core.ui.music
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,14 +29,13 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.excludeFontPadding
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.music.Artwork
 import org.burnoutcrew.reorderable.ReorderableLazyListState
 import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import java.util.Locale
 
 @Composable
-internal fun QueueListItem(
+fun IndexedSongHolder(
     song: Song,
     index: Int,
     state: ReorderableLazyListState,
@@ -177,9 +176,9 @@ private fun getDurationTime(duration: Long): String {
 
 @Preview
 @Composable
-private fun QueueListItemPreview() {
+private fun IndexedSongHolderPreview() {
     KanadeBackground(Modifier.background(MaterialTheme.colorScheme.surface)) {
-        QueueListItem(
+        IndexedSongHolder(
             modifier = Modifier.fillMaxWidth(),
             song = Song.dummy(),
             state = rememberReorderableLazyListState(onMove = { _, _ -> }),

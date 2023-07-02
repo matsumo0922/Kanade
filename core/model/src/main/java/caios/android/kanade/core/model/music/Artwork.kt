@@ -10,4 +10,25 @@ sealed class Artwork : Parcelable {
     data class Web(val url: String) : Artwork()
     data class Internal(val name: String) : Artwork()
     object Unknown : Artwork()
+
+    companion object {
+        fun dummy(name: String = "UNDERTALE"): Artwork {
+            return Internal(name)
+        }
+
+        fun dummies(): List<Artwork> {
+            return listOf(
+                "あいうえお",
+                "かきくけこ",
+                "さしすせそ",
+                "たちつてと",
+                "なにぬねの",
+                "はひふへほ",
+                "まみむめも",
+                "やゆよ",
+                "らりるれろ",
+                "わをん",
+            ).map { dummy(it) }
+        }
+    }
 }

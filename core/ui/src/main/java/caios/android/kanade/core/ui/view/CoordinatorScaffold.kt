@@ -1,6 +1,5 @@
 package caios.android.kanade.core.ui.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -46,7 +46,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,21 +55,19 @@ import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.music.Artwork
+import caios.android.kanade.core.ui.music.MultiArtwork
 import caios.android.kanade.core.ui.util.marquee
 
 @Composable
 fun CoordinatorScaffold(
-    title: String,
-    summary: String,
-    artwork: Artwork,
+    data: CoordinatorData,
     onClickNavigateUp: () -> Unit,
     onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     color: Color = MaterialTheme.colorScheme.surface,
-    shouldUseBlur: Boolean = true,
     content: LazyListScope.() -> Unit,
 ) {
-    val listState = rememberLazyListState()
     var appBarAlpha by remember { mutableFloatStateOf(0f) }
     var topSectionHeight by remember { mutableIntStateOf(100) }
 
@@ -80,19 +77,44 @@ fun CoordinatorScaffold(
             state = listState,
         ) {
             item {
-                FillSection(
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .onGloballyPositioned { topSectionHeight = it.size.height },
-                    title = title,
-                    summary = summary,
-                    artwork = artwork,
-                    color = color,
-                    alpha = 1f - appBarAlpha,
-                    shouldUseBlur = shouldUseBlur,
-                )
+                when (data) {
+                    is CoordinatorData.Album -> {
+                        AlbumArtworkSection(
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .onGloballyPositioned { topSectionHeight = it.size.height },
+                            data = data,
+                            color = color,
+                            alpha = 1f - appBarAlpha,
+                        )
+                    }
+                    is CoordinatorData.Artist -> {
+                        ArtistArtworkSection(
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .onGloballyPositioned { topSectionHeight = it.size.height },
+                            data = data,
+                            color = color,
+                            alpha = 1f - appBarAlpha,
+                        )
+                    }
+                    is CoordinatorData.Playlist -> {
+                        PlaylistArtworkSection(
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .onGloballyPositioned { topSectionHeight = it.size.height },
+                            data = data,
+                            color = color,
+                            alpha = 1f - appBarAlpha,
+                        )
+                    }
+                }
             }
 
             content(this)
@@ -100,7 +122,11 @@ fun CoordinatorScaffold(
 
         CoordinatorToolBar(
             modifier = Modifier.fillMaxWidth(),
-            title = title,
+            title = when (data) {
+                is CoordinatorData.Album -> data.title
+                is CoordinatorData.Artist -> data.title
+                is CoordinatorData.Playlist -> data.title
+            },
             color = MaterialTheme.colorScheme.applyTonalElevation(
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 elevation = 3.dp,
@@ -122,34 +148,22 @@ fun CoordinatorScaffold(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun FillSection(
-    title: String,
-    summary: String,
-    artwork: Artwork,
+private fun AlbumArtworkSection(
+    data: CoordinatorData.Album,
     alpha: Float,
     color: Color,
-    shouldUseBlur: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val titleStyle: TextStyle
-    val summaryStyle: TextStyle
-
-    if (shouldUseBlur) {
-        titleStyle = MaterialTheme.typography.headlineSmall
-        summaryStyle = MaterialTheme.typography.bodyMedium
-    } else {
-        titleStyle = MaterialTheme.typography.headlineMedium
-        summaryStyle = MaterialTheme.typography.bodyLarge
-    }
+    val titleStyle = MaterialTheme.typography.headlineSmall
+    val summaryStyle = MaterialTheme.typography.bodyMedium
 
     Box(modifier) {
         Artwork(
             modifier = Modifier
-                .blur(if (shouldUseBlur) 16.dp else 0.dp)
+                .blur(16.dp)
                 .fillMaxWidth(),
-            artwork = artwork,
+            artwork = data.artwork,
         )
 
         Box(
@@ -160,21 +174,19 @@ private fun FillSection(
                 .background(Brush.verticalGradient(listOf(Color.Transparent, color))),
         )
 
-        if (shouldUseBlur) {
-            Card(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(224.dp)
-                    .aspectRatio(1f)
-                    .alpha(alpha),
-                shape = RoundedCornerShape(8.dp),
-                elevation = 4.dp,
-            ) {
-                Artwork(
-                    modifier = Modifier.fillMaxWidth(),
-                    artwork = artwork,
-                )
-            }
+        Card(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(224.dp)
+                .aspectRatio(1f)
+                .alpha(alpha),
+            shape = RoundedCornerShape(8.dp),
+            elevation = 4.dp,
+        ) {
+            Artwork(
+                modifier = Modifier.fillMaxWidth(),
+                artwork = data.artwork,
+            )
         }
 
         Column(
@@ -188,7 +200,7 @@ private fun FillSection(
                     .fillMaxWidth()
                     .marquee()
                     .alpha(alpha),
-                text = title,
+                text = data.title,
                 style = titleStyle.center().bold(),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
@@ -200,7 +212,121 @@ private fun FillSection(
                     .fillMaxWidth()
                     .padding(top = 4.dp)
                     .alpha(alpha),
-                text = summary,
+                text = data.summary,
+                style = summaryStyle.center(),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ArtistArtworkSection(
+    data: CoordinatorData.Artist,
+    alpha: Float,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    val titleStyle = MaterialTheme.typography.headlineSmall
+    val summaryStyle = MaterialTheme.typography.bodyMedium
+
+    Box(modifier) {
+        Artwork(
+            modifier = Modifier.fillMaxWidth(),
+            artwork = data.artwork,
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .align(Alignment.TopCenter)
+                .background(Brush.verticalGradient(listOf(Color.Transparent, color))),
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .marquee()
+                    .alpha(alpha),
+                text = data.title,
+                style = titleStyle.center().bold(),
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .alpha(alpha),
+                text = data.summary,
+                style = summaryStyle.center(),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlaylistArtworkSection(
+    data: CoordinatorData.Playlist,
+    alpha: Float,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    val titleStyle = MaterialTheme.typography.headlineSmall
+    val summaryStyle = MaterialTheme.typography.bodyMedium
+
+    Box(modifier) {
+        MultiArtwork(
+            modifier = Modifier.fillMaxWidth(),
+            artworks = data.artworks,
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .align(Alignment.TopCenter)
+                .background(Brush.verticalGradient(listOf(Color.Transparent, color))),
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .marquee()
+                    .alpha(alpha),
+                text = data.title,
+                style = titleStyle.center().bold(),
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .alpha(alpha),
+                text = data.summary,
                 style = summaryStyle.center(),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -283,13 +409,14 @@ private fun CoordinatorToolBar(
 @Composable
 private fun FillSectionPreview1() {
     KanadeBackground {
-        FillSection(
-            title = "UNDERTALE",
-            summary = "toby fox",
-            artwork = Artwork.Internal("UNDERTALE"),
+        AlbumArtworkSection(
+            data = CoordinatorData.Album(
+                title = "UNDERTALE",
+                summary = "toby fox",
+                artwork = Artwork.Internal("UNDERTALE"),
+            ),
             alpha = 1f,
             color = Color.Black,
-            shouldUseBlur = true,
         )
     }
 }
@@ -298,13 +425,30 @@ private fun FillSectionPreview1() {
 @Composable
 private fun FillSectionPreview2() {
     KanadeBackground {
-        FillSection(
-            title = "UNDERTALE",
-            summary = "toby fox",
-            artwork = Artwork.Internal("UNDERTALE"),
+        ArtistArtworkSection(
+            data = CoordinatorData.Artist(
+                title = "toby fox",
+                summary = "UNDERTALE",
+                artwork = Artwork.Internal("UNDERTALE"),
+            ),
             alpha = 1f,
             color = Color.Black,
-            shouldUseBlur = false,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun FillSectionPreview3() {
+    KanadeBackground {
+        PlaylistArtworkSection(
+            data = CoordinatorData.Playlist(
+                title = "toby fox",
+                summary = "UNDERTALE",
+                artworks = Artwork.dummies(),
+            ),
+            alpha = 1f,
+            color = Color.Black,
         )
     }
 }

@@ -41,6 +41,7 @@ import caios.android.kanade.core.ui.music.AlbumDetailHeader
 import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SongDetailHeader
 import caios.android.kanade.core.ui.music.SongHolder
+import caios.android.kanade.core.ui.view.CoordinatorData
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
 
 @Composable
@@ -93,6 +94,7 @@ private fun ArtistDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     var isVisibleFAB by remember { mutableStateOf(false) }
+    val coordinatorData = remember { CoordinatorData.Artist(artist.artist, artist.artist, artist.artwork) }
 
     LaunchedEffect(artist) {
         isVisibleFAB = true
@@ -101,10 +103,7 @@ private fun ArtistDetailScreen(
     Box(modifier) {
         CoordinatorScaffold(
             modifier = Modifier.fillMaxSize(),
-            title = artist.artist,
-            summary = artist.artist,
-            artwork = artist.artwork,
-            shouldUseBlur = false,
+            data = coordinatorData,
             onClickNavigateUp = onTerminate,
             onClickMenu = { onClickMenu.invoke(artist) },
         ) {

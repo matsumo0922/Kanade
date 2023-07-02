@@ -28,6 +28,8 @@ import caios.android.kanade.feature.playlist.add.addToPlaylistDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.create.createPlaylistDialog
 import caios.android.kanade.feature.playlist.create.navigateToCreatePlaylist
+import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
+import caios.android.kanade.feature.playlist.detail.playlistDetailScreen
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
@@ -94,6 +96,9 @@ fun KanadeNavHost(
             topMargin = libraryTopBarHeight,
             navigateToPlaylistMenu = ::showPlaylistMenuDialog,
             navigateToPlaylistEdit = { },
+            navigateToPlaylistDetail = {
+                navController.navigateToPlaylistDetail(it)
+            }
         )
 
         songTopScreen(
@@ -138,6 +143,14 @@ fun KanadeNavHost(
         albumDetailScreen(
             navigateToSongMenu = ::showSongMenuDialog,
             navigateToAlbumMenu = ::showAlbumMenuDialog,
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        playlistDetailScreen(
+            navigateToSongMenu = ::showSongMenuDialog,
+            navigateToPlaylistMenu = ::showPlaylistMenuDialog,
             terminate = {
                 navController.popBackStack()
             },

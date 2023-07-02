@@ -21,4 +21,5 @@ dependencies {
     kapt(libs.bundles.ui.kapt)
 
     implementation(libs.androidx.palette)
+    implementation(libs.reorderble.compose)
 }
