@@ -109,5 +109,8 @@
     <string name="playlist_create_title">プレイリストを作成</string>
     <string name="playlist_created_toast">プレイリストを作成しました</string>
     <string name="playlist_create_new">新規作成</string>
+    <string name="playlist_fab_create_new">新規作成</string>
+    <string name="playlist_fab_external">外部プレイリスト</string>
+    <string name="playlist_fab_import">m3uインポート</string>
     <string name="playlist_name">プレイリスト名</string>
 </resources>

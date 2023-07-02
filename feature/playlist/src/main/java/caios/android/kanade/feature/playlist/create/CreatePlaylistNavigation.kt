@@ -17,7 +17,7 @@ const val CreatePlaylistSongs = "createPlaylistSongs"
 const val CreatePlaylistDialogRoute = "createPlaylist/{$CreatePlaylistSongs}"
 
 fun NavController.navigateToCreatePlaylist(songIds: List<Long> = emptyList()) {
-    this.navigate("createPlaylist/${songIds.joinToString(",")}")
+    this.navigate("createPlaylist/${songIds.joinToString(",")},")
 }
 
 fun NavGraphBuilder.createPlaylistDialog(
@@ -34,7 +34,10 @@ fun NavGraphBuilder.createPlaylistDialog(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .clip(RoundedCornerShape(16.dp)),
-            songIds = (it.arguments?.getString(CreatePlaylistSongs) ?: "").split(",").map { id -> id.toLong() }.toImmutableList(),
+            songIds = (it.arguments?.getString(CreatePlaylistSongs) ?: "")
+                .split(",")
+                .mapNotNull { id -> id.toLongOrNull() }
+                .toImmutableList(),
             onTerminate = terminate,
         )
     }
