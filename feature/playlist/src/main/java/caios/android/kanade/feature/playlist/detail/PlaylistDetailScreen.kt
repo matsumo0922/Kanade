@@ -50,7 +50,7 @@ fun PlaylistDetailRoute(
     navigateToSongMenu: (Song) -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PlaylistDetailViewModel = hiltViewModel()
+    viewModel: PlaylistDetailViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -94,7 +94,7 @@ private fun PlaylistDetailScreen(
 
             data = data.apply { add(to.index - 1, removeAt(from.index - 1)) }
         },
-        onDragEnd = { fromIndex, toIndex  ->
+        onDragEnd = { fromIndex, toIndex ->
             if (fromIndex !in (1..data.size) || toIndex !in (1..data.size)) {
                 return@rememberReorderableLazyListState
             }

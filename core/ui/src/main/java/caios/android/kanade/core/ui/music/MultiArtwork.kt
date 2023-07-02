@@ -20,16 +20,18 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.util.extraSize
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.random.Random
 
 @Composable
 fun MultiArtwork(
-    artworks: List<Artwork>,
+    artworks: ImmutableList<Artwork>,
     modifier: Modifier = Modifier,
     space: Dp = 8.dp,
     isRandom: Boolean = true,
 ) {
-    val useArtworks = remember { getUselessArtworks(artworks, isRandom) }
+    val useArtworks = remember { getUselessArtworks(artworks.toImmutableList(), isRandom) }
 
     Box(
         modifier = modifier
@@ -42,7 +44,7 @@ fun MultiArtwork(
                 .extraSize(0.3f, 0.3f)
                 .rotate(30f),
             columns = GridCells.Fixed(3),
-            userScrollEnabled = false
+            userScrollEnabled = false,
         ) {
             items(useArtworks) {
                 Card(
@@ -50,7 +52,7 @@ fun MultiArtwork(
                         .padding(space / 2)
                         .aspectRatio(1f),
                     shape = RoundedCornerShape(space * 1.5f),
-                    elevation = 3.dp
+                    elevation = 3.dp,
                 ) {
                     Artwork(it, Modifier.fillMaxSize())
                 }
@@ -59,24 +61,24 @@ fun MultiArtwork(
     }
 }
 
-private fun getUselessArtworks(artworks: List<Artwork>, isRandom: Boolean): List<Artwork> {
+private fun getUselessArtworks(artworks: ImmutableList<Artwork>, isRandom: Boolean): List<Artwork> {
     fun Random.getRandomIndex(next: Int): Int {
         return if (next == 0) 0 else nextInt(next)
     }
 
     val random = Random(System.currentTimeMillis())
-    val shuffledArtworks = if(isRandom) artworks.shuffled(random) else artworks
+    val shuffledArtworks = if (isRandom) artworks.shuffled(random) else artworks
     val imageArtworks: MutableList<Artwork> = shuffledArtworks.filter { it !is Artwork.Internal }.toMutableList()
     val internalArtworks: MutableList<Artwork> = shuffledArtworks.filterIsInstance<Artwork.Internal>().toMutableList()
     val resultList = mutableListOf<Artwork>()
 
-    if(internalArtworks.isEmpty()) {
+    if (internalArtworks.isEmpty()) {
         internalArtworks.add(Artwork.Unknown)
     }
 
     for (i in 0 until 10) {
         val artwork = imageArtworks.elementAtOrElse(i) { internalArtworks[random.getRandomIndex(internalArtworks.size - 1)] }
-        val index = if(i % 2 == 0) 0 else resultList.lastIndex
+        val index = if (i % 2 == 0) 0 else resultList.lastIndex
 
         resultList.add(index, artwork)
     }
@@ -89,7 +91,7 @@ private fun getUselessArtworks(artworks: List<Artwork>, isRandom: Boolean): List
 private fun MultiArtworkPreview() {
     KanadeBackground {
         MultiArtwork(
-            artworks = Artwork.dummies()
+            artworks = Artwork.dummies().toImmutableList(),
         )
     }
 }

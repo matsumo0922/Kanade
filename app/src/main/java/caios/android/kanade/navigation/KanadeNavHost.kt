@@ -98,7 +98,7 @@ fun KanadeNavHost(
             navigateToPlaylistEdit = { },
             navigateToPlaylistDetail = {
                 navController.navigateToPlaylistDetail(it)
-            }
+            },
         )
 
         songTopScreen(

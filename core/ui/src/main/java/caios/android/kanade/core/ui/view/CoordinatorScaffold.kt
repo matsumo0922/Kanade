@@ -57,6 +57,7 @@ import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.music.Artwork
 import caios.android.kanade.core.ui.music.MultiArtwork
 import caios.android.kanade.core.ui.util.marquee
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CoordinatorScaffold(
@@ -292,7 +293,7 @@ private fun PlaylistArtworkSection(
     Box(modifier) {
         MultiArtwork(
             modifier = Modifier.fillMaxWidth(),
-            artworks = data.artworks,
+            artworks = data.artworks.toImmutableList(),
         )
 
         Box(
