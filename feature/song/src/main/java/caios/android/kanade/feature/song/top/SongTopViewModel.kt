@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Random
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,7 +55,7 @@ class SongTopViewModel @Inject constructor(
             musicRepository.setShuffleMode(ShuffleMode.ON)
             musicController.playerEvent(
                 PlayerEvent.NewPlay(
-                    index = 0,
+                    index = Random().nextInt(queue.size),
                     queue = queue,
                     playWhenReady = true,
                 ),

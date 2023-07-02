@@ -155,7 +155,9 @@ fun Activity.showPlaylistMenuDialog(
             },
             onClickRename = {},
             onClickShare = {},
-            onClickDelete = {},
+            onClickDelete = {
+                musicViewModel.removePlaylist(playlist)
+            },
             onDismiss = onDismiss,
         )
     }

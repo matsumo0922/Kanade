@@ -7,12 +7,14 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,13 +40,16 @@ class AlbumTopViewModel @Inject constructor(
     )
 
     fun onNewPlay(album: Album) {
-        musicController.playerEvent(
-            PlayerEvent.NewPlay(
-                index = 0,
-                queue = album.songs,
-                playWhenReady = true,
-            ),
-        )
+        viewModelScope.launch {
+            musicRepository.setShuffleMode(ShuffleMode.OFF)
+            musicController.playerEvent(
+                PlayerEvent.NewPlay(
+                    index = 0,
+                    queue = album.songs,
+                    playWhenReady = true,
+                ),
+            )
+        }
     }
 }
 

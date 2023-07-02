@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -67,6 +68,7 @@ fun PlaylistDetailRoute(
                 onClickPlay = viewModel::onNewPlay,
                 onClickMenu = navigateToPlaylistMenu,
                 onClickSongMenu = navigateToSongMenu,
+                onMoveItem = viewModel::onMoveItem,
                 onTerminate = terminate,
             )
         }
@@ -79,11 +81,26 @@ private fun PlaylistDetailScreen(
     onClickPlay: (List<Song>, Int) -> Unit,
     onClickMenu: (Playlist) -> Unit,
     onClickSongMenu: (Song) -> Unit,
+    onMoveItem: (Playlist, Int, Int) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var data = remember { mutableStateListOf(*playlist.items.toTypedArray()) }
     val state = rememberReorderableLazyListState(
-        onMove = { from, to -> }
+        onMove = { from, to ->
+            if (from.index !in (1..data.size) || to.index !in (1..data.size)) {
+                return@rememberReorderableLazyListState
+            }
+
+            data = data.apply { add(to.index - 1, removeAt(from.index - 1)) }
+        },
+        onDragEnd = { fromIndex, toIndex  ->
+            if (fromIndex !in (1..data.size) || toIndex !in (1..data.size)) {
+                return@rememberReorderableLazyListState
+            }
+
+            onMoveItem.invoke(playlist, fromIndex - 1, toIndex - 1)
+        },
     )
 
     var isVisibleFAB by remember { mutableStateOf(false) }
@@ -109,7 +126,7 @@ private fun PlaylistDetailScreen(
             onClickMenu = { onClickMenu.invoke(playlist) },
         ) {
             items(
-                items = playlist.items.toList(),
+                items = data.toList(),
                 key = { item -> item.id },
             ) { item ->
                 ReorderableItem(

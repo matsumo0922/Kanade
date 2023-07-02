@@ -14,6 +14,7 @@ import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.util.Random
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +51,7 @@ class ArtistDetailViewModel @Inject constructor(
             musicRepository.setShuffleMode(ShuffleMode.ON)
             musicController.playerEvent(
                 PlayerEvent.NewPlay(
-                    index = 0,
+                    index = Random().nextInt(songs.size),
                     queue = songs,
                     playWhenReady = true,
                 ),

@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Lyrics
+import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
@@ -108,6 +109,12 @@ class MusicViewModel @Inject constructor(
 
     fun addToQueue(songs: List<Song>, index: Int? = null) {
         musicController.addToQueue(songs, index)
+    }
+
+    fun removePlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            musicRepository.removePlaylist(playlist)
+        }
     }
 }
 
