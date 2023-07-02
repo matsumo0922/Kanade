@@ -1,5 +1,7 @@
 package caios.android.kanade.feature.artist.detail
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -35,6 +37,7 @@ fun NavGraphBuilder.artistDetailScreen(
         popExitTransition = { NavigateAnimation.Detail.popExit },
     ) {
         ArtistDetailRoute(
+            modifier = Modifier.fillMaxSize(),
             artistId = it.arguments?.getLong(ArtistDetailId) ?: -1L,
             navigateToSongDetail = navigateToSongDetail,
             navigateToArtistMenu = navigateToArtistMenu,

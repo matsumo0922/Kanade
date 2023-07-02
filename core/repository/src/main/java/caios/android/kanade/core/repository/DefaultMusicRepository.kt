@@ -8,6 +8,7 @@ import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
@@ -50,7 +51,7 @@ class DefaultMusicRepository @Inject constructor(
         return albumRepository.albumsSort(albums, musicConfig)
     }
 
-    override fun sortedPlaylist(musicConfig: MusicConfig): List<Playlist> {
+    override fun sortedPlaylists(musicConfig: MusicConfig): List<Playlist> {
         return playlistRepository.playlistSort(playlists, musicConfig)
     }
 
@@ -115,6 +116,25 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun fetchLyrics(song: Song) {
         lyricsRepository.lyrics(song)
+    }
+
+    override suspend fun createPlaylist(name: String, songs: List<Song>) {
+        val items = songs.mapIndexed { index, song -> PlaylistItem(0, song, index) }
+        val playlist = Playlist(0, name, items.toSet())
+
+        playlistRepository.create(playlist)
+    }
+
+    override suspend fun removePlaylist(playlist: Playlist) {
+        playlistRepository.remove(playlist)
+    }
+
+    override suspend fun addToPlaylist(playlist: Playlist, songs: List<Song>) {
+        playlistRepository.addItems(playlist.id, songs)
+    }
+
+    override suspend fun removeFromPlaylist(playlist: Playlist, index: Int) {
+        playlistRepository.removeItem(playlist.id, index)
     }
 
     override suspend fun isFavorite(song: Song): Boolean {

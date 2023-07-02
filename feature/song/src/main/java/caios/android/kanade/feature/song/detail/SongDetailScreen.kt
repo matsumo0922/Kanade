@@ -56,10 +56,13 @@ internal fun SongDetailRoute(
         viewModel.fetch(songIds)
     }
 
-    AsyncLoadContents(screenState) {
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) {
         if (it != null) {
             SongDetailScreen(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 title = title,
                 songs = it.songs.toImmutableList(),
                 queue = it.queue,

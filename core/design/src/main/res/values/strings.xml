@@ -102,4 +102,12 @@
     <string name="queue_title">再生待ちリスト</string>
     <string name="queue_menu_add_to_playlist">プレイリストに追加</string>
     <string name="queue_menu_share">共有</string>
+
+    <!-- Playlist -->
+    <string name="playlist_add_title">プレイリストを選択</string>
+    <string name="playlist_add_toast">プレイリストに追加しました</string>
+    <string name="playlist_create_title">プレイリストを作成</string>
+    <string name="playlist_created_toast">プレイリストを作成しました</string>
+    <string name="playlist_create_new">新規作成</string>
+    <string name="playlist_name">プレイリスト名</string>
 </resources>

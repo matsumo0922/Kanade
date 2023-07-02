@@ -1,5 +1,7 @@
 package caios.android.kanade.feature.song.top
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -34,6 +36,7 @@ fun NavGraphBuilder.songTopScreen(
         },
     ) {
         SongTopRoute(
+            modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
             navigateToSongMenu = navigateToSongMenu,
         )

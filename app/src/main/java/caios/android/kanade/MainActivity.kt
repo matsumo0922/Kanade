@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -70,7 +72,10 @@ class MainActivity : ComponentActivity() {
                 onDispose {}
             }
 
-            AsyncLoadContents(screenState) { userData ->
+            AsyncLoadContents(
+                modifier = Modifier.fillMaxSize(),
+                screenState = screenState,
+            ) { userData ->
                 KanadeTheme(
                     shouldUseDarkTheme = shouldUseDarkTheme,
                     enableDynamicTheme = shouldUseDynamicColor(screenState),

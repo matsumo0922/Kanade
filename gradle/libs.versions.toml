@@ -157,6 +157,7 @@ google-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-compose-theme-adapter = { module = "com.google.accompanist:accompanist-themeadapter-material", version.ref = "accompanist" }
 accompanist-compose-theme-adapter3 = { module = "com.google.accompanist:accompanist-themeadapter-material3", version.ref = "accompanist" }
+accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 
 # Firebase
@@ -242,6 +243,7 @@ ui-implementation = [
     "accompanist-systemuicontroller",
     "accompanist-compose-theme-adapter",
     "accompanist-compose-theme-adapter3",
+    "accompanist-navigation",
     "accompanist-permissions",
     "google-material",
     "coil-compose",

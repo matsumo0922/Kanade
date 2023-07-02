@@ -34,7 +34,10 @@ internal fun AlbumTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(screenState) { uiState ->
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) { uiState ->
         AlbumTopScreen(
             modifier = modifier.background(MaterialTheme.colorScheme.surface),
             albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),

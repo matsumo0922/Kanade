@@ -57,6 +57,7 @@ import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
+import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -227,6 +228,9 @@ fun KanadeApp(
                                             musicViewModel = musicViewModel,
                                             userData = userData,
                                             song = song,
+                                            navigateToAddToPlaylist = { songIds ->
+                                                appState.navController.navigateToAddToPlaylist(songIds)
+                                            },
                                         )
                                     },
                                 )
@@ -291,7 +295,10 @@ private fun RequestPermissions(onGranted: () -> Unit) {
     }
 
     if (permissionsState.shouldShowRationale || isPermissionRequested) {
-        PermissionDialog(onDismiss = { isShowPermissionDialog = false })
+        PermissionDialog(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            onDismiss = { isShowPermissionDialog = false },
+        )
     } else {
         LaunchedEffect(permissionsState) {
             permissionsState.launchMultiplePermissionRequest()

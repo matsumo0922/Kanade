@@ -33,9 +33,12 @@ internal fun SongTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(screenState) { uiState ->
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) { uiState ->
         SongTopScreen(
-            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             songs = uiState?.songs?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.songDefault(),
             contentPadding = PaddingValues(top = topMargin),

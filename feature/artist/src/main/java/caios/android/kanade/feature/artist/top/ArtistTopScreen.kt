@@ -33,9 +33,12 @@ internal fun ArtistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(screenState) { uiState ->
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) { uiState ->
         ArtistTopScreen(
-            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             artists = uiState?.artists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
             onClickSort = { /*TODO*/ },

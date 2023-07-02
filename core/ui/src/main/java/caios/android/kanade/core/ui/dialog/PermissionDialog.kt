@@ -72,6 +72,7 @@ private fun PermissionDialog(
     AlertDialog(
         modifier = modifier.widthIn(max = configuration.screenWidthDp.dp - 80.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
+        containerColor = MaterialTheme.colorScheme.surface,
         onDismissRequest = onDismiss,
         title = {
             Text(

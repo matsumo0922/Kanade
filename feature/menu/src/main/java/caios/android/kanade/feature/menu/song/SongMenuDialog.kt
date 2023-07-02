@@ -224,6 +224,7 @@ fun Activity.showSongMenuDialog(
     musicViewModel: MusicViewModel,
     userData: UserData?,
     song: Song,
+    navigateToAddToPlaylist: (List<Long>) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         val scope = rememberCoroutineScope()
@@ -251,10 +252,8 @@ fun Activity.showSongMenuDialog(
                     ),
                 )
             },
-            onClickAddToQueue = {
-                musicViewModel.addToQueue(listOf(song))
-            },
-            onClickAddToPlaylist = { /*TODO*/ },
+            onClickAddToQueue = { musicViewModel.addToQueue(listOf(song)) },
+            onClickAddToPlaylist = { navigateToAddToPlaylist.invoke(listOf(song.id)) },
             onClickArtist = { /*TODO*/ },
             onClickAlbum = { /*TODO*/ },
             onClickAnalyzeMusicInfo = { /*TODO*/ },

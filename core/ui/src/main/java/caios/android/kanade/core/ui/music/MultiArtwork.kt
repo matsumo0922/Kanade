@@ -98,7 +98,7 @@ fun MultiArtwork(
         if (a4 != null) {
             Artwork(
                 modifier = Modifier.constrainAs(artwork4) {
-                    start.linkTo(artwork3.start)
+                    start.linkTo(artwork3.end)
                     top.linkTo(artwork2.bottom)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)

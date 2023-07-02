@@ -50,9 +50,12 @@ internal fun PlaylistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(screenState) { uiState ->
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) { uiState ->
         PlaylistTopScreen(
-            modifier = modifier.background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             contentPadding = PaddingValues(top = topMargin),
             playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),

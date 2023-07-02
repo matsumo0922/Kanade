@@ -38,14 +38,18 @@ fun PlaylistHolder(
     onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.padding(4.dp)) {
+    Box(
+        modifier = modifier
+            .padding(4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { onClickHolder.invoke() },
+        ) {
         Column(
             modifier = Modifier.padding(bottom = 4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Card(
-                modifier = Modifier.clickable { onClickHolder.invoke() },
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),

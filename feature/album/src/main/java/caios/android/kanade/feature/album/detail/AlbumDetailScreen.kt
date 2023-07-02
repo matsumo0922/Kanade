@@ -50,10 +50,13 @@ internal fun AlbumDetailRoute(
         viewModel.fetch(albumId)
     }
 
-    AsyncLoadContents(screenState) {
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) {
         if (it != null) {
             AlbumDetailScreen(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 album = it.album,
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,

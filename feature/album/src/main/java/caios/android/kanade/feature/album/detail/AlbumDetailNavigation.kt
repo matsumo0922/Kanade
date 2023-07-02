@@ -1,5 +1,7 @@
 package caios.android.kanade.feature.album.detail
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -30,6 +32,7 @@ fun NavGraphBuilder.albumDetailScreen(
         exitTransition = { NavigateAnimation.Detail.popExit },
     ) {
         AlbumDetailRoute(
+            modifier = Modifier.fillMaxSize(),
             albumId = it.arguments?.getLong(AlbumDetailId) ?: -1L,
             navigateToSongMenu = navigateToSongMenu,
             navigateToAlbumMenu = navigateToAlbumMenu,

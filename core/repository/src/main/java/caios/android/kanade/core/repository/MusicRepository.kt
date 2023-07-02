@@ -25,7 +25,7 @@ interface MusicRepository {
     fun sortedSongs(musicConfig: MusicConfig): List<Song>
     fun sortedArtists(musicConfig: MusicConfig): List<Artist>
     fun sortedAlbums(musicConfig: MusicConfig): List<Album>
-    fun sortedPlaylist(musicConfig: MusicConfig): List<Playlist>
+    fun sortedPlaylists(musicConfig: MusicConfig): List<Playlist>
 
     fun getSong(songId: Long): Song?
     fun getArtist(artistId: Long): Artist?
@@ -43,6 +43,11 @@ interface MusicRepository {
     suspend fun fetchArtistArtwork()
     suspend fun fetchAlbumArtwork()
     suspend fun fetchLyrics(song: Song)
+
+    suspend fun createPlaylist(name: String, songs: List<Song>)
+    suspend fun removePlaylist(playlist: Playlist)
+    suspend fun addToPlaylist(playlist: Playlist, songs: List<Song>)
+    suspend fun removeFromPlaylist(playlist: Playlist, index: Int)
 
     suspend fun isFavorite(song: Song): Boolean
     suspend fun addToFavorite(song: Song)

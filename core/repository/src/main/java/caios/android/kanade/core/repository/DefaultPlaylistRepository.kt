@@ -67,7 +67,7 @@ class DefaultPlaylistRepository @Inject constructor(
         fetchPlaylist()
     }
 
-    override suspend fun delete(playlist: Playlist): Unit = withContext(dispatcher) {
+    override suspend fun remove(playlist: Playlist): Unit = withContext(dispatcher) {
         playlistDao.deletePlaylist(playlist.toModel().playlist)
         fetchPlaylist()
     }

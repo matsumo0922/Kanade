@@ -7,6 +7,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.feature.album.detail.albumDetailScreen
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
@@ -20,6 +24,10 @@ import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
 import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
 import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
+import caios.android.kanade.feature.playlist.add.addToPlaylistDialog
+import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
+import caios.android.kanade.feature.playlist.create.createPlaylistDialog
+import caios.android.kanade.feature.playlist.create.navigateToCreatePlaylist
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
@@ -38,6 +46,41 @@ fun KanadeNavHost(
     val navController = appState.navController
     val activity = (LocalContext.current as Activity)
 
+    fun showSongMenuDialog(song: Song) {
+        activity.showSongMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            song = song,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            },
+        )
+    }
+
+    fun showArtistMenuDialog(artist: Artist) {
+        activity.showArtistMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            artist = artist,
+        )
+    }
+
+    fun showAlbumMenuDialog(album: Album) {
+        activity.showAlbumMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            album = album,
+        )
+    }
+
+    fun showPlaylistMenuDialog(playlist: Playlist) {
+        activity.showPlaylistMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            playlist = playlist,
+        )
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -49,17 +92,13 @@ fun KanadeNavHost(
 
         playlistTopScreen(
             topMargin = libraryTopBarHeight,
-            navigateToPlaylistMenu = {
-                activity.showPlaylistMenuDialog(musicViewModel, userData, it)
-            },
+            navigateToPlaylistMenu = ::showPlaylistMenuDialog,
             navigateToPlaylistEdit = { },
         )
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
-            navigateToSongMenu = {
-                activity.showSongMenuDialog(musicViewModel, userData, it)
-            },
+            navigateToSongMenu = ::showSongMenuDialog
         )
 
         artistTopScreen(
@@ -74,15 +113,11 @@ fun KanadeNavHost(
             navigateToAlbumDetail = {
                 navController.navigateToAlbumDetail(it)
             },
-            navigateToAlbumMenu = {
-                activity.showAlbumMenuDialog(musicViewModel, userData, it)
-            },
+            navigateToAlbumMenu = ::showAlbumMenuDialog,
         )
 
         songDetailScreen(
-            navigateToSongMenu = {
-                activity.showSongMenuDialog(musicViewModel, userData, it)
-            },
+            navigateToSongMenu = ::showSongMenuDialog,
             terminate = {
                 navController.popBackStack()
             },
@@ -92,26 +127,31 @@ fun KanadeNavHost(
             navigateToSongDetail = { title, songIds ->
                 navController.navigateToSongDetail(title, songIds)
             },
-            navigateToSongMenu = {
-                activity.showSongMenuDialog(musicViewModel, userData, it)
-            },
-            navigateToArtistMenu = {
-                activity.showArtistMenuDialog(musicViewModel, userData, it)
-            },
-            navigateToAlbumMenu = {
-                activity.showAlbumMenuDialog(musicViewModel, userData, it)
-            },
+            navigateToSongMenu = ::showSongMenuDialog,
+            navigateToArtistMenu = ::showArtistMenuDialog,
+            navigateToAlbumMenu = ::showAlbumMenuDialog,
             terminate = {
                 navController.popBackStack()
             },
         )
 
         albumDetailScreen(
-            navigateToSongMenu = {
-                activity.showSongMenuDialog(musicViewModel, userData, it)
+            navigateToSongMenu = ::showSongMenuDialog,
+            navigateToAlbumMenu = ::showAlbumMenuDialog,
+            terminate = {
+                navController.popBackStack()
             },
-            navigateToAlbumMenu = {
-                activity.showAlbumMenuDialog(musicViewModel, userData, it)
+        )
+
+        createPlaylistDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        addToPlaylistDialog(
+            navigateToCreatePlaylist = { songIds ->
+                navController.navigateToCreatePlaylist(songIds)
             },
             terminate = {
                 navController.popBackStack()

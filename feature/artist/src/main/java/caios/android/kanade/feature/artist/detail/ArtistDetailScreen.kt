@@ -60,10 +60,13 @@ internal fun ArtistDetailRoute(
         viewModel.fetch(artistId)
     }
 
-    AsyncLoadContents(screenState) {
+    AsyncLoadContents(
+        modifier = modifier,
+        screenState = screenState,
+    ) {
         if (it != null) {
             ArtistDetailScreen(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 artist = it.artist,
                 onClickSeeAll = navigateToSongDetail,
                 onClickSongHolder = viewModel::onNewPlay,
