@@ -56,6 +56,8 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
+import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
+import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.queue.showQueueDialog
@@ -232,6 +234,12 @@ fun KanadeApp(
                                             song = song,
                                             navigateToAddToPlaylist = { songIds ->
                                                 appState.navController.navigateToAddToPlaylist(songIds)
+                                            },
+                                            navigateToArtistDetail = { artistId ->
+                                                appState.navController.navigateToArtistDetail(artistId)
+                                            },
+                                            navigateToAlbumDetail = { albumId ->
+                                                appState.navController.navigateToAlbumDetail(albumId)
                                             },
                                         )
                                     },

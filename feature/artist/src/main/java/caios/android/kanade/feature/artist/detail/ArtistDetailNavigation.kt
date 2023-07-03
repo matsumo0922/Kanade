@@ -16,7 +16,9 @@ const val ArtistDetailId = "artistDetailId"
 const val ArtistDetailRoute = "artistDetail/{$ArtistDetailId}"
 
 fun NavController.navigateToArtistDetail(artistId: Long) {
-    this.navigate("artistDetail/$artistId")
+    this.navigate("artistDetail/$artistId") {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.artistDetailScreen(

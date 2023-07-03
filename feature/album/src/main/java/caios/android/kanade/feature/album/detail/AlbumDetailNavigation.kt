@@ -15,7 +15,9 @@ const val AlbumDetailId = "albumDetailId"
 const val AlbumDetailRoute = "albumDetail/{$AlbumDetailId}"
 
 fun NavController.navigateToAlbumDetail(albumId: Long) {
-    this.navigate("albumDetail/$albumId")
+    this.navigate("albumDetail/$albumId") {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.albumDetailScreen(
@@ -29,7 +31,9 @@ fun NavGraphBuilder.albumDetailScreen(
             navArgument(AlbumDetailId) { type = NavType.LongType },
         ),
         enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.popExit },
+        exitTransition = { NavigateAnimation.Detail.exit },
+        popEnterTransition = { NavigateAnimation.Detail.popEnter },
+        popExitTransition = { NavigateAnimation.Detail.popExit },
     ) {
         AlbumDetailRoute(
             modifier = Modifier.fillMaxSize(),

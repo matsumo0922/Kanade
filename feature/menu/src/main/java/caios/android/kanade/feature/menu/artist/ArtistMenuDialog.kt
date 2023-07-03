@@ -130,6 +130,7 @@ fun Activity.showArtistMenuDialog(
     musicViewModel: MusicViewModel,
     userData: UserData?,
     artist: Artist,
+    navigateToAddToPlaylist: (List<Long>) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         ArtistMenuDialog(
@@ -153,7 +154,9 @@ fun Activity.showArtistMenuDialog(
             onClickAddToQueue = {
                 musicViewModel.addToQueue(artist.songs)
             },
-            onClickAddToPlaylist = {},
+            onClickAddToPlaylist = { artist ->
+                navigateToAddToPlaylist.invoke(artist.songs.map { it.id })
+            },
             onClickShare = {},
             onClickDelete = {},
             onDismiss = onDismiss,

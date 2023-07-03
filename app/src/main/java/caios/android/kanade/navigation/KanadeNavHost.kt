@@ -59,6 +59,12 @@ fun KanadeNavHost(
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
             },
+            navigateToArtistDetail = {
+                navController.navigateToArtistDetail(it)
+            },
+            navigateToAlbumDetail = {
+                navController.navigateToAlbumDetail(it)
+            },
         )
     }
 
@@ -67,6 +73,9 @@ fun KanadeNavHost(
             musicViewModel = musicViewModel,
             userData = userData,
             artist = artist,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            }
         )
     }
 
@@ -75,6 +84,9 @@ fun KanadeNavHost(
             musicViewModel = musicViewModel,
             userData = userData,
             album = album,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            }
         )
     }
 

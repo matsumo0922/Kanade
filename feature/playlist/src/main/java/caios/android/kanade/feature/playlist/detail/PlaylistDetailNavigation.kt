@@ -15,7 +15,9 @@ const val PlaylistDetailId = "playlistDetailId"
 const val PlaylistDetailRoute = "playlistDetail/{$PlaylistDetailId}"
 
 fun NavController.navigateToPlaylistDetail(playlistId: Long) {
-    this.navigate("playlistDetail/$playlistId")
+    this.navigate("playlistDetail/$playlistId") {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.playlistDetailScreen(

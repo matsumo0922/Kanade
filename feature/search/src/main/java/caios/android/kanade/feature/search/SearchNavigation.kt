@@ -2,7 +2,6 @@ package caios.android.kanade.feature.search
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.model.music.Album
@@ -12,8 +11,8 @@ import caios.android.kanade.core.model.music.Song
 
 const val SearchRoute = "search"
 
-fun NavController.navigateToSearch(navOptions: NavOptions? = null) {
-    this.navigate(SearchRoute, navOptions)
+fun NavController.navigateToSearch() {
+    this.navigate(SearchRoute)
 }
 
 fun NavGraphBuilder.searchScreen(
