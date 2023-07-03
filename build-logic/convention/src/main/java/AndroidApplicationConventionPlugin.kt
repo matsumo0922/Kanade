@@ -17,6 +17,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("kotlin-parcelize")
                 apply("kotlinx-serialization")
                 apply("project-report")
+                apply("com.google.devtools.ksp")
                 apply("com.google.firebase.crashlytics")
                 apply("com.google.android.gms.oss-licenses-plugin")
                 apply("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")

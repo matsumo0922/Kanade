@@ -59,6 +59,7 @@ import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.queue.showQueueDialog
+import caios.android.kanade.feature.search.navigateToSearch
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -98,6 +99,7 @@ fun KanadeApp(
             val topBarAlpha by animateFloatAsState(
                 targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
                 label = "topBarAlpha",
+                animationSpec = tween(240),
             )
 
             val bottomSheetPeekHeight by animateDpAsState(
@@ -243,20 +245,24 @@ fun KanadeApp(
                     sheetPeekHeight = bottomSheetPeekHeight,
                 ) {
                     Box {
-                        LibraryTopBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .onGloballyPositioned { topBarHeight = it.size.height.toFloat() }
-                                .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
-                                .alpha(topBarAlpha),
-                            onClickMenu = {
-                                scope.launch {
-                                    drawerState.open()
-                                }
-                            },
-                            onClickSearch = { /*TODO*/ },
-                            scrollBehavior = scrollBehavior,
-                        )
+                        if (topBarAlpha > 0f) {
+                            LibraryTopBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onGloballyPositioned { topBarHeight = it.size.height.toFloat() }
+                                    .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
+                                    .alpha(topBarAlpha),
+                                onClickMenu = {
+                                    scope.launch {
+                                        drawerState.open()
+                                    }
+                                },
+                                onClickSearch = {
+                                    appState.navController.navigateToSearch()
+                                },
+                                scrollBehavior = scrollBehavior,
+                            )
+                        }
 
                         KanadeNavHost(
                             musicViewModel = musicViewModel,

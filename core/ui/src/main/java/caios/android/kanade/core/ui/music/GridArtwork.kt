@@ -16,7 +16,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("ModifierReused")
 @Composable
-fun MultiArtwork(
+fun GridArtwork(
     songs: ImmutableList<Song>,
     modifier: Modifier = Modifier,
 ) {
@@ -125,8 +125,8 @@ fun MultiArtwork(
 
 @Preview
 @Composable
-private fun MultiArtworkPreview1() {
-    MultiArtwork(
+private fun GridArtworkPreview1() {
+    GridArtwork(
         modifier = Modifier.size(512.dp),
         songs = Song.dummies(1).toImmutableList(),
     )
@@ -134,8 +134,8 @@ private fun MultiArtworkPreview1() {
 
 @Preview
 @Composable
-private fun MultiArtworkPreview2() {
-    MultiArtwork(
+private fun GridArtworkPreview2() {
+    GridArtwork(
         modifier = Modifier.size(512.dp),
         songs = Song.dummies(2).toImmutableList(),
     )
@@ -143,8 +143,8 @@ private fun MultiArtworkPreview2() {
 
 @Preview
 @Composable
-private fun MultiArtworkPreview3() {
-    MultiArtwork(
+private fun GridArtworkPreview3() {
+    GridArtwork(
         modifier = Modifier.size(512.dp),
         songs = Song.dummies(3).toImmutableList(),
     )
@@ -152,8 +152,8 @@ private fun MultiArtworkPreview3() {
 
 @Preview
 @Composable
-private fun MultiArtworkPreview4() {
-    MultiArtwork(
+private fun GridArtworkPreview4() {
+    GridArtwork(
         modifier = Modifier.size(512.dp),
         songs = Song.dummies(4).toImmutableList(),
     )

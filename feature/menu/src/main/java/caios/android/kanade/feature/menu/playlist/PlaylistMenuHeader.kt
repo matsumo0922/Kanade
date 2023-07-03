@@ -18,7 +18,7 @@ import androidx.constraintlayout.compose.Dimension
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
-import caios.android.kanade.core.ui.music.MultiArtwork
+import caios.android.kanade.core.ui.music.GridArtwork
 import caios.android.kanade.core.ui.util.marquee
 import kotlinx.collections.immutable.toImmutableList
 
@@ -44,7 +44,7 @@ internal fun PlaylistMenuHeader(
             },
             shape = RoundedCornerShape(4.dp),
         ) {
-            MultiArtwork(
+            GridArtwork(
                 modifier = Modifier.size(48.dp),
                 songs = playlist.songs.toImmutableList(),
             )

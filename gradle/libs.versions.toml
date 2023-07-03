@@ -51,6 +51,7 @@ playServiceOss = "17.0.1"
 material = "1.9.0"
 exoPlayer = "2.18.7"
 accompanist = "0.30.1"
+ksp = "1.8.22-1.0.11"
 
 # Protobuf
 protobuf = "3.23.0"
@@ -61,6 +62,7 @@ dagger = "2.46.1"
 ktor = "2.3.1"
 detekt = "1.22.0"
 balloon = "1.5.3"
+orbital = "0.2.4"
 twitterComposeRule = "0.0.26"
 
 # Debugs
@@ -76,6 +78,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 
@@ -189,6 +192,7 @@ balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon" }
 spell-checker = { module = "org.apache.lucene:lucene-spellchecker", version = "3.6.2" }
 reorderble-compose = { module = "org.burnoutcrew.composereorderable:reorderable", version = "0.9.6" }
+orbital = { module = "com.github.skydoves:orbital", version.ref = "orbital" }
 twitter-compose-rule = { module = "com.twitter.compose.rules:detekt", version.ref = "twitterComposeRule" }
 
 # Debugs

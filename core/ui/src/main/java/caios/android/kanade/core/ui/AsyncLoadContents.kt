@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,36 @@ fun <T> AsyncLoadContents(
 
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.Center),
+            visible = screenState is ScreenState.Loading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            LoadingView(
+                modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
+            )
+        }
+    }
+}
+
+@Composable
+fun <T> FullAsyncLoadContents(
+    screenState: ScreenState<T>,
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    content: @Composable (T?) -> Unit,
+) {
+    Box(modifier.background(containerColor)) {
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
+            visible = screenState is ScreenState.Idle,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            content.invoke((screenState as? ScreenState.Idle<T>)?.data)
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
             visible = screenState is ScreenState.Loading,
             enter = fadeIn(),
             exit = fadeOut(),

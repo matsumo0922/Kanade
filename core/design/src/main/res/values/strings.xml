@@ -61,6 +61,11 @@
     <string name="notify_channel_music_name">コントローラー</string>
     <string name="notify_channel_music_description">通知欄にコントローラーを表示します</string>
 
+    <!-- Search -->
+    <string name="search_title">ライブラリを検索</string>
+    <string name="search_not_found">一致したメディアはありません</string>
+    <string name="search_keyword_suggestion_description">入力されたキーワードから推測して、以下のキーワードを含むメディアも検索しています。\n\n[%1$s]</string>
+
     <!-- Controller -->
     <string name="controller_menu_add_playlist">プレイリストに追加</string>
     <string name="controller_menu_artist">アーティスト</string>

@@ -58,7 +58,7 @@ fun PlaylistHolder(
                 ),
             ) {
                 Box(Modifier.fillMaxWidth()) {
-                    MultiArtwork(
+                    GridArtwork(
                         modifier = Modifier.fillMaxWidth(),
                         songs = playlist.songs.toImmutableList(),
                     )
