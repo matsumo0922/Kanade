@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Playlist
-import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode

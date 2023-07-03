@@ -48,7 +48,7 @@ class SearchViewModel @Inject constructor(
             searchLibrary(keywords)
         }.fold(
             onSuccess = { ScreenState.Idle(it) },
-            onFailure = { ScreenState.Error(message = R.string.search_title) }
+            onFailure = { ScreenState.Error(message = R.string.search_title) },
         )
     }
 

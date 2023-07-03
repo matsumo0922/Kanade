@@ -27,7 +27,7 @@ import android.view.inputmethod.TextAttribute
  */
 internal class ConversionInputConnection(
     inputConnection: InputConnection?,
-    private val onSuggestions: (text: CharSequence, suggestions: List<String>) -> Unit
+    private val onSuggestions: (text: CharSequence, suggestions: List<String>) -> Unit,
 ) : InputConnectionWrapper(inputConnection, false) {
 
     override fun setComposingText(text: CharSequence, newCursorPosition: Int, textAttribute: TextAttribute?): Boolean {

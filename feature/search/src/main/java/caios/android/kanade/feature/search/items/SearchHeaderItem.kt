@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package caios.android.kanade.feature.search.items
 
 import androidx.compose.foundation.BorderStroke
@@ -40,7 +42,7 @@ internal fun SearchHeaderItem(
                 .align(Alignment.Center),
             shape = RoundedCornerShape(50),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, 8.dp),
@@ -109,7 +111,7 @@ private fun SearchHeaderItemPreview3() {
             size = 871,
         )
     }
-}@Preview(showBackground = true)
+} @Preview(showBackground = true)
 @Composable
 private fun SearchHeaderItemPreview4() {
     KanadeBackground {

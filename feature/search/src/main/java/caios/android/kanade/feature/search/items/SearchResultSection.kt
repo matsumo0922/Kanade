@@ -25,7 +25,7 @@ internal fun SearchResultSection(
     onClickArtistMenu: (Artist) -> Unit,
     onClickAlbumMenu: (Album) -> Unit,
     onClickPlaylistMenu: (Playlist) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier) {
         if (uiState.resultSongs.isNotEmpty()) {
@@ -41,7 +41,7 @@ internal fun SearchResultSection(
 
             itemsIndexed(
                 items = uiState.resultSongs,
-                key = { _, song -> song.id }
+                key = { _, song -> song.id },
             ) { index, song ->
                 SearchSongHolder(
                     modifier = Modifier.fillMaxWidth(),
@@ -66,7 +66,7 @@ internal fun SearchResultSection(
 
             items(
                 items = uiState.resultArtists,
-                key = { artist -> artist.artistId }
+                key = { artist -> artist.artistId },
             ) {
                 SearchArtistHolder(
                     modifier = Modifier.fillMaxWidth(),
@@ -91,7 +91,7 @@ internal fun SearchResultSection(
 
             items(
                 items = uiState.resultAlbums,
-                key = { album -> album.albumId }
+                key = { album -> album.albumId },
             ) {
                 SearchAlbumHolder(
                     modifier = Modifier.fillMaxWidth(),
@@ -116,7 +116,7 @@ internal fun SearchResultSection(
 
             items(
                 items = uiState.resultPlaylists,
-                key = { playlist -> playlist.id }
+                key = { playlist -> playlist.id },
             ) {
                 SearchPlaylistHolder(
                     modifier = Modifier.fillMaxWidth(),
