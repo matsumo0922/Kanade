@@ -7,6 +7,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
+import caios.android.kanade.core.model.music.PlayHistory
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.PlaylistItem
 import caios.android.kanade.core.model.music.Song
@@ -29,6 +30,7 @@ class DefaultMusicRepository @Inject constructor(
     private val playlistRepository: PlaylistRepository,
     private val artworkRepository: ArtworkRepository,
     private val lyricsRepository: LyricsRepository,
+    private val playHistoryRepository: PlayHistoryRepository,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
 ) : MusicRepository {
 
@@ -39,6 +41,7 @@ class DefaultMusicRepository @Inject constructor(
     override val artists: List<Artist> get() = artistRepository.gets()
     override val albums: List<Album> get() = albumRepository.gets()
     override val playlists: List<Playlist> get() = playlistRepository.gets()
+    override val playHistory: List<PlayHistory> get() = playHistoryRepository.gets()
 
     override fun sortedSongs(musicConfig: MusicConfig): List<Song> {
         return songRepository.songsSort(songs, musicConfig)
@@ -74,6 +77,10 @@ class DefaultMusicRepository @Inject constructor(
 
     override fun getLyrics(song: Song): Lyrics? {
         return lyricsRepository.get(song)
+    }
+
+    override fun getPlayHistory(song: Song): List<PlayHistory> {
+        return playHistoryRepository.gets(song)
     }
 
     override suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
@@ -119,6 +126,10 @@ class DefaultMusicRepository @Inject constructor(
         lyricsRepository.lyrics(song)
     }
 
+    override suspend fun fetchPlayHistory() {
+        playHistoryRepository.playHistories()
+    }
+
     override suspend fun createPlaylist(name: String, songs: List<Song>) {
         val items = songs.mapIndexed { index, song -> PlaylistItem(0, song, index) }
         val playlist = Playlist(0, name, items.toSet(), createdAt = LocalDateTime.now())
@@ -156,6 +167,19 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun removeFromFavorite(song: Song) {
         playlistRepository.removeFromFavorite(song)
+    }
+
+    override suspend fun addToPlayHistory(song: Song) {
+        playHistoryRepository.add(song)
+    }
+
+    override suspend fun getPlayedCount(): Map<Song, Int> {
+        return playHistoryRepository
+            .gets()
+            .groupBy { it.song }
+            .map { it.key to it.value.size }
+            .sortedBy { it.second }
+            .toMap()
     }
 
     override suspend fun setShuffleMode(mode: ShuffleMode) {

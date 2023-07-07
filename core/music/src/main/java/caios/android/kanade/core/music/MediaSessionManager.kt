@@ -29,6 +29,7 @@ import caios.android.kanade.core.model.music.getMetadataBuilder
 import caios.android.kanade.core.model.player.ControlAction
 import caios.android.kanade.core.model.player.ControlKey
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.repository.MusicRepository
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -43,6 +44,7 @@ class MediaSessionManager(
     private val player: ExoPlayer,
     private val mediaSession: MediaSessionCompat,
     private val musicController: MusicController,
+    private val musicRepository: MusicRepository,
     private val queueManager: QueueManager,
     private val scope: CoroutineScope,
 ) {
@@ -165,6 +167,10 @@ class MediaSessionManager(
             }
 
             mediaSession.setMetadata(metadata.build())
+
+            if (playWhenReady) {
+                musicRepository.addToPlayHistory(song)
+            }
         }
 
         player.playWhenReady = playWhenReady

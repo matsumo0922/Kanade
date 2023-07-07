@@ -122,6 +122,7 @@ class MusicService : MediaBrowserServiceCompat() {
             player = exoPlayer,
             mediaSession = mediaSession,
             musicController = musicController,
+            musicRepository = musicRepository,
             queueManager = queueManager,
             scope = scope,
         )

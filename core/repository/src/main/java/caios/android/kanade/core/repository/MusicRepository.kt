@@ -4,6 +4,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
+import caios.android.kanade.core.model.music.PlayHistory
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
@@ -21,6 +22,7 @@ interface MusicRepository {
     val artists: List<Artist>
     val albums: List<Album>
     val playlists: List<Playlist>
+    val playHistory: List<PlayHistory>
 
     fun sortedSongs(musicConfig: MusicConfig): List<Song>
     fun sortedArtists(musicConfig: MusicConfig): List<Artist>
@@ -32,6 +34,7 @@ interface MusicRepository {
     fun getAlbum(albumId: Long): Album?
     fun getPlaylist(playlistId: Long): Playlist?
     fun getLyrics(song: Song): Lyrics?
+    fun getPlayHistory(song: Song): List<PlayHistory>
 
     suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int)
     suspend fun saveProgress(progress: Long)
@@ -43,6 +46,7 @@ interface MusicRepository {
     suspend fun fetchArtistArtwork()
     suspend fun fetchAlbumArtwork()
     suspend fun fetchLyrics(song: Song)
+    suspend fun fetchPlayHistory()
 
     suspend fun createPlaylist(name: String, songs: List<Song>)
     suspend fun removePlaylist(playlist: Playlist)
@@ -54,6 +58,9 @@ interface MusicRepository {
     suspend fun isFavorite(song: Song): Boolean
     suspend fun addToFavorite(song: Song)
     suspend fun removeFromFavorite(song: Song)
+
+    suspend fun addToPlayHistory(song: Song)
+    suspend fun getPlayedCount(): Map<Song, Int>
 
     suspend fun setShuffleMode(mode: ShuffleMode)
     suspend fun setRepeatMode(mode: RepeatMode)

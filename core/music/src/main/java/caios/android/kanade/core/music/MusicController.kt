@@ -329,8 +329,11 @@ class MusicControllerImpl @Inject constructor(
             val config = musicRepository.config.first()
 
             when (config.repeatMode) {
-                RepeatMode.ONE -> playerEvent(PlayerEvent.Seek(0f))
                 RepeatMode.ALL -> playerEvent(PlayerEvent.SkipToNext)
+                RepeatMode.ONE -> {
+                    currentSong.value?.let { musicRepository.addToPlayHistory(it) }
+                    playerEvent(PlayerEvent.Seek(0f))
+                }
                 RepeatMode.OFF -> {
                     val index = queueManager.getIndex()
                     val queue = queueManager.getCurrentQueue()
