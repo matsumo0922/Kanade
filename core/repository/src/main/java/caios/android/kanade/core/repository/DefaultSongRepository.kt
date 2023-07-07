@@ -115,11 +115,16 @@ class DefaultSongRepository @Inject constructor(
     }
 
     override fun fetchArtwork() {
+        var updates = 0
+
         for ((albumId, artwork) in artworkRepository.albumArtworks) {
             for (song in cache.values.filter { it.albumId == albumId }) {
+                if (song.artwork != artwork) updates++
                 cache[song.id] = song.copy(artwork = artwork)
             }
         }
+
+        Timber.d("Updated $updates songs artwork")
     }
 
     override fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song> {

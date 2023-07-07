@@ -1,6 +1,5 @@
 package caios.android.kanade.feature.queue.items
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +30,8 @@ import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.applyTonalElevation
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
+import caios.android.kanade.core.ui.view.DropDownMenuItem
+import caios.android.kanade.core.ui.view.DropDownMenuItemData
 
 @Composable
 internal fun QueueHeaderSection(
@@ -87,36 +87,27 @@ internal fun QueueHeaderSection(
                 expanded = isExpandedMenu,
                 onDismissRequest = { isExpandedMenu = false },
             ) {
-                DropDownMenuItem(
-                    text = R.string.queue_menu_add_to_playlist,
-                    onClick = onClickMenuAddPlaylist,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.queue_menu_share,
-                    onClick = onClickMenuShare,
-                )
+                listOf(
+                    DropDownMenuItemData(
+                        text = R.string.queue_menu_add_to_playlist,
+                        onClick = onClickMenuAddPlaylist,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.queue_menu_share,
+                        onClick = onClickMenuShare,
+                    ),
+                ).forEach {
+                    DropDownMenuItem(
+                        text = it.text,
+                        onClick = {
+                            isExpandedMenu = false
+                            it.onClick.invoke()
+                        },
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-private fun DropDownMenuItem(
-    @StringRes text: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DropdownMenuItem(
-        modifier = modifier,
-        onClick = onClick,
-        text = {
-            Text(
-                text = stringResource(text),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-    )
 }
 
 @Preview

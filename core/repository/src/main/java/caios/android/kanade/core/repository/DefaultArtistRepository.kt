@@ -8,7 +8,6 @@ import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.sortList
-import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -84,10 +83,21 @@ class DefaultArtistRepository @Inject constructor(
 
     override fun fetchArtwork() {
         for ((artistId, artwork) in artworkRepository.artistArtworks) {
-            cache[artistId] = cache[artistId]?.copy(artwork = artwork) ?: continue
-        }
+            val data = cache[artistId] ?: continue
+            if (data.artwork == artwork) continue
 
-        Timber.d("Fetched artist artwork. [Unknown: ${cache.values.filter { it.artwork == Artwork.Unknown }.size}/${cache.size}]")
+            val albums = data.albums.map {
+                it.copy(
+                    artwork = artworkRepository.albumArtworks[it.albumId] ?: Artwork.Unknown,
+                    songs = it.songs.mapNotNull { song -> songRepository.get(song.id) }
+                )
+            }
+
+            cache[artistId] = data.copy(
+                artwork = artwork,
+                albums = albums,
+            )
+        }
     }
 
     override fun artistsSort(artists: List<Artist>, musicConfig: MusicConfig): List<Artist> {

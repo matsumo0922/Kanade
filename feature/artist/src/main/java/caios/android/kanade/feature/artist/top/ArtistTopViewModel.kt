@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Artist
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicController
@@ -14,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +24,6 @@ class ArtistTopViewModel @Inject constructor(
     val screenState = musicRepository.config.map {
         musicRepository.fetchArtistArtwork()
         musicRepository.fetchArtists(it)
-
-        Timber.d("ArtistTopViewModel: ${musicRepository.sortedArtists(it).filter { it.artwork is Artwork.Unknown }.size}")
 
         ScreenState.Idle(
             ArtistTopUiState(

@@ -1,6 +1,5 @@
 package caios.android.kanade.core.ui.view
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.common.network.util.ToastUtil
@@ -97,47 +94,37 @@ fun KanadeTopAppBar(
                     expanded = isExpandedMenu,
                     onDismissRequest = { isExpandedMenu = false },
                 ) {
-                    DropDownMenuItem(
-                        text = R.string.menu_play_next,
-                        onClick = {
-                            onClickMenuPlayNext.invoke()
-                            ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                        },
-                    )
-
-                    DropDownMenuItem(
-                        text = R.string.menu_add_to_queue,
-                        onClick = {
-                            onClickMenuAddToQueue.invoke()
-                            ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                        },
-                    )
-
-                    DropDownMenuItem(
-                        text = R.string.menu_add_to_playlist,
-                        onClick = onClickMenuAddToPlaylist,
-                    )
+                    listOf(
+                        DropDownMenuItemData(
+                            text = R.string.menu_play_next,
+                            onClick = {
+                                onClickMenuPlayNext.invoke()
+                                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                            },
+                        ),
+                        DropDownMenuItemData(
+                            text = R.string.menu_add_to_queue,
+                            onClick = {
+                                onClickMenuAddToQueue.invoke()
+                                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                            },
+                        ),
+                        DropDownMenuItemData(
+                            text = R.string.menu_add_to_playlist,
+                            onClick = onClickMenuAddToPlaylist,
+                        )
+                    ).forEach {
+                        DropDownMenuItem(
+                            text = it.text,
+                            onClick = {
+                                isExpandedMenu = false
+                                it.onClick.invoke()
+                            },
+                        )
+                    }
                 }
             }
         },
         scrollBehavior = behavior,
-    )
-}
-
-@Composable
-private fun DropDownMenuItem(
-    @StringRes text: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DropdownMenuItem(
-        modifier = modifier,
-        onClick = onClick,
-        text = {
-            Text(
-                text = stringResource(text),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
     )
 }

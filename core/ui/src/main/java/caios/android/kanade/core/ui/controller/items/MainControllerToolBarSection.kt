@@ -1,6 +1,5 @@
 package caios.android.kanade.core.ui.controller.items
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +16,8 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,12 +26,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.applyTonalElevation
+import caios.android.kanade.core.ui.view.DropDownMenuItem
+import caios.android.kanade.core.ui.view.DropDownMenuItemData
 
 @Composable
 internal fun MainControllerToolBarSection(
@@ -101,61 +99,47 @@ internal fun MainControllerToolBarSection(
                 expanded = isExpandedMenu,
                 onDismissRequest = { isExpandedMenu = false },
             ) {
-                DropDownMenuItem(
-                    text = R.string.controller_menu_add_playlist,
-                    onClick = onClickMenuAddPlaylist,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_artist,
-                    onClick = onClickMenuArtist,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_album,
-                    onClick = onClickMenuAlbum,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_equalizer,
-                    onClick = onClickMenuEqualizer,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_edit,
-                    onClick = onClickMenuEdit,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_analyze,
-                    onClick = onClickMenuAnalyze,
-                )
-
-                DropDownMenuItem(
-                    text = R.string.controller_menu_detail_info,
-                    onClick = onClickMenuDetailInfo,
-                )
+                listOf(
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_add_playlist,
+                        onClick = onClickMenuAddPlaylist,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_artist,
+                        onClick = onClickMenuArtist,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_album,
+                        onClick = onClickMenuAlbum,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_equalizer,
+                        onClick = onClickMenuEqualizer,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_edit,
+                        onClick = onClickMenuEdit,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_analyze,
+                        onClick = onClickMenuAnalyze,
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.controller_menu_detail_info,
+                        onClick = onClickMenuDetailInfo,
+                    ),
+                ).forEach {
+                    DropDownMenuItem(
+                        text = it.text,
+                        onClick = {
+                            isExpandedMenu = false
+                            it.onClick.invoke()
+                        },
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-private fun DropDownMenuItem(
-    @StringRes text: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DropdownMenuItem(
-        modifier = modifier,
-        onClick = onClick,
-        text = {
-            Text(
-                text = stringResource(text),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-    )
 }
 
 @Preview(showBackground = true)

@@ -24,6 +24,7 @@ import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,12 +75,14 @@ class MusicViewModel @Inject constructor(
 
     fun fetch() {
         viewModelScope.launch {
+            musicRepository.fetchSongs()
             musicRepository.fetchArtists()
             musicRepository.fetchAlbums()
-            musicRepository.fetchSongs()
             musicRepository.fetchPlaylist()
-            musicRepository.fetchArtistArtwork()
             musicRepository.fetchAlbumArtwork()
+            musicRepository.fetchArtistArtwork()
+
+            Timber.d("Fetch library. Songs: ${musicRepository.songs.size}, Artists: ${musicRepository.artists.size}, Albums: ${musicRepository.albums.size}")
         }
     }
 
