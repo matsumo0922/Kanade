@@ -129,6 +129,10 @@ class DefaultMusicRepository @Inject constructor(
         playlistRepository.remove(playlist)
     }
 
+    override suspend fun renamePlaylist(playlist: Playlist, name: String) {
+        playlistRepository.rename(playlist, name)
+    }
+
     override suspend fun addToPlaylist(playlist: Playlist, songs: List<Song>) {
         playlistRepository.addItems(playlist.id, songs)
     }

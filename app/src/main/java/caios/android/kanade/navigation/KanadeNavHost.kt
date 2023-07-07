@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
+import caios.android.kanade.core.common.network.util.ToastUtil
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
@@ -32,6 +34,8 @@ import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.feature.playlist.detail.playlistDetailScreen
 import caios.android.kanade.feature.playlist.fab.fabPlaylistDialog
 import caios.android.kanade.feature.playlist.fab.navigateToFabPlaylist
+import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
+import caios.android.kanade.feature.playlist.rename.renamePlaylistDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.search.searchScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
@@ -95,6 +99,13 @@ fun KanadeNavHost(
             musicViewModel = musicViewModel,
             userData = userData,
             playlist = playlist,
+            navigateToRename = {
+                if (it.isSystemPlaylist) {
+                    ToastUtil.show(activity, R.string.playlist_error_rename_system_playlist)
+                } else {
+                    navController.navigateToRenamePlaylist(it.id)
+                }
+            },
         )
     }
 
@@ -196,6 +207,12 @@ fun KanadeNavHost(
             navigateToCreatePlaylist = {
                 navController.navigateToCreatePlaylist(emptyList())
             },
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        renamePlaylistDialog(
             terminate = {
                 navController.popBackStack()
             },

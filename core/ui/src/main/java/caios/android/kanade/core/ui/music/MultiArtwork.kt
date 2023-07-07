@@ -62,28 +62,32 @@ fun MultiArtwork(
 }
 
 private fun getUselessArtworks(artworks: ImmutableList<Artwork>, isRandom: Boolean): List<Artwork> {
-    fun Random.getRandomIndex(next: Int): Int {
-        return if (next == 0) 0 else nextInt(next)
-    }
-
     val random = Random(System.currentTimeMillis())
-    val shuffledArtworks = if (isRandom) artworks.shuffled(random) else artworks
-    val imageArtworks: MutableList<Artwork> = shuffledArtworks.filter { it !is Artwork.Internal }.toMutableList()
-    val internalArtworks: MutableList<Artwork> = shuffledArtworks.filterIsInstance<Artwork.Internal>().toMutableList()
-    val resultList = mutableListOf<Artwork>()
+    val webs = artworks.filterIsInstance<Artwork.Web>().toMutableList()
+    val mediaStores = artworks.filterIsInstance<Artwork.MediaStore>().toMutableList()
+    val internals = artworks.filterIsInstance<Artwork.Internal>().toMutableList()
 
-    if (internalArtworks.isEmpty()) {
-        internalArtworks.add(Artwork.Unknown)
+    if (isRandom) {
+        webs.shuffle(random)
+        mediaStores.shuffle(random)
+        internals.shuffle(random)
     }
 
-    for (i in 0 until 10) {
-        val artwork = imageArtworks.elementAtOrElse(i) { internalArtworks[random.getRandomIndex(internalArtworks.size - 1)] }
-        val index = if (i % 2 == 0) 0 else resultList.lastIndex
+    val images = mutableListOf(*webs.toTypedArray(), *mediaStores.toTypedArray(), *internals.toTypedArray())
+    val results = mutableListOf<Artwork>()
 
-        resultList.add(index, artwork)
+    if (images.isEmpty()) {
+        images.add(Artwork.Unknown)
     }
 
-    return resultList
+    for (i in 0 until 9) {
+        val artwork = images.elementAtOrElse(i) { images.random(random) }
+        val index = if (i % 2 == 0) 0 else images.lastIndex
+
+        results.add(index, artwork)
+    }
+
+    return results
 }
 
 @Preview

@@ -130,6 +130,7 @@ fun Activity.showPlaylistMenuDialog(
     musicViewModel: MusicViewModel,
     userData: UserData?,
     playlist: Playlist,
+    navigateToRename: (Playlist) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         PlaylistMenuDialog(
@@ -153,7 +154,7 @@ fun Activity.showPlaylistMenuDialog(
             onClickAddToQueue = {
                 musicViewModel.addToQueue(playlist.songs)
             },
-            onClickRename = {},
+            onClickRename = navigateToRename,
             onClickShare = {},
             onClickDelete = {
                 musicViewModel.removePlaylist(playlist)

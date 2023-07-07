@@ -37,8 +37,13 @@ class PlaylistDetailViewModel @Inject constructor(
                     val playlistId = uiState.data.playlist.id
                     val playlist = data.find { it.id == playlistId }
 
-                    if (playlist != null) {
-                        screenState.value = ScreenState.Idle(uiState.data.copy(playlist = playlist))
+                    screenState.value = if (playlist != null) {
+                        ScreenState.Idle(uiState.data.copy(playlist = playlist))
+                    } else {
+                        ScreenState.Error(
+                            message = R.string.error_no_data,
+                            retryTitle = R.string.common_close,
+                        )
                     }
                 }
             }
@@ -54,7 +59,10 @@ class PlaylistDetailViewModel @Inject constructor(
             screenState.value = if (playlist != null) {
                 ScreenState.Idle(PlaylistDetailUiState(playlist))
             } else {
-                ScreenState.Error(message = R.string.error_no_data)
+                ScreenState.Error(
+                    message = R.string.error_no_data,
+                    retryTitle = R.string.common_close,
+                )
             }
         }
     }

@@ -76,6 +76,14 @@ class DefaultPlaylistRepository @Inject constructor(
         fetchPlaylist()
     }
 
+    override suspend fun rename(playlist: Playlist, name: String) = withContext(dispatcher) {
+        val model = playlist.toModel()
+        val entity = model.playlist.copy(name = name)
+
+        playlistDao.updatePlaylist(entity)
+        fetchPlaylist()
+    }
+
     override suspend fun addItems(playlistId: Long, songs: List<Song>) = withContext(dispatcher) {
         val playlist = playlistDao.load(playlistId) ?: return@withContext
         val items = songs.mapIndexed { index, song ->

@@ -46,6 +46,7 @@ interface MusicRepository {
 
     suspend fun createPlaylist(name: String, songs: List<Song>)
     suspend fun removePlaylist(playlist: Playlist)
+    suspend fun renamePlaylist(playlist: Playlist, name: String)
     suspend fun addToPlaylist(playlist: Playlist, songs: List<Song>)
     suspend fun removeFromPlaylist(playlist: Playlist, index: Int)
     suspend fun moveItemInPlaylist(playlist: Playlist, fromIndex: Int, toIndex: Int)

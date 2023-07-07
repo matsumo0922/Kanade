@@ -7,7 +7,7 @@ data class Playlist(
     val isSystemPlaylist: Boolean = false,
 ) {
     val songs: List<Song>
-        get() = items.map { it.song }
+        get() = items.sortedBy { it.index }.map { it.song }
 
     companion object {
         fun dummy(id: Long = 0, size: Int = 10): Playlist {

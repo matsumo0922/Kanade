@@ -31,7 +31,10 @@ class ArtistDetailViewModel @Inject constructor(
             screenState.value = if (artist != null) {
                 ScreenState.Idle(ArtistDetailUiState(artist))
             } else {
-                ScreenState.Error(message = R.string.error_no_data)
+                ScreenState.Error(
+                    message = R.string.error_no_data,
+                    retryTitle = R.string.common_close,
+                )
             }
         }
     }

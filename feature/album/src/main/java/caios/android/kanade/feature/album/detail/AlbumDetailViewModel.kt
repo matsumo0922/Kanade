@@ -32,7 +32,10 @@ class AlbumDetailViewModel @Inject constructor(
             screenState.value = if (album != null) {
                 ScreenState.Idle(AlbumDetailUiState(album))
             } else {
-                ScreenState.Error(message = R.string.error_no_data)
+                ScreenState.Error(
+                    message = R.string.error_no_data,
+                    retryTitle = R.string.common_close,
+                )
             }
         }
     }

@@ -1,6 +1,5 @@
-package caios.android.kanade.feature.playlist.create
+package caios.android.kanade.feature.playlist.rename
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,13 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
-import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.ui.AsyncLoadContents
 import kotlinx.collections.immutable.ImmutableList
@@ -36,34 +33,36 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun CreatePlaylistDialog(
-    onTerminate: () -> Unit,
+internal fun RenamePlaylistDialog(
+    playlistId: Long,
+    terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    songIds: ImmutableList<Long> = persistentListOf(),
-    viewModel: CreatePlaylistViewModel = hiltViewModel(),
+    viewModel: RenamePlaylistViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(playlistId) {
+        viewModel.fetch(playlistId)
+    }
 
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-    ) { uiState ->
-        CreatePlaylistDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
-            onRegister = { name ->
-                val songs = songIds.mapNotNull { id -> uiState?.songs?.find { id == it.id } }
-                viewModel.createPlaylist(name, songs)
-            },
-            onTerminate = onTerminate,
+    ) {
+        RenamePlaylistDialog(
+            playlist = it?.playlist ?: Playlist.dummy(),
+            playlists = it?.playlists?.toImmutableList() ?: persistentListOf(),
+            onRegister = viewModel::rename,
+            onTerminate = terminate,
         )
     }
 }
 
 @Composable
-private fun CreatePlaylistDialog(
+private fun RenamePlaylistDialog(
+    playlist: Playlist,
     playlists: ImmutableList<Playlist>,
-    onRegister: (String) -> Unit,
+    onRegister: (Playlist, String) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -81,7 +80,7 @@ private fun CreatePlaylistDialog(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.playlist_create_title),
+            text = stringResource(R.string.playlist_rename_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -122,11 +121,10 @@ private fun CreatePlaylistDialog(
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
                     onTerminate.invoke()
-                    onRegister.invoke(name)
+                    onRegister.invoke(playlist, name)
 
                     ToastUtil.show(context, R.string.playlist_created_toast)
                 },
-                enabled = !isNameError,
             ) {
                 Text(
                     text = stringResource(R.string.common_ok),
@@ -135,18 +133,5 @@ private fun CreatePlaylistDialog(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun CreatePlaylistDialogPreview() {
-    KanadeBackground {
-        CreatePlaylistDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            playlists = Playlist.dummies(5).toImmutableList(),
-            onRegister = { },
-            onTerminate = { },
-        )
     }
 }

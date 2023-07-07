@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import caios.android.kanade.core.model.ScreenState
+import caios.android.kanade.core.ui.view.ErrorView
 import caios.android.kanade.core.ui.view.LoadingView
 
 @Composable
@@ -19,6 +20,7 @@ fun <T> AsyncLoadContents(
     screenState: ScreenState<T>,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    retryAction: () -> Unit = {},
     content: @Composable (T?) -> Unit,
 ) {
     Box(modifier.background(containerColor)) {
@@ -32,6 +34,18 @@ fun <T> AsyncLoadContents(
         ) {
             LoadingView(
                 modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
+            )
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.Center),
+            visible = screenState is ScreenState.Error,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            ErrorView(
+                errorState = screenState as ScreenState.Error,
+                retryAction = retryAction,
             )
         }
     }

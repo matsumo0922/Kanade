@@ -5,7 +5,7 @@ sealed class ScreenState<out T> {
 
     data class Error(
         val message: Int,
-        val action: (() -> Unit)? = null,
+        val retryTitle: Int? = null,
     ) : ScreenState<Nothing>()
 
     data class Idle<T>(

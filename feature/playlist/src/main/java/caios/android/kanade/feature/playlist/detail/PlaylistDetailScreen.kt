@@ -67,6 +67,7 @@ fun PlaylistDetailRoute(
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
+        retryAction = { terminate.invoke() }
     ) { uiState ->
         if (uiState != null) {
             PlaylistDetailScreen(

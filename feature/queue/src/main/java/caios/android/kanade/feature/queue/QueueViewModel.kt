@@ -31,7 +31,10 @@ class QueueViewModel @Inject constructor(
                 ),
             )
         } else {
-            ScreenState.Error(message = R.string.error_no_data)
+            ScreenState.Error(
+                message = R.string.error_no_data,
+                retryTitle = R.string.common_close,
+            )
         }
     }.stateIn(
         scope = viewModelScope,

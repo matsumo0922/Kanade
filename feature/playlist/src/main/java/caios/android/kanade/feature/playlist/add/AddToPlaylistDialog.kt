@@ -39,6 +39,7 @@ import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.GridArtwork
 import caios.android.kanade.core.ui.util.marquee
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -55,18 +56,16 @@ fun AddToPlaylistDialog(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
-        if (uiState != null) {
-            AddToPlaylistDialog(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                playlists = uiState.playlists.toImmutableList(),
-                onCreate = { navigateToCreatePlaylist.invoke(songIds) },
-                onRegister = {
-                    val songs = songIds.mapNotNull { id -> uiState.songs.find { song -> song.id == id } }
-                    viewModel.register(it, songs)
-                },
-                onTerminate = onTerminate,
-            )
-        }
+        AddToPlaylistDialog(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
+            onCreate = { navigateToCreatePlaylist.invoke(songIds) },
+            onRegister = {
+                val songs = songIds.mapNotNull { id -> uiState?.songs?.find { song -> song.id == id } }
+                viewModel.register(it, songs)
+            },
+            onTerminate = onTerminate,
+        )
     }
 }
 
