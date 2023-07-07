@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -159,6 +160,7 @@ class DefaultPlaylistRepository @Inject constructor(
                 ),
             ),
             isSystemPlaylist = true,
+            createdAt = LocalDateTime.now(),
         )
 
         create(favorite)
@@ -180,6 +182,7 @@ class DefaultPlaylistRepository @Inject constructor(
                 }
             }.toSet(),
             isSystemPlaylist = playlist.isSystemPlaylist,
+            createdAt = LocalDateTime.parse(playlist.createdAt),
         )
     }
 
@@ -189,6 +192,7 @@ class DefaultPlaylistRepository @Inject constructor(
                 id = id,
                 name = name,
                 isSystemPlaylist = isSystemPlaylist,
+                createdAt = createdAt.toString(),
             )
             items = this@toModel.items.map {
                 PlaylistItemEntity(

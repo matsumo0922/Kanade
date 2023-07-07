@@ -12,6 +12,8 @@ import caios.android.kanade.core.database.artist_detail.ArtistTagEntity
 import caios.android.kanade.core.database.artist_detail.SimilarArtistEntity
 import caios.android.kanade.core.database.artwork.ArtworkDao
 import caios.android.kanade.core.database.artwork.ArtworkEntity
+import caios.android.kanade.core.database.history.PlayHistoryDao
+import caios.android.kanade.core.database.history.PlayHistoryEntity
 import caios.android.kanade.core.database.playlist.PlaylistDao
 import caios.android.kanade.core.database.playlist.PlaylistEntity
 import caios.android.kanade.core.database.playlist.PlaylistItemEntity
@@ -27,6 +29,7 @@ import caios.android.kanade.core.database.playlist.PlaylistItemEntity
         ArtworkEntity::class,
         PlaylistEntity::class,
         PlaylistItemEntity::class,
+        PlayHistoryEntity::class,
     ],
     version = 1,
 )
@@ -35,4 +38,5 @@ abstract class KanadeDataBase : RoomDatabase() {
     abstract fun albumDetailDao(): AlbumDetailDao
     abstract fun artworkDao(): ArtworkDao
     abstract fun playlistDao(): PlaylistDao
+    abstract fun playHistoryDao(): PlayHistoryDao
 }

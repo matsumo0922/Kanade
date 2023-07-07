@@ -10,10 +10,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.ui.AsyncLoadContents
@@ -28,9 +30,11 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun SongTopRoute(
     topMargin: Dp,
     navigateToSongMenu: (Song) -> Unit,
+    navigateToSongDetail: (String, List<Long>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     AsyncLoadContents(
@@ -46,7 +50,11 @@ internal fun SongTopRoute(
             onClickSong = viewModel::onNewPlay,
             onClickMenu = navigateToSongMenu,
             onClickHistory = { /*TODO*/ },
-            onClickRecentlyAdd = { /*TODO*/ },
+            onClickRecentlyAdd = {
+                uiState?.songs?.sortedBy { it.addedDate }?.map { it.id }?.let {
+                    navigateToSongDetail.invoke(context.getString(R.string.song_header_recently_add), it)
+                }
+            },
             onClickMostPlayed = { /*TODO*/ },
             onClickShuffle = viewModel::onShuffle,
         )

@@ -150,6 +150,9 @@ fun KanadeNavHost(
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToSongDetail = { title, songIds ->
+                navController.navigateToSongDetail(title, songIds)
+            },
             navigateToSongMenu = ::showSongMenuDialog,
         )
 

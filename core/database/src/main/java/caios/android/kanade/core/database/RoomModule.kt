@@ -33,4 +33,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun providePlaylistDao(db: KanadeDataBase) = db.playlistDao()
+
+    @Singleton
+    @Provides
+    fun providePlayHistoryDao(db: KanadeDataBase) = db.playHistoryDao()
 }

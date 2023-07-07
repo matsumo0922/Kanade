@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class DefaultMusicRepository @Inject constructor(
@@ -120,7 +121,7 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun createPlaylist(name: String, songs: List<Song>) {
         val items = songs.mapIndexed { index, song -> PlaylistItem(0, song, index) }
-        val playlist = Playlist(0, name, items.toSet())
+        val playlist = Playlist(0, name, items.toSet(), createdAt = LocalDateTime.now())
 
         playlistRepository.create(playlist)
     }

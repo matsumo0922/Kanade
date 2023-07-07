@@ -3,7 +3,10 @@ package caios.android.kanade.core.model.music
 import android.net.Uri
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
+import java.time.Instant
+import java.time.LocalDateTime
 import java.util.Locale
+import java.util.TimeZone
 
 data class Song(
     val id: Long,
@@ -33,6 +36,9 @@ data class Song(
                 String.format(Locale.getDefault(), "%02d:%02d", minute, second % 60)
             }
         }
+
+    val addedDate: LocalDateTime
+        get() = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateModified), TimeZone.getDefault().toZoneId())
 
     companion object {
         fun dummy(id: Long = 0): Song {

@@ -330,7 +330,6 @@ private fun PlaylistArtworkSection(
                 text = data.summary,
                 style = summaryStyle.center(),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }

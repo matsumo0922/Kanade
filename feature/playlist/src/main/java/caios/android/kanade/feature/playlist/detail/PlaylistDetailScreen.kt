@@ -119,7 +119,7 @@ private fun PlaylistDetailScreen(
     var isVisibleFAB by remember { mutableStateOf(false) }
     val coordinatorData = CoordinatorData.Playlist(
         title = playlist.name,
-        summary = stringResource(R.string.unit_song, playlist.songs.size),
+        summary = "${playlist.createdAtStr}\n${stringResource(R.string.unit_song, playlist.songs.size)}",
         artworks = playlist.songs.map { it.artwork },
     )
 

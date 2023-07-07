@@ -23,11 +23,11 @@ fun <T> AsyncLoadContents(
     retryAction: () -> Unit = {},
     content: @Composable (T?) -> Unit,
 ) {
-    Box(modifier.background(containerColor)) {
+    Box(Modifier.background(containerColor)) {
         content.invoke((screenState as? ScreenState.Idle<T>)?.data)
 
         AnimatedVisibility(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = modifier.align(Alignment.Center),
             visible = screenState is ScreenState.Loading,
             enter = fadeIn(),
             exit = fadeOut(),
@@ -38,7 +38,7 @@ fun <T> AsyncLoadContents(
         }
 
         AnimatedVisibility(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = modifier.align(Alignment.Center),
             visible = screenState is ScreenState.Error,
             enter = fadeIn(),
             exit = fadeOut(),

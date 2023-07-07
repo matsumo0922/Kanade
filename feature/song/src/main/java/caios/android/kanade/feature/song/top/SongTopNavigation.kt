@@ -19,6 +19,7 @@ fun NavController.navigateToSongTop(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.songTopScreen(
     topMargin: Dp,
     navigateToSongMenu: (Song) -> Unit,
+    navigateToSongDetail: (String, List<Long>) -> Unit,
 ) {
     composable(
         route = SongTopRoute,
@@ -39,6 +40,7 @@ fun NavGraphBuilder.songTopScreen(
             modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
             navigateToSongMenu = navigateToSongMenu,
+            navigateToSongDetail = navigateToSongDetail,
         )
     }
 }
