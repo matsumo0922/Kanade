@@ -67,9 +67,9 @@ fun MainController(
     uiState: MusicUiState,
     onClickClose: () -> Unit,
     onClickSearch: () -> Unit,
-    onClickMenuAddPlaylist: () -> Unit,
-    onClickMenuArtist: () -> Unit,
-    onClickMenuAlbum: () -> Unit,
+    onClickMenuAddPlaylist: (Long) -> Unit,
+    onClickMenuArtist: (Long) -> Unit,
+    onClickMenuAlbum: (Long) -> Unit,
     onClickMenuEqualizer: () -> Unit,
     onClickMenuEdit: () -> Unit,
     onClickMenuAnalyze: () -> Unit,
@@ -139,10 +139,19 @@ fun MainController(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             onClickClose = onClickClose,
-            onClickSearch = onClickSearch,
-            onClickMenuAddPlaylist = onClickMenuAddPlaylist,
-            onClickMenuArtist = onClickMenuArtist,
-            onClickMenuAlbum = onClickMenuAlbum,
+            onClickSearch = {
+                onClickClose.invoke()
+                onClickSearch.invoke()
+            },
+            onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
+            onClickMenuArtist = {
+                onClickClose.invoke()
+                uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
+            },
+            onClickMenuAlbum = {
+                onClickClose.invoke()
+                uiState.song?.albumId?.let { onClickMenuAlbum.invoke(it) }
+            },
             onClickMenuEqualizer = onClickMenuEqualizer,
             onClickMenuEdit = onClickMenuEdit,
             onClickMenuAnalyze = onClickMenuAnalyze,

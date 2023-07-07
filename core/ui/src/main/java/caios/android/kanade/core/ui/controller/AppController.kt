@@ -1,5 +1,6 @@
 package caios.android.kanade.core.ui.controller
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,10 @@ fun AppController(
     onClickFavorite: (Song) -> Unit,
     onRequestLyrics: (Song) -> Unit,
     onFetchFavorite: suspend (Song) -> Boolean,
+    navigateToSearch: () -> Unit,
+    navigateToArtist: (Long) -> Unit,
+    navigateToAlbum: (Long) -> Unit,
+    navigateToAddToPlaylist: (Long) -> Unit,
     navigateToLyrics: () -> Unit,
     navigateToSleepTimer: () -> Unit,
     navigateToQueue: () -> Unit,
@@ -33,6 +38,10 @@ fun AppController(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier.fillMaxSize()) {
+        BackHandler(offsetRate == 0f) {
+            onClickCloseExpanded()
+        }
+
         BottomController(
             modifier = Modifier
                 .alpha(offsetRate)
@@ -55,10 +64,10 @@ fun AppController(
                 .background(MaterialTheme.colorScheme.surface),
             uiState = uiState,
             onClickClose = onClickCloseExpanded,
-            onClickSearch = { },
-            onClickMenuAddPlaylist = { },
-            onClickMenuArtist = { },
-            onClickMenuAlbum = { },
+            onClickSearch = navigateToSearch,
+            onClickMenuAddPlaylist = navigateToAddToPlaylist,
+            onClickMenuArtist = navigateToArtist,
+            onClickMenuAlbum = navigateToAlbum,
             onClickMenuEqualizer = { },
             onClickMenuEdit = { },
             onClickMenuAnalyze = { },

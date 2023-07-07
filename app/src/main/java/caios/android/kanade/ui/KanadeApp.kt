@@ -171,11 +171,11 @@ fun KanadeApp(
                         currentDestination = appState.currentDestination,
                     )
                 },
-            ) {
+            ) { paddingValues ->
                 RequestPermissions(musicViewModel::fetch)
 
                 val padding = PaddingValues(
-                    top = it.calculateTopPadding(),
+                    top = paddingValues.calculateTopPadding(),
                     bottom = bottomSheetPeekHeight,
                 )
 
@@ -221,6 +221,18 @@ fun KanadeApp(
                             },
                             onFetchFavorite = {
                                 musicViewModel.fetchFavorite(it)
+                            },
+                            navigateToAddToPlaylist = {
+                                appState.navController.navigateToAddToPlaylist(listOf(it))
+                            },
+                            navigateToArtist = {
+                                appState.navController.navigateToArtistDetail(it)
+                            },
+                            navigateToAlbum = {
+                                appState.navController.navigateToAlbumDetail(it)
+                            },
+                            navigateToSearch = {
+                                appState.navController.navigateToSearch()
                             },
                             navigateToLyrics = { },
                             navigateToSleepTimer = { },

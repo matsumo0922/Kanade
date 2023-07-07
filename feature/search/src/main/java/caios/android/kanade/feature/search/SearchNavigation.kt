@@ -12,7 +12,9 @@ import caios.android.kanade.core.model.music.Song
 const val SearchRoute = "search"
 
 fun NavController.navigateToSearch() {
-    this.navigate(SearchRoute)
+    this.navigate(SearchRoute) {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.searchScreen(
