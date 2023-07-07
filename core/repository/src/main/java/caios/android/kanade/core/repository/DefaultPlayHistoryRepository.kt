@@ -18,7 +18,7 @@ class DefaultPlayHistoryRepository @Inject constructor(
     private val songRepository: SongRepository,
     private val playHistoryDao: PlayHistoryDao,
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
-): PlayHistoryRepository {
+) : PlayHistoryRepository {
 
     private val cache = mutableListOf<PlayHistory>()
     private val _data = MutableStateFlow(emptyList<PlayHistory>())
@@ -55,7 +55,7 @@ class DefaultPlayHistoryRepository @Inject constructor(
             id = id,
             songId = song.id,
             duration = song.duration,
-            createdAt = playedAt.toString()
+            createdAt = playedAt.toString(),
         )
     }
 

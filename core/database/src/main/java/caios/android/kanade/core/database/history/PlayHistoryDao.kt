@@ -9,20 +9,20 @@ import androidx.room.Transaction
 import androidx.room.Update
 
 @Dao
-abstract class PlayHistoryDao {
+interface PlayHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(entity: PlayHistoryEntity): Long
+    fun insert(entity: PlayHistoryEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(vararg entity: PlayHistoryEntity)
+    fun insert(vararg entity: PlayHistoryEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun update(entity: PlayHistoryEntity)
+    fun update(entity: PlayHistoryEntity)
 
     @Delete
-    abstract fun delete(entity: PlayHistoryEntity)
+    fun delete(entity: PlayHistoryEntity)
 
     @Transaction
     @Query("SELECT * FROM play_history")
-    abstract fun loadAll(): List<PlayHistoryEntity>
+    fun loadAll(): List<PlayHistoryEntity>
 }

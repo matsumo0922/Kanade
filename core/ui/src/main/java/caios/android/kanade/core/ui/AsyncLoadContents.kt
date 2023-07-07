@@ -1,3 +1,5 @@
+@file:Suppress("ModifierReused")
+
 package caios.android.kanade.core.ui
 
 import androidx.compose.animation.AnimatedVisibility
