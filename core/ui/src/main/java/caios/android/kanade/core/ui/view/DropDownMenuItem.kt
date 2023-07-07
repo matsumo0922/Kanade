@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package caios.android.kanade.core.ui.view
 
 import androidx.annotation.StringRes

@@ -79,7 +79,7 @@ fun KanadeNavHost(
             artist = artist,
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
-            }
+            },
         )
     }
 
@@ -90,7 +90,7 @@ fun KanadeNavHost(
             album = album,
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
-            }
+            },
         )
     }
 

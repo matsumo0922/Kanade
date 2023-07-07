@@ -59,7 +59,7 @@ internal fun SongDetailRoute(
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-        retryAction = { terminate.invoke() }
+        retryAction = { terminate.invoke() },
     ) {
         if (it != null) {
             SongDetailScreen(

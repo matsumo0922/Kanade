@@ -96,7 +96,7 @@ private fun RenamePlaylistDialog(
                 if (isNameError) {
                     Text(stringResource(R.string.playlist_error_existed))
                 }
-            }
+            },
         )
 
         Row(

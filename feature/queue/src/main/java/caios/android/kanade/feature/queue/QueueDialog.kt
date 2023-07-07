@@ -121,7 +121,7 @@ fun Activity.showQueueDialog(
         AsyncLoadContents(
             modifier = Modifier.fillMaxSize(),
             screenState = screenState,
-            retryAction = { onDismiss.invoke() }
+            retryAction = { onDismiss.invoke() },
         ) {
             if (it != null) {
                 QueueDialog(

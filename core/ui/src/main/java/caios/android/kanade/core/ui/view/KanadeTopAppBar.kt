@@ -112,7 +112,7 @@ fun KanadeTopAppBar(
                         DropDownMenuItemData(
                             text = R.string.menu_add_to_playlist,
                             onClick = onClickMenuAddToPlaylist,
-                        )
+                        ),
                     ).forEach {
                         DropDownMenuItem(
                             text = it.text,

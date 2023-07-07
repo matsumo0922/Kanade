@@ -34,7 +34,7 @@ fun ErrorView(
         verticalArrangement = Arrangement.spacedBy(
             space = 8.dp,
             alignment = Alignment.CenterVertically,
-        )
+        ),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -52,7 +52,7 @@ fun ErrorView(
 
         Button(
             modifier = Modifier.padding(top = 24.dp),
-            onClick = { retryAction.invoke() }
+            onClick = { retryAction.invoke() },
         ) {
             Text(
                 text = stringResource(errorState.retryTitle ?: R.string.common_reload),

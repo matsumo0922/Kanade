@@ -97,7 +97,7 @@ private fun CreatePlaylistDialog(
                 if (isNameError) {
                     Text(stringResource(R.string.playlist_error_existed))
                 }
-            }
+            },
         )
 
         Row(

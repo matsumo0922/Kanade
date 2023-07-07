@@ -49,5 +49,5 @@ class RenamePlaylistViewModel @Inject constructor(
 @Stable
 data class RenamePlaylistUiState(
     val playlist: Playlist,
-    val playlists: List<Playlist>
+    val playlists: List<Playlist>,
 )

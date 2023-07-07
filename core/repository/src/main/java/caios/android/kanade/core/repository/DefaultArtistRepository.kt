@@ -89,7 +89,7 @@ class DefaultArtistRepository @Inject constructor(
             val albums = data.albums.map {
                 it.copy(
                     artwork = artworkRepository.albumArtworks[it.albumId] ?: Artwork.Unknown,
-                    songs = it.songs.mapNotNull { song -> songRepository.get(song.id) }
+                    songs = it.songs.mapNotNull { song -> songRepository.get(song.id) },
                 )
             }
 

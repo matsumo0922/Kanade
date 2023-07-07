@@ -54,7 +54,7 @@ internal fun AlbumDetailRoute(
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-        retryAction = { terminate.invoke() }
+        retryAction = { terminate.invoke() },
     ) {
         if (it != null) {
             AlbumDetailScreen(

@@ -24,7 +24,7 @@ fun NavGraphBuilder.renamePlaylistDialog(
 ) {
     dialog(
         route = RenamePlaylistDialogRoute,
-        arguments = listOf(navArgument(RenamePlaylistId) { type = NavType.LongType },),
+        arguments = listOf(navArgument(RenamePlaylistId) { type = NavType.LongType }),
     ) {
         RenamePlaylistDialog(
             modifier = Modifier

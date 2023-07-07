@@ -27,7 +27,7 @@ fun NavGraphBuilder.playlistDetailScreen(
 ) {
     composable(
         route = PlaylistDetailRoute,
-        arguments = listOf(navArgument(PlaylistDetailId) { type = NavType.LongType },),
+        arguments = listOf(navArgument(PlaylistDetailId) { type = NavType.LongType }),
         enterTransition = { NavigateAnimation.Detail.enter },
         exitTransition = { NavigateAnimation.Detail.exit },
         popEnterTransition = { NavigateAnimation.Detail.popEnter },
