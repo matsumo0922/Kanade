@@ -93,7 +93,7 @@ internal fun HomeQueueSection(
                 HomeSongItem(
                     modifier = Modifier.width(224.dp),
                     song = song,
-                    onClickHolder = { onClickQueueItem.invoke(index) }
+                    onClickHolder = { onClickQueueItem.invoke(index) },
                 )
             }
         }
@@ -110,7 +110,7 @@ private fun HomeQueueSectionPreview() {
                 index = 2,
             ),
             onClickQueue = { },
-            onClickQueueItem = {}
+            onClickQueueItem = {},
         )
     }
 }

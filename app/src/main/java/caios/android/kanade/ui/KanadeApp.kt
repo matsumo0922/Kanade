@@ -257,7 +257,7 @@ fun KanadeApp(
                                     },
                                     navigateToAddToPlaylist = {
                                         appState.navController.navigateToAddToPlaylist(it)
-                                    }
+                                    },
                                 )
                             },
                             navigateToKaraoke = { },

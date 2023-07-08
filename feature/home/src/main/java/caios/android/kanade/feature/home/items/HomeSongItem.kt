@@ -76,8 +76,8 @@ internal fun HomeSongItem(
                                 listOf(
                                     Color.Transparent,
                                     MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-                                )
-                            )
+                                ),
+                            ),
                         ),
                 )
 

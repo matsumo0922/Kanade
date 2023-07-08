@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
                 recentlyPlayedSongs = getRecentlyPlayedSongs(6),
                 mostPlayedSongs = getMostPlayedSongs(6),
                 favoriteSongs = favorite?.songs ?: emptyList(),
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -99,7 +99,7 @@ class HomeViewModel @Inject constructor(
 
     fun onSkipToQueue(index: Int) {
         musicController.playerEvent(
-            PlayerEvent.SkipToQueue(index)
+            PlayerEvent.SkipToQueue(index),
         )
     }
 }

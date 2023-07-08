@@ -116,7 +116,7 @@ fun KanadeNavHost(
             navigateToSongMenu = ::showSongMenuDialog,
             navigateToAddToPlaylist = {
                 appState.navController.navigateToAddToPlaylist(it)
-            }
+            },
         )
     }
 

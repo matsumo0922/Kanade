@@ -39,7 +39,7 @@ internal fun HomeRoute(
     navigateToAlbumDetail: (Long) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
