@@ -58,6 +58,7 @@ fun <T> FullAsyncLoadContents(
     screenState: ScreenState<T>,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    retryAction: () -> Unit = {},
     content: @Composable (T?) -> Unit,
 ) {
     Box(modifier.background(containerColor)) {
@@ -78,6 +79,18 @@ fun <T> FullAsyncLoadContents(
         ) {
             LoadingView(
                 modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
+            )
+        }
+
+        AnimatedVisibility(
+            modifier = modifier.align(Alignment.Center),
+            visible = screenState is ScreenState.Error,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            ErrorView(
+                errorState = screenState as ScreenState.Error,
+                retryAction = retryAction,
             )
         }
     }

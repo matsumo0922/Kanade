@@ -24,23 +24,26 @@ object NavigateAnimation {
     }
 
     object Detail {
-        val enter = fadeIn(tween(200)) + slideIn(
-            animationSpec = tween(220, 0, decelerateEasing),
+        private const val DURATION_FADE = 180
+        private const val DURATION_SLIDE = 180
+
+        val enter = fadeIn(tween(DURATION_FADE)) + slideIn(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
             initialOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
 
-        val popExit = fadeOut(tween(200)) + slideOut(
-            animationSpec = tween(220, 0, decelerateEasing),
+        val popExit = fadeOut(tween(DURATION_FADE)) + slideOut(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
             targetOffset = { IntOffset(0, (-it.height * 0.1).toInt()) },
         )
 
-        val popEnter = fadeIn(tween(200)) + slideIn(
-            animationSpec = tween(220, 0, decelerateEasing),
+        val popEnter = fadeIn(tween(DURATION_FADE)) + slideIn(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
             initialOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )
 
-        val exit = fadeOut(tween(200)) + slideOut(
-            animationSpec = tween(220, 0, decelerateEasing),
+        val exit = fadeOut(tween(DURATION_FADE)) + slideOut(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
             targetOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
         )
     }

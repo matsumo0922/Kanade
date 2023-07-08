@@ -41,7 +41,7 @@ internal fun HomeRecentlyAddedAlbumsSection(
 ) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(
             modifier = Modifier
@@ -71,7 +71,7 @@ internal fun HomeRecentlyAddedAlbumsSection(
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp),
         ) {
             items(
                 items = albums,

@@ -3,6 +3,8 @@ package caios.android.kanade.feature.song.top
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicOrder
@@ -11,10 +13,12 @@ import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Random
 import javax.inject.Inject
 
@@ -22,11 +26,14 @@ import javax.inject.Inject
 class SongTopViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
+    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
     var screenState = musicRepository.config.map {
-        musicRepository.fetchSongs(it)
-        musicRepository.fetchAlbumArtwork()
+        withContext(io) {
+            musicRepository.fetchSongs(it)
+            musicRepository.fetchAlbumArtwork()
+        }
 
         ScreenState.Idle(
             SongTopUiState(

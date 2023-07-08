@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.FullAsyncLoadContents
 import caios.android.kanade.core.ui.music.PlaylistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
@@ -55,7 +56,7 @@ internal fun PlaylistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(
+    FullAsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
@@ -73,6 +74,7 @@ internal fun PlaylistTopRoute(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PlaylistTopScreen(
     playlists: ImmutableList<Playlist>,
@@ -114,7 +116,9 @@ internal fun PlaylistTopScreen(
                 key = { it.id },
             ) { playlist ->
                 PlaylistHolder(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItemPlacement(),
                     playlist = playlist,
                     onClickHolder = { onClickPlaylist.invoke(playlist.id) },
                     onClickPlay = { onClickPlay.invoke(playlist) },

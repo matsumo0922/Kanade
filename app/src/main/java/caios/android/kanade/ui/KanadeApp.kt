@@ -101,7 +101,7 @@ fun KanadeApp(
             val topBarAlpha by animateFloatAsState(
                 targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
                 label = "topBarAlpha",
-                animationSpec = tween(240),
+                animationSpec = tween(200),
             )
 
             val bottomSheetPeekHeight by animateDpAsState(
@@ -113,7 +113,7 @@ fun KanadeApp(
                 },
                 label = "bottomSheetPeekHeight",
                 animationSpec = tween(
-                    durationMillis = 240,
+                    durationMillis = 200,
                     easing = NavigateAnimation.decelerateEasing,
                 ),
             )
@@ -122,7 +122,7 @@ fun KanadeApp(
                 targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
                 label = "bottomBarOffset",
                 animationSpec = tween(
-                    durationMillis = 240,
+                    durationMillis = 200,
                     easing = NavigateAnimation.decelerateEasing,
                 ),
             )

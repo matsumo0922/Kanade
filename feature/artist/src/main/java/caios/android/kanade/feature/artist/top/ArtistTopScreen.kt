@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.artist.top
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.FullAsyncLoadContents
 import caios.android.kanade.core.ui.music.ArtistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
@@ -36,7 +37,7 @@ internal fun ArtistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(
+    FullAsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
@@ -51,6 +52,7 @@ internal fun ArtistTopRoute(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ArtistTopScreen(
     artists: ImmutableList<Artist>,
@@ -82,7 +84,9 @@ internal fun ArtistTopScreen(
             key = { artist -> artist.artistId },
         ) { artist ->
             ArtistHolder(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
                 artist = artist,
                 onClickHolder = { onClickArtist.invoke(artist.artistId) },
             )

@@ -27,6 +27,7 @@ class DefaultArtistRepository @Inject constructor(
     override fun gets(): List<Artist> = cache.values.toList()
 
     override suspend fun artist(artistId: Long, musicConfig: MusicConfig): Artist {
+        val artistArtworks = artworkRepository.artistArtworks.toImmutableMap()
         val cursor = songRepository.makeCursor(
             selection = AudioColumns.ARTIST_ID + "=?",
             selectionValues = listOf(artistId.toString()),
@@ -38,7 +39,7 @@ class DefaultArtistRepository @Inject constructor(
             artist = songs.firstOrNull()?.artist ?: "",
             artistId = artistId,
             albums = albumRepository.splitIntoAlbums(songs, musicConfig),
-            artwork = artworkRepository.artistArtworks[artistId] ?: Artwork.Unknown,
+            artwork = artistArtworks[artistId] ?: Artwork.Unknown,
         )
     }
 
@@ -65,6 +66,7 @@ class DefaultArtistRepository @Inject constructor(
     }
 
     override fun splitIntoArtists(songs: List<Song>, musicConfig: MusicConfig): List<Artist> {
+        val artistArtworks = artworkRepository.artistArtworks.toImmutableMap()
         val albums = albumRepository.splitIntoAlbums(songs, musicConfig)
         val artists = albums
             .groupBy { it.artistId }
@@ -73,7 +75,7 @@ class DefaultArtistRepository @Inject constructor(
                     artist = albums.first().artist,
                     artistId = artistId,
                     albums = albums,
-                    artwork = artworkRepository.artistArtworks[artistId] ?: Artwork.Unknown,
+                    artwork = artistArtworks[artistId] ?: Artwork.Unknown,
                 ).also {
                     cache[artistId] = it
                 }
@@ -117,10 +119,6 @@ class DefaultArtistRepository @Inject constructor(
     }
 
     private fun getSongLoaderOrder(musicConfig: MusicConfig): Array<MusicOrder> {
-        return arrayOf(
-            musicConfig.artistOrder,
-            musicConfig.albumOrder,
-            musicConfig.songOrder,
-        )
+        return arrayOf(musicConfig.songOrder)
     }
 }

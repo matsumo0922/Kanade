@@ -36,10 +36,10 @@ fun AlbumHolder(
     onClickMenu: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.padding(4.dp)) {
+    Box(modifier.padding(6.dp)) {
         Card(
             modifier = Modifier.clickable { onClickHolder.invoke() },
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(6.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
                 contentColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
@@ -80,7 +80,7 @@ fun AlbumHolder(
 
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
+                        .padding(horizontal = 8.dp)
                         .fillMaxWidth(),
                     text = album.album,
                     style = MaterialTheme.typography.bodyMedium,
@@ -91,7 +91,7 @@ fun AlbumHolder(
 
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
+                        .padding(horizontal = 8.dp)
                         .fillMaxWidth(),
                     text = album.artist,
                     style = MaterialTheme.typography.bodySmall,

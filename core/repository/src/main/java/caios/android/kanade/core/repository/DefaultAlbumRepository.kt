@@ -1,7 +1,6 @@
 package caios.android.kanade.core.repository
 
 import android.provider.MediaStore.Audio.AudioColumns
-import caios.android.kanade.core.model.Order
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
@@ -27,6 +26,7 @@ class DefaultAlbumRepository @Inject constructor(
     override fun gets(): List<Album> = cache.values.toList()
 
     override suspend fun album(albumId: Long, musicConfig: MusicConfig): Album {
+        val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
         val cursor = songRepository.makeCursor(
             selection = AudioColumns.ALBUM_ID + "=?",
             selectionValues = listOf(albumId.toString()),
@@ -38,7 +38,7 @@ class DefaultAlbumRepository @Inject constructor(
             album = songs.firstOrNull()?.album ?: "",
             albumId = albumId,
             songs = songs,
-            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
+            artwork = albumArtworks[albumId] ?: Artwork.Unknown,
         )
     }
 
@@ -65,6 +65,7 @@ class DefaultAlbumRepository @Inject constructor(
     }
 
     override fun splitIntoAlbums(songs: List<Song>, musicConfig: MusicConfig): List<Album> {
+        val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
         val albums = songs
             .groupBy { it.albumId }
             .map { (albumId, songs) ->
@@ -72,7 +73,7 @@ class DefaultAlbumRepository @Inject constructor(
                     album = songs.first().album,
                     albumId = albumId,
                     songs = songs,
-                    artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
+                    artwork = albumArtworks[albumId] ?: Artwork.Unknown,
                 ).also {
                     cache[albumId] = it
                 }
@@ -110,9 +111,6 @@ class DefaultAlbumRepository @Inject constructor(
     }
 
     private fun getSongLoaderOrder(musicConfig: MusicConfig): Array<MusicOrder> {
-        return arrayOf(
-            musicConfig.albumOrder,
-            MusicOrder(Order.ASC, MusicOrderOption.Song.TRACK),
-        )
+        return arrayOf(musicConfig.songOrder)
     }
 }

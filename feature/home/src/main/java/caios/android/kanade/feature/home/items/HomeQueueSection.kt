@@ -47,7 +47,7 @@ internal fun HomeQueueSection(
 
     Column(
         modifier = modifier.padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(
             modifier = Modifier
@@ -84,7 +84,7 @@ internal fun HomeQueueSection(
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             state = state,
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp),
         ) {
             itemsIndexed(
                 items = queue.items,

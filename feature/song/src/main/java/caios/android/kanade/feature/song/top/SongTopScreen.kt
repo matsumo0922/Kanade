@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.song.top
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,6 +52,7 @@ internal fun SongTopRoute(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SongTopScreen(
     songs: ImmutableList<Song>,
@@ -78,7 +80,9 @@ internal fun SongTopScreen(
             key = { _, song -> song.id },
         ) { index, song ->
             SongHolder(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
                 song = song,
                 onClickHolder = { onClickSong.invoke(index, songs) },
                 onClickMenu = { onClickMenu.invoke(song) },

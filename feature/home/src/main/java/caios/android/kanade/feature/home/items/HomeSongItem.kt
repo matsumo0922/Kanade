@@ -32,7 +32,7 @@ internal fun HomeSongItem(
     onClickHolder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.padding(4.dp)) {
+    Box(modifier.padding(6.dp)) {
         Card(
             modifier = Modifier.clickable { onClickHolder.invoke() },
             shape = RoundedCornerShape(4.dp),

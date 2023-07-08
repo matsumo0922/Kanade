@@ -41,7 +41,7 @@ fun PlaylistHolder(
 ) {
     Box(
         modifier = modifier
-            .padding(4.dp)
+            .padding(6.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable { onClickHolder.invoke() },
     ) {
