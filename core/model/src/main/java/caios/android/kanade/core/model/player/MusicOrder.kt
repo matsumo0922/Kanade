@@ -5,14 +5,14 @@ import caios.android.kanade.core.model.Order
 
 data class MusicOrder(
     val order: Order,
-    val musicOrderOption: MusicOrderOption,
+    val option: MusicOrderOption,
 ) {
     fun create(): String {
-        val option = when (musicOrderOption) {
-            is MusicOrderOption.Artist -> musicOrderOption.option
-            is MusicOrderOption.Album -> musicOrderOption.option
-            is MusicOrderOption.Song -> musicOrderOption.option
-            is MusicOrderOption.Playlist -> musicOrderOption.option
+        val option = when (option) {
+            is MusicOrderOption.Artist -> option.option
+            is MusicOrderOption.Album -> option.option
+            is MusicOrderOption.Song -> option.option
+            is MusicOrderOption.Playlist -> option.option
         }
 
         return if (order == Order.ASC) option else "$option DESC"
@@ -22,28 +22,28 @@ data class MusicOrder(
         fun songDefault(): MusicOrder {
             return MusicOrder(
                 order = Order.ASC,
-                musicOrderOption = MusicOrderOption.Song.NAME,
+                option = MusicOrderOption.Song.NAME,
             )
         }
 
         fun artistDefault(): MusicOrder {
             return MusicOrder(
                 order = Order.ASC,
-                musicOrderOption = MusicOrderOption.Artist.NAME,
+                option = MusicOrderOption.Artist.NAME,
             )
         }
 
         fun albumDefault(): MusicOrder {
             return MusicOrder(
                 order = Order.ASC,
-                musicOrderOption = MusicOrderOption.Album.NAME,
+                option = MusicOrderOption.Album.NAME,
             )
         }
 
         fun playlistDefault(): MusicOrder {
             return MusicOrder(
                 order = Order.ASC,
-                musicOrderOption = MusicOrderOption.Playlist.NAME,
+                option = MusicOrderOption.Playlist.NAME,
             )
         }
     }

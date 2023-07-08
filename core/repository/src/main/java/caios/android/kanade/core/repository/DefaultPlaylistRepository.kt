@@ -138,7 +138,7 @@ class DefaultPlaylistRepository @Inject constructor(
 
     override fun playlistSort(playlists: List<Playlist>, musicConfig: MusicConfig): List<Playlist> {
         val order = musicConfig.playlistOrder
-        val option = order.musicOrderOption
+        val option = order.option
 
         require(option is MusicOrderOption.Playlist) { "MusicOrderOption is not Playlist" }
 

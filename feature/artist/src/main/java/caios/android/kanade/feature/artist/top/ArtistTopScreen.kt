@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.ArtistHolder
 import caios.android.kanade.core.ui.music.SortInfo
@@ -23,11 +24,13 @@ import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.reflect.KClass
 
 @Composable
 internal fun ArtistTopRoute(
     topMargin: Dp,
     navigateToArtistDetail: (Long) -> Unit,
+    navigateToSort: (KClass<*>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ArtistTopViewModel = hiltViewModel(),
 ) {
@@ -41,7 +44,7 @@ internal fun ArtistTopRoute(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             artists = uiState?.artists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
-            onClickSort = { /*TODO*/ },
+            onClickSort = { navigateToSort.invoke(MusicOrderOption.Artist::class) },
             onClickArtist = navigateToArtistDetail,
             contentPadding = PaddingValues(top = topMargin),
         )

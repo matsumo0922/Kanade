@@ -97,7 +97,7 @@ class DefaultAlbumRepository @Inject constructor(
 
     override fun albumsSort(albums: List<Album>, musicConfig: MusicConfig): List<Album> {
         val order = musicConfig.albumOrder
-        val option = order.musicOrderOption
+        val option = order.option
 
         require(option is MusicOrderOption.Album) { "MusicOrderOption is not Album" }
 

@@ -105,7 +105,7 @@ class DefaultArtistRepository @Inject constructor(
 
     override fun artistsSort(artists: List<Artist>, musicConfig: MusicConfig): List<Artist> {
         val order = musicConfig.artistOrder
-        val option = order.musicOrderOption
+        val option = order.option
 
         require(option is MusicOrderOption.Artist) { "MusicOrderOption is not Artist" }
 

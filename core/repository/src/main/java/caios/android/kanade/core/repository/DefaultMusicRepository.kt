@@ -201,4 +201,8 @@ class DefaultMusicRepository @Inject constructor(
     override suspend fun setAlbumOrder(musicOrder: MusicOrder) {
         kanadePreferencesDataStore.setAlbumOrder(musicOrder)
     }
+
+    override suspend fun setPlaylistOrder(musicOrder: MusicOrder) {
+        kanadePreferencesDataStore.setPlaylistOrder(musicOrder)
+    }
 }

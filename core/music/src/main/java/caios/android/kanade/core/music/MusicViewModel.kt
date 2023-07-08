@@ -15,6 +15,8 @@ import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
+import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.model.player.RepeatMode
@@ -66,6 +68,10 @@ class MusicViewModel @Inject constructor(
                     state = state,
                     shuffleMode = config.shuffleMode,
                     repeatMode = config.repeatMode,
+                    songOrder = config.songOrder,
+                    artistOrder = config.artistOrder,
+                    albumOrder = config.albumOrder,
+                    playlistOrder = config.playlistOrder,
                 )
             }.collect {
                 uiState = it
@@ -119,6 +125,17 @@ class MusicViewModel @Inject constructor(
             musicRepository.removePlaylist(playlist)
         }
     }
+
+    fun setSortOrder(order: MusicOrder) {
+        viewModelScope.launch {
+            when (order.option) {
+                is MusicOrderOption.Song -> musicRepository.setSongOrder(order)
+                is MusicOrderOption.Artist -> musicRepository.setArtistOrder(order)
+                is MusicOrderOption.Album -> musicRepository.setAlbumOrder(order)
+                is MusicOrderOption.Playlist -> musicRepository.setPlaylistOrder(order)
+            }
+        }
+    }
 }
 
 @Stable
@@ -132,6 +149,10 @@ data class MusicUiState(
     val state: PlayerState = PlayerState.Initialize,
     val shuffleMode: ShuffleMode = ShuffleMode.OFF,
     val repeatMode: RepeatMode = RepeatMode.OFF,
+    val songOrder: MusicOrder = MusicOrder.songDefault(),
+    val artistOrder: MusicOrder = MusicOrder.artistDefault(),
+    val albumOrder: MusicOrder = MusicOrder.albumDefault(),
+    val playlistOrder: MusicOrder = MusicOrder.playlistDefault(),
     val isExpandedController: Boolean = false,
 ) {
     val isPlaying

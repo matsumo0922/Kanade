@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
+import kotlin.reflect.KClass
 
 const val ArtistTopRoute = "artistTop"
 
@@ -18,6 +19,7 @@ fun NavController.navigateToArtistTop(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.artistTopScreen(
     topMargin: Dp,
     navigateToArtistDetail: (Long) -> Unit,
+    navigateToSort: (KClass<*>) -> Unit,
 ) {
     composable(
         route = ArtistTopRoute,
@@ -38,6 +40,7 @@ fun NavGraphBuilder.artistTopScreen(
             modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
             navigateToArtistDetail = navigateToArtistDetail,
+            navigateToSort = navigateToSort,
         )
     }
 }

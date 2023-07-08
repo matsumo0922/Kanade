@@ -1,6 +1,8 @@
 package caios.android.kanade.core.datastore
 
 import androidx.datastore.core.DataStore
+import caios.android.kanade.core.common.network.Dispatcher
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.Order
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
@@ -10,13 +12,16 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class KanadePreferencesDataStore @Inject constructor(
     private val userPreference: DataStore<UserPreference>,
     private val musicPreference: DataStore<MusicPreference>,
     private val queuePreference: DataStore<QueuePreference>,
+    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) {
     val userData = userPreference.data
         .map {
@@ -99,7 +104,7 @@ class KanadePreferencesDataStore @Inject constructor(
             )
         }
 
-    suspend fun setThemeConfig(themeConfig: ThemeConfig) {
+    suspend fun setThemeConfig(themeConfig: ThemeConfig) = withContext(io) {
         userPreference.updateData {
             it.copy {
                 this.themeConfig = when (themeConfig) {
@@ -111,7 +116,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseDynamicColor(useDynamicColor: Boolean) {
+    suspend fun setUseDynamicColor(useDynamicColor: Boolean) = withContext(io) {
         userPreference.updateData {
             it.copy {
                 this.useDynamicColor = useDynamicColor
@@ -119,7 +124,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setDeveloperMode(isDeveloperMode: Boolean) {
+    suspend fun setDeveloperMode(isDeveloperMode: Boolean) = withContext(io) {
         userPreference.updateData {
             it.copy {
                 this.isDeveloperMode = isDeveloperMode
@@ -127,7 +132,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setPremiumMode(isPremiumMode: Boolean) {
+    suspend fun setPremiumMode(isPremiumMode: Boolean) = withContext(io) {
         userPreference.updateData {
             it.copy {
                 this.isPremiumMode = isPremiumMode
@@ -135,7 +140,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setShuffleMode(shuffleMode: ShuffleMode) {
+    suspend fun setShuffleMode(shuffleMode: ShuffleMode) = withContext(io) {
         musicPreference.updateData {
             it.copy {
                 this.shuffleMode = when (shuffleMode) {
@@ -146,7 +151,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setRepeatMode(repeatMode: RepeatMode) {
+    suspend fun setRepeatMode(repeatMode: RepeatMode) = withContext(io) {
         musicPreference.updateData {
             it.copy {
                 this.repeatMode = when (repeatMode) {
@@ -158,25 +163,27 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setSongOrder(musicOrder: MusicOrder) {
+    suspend fun setSongOrder(musicOrder: MusicOrder) = withContext(io) {
         musicPreference.updateData {
             it.copy {
                 this.songOrder = when (musicOrder.order) {
-                    Order.ASC -> when (musicOrder.musicOrderOption) {
+                    Order.ASC -> when (musicOrder.option) {
                         MusicOrderOption.Song.NAME -> SongOrderProto.SONG_ASC_NAME
                         MusicOrderOption.Song.ARTIST -> SongOrderProto.SONG_ASC_ARTIST
                         MusicOrderOption.Song.ALBUM -> SongOrderProto.SONG_ASC_ALBUM
                         MusicOrderOption.Song.DURATION -> SongOrderProto.SONG_ASC_DURATION
                         MusicOrderOption.Song.YEAR -> SongOrderProto.SONG_ASC_YEAR
+                        MusicOrderOption.Song.TRACK -> SongOrderProto.SONG_ASC_TRACK
                         else -> error("Invalid song order option. $musicOrder")
                     }
 
-                    Order.DESC -> when (musicOrder.musicOrderOption) {
+                    Order.DESC -> when (musicOrder.option) {
                         MusicOrderOption.Song.NAME -> SongOrderProto.SONG_DESC_NAME
                         MusicOrderOption.Song.ARTIST -> SongOrderProto.SONG_DESC_ARTIST
                         MusicOrderOption.Song.ALBUM -> SongOrderProto.SONG_DESC_ALBUM
                         MusicOrderOption.Song.DURATION -> SongOrderProto.SONG_DESC_DURATION
                         MusicOrderOption.Song.YEAR -> SongOrderProto.SONG_DESC_YEAR
+                        MusicOrderOption.Song.TRACK -> SongOrderProto.SONG_DESC_TRACK
                         else -> error("Invalid song order option. $musicOrder")
                     }
                 }
@@ -184,18 +191,18 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setArtistOrder(musicOrder: MusicOrder) {
+    suspend fun setArtistOrder(musicOrder: MusicOrder) = withContext(io) {
         musicPreference.updateData {
             it.copy {
                 this.artistOrder = when (musicOrder.order) {
-                    Order.ASC -> when (musicOrder.musicOrderOption) {
+                    Order.ASC -> when (musicOrder.option) {
                         MusicOrderOption.Artist.NAME -> ArtistOrderProto.ARTIST_ASC_NAME
                         MusicOrderOption.Artist.TRACKS -> ArtistOrderProto.ARTIST_ASC_NUM_TRACKS
                         MusicOrderOption.Artist.ALBUMS -> ArtistOrderProto.ARTIST_ASC_NUM_ALBUMS
                         else -> error("Invalid artist order option. $musicOrder")
                     }
 
-                    Order.DESC -> when (musicOrder.musicOrderOption) {
+                    Order.DESC -> when (musicOrder.option) {
                         MusicOrderOption.Artist.NAME -> ArtistOrderProto.ARTIST_DESC_NAME
                         MusicOrderOption.Artist.TRACKS -> ArtistOrderProto.ARTIST_DESC_NUM_TRACKS
                         MusicOrderOption.Artist.ALBUMS -> ArtistOrderProto.ARTIST_DESC_NUM_ALBUMS
@@ -206,18 +213,18 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setAlbumOrder(musicOrder: MusicOrder) {
+    suspend fun setAlbumOrder(musicOrder: MusicOrder) = withContext(io) {
         musicPreference.updateData {
             it.copy {
                 this.albumOrder = when (musicOrder.order) {
-                    Order.ASC -> when (musicOrder.musicOrderOption) {
+                    Order.ASC -> when (musicOrder.option) {
                         MusicOrderOption.Album.NAME -> AlbumOrderProto.ALBUM_ASC_NAME
                         MusicOrderOption.Album.ARTIST -> AlbumOrderProto.ALBUM_ASC_ARTIST
                         MusicOrderOption.Album.TRACKS -> AlbumOrderProto.ALBUM_ASC_NUM_TRACKS
                         MusicOrderOption.Album.YEAR -> AlbumOrderProto.ALBUM_ASC_YEAR
                         else -> error("Invalid album order option. $musicOrder")
                     }
-                    Order.DESC -> when (musicOrder.musicOrderOption) {
+                    Order.DESC -> when (musicOrder.option) {
                         MusicOrderOption.Album.NAME -> AlbumOrderProto.ALBUM_DESC_NAME
                         MusicOrderOption.Album.ARTIST -> AlbumOrderProto.ALBUM_DESC_ARTIST
                         MusicOrderOption.Album.TRACKS -> AlbumOrderProto.ALBUM_DESC_NUM_TRACKS
@@ -229,11 +236,30 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
+    suspend fun setPlaylistOrder(musicOrder: MusicOrder) = withContext(io) {
+        musicPreference.updateData {
+            it.copy {
+                this.playlistOrder = when (musicOrder.order) {
+                    Order.ASC -> when (musicOrder.option) {
+                        MusicOrderOption.Playlist.NAME -> PlaylistOrderProto.PLAYLIST_ASC_NAME
+                        MusicOrderOption.Playlist.TRACKS -> PlaylistOrderProto.PLAYLIST_ASC_NUM_TRACKS
+                        else -> error("Invalid playlist order option. $musicOrder")
+                    }
+                    Order.DESC -> when (musicOrder.option) {
+                        MusicOrderOption.Playlist.NAME -> PlaylistOrderProto.PLAYLIST_DESC_NAME
+                        MusicOrderOption.Playlist.TRACKS -> PlaylistOrderProto.PLAYLIST_DESC_NUM_TRACKS
+                        else -> error("Invalid playlist order option. $musicOrder")
+                    }
+                }
+            }
+        }
+    }
+
     suspend fun setLastQueue(
         currentItems: List<Long>,
         originalItems: List<Long>,
         index: Int,
-    ) {
+    ) = withContext(io) {
         queuePreference.updateData {
             it.copy {
                 this.originalItems.clear()
@@ -247,7 +273,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setLastQueueProgress(progress: Long) {
+    suspend fun setLastQueueProgress(progress: Long) = withContext(io) {
         queuePreference.updateData {
             it.copy {
                 this.progress = progress

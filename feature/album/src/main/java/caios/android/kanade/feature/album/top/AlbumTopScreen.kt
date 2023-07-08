@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SortInfo
@@ -23,12 +24,14 @@ import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.reflect.KClass
 
 @Composable
 internal fun AlbumTopRoute(
     topMargin: Dp,
     navigateToAlbumDetail: (Long) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
+    navigateToSort: (KClass<*>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AlbumTopViewModel = hiltViewModel(),
 ) {
@@ -42,7 +45,7 @@ internal fun AlbumTopRoute(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.albumDefault(),
-            onClickSort = { /*TODO*/ },
+            onClickSort = { navigateToSort.invoke(MusicOrderOption.Album::class) },
             onClickAlbum = navigateToAlbumDetail,
             onClickPlay = viewModel::onNewPlay,
             onClickMenu = navigateToAlbumMenu,

@@ -68,4 +68,5 @@ interface MusicRepository {
     suspend fun setSongOrder(musicOrder: MusicOrder)
     suspend fun setArtistOrder(musicOrder: MusicOrder)
     suspend fun setAlbumOrder(musicOrder: MusicOrder)
+    suspend fun setPlaylistOrder(musicOrder: MusicOrder)
 }

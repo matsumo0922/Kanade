@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.player.MusicOrder
+import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.PlaylistHolder
 import caios.android.kanade.core.ui.music.SortInfo
@@ -40,6 +41,7 @@ import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.reflect.KClass
 
 @Composable
 internal fun PlaylistTopRoute(
@@ -47,6 +49,7 @@ internal fun PlaylistTopRoute(
     navigateToPlaylistDetail: (Long) -> Unit,
     navigateToPlaylistMenu: (Playlist) -> Unit,
     navigateToPlaylistEdit: () -> Unit,
+    navigateToSort: (KClass<*>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PlaylistTopViewModel = hiltViewModel(),
 ) {
@@ -61,7 +64,7 @@ internal fun PlaylistTopRoute(
             contentPadding = PaddingValues(top = topMargin),
             playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),
-            onClickSort = { },
+            onClickSort = { navigateToSort.invoke(MusicOrderOption.Playlist::class) },
             onClickEdit = navigateToPlaylistEdit,
             onClickPlaylist = navigateToPlaylistDetail,
             onClickPlay = viewModel::onNewPlay,

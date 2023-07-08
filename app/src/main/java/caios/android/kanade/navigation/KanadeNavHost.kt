@@ -42,7 +42,9 @@ import caios.android.kanade.feature.search.searchScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
 import caios.android.kanade.feature.song.top.songTopScreen
+import caios.android.kanade.feature.sort.showSortDialog
 import caios.android.kanade.ui.KanadeAppState
+import kotlin.reflect.KClass
 
 @Composable
 fun KanadeNavHost(
@@ -120,6 +122,14 @@ fun KanadeNavHost(
         )
     }
 
+    fun showSortDialog(type: KClass<*>) {
+        activity.showSortDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            type = type,
+        )
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -159,6 +169,7 @@ fun KanadeNavHost(
 
         playlistTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToSort = ::showSortDialog,
             navigateToPlaylistMenu = ::showPlaylistMenuDialog,
             navigateToPlaylistEdit = {
                 navController.navigateToFabPlaylist()
@@ -171,10 +182,12 @@ fun KanadeNavHost(
         songTopScreen(
             topMargin = libraryTopBarHeight,
             navigateToSongMenu = ::showSongMenuDialog,
+            navigateToSort = ::showSortDialog,
         )
 
         artistTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToSort = ::showSortDialog,
             navigateToArtistDetail = {
                 navController.navigateToArtistDetail(it)
             },
@@ -182,6 +195,7 @@ fun KanadeNavHost(
 
         albumTopScreen(
             topMargin = libraryTopBarHeight,
+            navigateToSort = ::showSortDialog,
             navigateToAlbumDetail = {
                 navController.navigateToAlbumDetail(it)
             },

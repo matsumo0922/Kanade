@@ -37,7 +37,7 @@ private fun BottomSheetWrapper(
     parent: ViewGroup,
     composeView: ComposeView,
     skipPartiallyExpanded: Boolean,
-    willFullScreen: Boolean,
+    rectCorner: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable (() -> Unit) -> Unit,
 ) {
@@ -45,7 +45,7 @@ private fun BottomSheetWrapper(
     val state = rememberModalBottomSheetState(skipPartiallyExpanded)
     var isOpen by rememberSaveable { mutableStateOf(true) }
     val cornerRadius = animateDpAsState(
-        targetValue = if (state.targetValue != SheetValue.Hidden && !willFullScreen) 16.dp else 0.dp,
+        targetValue = if (state.targetValue != SheetValue.Hidden && !rectCorner) 16.dp else 0.dp,
         label = "cornerRadius",
     )
 
@@ -82,7 +82,7 @@ private fun BottomSheetWrapper(
 fun Activity.showAsButtonSheet(
     userData: UserData?,
     skipPartiallyExpanded: Boolean = true,
-    willFullScreen: Boolean = false,
+    rectCorner: Boolean = false,
     content: @Composable (() -> Unit) -> Unit,
 ) {
     val viewGroup = findViewById<ViewGroup>(android.R.id.content)
@@ -107,7 +107,7 @@ fun Activity.showAsButtonSheet(
                         parent = viewGroup,
                         composeView = this,
                         skipPartiallyExpanded = skipPartiallyExpanded,
-                        willFullScreen = willFullScreen,
+                        rectCorner = rectCorner,
                         content = content,
                     )
                 }

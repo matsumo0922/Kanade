@@ -107,6 +107,18 @@
     <string name="menu_toast_add_to_queue">再生待ちリストに追加しました</string>
     <string name="menu_toast_add_to_playlist">プレイリストに追加しました</string>
 
+    <!-- Sort -->
+    <string name="sort_order_asc">昇順</string>
+    <string name="sort_order_desc">降順</string>
+    <string name="sort_option_title">タイトル</string>
+    <string name="sort_option_artist">アーティスト</string>
+    <string name="sort_option_album">アルバム</string>
+    <string name="sort_option_duration">曲長</string>
+    <string name="sort_option_year">年</string>
+    <string name="sort_option_track">トラック</string>
+    <string name="sort_option_tracks">曲数</string>
+    <string name="sort_option_albums">アルバム数</string>
+
     <!-- Song -->
     <string name="song_header_history">履歴</string>
     <string name="song_header_recently_add">最近の追加</string>
