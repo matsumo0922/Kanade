@@ -70,7 +70,7 @@ fun SortInfo(
                             MusicOrderOption.Playlist.NAME -> R.string.sort_option_title
                             MusicOrderOption.Playlist.TRACKS -> R.string.sort_option_tracks
                         }
-                    }
+                    },
                 ),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

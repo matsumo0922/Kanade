@@ -7,13 +7,14 @@ import androidx.compose.ui.Modifier
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun SortOptionSection(
     order: MusicOrder,
-    options: List<MusicOrderOption>,
+    options: ImmutableList<MusicOrderOption>,
     onClickOption: (MusicOrderOption) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier) {
         for (option in options) {

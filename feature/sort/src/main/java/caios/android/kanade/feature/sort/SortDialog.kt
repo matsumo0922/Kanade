@@ -18,6 +18,7 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.reflect.KClass
 
 @Composable
@@ -47,13 +48,14 @@ private fun SortDialog(
                 .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             order = order,
-            options = when (order.option) {
-                is MusicOrderOption.Song -> MusicOrderOption.Song.values()
-                is MusicOrderOption.Artist -> MusicOrderOption.Artist.values()
-                is MusicOrderOption.Album -> MusicOrderOption.Album.values()
-                is MusicOrderOption.Playlist -> MusicOrderOption.Playlist.values()
-                else -> throw IllegalArgumentException("Unknown type: ${order.option}")
-            }.toList(),
+            options = (
+                when (order.option) {
+                    is MusicOrderOption.Song -> MusicOrderOption.Song.values().toList()
+                    is MusicOrderOption.Artist -> MusicOrderOption.Artist.values().toList()
+                    is MusicOrderOption.Album -> MusicOrderOption.Album.values().toList()
+                    is MusicOrderOption.Playlist -> MusicOrderOption.Playlist.values().toList()
+                } as List<MusicOrderOption>
+                ).toImmutableList(),
             onClickOption = { onChangedSortOrder.invoke(order.copy(option = it)) },
         )
     }
