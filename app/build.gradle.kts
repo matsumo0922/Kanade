@@ -33,12 +33,14 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            resValue("string", "app_name", "Kanade")
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             versionNameSuffix = ".D"
             applicationIdSuffix = ".debug3"
+            resValue("string", "app_name", "KanadeDebug3")
         }
     }
 
