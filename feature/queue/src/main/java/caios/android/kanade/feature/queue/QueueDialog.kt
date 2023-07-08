@@ -36,8 +36,8 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 private fun QueueDialog(
     uiState: QueueUiState,
     onClickDismiss: () -> Unit,
-    onClickMenuAddPlaylist: (List<Song>) -> Unit,
-    onClickMenuShare: (List<Song>) -> Unit,
+    onClickMenuAddPlaylist: (List<Long>) -> Unit,
+    onClickMenuShare: (List<Long>) -> Unit,
     onClickSongMenu: (Song) -> Unit,
     onClickSkipToQueue: (Int) -> Unit,
     onDeleteItem: (Int) -> Unit,
@@ -62,8 +62,8 @@ private fun QueueDialog(
                 .statusBarsPadding()
                 .fillMaxWidth(),
             onClickDismiss = onClickDismiss,
-            onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue.map { it.song }) },
-            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue.map { it.song }) },
+            onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue.map { it.song.id }) },
+            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue.map { it.song.id }) },
         )
 
         QueueCurrentItemSection(
@@ -107,6 +107,7 @@ private fun QueueDialog(
 fun Activity.showQueueDialog(
     userData: UserData?,
     navigateToSongMenu: (Song) -> Unit,
+    navigateToAddToPlaylist: (List<Long>) -> Unit,
 ) {
     showAsButtonSheet(userData, willFullScreen = true) { onDismiss ->
         val viewModel = hiltViewModel<QueueViewModel>()
@@ -128,7 +129,7 @@ fun Activity.showQueueDialog(
                     modifier = Modifier.fillMaxSize(),
                     uiState = it,
                     onClickDismiss = onDismiss,
-                    onClickMenuAddPlaylist = { },
+                    onClickMenuAddPlaylist = navigateToAddToPlaylist,
                     onClickMenuShare = { },
                     onClickSongMenu = navigateToSongMenu,
                     onClickSkipToQueue = viewModel::onSkipToQueue,

@@ -48,6 +48,7 @@ import caios.android.kanade.core.ui.view.CoordinatorScaffold
 internal fun ArtistDetailRoute(
     artistId: Long,
     navigateToSongDetail: (String, List<Long>) -> Unit,
+    navigateToAlbumDetail: (Long) -> Unit,
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
@@ -73,6 +74,7 @@ internal fun ArtistDetailRoute(
                 onClickSeeAll = navigateToSongDetail,
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
+                onClickAlbumHolder = navigateToAlbumDetail,
                 onClickAlbumMenu = navigateToAlbumMenu,
                 onClickMenu = navigateToArtistMenu,
                 onClickShuffle = viewModel::onShufflePlay,
@@ -88,6 +90,7 @@ private fun ArtistDetailScreen(
     onClickSeeAll: (String, List<Long>) -> Unit,
     onClickSongHolder: (List<Song>, Int) -> Unit,
     onClickSongMenu: (Song) -> Unit,
+    onClickAlbumHolder: (Long) -> Unit,
     onClickAlbumMenu: (Album) -> Unit,
     onClickMenu: (Artist) -> Unit,
     onClickShuffle: (List<Song>) -> Unit,
@@ -156,7 +159,7 @@ private fun ArtistDetailScreen(
                         AlbumHolder(
                             modifier = Modifier.width(172.dp),
                             album = album,
-                            onClickHolder = { },
+                            onClickHolder = { onClickAlbumHolder.invoke(album.albumId) },
                             onClickPlay = { onClickSongHolder.invoke(album.songs, 0) },
                             onClickMenu = { onClickAlbumMenu.invoke(album) },
                         )

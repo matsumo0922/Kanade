@@ -37,6 +37,7 @@ import caios.android.kanade.feature.playlist.fab.navigateToFabPlaylist
 import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.rename.renamePlaylistDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
+import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.feature.search.searchScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
@@ -109,6 +110,16 @@ fun KanadeNavHost(
         )
     }
 
+    fun showQueueDialog() {
+        activity.showQueueDialog(
+            userData = userData,
+            navigateToSongMenu = ::showSongMenuDialog,
+            navigateToAddToPlaylist = {
+                appState.navController.navigateToAddToPlaylist(it)
+            }
+        )
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -135,6 +146,15 @@ fun KanadeNavHost(
 
         homeScreen(
             topMargin = libraryTopBarHeight,
+            navigateToQueue = ::showQueueDialog,
+            navigateToSongMenu = ::showSongMenuDialog,
+            navigateToAlbumMenu = ::showAlbumMenuDialog,
+            navigateToSongDetail = { title, songIds ->
+                navController.navigateToSongDetail(title, songIds)
+            },
+            navigateToAlbumDetail = {
+                navController.navigateToAlbumDetail(it)
+            },
         )
 
         playlistTopScreen(
@@ -150,9 +170,6 @@ fun KanadeNavHost(
 
         songTopScreen(
             topMargin = libraryTopBarHeight,
-            navigateToSongDetail = { title, songIds ->
-                navController.navigateToSongDetail(title, songIds)
-            },
             navigateToSongMenu = ::showSongMenuDialog,
         )
 
@@ -181,6 +198,9 @@ fun KanadeNavHost(
         artistDetailScreen(
             navigateToSongDetail = { title, songIds ->
                 navController.navigateToSongDetail(title, songIds)
+            },
+            navigateToAlbumDetail = {
+                navController.navigateToAlbumDetail(it)
             },
             navigateToSongMenu = ::showSongMenuDialog,
             navigateToArtistMenu = ::showArtistMenuDialog,

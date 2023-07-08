@@ -63,9 +63,9 @@ fun MultiArtwork(
 
 private fun getUselessArtworks(artworks: ImmutableList<Artwork>, isRandom: Boolean): List<Artwork> {
     val random = Random(System.currentTimeMillis())
-    val webs = artworks.filterIsInstance<Artwork.Web>().toMutableList()
-    val mediaStores = artworks.filterIsInstance<Artwork.MediaStore>().toMutableList()
-    val internals = artworks.filterIsInstance<Artwork.Internal>().toMutableList()
+    val webs = artworks.filterIsInstance<Artwork.Web>().distinct().toMutableList()
+    val mediaStores = artworks.filterIsInstance<Artwork.MediaStore>().distinct().toMutableList()
+    val internals = artworks.filterIsInstance<Artwork.Internal>().distinct().toMutableList()
 
     if (isRandom) {
         webs.shuffle(random)
@@ -82,7 +82,7 @@ private fun getUselessArtworks(artworks: ImmutableList<Artwork>, isRandom: Boole
 
     for (i in 0 until 9) {
         val artwork = images.elementAtOrElse(i) { images.random(random) }
-        val index = if (i % 2 == 0) 0 else images.lastIndex
+        val index = if (i % 2 == 0) 0 else results.lastIndex
 
         results.add(index, artwork)
     }

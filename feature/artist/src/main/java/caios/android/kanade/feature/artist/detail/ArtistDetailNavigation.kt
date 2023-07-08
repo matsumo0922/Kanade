@@ -23,6 +23,7 @@ fun NavController.navigateToArtistDetail(artistId: Long) {
 
 fun NavGraphBuilder.artistDetailScreen(
     navigateToSongDetail: (String, List<Long>) -> Unit,
+    navigateToAlbumDetail: (Long) -> Unit,
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
@@ -42,6 +43,7 @@ fun NavGraphBuilder.artistDetailScreen(
             modifier = Modifier.fillMaxSize(),
             artistId = it.arguments?.getLong(ArtistDetailId) ?: -1L,
             navigateToSongDetail = navigateToSongDetail,
+            navigateToAlbumDetail = navigateToAlbumDetail,
             navigateToArtistMenu = navigateToArtistMenu,
             navigateToSongMenu = navigateToSongMenu,
             navigateToAlbumMenu = navigateToAlbumMenu,

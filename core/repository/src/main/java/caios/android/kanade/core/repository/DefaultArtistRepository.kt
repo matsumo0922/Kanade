@@ -8,6 +8,7 @@ import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
 import caios.android.kanade.core.repository.util.sortList
+import okhttp3.internal.toImmutableMap
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -82,13 +83,15 @@ class DefaultArtistRepository @Inject constructor(
     }
 
     override fun fetchArtwork() {
-        for ((artistId, artwork) in artworkRepository.artistArtworks) {
+        val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
+
+        for ((artistId, artwork) in artworkRepository.artistArtworks.toImmutableMap()) {
             val data = cache[artistId] ?: continue
             if (data.artwork == artwork) continue
 
             val albums = data.albums.map {
                 it.copy(
-                    artwork = artworkRepository.albumArtworks[it.albumId] ?: Artwork.Unknown,
+                    artwork = albumArtworks[it.albumId] ?: Artwork.Unknown,
                     songs = it.songs.mapNotNull { song -> songRepository.get(song.id) },
                 )
             }

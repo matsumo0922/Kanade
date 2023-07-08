@@ -19,6 +19,7 @@ import caios.android.kanade.core.repository.util.getString
 import caios.android.kanade.core.repository.util.getStringOrNull
 import caios.android.kanade.core.repository.util.sortList
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.internal.toImmutableMap
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
@@ -117,7 +118,7 @@ class DefaultSongRepository @Inject constructor(
     override fun fetchArtwork() {
         var updates = 0
 
-        for ((albumId, artwork) in artworkRepository.albumArtworks) {
+        for ((albumId, artwork) in artworkRepository.albumArtworks.toImmutableMap()) {
             for (song in cache.values.filter { it.albumId == albumId }) {
                 if (song.artwork != artwork) updates++
                 cache[song.id] = song.copy(artwork = artwork)
@@ -145,6 +146,7 @@ class DefaultSongRepository @Inject constructor(
 
     private fun getSong(cursor: Cursor): Song {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
+        val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
 
         val id = cursor.getLong(AudioColumns._ID)
         val title = cursor.getString(AudioColumns.TITLE)
@@ -173,7 +175,7 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = artworkRepository.albumArtworks[albumId] ?: Artwork.Unknown,
+            artwork = albumArtworks[albumId] ?: Artwork.Unknown,
         ).also {
             cache[id] = it
         }

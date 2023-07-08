@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.song.top.items
+package caios.android.kanade.feature.home.items
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -40,9 +40,9 @@ import caios.android.kanade.core.design.theme.Purple60
 import caios.android.kanade.core.design.theme.Purple80
 
 @Composable
-internal fun SongTopHeaderSection(
+internal fun HomeHeaderSection(
     onClickHistory: () -> Unit,
-    onClickRecentlyAdd: () -> Unit,
+    onClickRecentlyAdded: () -> Unit,
     onClickMostPlayed: () -> Unit,
     onClickShuffle: () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,7 +67,7 @@ internal fun SongTopHeaderSection(
             imageVector = Icons.Default.LibraryAdd,
             tintColor = Orange60,
             backgroundColor = Orange80.copy(alpha = 0.2f),
-            onClick = onClickRecentlyAdd,
+            onClick = onClickRecentlyAdded,
         )
 
         ImageButton(
@@ -134,10 +134,10 @@ private fun ImageButton(
 @Composable
 private fun SongTopHeaderSectionPreview() {
     KanadeBackground(Modifier.fillMaxWidth()) {
-        SongTopHeaderSection(
+        HomeHeaderSection(
             modifier = Modifier.fillMaxWidth(),
             onClickHistory = { },
-            onClickRecentlyAdd = { },
+            onClickRecentlyAdded = { },
             onClickMostPlayed = { },
             onClickShuffle = { },
         )

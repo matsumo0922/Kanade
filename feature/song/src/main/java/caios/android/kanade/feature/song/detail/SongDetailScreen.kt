@@ -118,7 +118,7 @@ private fun SongDetailScreen(
             LazyColumn(Modifier.fillMaxSize()) {
                 itemsIndexed(
                     items = songs,
-                    key = { _, song -> song.id },
+                    key = { index, song -> "${song.id}-$index" },
                 ) { index, song ->
                     SongHolder(
                         modifier = Modifier.fillMaxWidth(),

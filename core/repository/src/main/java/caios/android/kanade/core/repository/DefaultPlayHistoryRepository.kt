@@ -25,9 +25,9 @@ class DefaultPlayHistoryRepository @Inject constructor(
 
     override val data: SharedFlow<List<PlayHistory>> = _data.asSharedFlow()
 
-    override fun gets(song: Song): List<PlayHistory> = cache.filter { it.song == song }.sortedBy { it.playedAt }
+    override fun gets(song: Song): List<PlayHistory> = cache.filter { it.song == song }.sortedByDescending { it.playedAt }
 
-    override fun gets(): List<PlayHistory> = cache.toList().sortedBy { it.playedAt }
+    override fun gets(): List<PlayHistory> = cache.toList().sortedByDescending { it.playedAt }
 
     override suspend fun playHistory(song: Song): List<PlayHistory> = withContext(dispatcher) {
         val histories = playHistoryDao.loadAll().mapNotNull { it.toModel() }
@@ -37,7 +37,11 @@ class DefaultPlayHistoryRepository @Inject constructor(
     }
 
     override suspend fun playHistories(): List<PlayHistory> = withContext(dispatcher) {
-        playHistoryDao.loadAll().mapNotNull { it.toModel() }.sortedBy { it.playedAt }
+        playHistoryDao.loadAll().mapNotNull { it.toModel() }.sortedByDescending { it.playedAt }.also {
+            cache.clear()
+            cache.addAll(it)
+            _data.value = cache
+        }
     }
 
     override fun add(song: Song) {

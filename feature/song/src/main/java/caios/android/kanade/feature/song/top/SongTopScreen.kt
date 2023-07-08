@@ -10,18 +10,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.music.SortInfo
-import caios.android.kanade.feature.song.top.items.SongTopHeaderSection
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -30,11 +27,9 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun SongTopRoute(
     topMargin: Dp,
     navigateToSongMenu: (Song) -> Unit,
-    navigateToSongDetail: (String, List<Long>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SongTopViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     AsyncLoadContents(
@@ -49,14 +44,6 @@ internal fun SongTopRoute(
             onClickSort = { /*TODO*/ },
             onClickSong = viewModel::onNewPlay,
             onClickMenu = navigateToSongMenu,
-            onClickHistory = { /*TODO*/ },
-            onClickRecentlyAdd = {
-                uiState?.songs?.sortedBy { it.addedDate }?.map { it.id }?.let {
-                    navigateToSongDetail.invoke(context.getString(R.string.song_header_recently_add), it)
-                }
-            },
-            onClickMostPlayed = { /*TODO*/ },
-            onClickShuffle = viewModel::onShuffle,
         )
     }
 }
@@ -68,10 +55,6 @@ internal fun SongTopScreen(
     onClickSort: (MusicOrder) -> Unit,
     onClickSong: (Int, List<Song>) -> Unit,
     onClickMenu: (Song) -> Unit,
-    onClickHistory: () -> Unit,
-    onClickRecentlyAdd: () -> Unit,
-    onClickMostPlayed: () -> Unit,
-    onClickShuffle: (List<Song>) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -79,16 +62,6 @@ internal fun SongTopScreen(
         modifier = modifier.fillMaxSize(),
         contentPadding = contentPadding,
     ) {
-        item {
-            SongTopHeaderSection(
-                modifier = Modifier.fillMaxWidth(),
-                onClickHistory = onClickHistory,
-                onClickRecentlyAdd = onClickRecentlyAdd,
-                onClickMostPlayed = onClickMostPlayed,
-                onClickShuffle = { onClickShuffle.invoke(songs) },
-            )
-        }
-
         item {
             SortInfo(
                 sortOrder = sortOrder,

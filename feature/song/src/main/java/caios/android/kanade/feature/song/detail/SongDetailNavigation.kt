@@ -16,7 +16,7 @@ const val SongDetailIds = "songDetailIds"
 const val SongDetailRoute = "songDetail/{$SongDetailTitle}/{$SongDetailIds}"
 
 fun NavController.navigateToSongDetail(title: String, songIds: List<Long>) {
-    this.navigate("songDetail/$title/${songIds.joinToString(",")}") {
+    this.navigate("songDetail/$title/${songIds.joinToString(",")},") {
         launchSingleTop = true
     }
 }
@@ -39,7 +39,10 @@ fun NavGraphBuilder.songDetailScreen(
         SongDetailRoute(
             modifier = Modifier.fillMaxSize(),
             title = it.arguments?.getString(SongDetailTitle) ?: "Songs",
-            songIds = (it.arguments?.getString(SongDetailIds) ?: "").split(",").map { id -> id.toLong() }.toImmutableList(),
+            songIds = (it.arguments?.getString(SongDetailIds) ?: "")
+                .split(",")
+                .mapNotNull { id -> id.toLongOrNull() }
+                .toImmutableList(),
             navigateToSongMenu = navigateToSongMenu,
             navigateToAddToPlaylist = { },
             terminate = terminate,

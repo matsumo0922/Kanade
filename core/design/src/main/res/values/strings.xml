@@ -29,6 +29,7 @@
     <string name="unit_artist">%1$s 名</string>
     <string name="unit_album">%1$s 枚</string>
     <string name="unit_playlist">%1$s 枚</string>
+    <string name="unit_play_times">%1$s 回再生</string>
 
     <!-- Common Error -->
     <string name="error_executed">エラーが発生しました</string>
@@ -68,6 +69,14 @@
     <string name="search_not_found">一致したメディアはありません</string>
     <string name="search_keyword_suggestion_description">入力されたキーワードから推測して、以下のキーワードを含むメディアも検索しています。\n\n[%1$s]</string>
 
+    <!-- Home -->
+    <string name="home_button_play_all">すべて再生</string>
+    <string name="home_button_shuffle_all">シャッフル</string>
+    <string name="home_title_queue">再生待ちリスト</string>
+    <string name="home_title_recently_added_albums">最近追加されたアルバム</string>
+    <string name="home_title_recently_played_songs">最近再生された楽曲</string>
+    <string name="home_title_most_played_songs">再生回数の多い楽曲</string>
+
     <!-- Controller -->
     <string name="controller_menu_add_playlist">プレイリストに追加</string>
     <string name="controller_menu_artist">アーティスト</string>
@@ -104,6 +113,9 @@
     <string name="song_header_most_played">再生回数トップ</string>
     <string name="song_header_shuffle">シャッフル</string>
     <string name="song_header_see_all">すべて表示</string>
+    <string name="song_detail_title_history">最近の再生</string>
+    <string name="song_detail_title_recently_add">最近の追加</string>
+    <string name="song_detail_title_most_played">再生回数トップ</string>
 
     <!-- Queue -->
     <string name="queue_title">再生待ちリスト</string>

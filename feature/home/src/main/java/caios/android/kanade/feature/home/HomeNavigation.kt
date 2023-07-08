@@ -8,6 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Song
 
 const val HomeRoute = "homeTop"
 
@@ -17,6 +19,11 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(
     topMargin: Dp,
+    navigateToQueue: () -> Unit,
+    navigateToSongDetail: (String, List<Long>) -> Unit,
+    navigateToSongMenu: (Song) -> Unit,
+    navigateToAlbumDetail: (Long) -> Unit,
+    navigateToAlbumMenu: (Album) -> Unit,
 ) {
     composable(
         route = HomeRoute,
@@ -36,6 +43,11 @@ fun NavGraphBuilder.homeScreen(
         HomeRoute(
             modifier = Modifier.fillMaxSize(),
             topMargin = topMargin,
+            navigateToQueue = navigateToQueue,
+            navigateToSongDetail = navigateToSongDetail,
+            navigateToSongMenu = navigateToSongMenu,
+            navigateToAlbumDetail = navigateToAlbumDetail,
+            navigateToAlbumMenu = navigateToAlbumMenu,
         )
     }
 }

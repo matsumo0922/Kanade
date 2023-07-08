@@ -1,5 +1,7 @@
 package caios.android.kanade.core.model.music
 
+import java.time.LocalDateTime
+
 data class Album(
     val album: String,
     val albumId: Long,
@@ -17,6 +19,9 @@ data class Album(
 
     val duration: Long
         get() = songs.sumOf { it.duration }
+
+    val addedDate: LocalDateTime
+        get() = songs.maxOf { it.addedDate }
 
     companion object {
         fun dummy(id: Long = 0): Album {

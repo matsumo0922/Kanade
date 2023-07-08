@@ -50,7 +50,7 @@ class SongTopViewModel @Inject constructor(
         )
     }
 
-    fun onShuffle(queue: List<Song>) {
+    fun onShufflePlay(queue: List<Song>) {
         viewModelScope.launch {
             musicRepository.setShuffleMode(ShuffleMode.ON)
             musicController.playerEvent(
@@ -61,6 +61,20 @@ class SongTopViewModel @Inject constructor(
                 ),
             )
         }
+    }
+
+    suspend fun getRecentlyPlayedSongs(): List<Song> {
+        musicRepository.fetchPlayHistory()
+        return musicRepository.playHistory.map { it.song }
+    }
+
+    suspend fun getMostPlayedSongs(): List<Song> {
+        musicRepository.fetchPlayHistory()
+        return musicRepository.getPlayedCount()
+            .map { it.toPair() }
+            .sortedByDescending { it.second }
+            .take(30)
+            .map { it.first }
     }
 }
 
