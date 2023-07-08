@@ -64,12 +64,12 @@ fun KanadeDrawer(
     state: DrawerState,
     currentSong: Song?,
     currentDestination: NavDestination?,
-    modifier: Modifier = Modifier,
     onClickItem: (LibraryDestination) -> Unit,
     navigateToQueue: () -> Unit,
     navigateToSetting: () -> Unit,
     navigateToAppInfo: () -> Unit,
     navigateToSupport: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet(windowInsets = WindowInsets(0, 0, 0, 0)) {
         Column(
@@ -132,7 +132,7 @@ fun KanadeDrawer(
             Divider(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             NavigationDrawerItem(
@@ -194,7 +194,7 @@ private fun NavigationDrawerItem(
                 RoundedCornerShape(
                     topEnd = 32.dp,
                     bottomEnd = 32.dp,
-                )
+                ),
             )
             .background(containerColor)
             .clickable {
@@ -261,8 +261,8 @@ private fun NavigationDrawerHeader(
                             Color.Transparent,
                             MaterialTheme.colorScheme.surfaceContainerHigh,
                         ),
-                    )
-                )
+                    ),
+                ),
         )
 
         Card(
