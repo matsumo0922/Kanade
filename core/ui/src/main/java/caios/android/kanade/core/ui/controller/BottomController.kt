@@ -77,7 +77,7 @@ fun BottomController(
                     height = Dimension.fillToConstraints
                 }
                 .aspectRatio(1f),
-            artwork = uiState.song?.artwork ?: Artwork.Unknown,
+            artwork = uiState.song?.albumArtwork ?: Artwork.Unknown,
         )
 
         Text(

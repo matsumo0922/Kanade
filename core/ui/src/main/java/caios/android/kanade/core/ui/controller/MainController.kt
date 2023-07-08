@@ -120,7 +120,7 @@ fun MainController(
 
     LaunchedEffect(uiState.song) {
         val song = uiState.song ?: return@LaunchedEffect
-        val artwork = song.artwork
+        val artwork = song.albumArtwork
 
         artworkColor = getArtworkColor(context, artwork, isDarkMode ?: false)
         isFavorite = onFetchFavorite.invoke(song)

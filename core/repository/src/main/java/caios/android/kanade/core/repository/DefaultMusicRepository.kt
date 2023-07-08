@@ -113,6 +113,7 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun fetchArtistArtwork() {
         artworkRepository.fetchArtistArtwork(artists)
+        songRepository.fetchArtwork()
         artistRepository.fetchArtwork()
     }
 

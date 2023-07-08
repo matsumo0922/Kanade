@@ -20,7 +20,7 @@ fun GridArtwork(
     songs: ImmutableList<Song>,
     modifier: Modifier = Modifier,
 ) {
-    val artworks = songs.distinctBy { it.album }.map { it.artwork }
+    val artworks = songs.distinctBy { it.album }.map { it.albumArtwork }
     val a1 = artworks.elementAtOrNull(0)
     val a2 = artworks.elementAtOrNull(1)
     val a3 = artworks.elementAtOrNull(2)

@@ -49,7 +49,7 @@ fun SongHolder(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                 },
-            artwork = song.artwork,
+            artwork = song.albumArtwork,
         )
 
         Text(

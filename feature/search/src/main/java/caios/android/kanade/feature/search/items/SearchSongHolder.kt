@@ -58,7 +58,7 @@ fun SearchSongHolder(
         ) {
             Artwork(
                 modifier = Modifier.fillMaxSize(),
-                artwork = song.artwork,
+                artwork = song.albumArtwork,
             )
         }
 

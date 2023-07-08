@@ -58,9 +58,7 @@ import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
-import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
-import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.feature.search.navigateToSearch
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -87,8 +85,14 @@ fun KanadeApp(
             drawerState = drawerState,
             drawerContent = {
                 KanadeDrawer(
+                    state = drawerState,
+                    currentSong = musicViewModel.uiState.song,
                     currentDestination = appState.currentDestination,
                     onClickItem = appState::navigateToLibrary,
+                    navigateToQueue = { appState.navigateToQueue(activity, userData, musicViewModel) },
+                    navigateToSetting = { },
+                    navigateToAppInfo = { },
+                    navigateToSupport = { },
                 )
             },
             gesturesEnabled = true,
@@ -236,30 +240,7 @@ fun KanadeApp(
                             },
                             navigateToLyrics = { },
                             navigateToSleepTimer = { },
-                            navigateToQueue = {
-                                activity.showQueueDialog(
-                                    userData = userData,
-                                    navigateToSongMenu = { song ->
-                                        activity.showSongMenuDialog(
-                                            musicViewModel = musicViewModel,
-                                            userData = userData,
-                                            song = song,
-                                            navigateToAddToPlaylist = { songIds ->
-                                                appState.navController.navigateToAddToPlaylist(songIds)
-                                            },
-                                            navigateToArtistDetail = { artistId ->
-                                                appState.navController.navigateToArtistDetail(artistId)
-                                            },
-                                            navigateToAlbumDetail = { albumId ->
-                                                appState.navController.navigateToAlbumDetail(albumId)
-                                            },
-                                        )
-                                    },
-                                    navigateToAddToPlaylist = {
-                                        appState.navController.navigateToAddToPlaylist(it)
-                                    },
-                                )
-                            },
+                            navigateToQueue = { appState.navigateToQueue(activity, userData, musicViewModel) },
                             navigateToKaraoke = { },
                         )
                     },

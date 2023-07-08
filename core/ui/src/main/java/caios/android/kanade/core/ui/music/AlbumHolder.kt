@@ -41,8 +41,8 @@ fun AlbumHolder(
             modifier = Modifier.clickable { onClickHolder.invoke() },
             shape = RoundedCornerShape(6.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-                contentColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                contentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             ),
         ) {
             Column(

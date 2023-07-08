@@ -116,16 +116,17 @@ class DefaultSongRepository @Inject constructor(
     }
 
     override fun fetchArtwork() {
-        var updates = 0
-
         for ((albumId, artwork) in artworkRepository.albumArtworks.toImmutableMap()) {
             for (song in cache.values.filter { it.albumId == albumId }) {
-                if (song.artwork != artwork) updates++
-                cache[song.id] = song.copy(artwork = artwork)
+                cache[song.id] = song.copy(albumArtwork = artwork)
             }
         }
 
-        Timber.d("Updated $updates songs artwork")
+        for ((artistId, artwork) in artworkRepository.artistArtworks.toImmutableMap()) {
+            for (song in cache.values.filter { it.artistId == artistId }) {
+                cache[song.id] = song.copy(artistArtwork = artwork)
+            }
+        }
     }
 
     override fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song> {
@@ -147,6 +148,7 @@ class DefaultSongRepository @Inject constructor(
     private fun getSong(cursor: Cursor): Song {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
         val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
+        val artistArtworks = artworkRepository.artistArtworks.toImmutableMap()
 
         val id = cursor.getLong(AudioColumns._ID)
         val title = cursor.getString(AudioColumns.TITLE)
@@ -175,7 +177,8 @@ class DefaultSongRepository @Inject constructor(
             data = data,
             dateModified = dateModified,
             uri = Uri.withAppendedPath(uri, id.toString()),
-            artwork = albumArtworks[albumId] ?: Artwork.Unknown,
+            albumArtwork = albumArtworks[albumId] ?: Artwork.Unknown,
+            artistArtwork = artistArtworks[artistId] ?: Artwork.Unknown,
         ).also {
             cache[id] = it
         }

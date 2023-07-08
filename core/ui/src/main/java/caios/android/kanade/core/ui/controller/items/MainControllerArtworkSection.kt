@@ -117,7 +117,7 @@ internal fun MainControllerArtworkSection(
             Box(Modifier.fillMaxSize()) {
                 Artwork(
                     modifier = Modifier.fillMaxWidth(),
-                    artwork = if (songs.isNotEmpty()) song.artwork else Artwork.Unknown,
+                    artwork = if (songs.isNotEmpty()) song.albumArtwork else Artwork.Unknown,
                 )
 
                 Text(

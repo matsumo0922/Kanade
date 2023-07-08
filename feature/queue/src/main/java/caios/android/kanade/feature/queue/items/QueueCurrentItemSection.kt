@@ -79,7 +79,7 @@ internal fun QueueCurrentItemSection(
         ) {
             Artwork(
                 modifier = Modifier.fillMaxSize(),
-                artwork = song.artwork,
+                artwork = song.albumArtwork,
             )
         }
 

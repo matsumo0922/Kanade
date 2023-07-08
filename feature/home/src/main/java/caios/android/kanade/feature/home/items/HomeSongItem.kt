@@ -12,7 +12,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -37,8 +36,8 @@ internal fun HomeSongItem(
             modifier = Modifier.clickable { onClickHolder.invoke() },
             shape = RoundedCornerShape(4.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-                contentColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                contentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             ),
         ) {
             ConstraintLayout(Modifier.fillMaxWidth()) {
@@ -58,7 +57,7 @@ internal fun HomeSongItem(
                             start.linkTo(parent.start)
                             bottom.linkTo(parent.bottom)
                         },
-                    artwork = song.artwork,
+                    artwork = song.albumArtwork,
                 )
 
                 Box(
@@ -75,7 +74,7 @@ internal fun HomeSongItem(
                             Brush.horizontalGradient(
                                 listOf(
                                     Color.Transparent,
-                                    MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
+                                    MaterialTheme.colorScheme.surfaceContainerHigh,
                                 ),
                             ),
                         ),

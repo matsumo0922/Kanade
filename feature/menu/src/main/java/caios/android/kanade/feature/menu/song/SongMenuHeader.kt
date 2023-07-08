@@ -53,7 +53,7 @@ internal fun SongMenuHeader(
         ) {
             Artwork(
                 modifier = Modifier.size(48.dp),
-                artwork = song.artwork,
+                artwork = song.albumArtwork,
             )
         }
 

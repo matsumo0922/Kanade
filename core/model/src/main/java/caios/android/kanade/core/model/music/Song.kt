@@ -22,7 +22,8 @@ data class Song(
     val data: String,
     val dateModified: Long,
     val uri: Uri,
-    val artwork: Artwork,
+    val albumArtwork: Artwork,
+    val artistArtwork: Artwork,
 ) {
     val durationString: String
         get() {
@@ -56,7 +57,8 @@ data class Song(
                 data = "",
                 dateModified = -1,
                 uri = Uri.EMPTY,
-                artwork = Artwork.Internal("Song"),
+                albumArtwork = Artwork.Internal("Song"),
+                artistArtwork = Artwork.Internal("Artist"),
             )
         }
 

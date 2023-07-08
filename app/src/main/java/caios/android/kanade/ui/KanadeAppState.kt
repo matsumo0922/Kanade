@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import android.app.Activity
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -11,14 +12,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.music.MusicViewModel
+import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.album.top.AlbumTopRoute
 import caios.android.kanade.feature.album.top.navigateToAlbumTop
+import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.artist.top.ArtistTopRoute
 import caios.android.kanade.feature.artist.top.navigateToArtistTop
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.navigateToHome
+import caios.android.kanade.feature.menu.song.showSongMenuDialog
+import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.top.PlaylistTopRoute
 import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
+import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.feature.song.top.SongTopRoute
 import caios.android.kanade.feature.song.top.navigateToSongTop
 import caios.android.kanade.navigation.LibraryDestination
@@ -80,5 +88,30 @@ class KanadeAppState(
             LibraryDestination.Album -> navController.navigateToAlbumTop(navOption)
             LibraryDestination.Playlist -> navController.navigateToPlaylistTop(navOption)
         }
+    }
+
+    fun navigateToQueue(activity: Activity, userData: UserData?, musicViewModel: MusicViewModel) {
+        activity.showQueueDialog(
+            userData = userData,
+            navigateToSongMenu = { song ->
+                activity.showSongMenuDialog(
+                    musicViewModel = musicViewModel,
+                    userData = userData,
+                    song = song,
+                    navigateToAddToPlaylist = { songIds ->
+                        navController.navigateToAddToPlaylist(songIds)
+                    },
+                    navigateToArtistDetail = { artistId ->
+                        navController.navigateToArtistDetail(artistId)
+                    },
+                    navigateToAlbumDetail = { albumId ->
+                        navController.navigateToAlbumDetail(albumId)
+                    },
+                )
+            },
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            },
+        )
     }
 }

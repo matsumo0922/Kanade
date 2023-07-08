@@ -159,11 +159,11 @@ class MediaSessionManager(
     private fun loadSong(song: Song?, playWhenReady: Boolean, startPosition: Long = 0L) {
         song ?: return
 
-        Timber.d("loadSong: ${song.title}, ${song.artist}, ${song.artwork}")
+        Timber.d("loadSong: ${song.title}, ${song.artist}, ${song.albumArtwork}")
 
         scope.launch {
             val metadata = song.getMetadataBuilder().apply {
-                putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, song.artwork.toBitmap(service))
+                putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, song.albumArtwork.toBitmap(service))
             }
 
             mediaSession.setMetadata(metadata.build())

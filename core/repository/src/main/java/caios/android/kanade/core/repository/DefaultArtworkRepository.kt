@@ -23,8 +23,8 @@ class DefaultArtworkRepository @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ArtworkRepository {
 
-    private val _artistArtwork = mutableMapOf<Long, Artwork>()
-    private val _albumArtwork = mutableMapOf<Long, Artwork>()
+    private var _artistArtwork = mutableMapOf<Long, Artwork>()
+    private var _albumArtwork = mutableMapOf<Long, Artwork>()
 
     override val artistArtworks: Map<Long, Artwork>
         get() = _artistArtwork.toMap()
@@ -132,13 +132,11 @@ class DefaultArtworkRepository @Inject constructor(
     }
 
     private fun applyArtistArtworks(artworks: Map<Long, Artwork>) {
-        _artistArtwork.clear()
-        _artistArtwork.putAll(artworks)
+        _artistArtwork = artworks.toMutableMap()
     }
 
     private fun applyAlbumArtworks(artworks: Map<Long, Artwork>) {
-        _albumArtwork.clear()
-        _albumArtwork.putAll(artworks)
+        _albumArtwork = artworks.toMutableMap()
     }
 
     private fun getMediaStoreAlbumCoverUri(albumId: Long): Uri? {
