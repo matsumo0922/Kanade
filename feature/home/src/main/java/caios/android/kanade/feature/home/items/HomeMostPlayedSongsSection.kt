@@ -75,7 +75,7 @@ internal fun LazyListScope.homeMostPlayedSongsSection(
         MiniSongHolder(
             modifier = Modifier.fillMaxWidth(),
             song = history.first,
-            subText = stringResource(R.string.unit_song, history.second),
+            subText = stringResource(R.string.unit_play_times, history.second),
             onClickHolder = { onClickPlay.invoke(index, histories.map { it.first }) },
             onClickMenu = { onClickSongMenu.invoke(history.first) },
         )

@@ -9,6 +9,7 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
+import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,9 +25,15 @@ class PlaylistTopViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val playlistRepository: PlaylistRepository,
+    private val lastFmRepository: LastFmRepository,
 ) : ViewModel() {
 
-    val screenState = combine(musicRepository.config, playlistRepository.data, ::Pair).map { (config, _) ->
+    val screenState = combine(
+        musicRepository.config,
+        playlistRepository.data,
+        lastFmRepository.albumDetails,
+        ::Triple
+    ).map { (config, _, _) ->
         musicRepository.fetchPlaylist(config)
 
         ScreenState.Idle(

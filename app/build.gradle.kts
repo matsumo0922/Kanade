@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.ResValue
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -12,11 +14,11 @@ plugins {
 android {
     namespace = "caios.android.kanade"
 
-    signingConfigs {
-        val localProperties = Properties().apply {
-            load(project.rootDir.resolve("local.properties").inputStream())
-        }
+    val localProperties = Properties().apply {
+        load(project.rootDir.resolve("local.properties").inputStream())
+    }
 
+    signingConfigs {
         getByName("debug") {
             storeFile = file("${project.rootDir}/gradle/keystore/debug.keystore")
         }
@@ -33,14 +35,22 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            resValue("string", "app_name", "Kanade")
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             versionNameSuffix = ".D"
             applicationIdSuffix = ".debug3"
-            resValue("string", "app_name", "KanadeDebug3")
+        }
+    }
+
+    androidComponents {
+        onVariants {
+            val appName = if (it.buildType == "release") "Kanade" else "KanadeDebug3"
+            it.resValues.put(it.makeResValueKey("string", "app_name"), ResValue(appName, null))
+
+            it.buildConfigFields.put("LAST_FM_API_KEY", BuildConfigField("String", localProperties.getProperty("LAST_FM_API_KEY") ?: System.getenv("LAST_FM_API_KEY") ?: "-", null))
+            it.buildConfigFields.put("LAST_FM_API_SECRET", BuildConfigField("String", localProperties.getProperty("LAST_FM_API_SECRET") ?: System.getenv("LAST_FM_API_SECRET") ?: "-", null))
         }
     }
 

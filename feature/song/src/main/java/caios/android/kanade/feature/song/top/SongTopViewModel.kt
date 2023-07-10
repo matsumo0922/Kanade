@@ -11,10 +11,12 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
+import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -26,19 +28,20 @@ import javax.inject.Inject
 class SongTopViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
+    private val lastFmRepository: LastFmRepository,
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
-    var screenState = musicRepository.config.map {
+    var screenState = combine(musicRepository.config, lastFmRepository.albumDetails, ::Pair).map { (config, _) ->
         withContext(io) {
-            musicRepository.fetchSongs(it)
+            musicRepository.fetchSongs(config)
             musicRepository.fetchAlbumArtwork()
         }
 
         ScreenState.Idle(
             SongTopUiState(
-                songs = musicRepository.sortedSongs(it),
-                sortOrder = it.songOrder,
+                songs = musicRepository.sortedSongs(config),
+                sortOrder = config.songOrder,
             ),
         )
     }.stateIn(

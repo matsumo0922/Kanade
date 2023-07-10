@@ -7,18 +7,20 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicController
+import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +32,7 @@ class HomeViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val playlistRepository: PlaylistRepository,
+    private val lastFmRepository: LastFmRepository,
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -37,8 +40,12 @@ class HomeViewModel @Inject constructor(
         musicRepository.config,
         musicController.currentQueue,
         playlistRepository.data,
-        ::Triple,
-    ).map { (config, queue, playlist) ->
+        lastFmRepository.albumDetails,
+    ) { data ->
+        val config = data[0] as MusicConfig
+        val queue = data[1] as Queue
+        val playlist = data[2] as List<*>
+
         withContext(io) {
             musicRepository.fetchSongs(config)
             musicRepository.fetchAlbumArtwork()
@@ -47,7 +54,7 @@ class HomeViewModel @Inject constructor(
         val songs = musicRepository.sortedSongs(config)
         val albums = musicRepository.sortedAlbums(config)
         val recentlyAddedAlbums = albums.sortedBy { it.addedDate }.take(10)
-        val favorite = playlist.find { it.isSystemPlaylist }
+        val favorite = playlist.filterIsInstance<Playlist>().find { it.isSystemPlaylist }
 
         ScreenState.Idle(
             HomeUiState(

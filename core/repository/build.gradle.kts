@@ -17,4 +17,6 @@ dependencies {
     implementation(libs.bundles.ktor)
 
     implementation(libs.androidx.media)
+
+    implementation(libs.skrapeit)
 }

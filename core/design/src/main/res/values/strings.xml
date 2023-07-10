@@ -69,6 +69,10 @@
     <!-- Notification -->
     <string name="notify_channel_music_name">コントローラー</string>
     <string name="notify_channel_music_description">通知欄にコントローラーを表示します</string>
+    <string name="notify_channel_last_fm_name">楽曲情報の取得</string>
+    <string name="notify_channel_last_fm_description">楽曲情報を取得するために通信を行います</string>
+    <string name="notify_last_fm_title">メタデータをダウンロード中です</string>
+    <string name="notify_last_fm_message">アーティストやアルバムの情報を自動ダウンロードしています</string>
 
     <!-- Search -->
     <string name="search_title">ライブラリを検索</string>

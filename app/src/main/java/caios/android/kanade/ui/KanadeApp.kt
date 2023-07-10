@@ -1,6 +1,7 @@
 package caios.android.kanade.ui
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -53,6 +54,7 @@ import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.design.component.rememberLibraryTopBarScrollState
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.music.LastFmService
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
@@ -157,6 +159,10 @@ fun KanadeApp(
                         scaffoldState.bottomSheetState.partialExpand()
                     }
                 }
+            }
+
+            LaunchedEffect(musicViewModel.uiState.isInitialized) {
+                activity.startService(Intent(activity, LastFmService::class.java))
             }
 
             Scaffold(

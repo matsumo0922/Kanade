@@ -6,12 +6,14 @@ import caios.android.kanade.core.repository.ArtworkRepository
 import caios.android.kanade.core.repository.DefaultAlbumRepository
 import caios.android.kanade.core.repository.DefaultArtistRepository
 import caios.android.kanade.core.repository.DefaultArtworkRepository
+import caios.android.kanade.core.repository.DefaultLastFmRepository
 import caios.android.kanade.core.repository.DefaultLyricsRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
 import caios.android.kanade.core.repository.DefaultPlayHistoryRepository
 import caios.android.kanade.core.repository.DefaultPlaylistRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
+import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlayHistoryRepository
@@ -81,4 +83,10 @@ interface RepositoryModule {
     fun bindPlayHistoryRepository(
         playHistoryRepository: DefaultPlayHistoryRepository,
     ): PlayHistoryRepository
+
+    @Singleton
+    @Binds
+    fun bindLastFmRepository(
+        lastFmRepository: DefaultLastFmRepository,
+    ): LastFmRepository
 }

@@ -1,4 +1,4 @@
-package caios.android.kanade.core.model.music
+package caios.android.kanade.core.model.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

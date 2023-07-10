@@ -88,6 +88,8 @@ class MusicViewModel @Inject constructor(
             musicRepository.fetchAlbumArtwork()
             musicRepository.fetchArtistArtwork()
 
+            uiState = uiState.copy(isInitialized = true)
+
             Timber.d("Fetch library. Songs: ${musicRepository.songs.size}, Artists: ${musicRepository.artists.size}, Albums: ${musicRepository.albums.size}")
         }
     }
@@ -154,6 +156,7 @@ data class MusicUiState(
     val albumOrder: MusicOrder = MusicOrder.albumDefault(),
     val playlistOrder: MusicOrder = MusicOrder.playlistDefault(),
     val isExpandedController: Boolean = false,
+    val isInitialized: Boolean = false,
 ) {
     val isPlaying
         get() = (state == PlayerState.Playing)

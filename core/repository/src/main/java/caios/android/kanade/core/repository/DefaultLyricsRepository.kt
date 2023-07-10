@@ -1,8 +1,8 @@
 package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.datastore.LyricsPreference
-import caios.android.kanade.core.model.music.KugouLyricsEntity
-import caios.android.kanade.core.model.music.KugouSongEntity
+import caios.android.kanade.core.model.entity.KugouLyricsEntity
+import caios.android.kanade.core.model.entity.KugouSongEntity
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.util.parse
