@@ -8,7 +8,7 @@ data class ArtistDetail(
     val tags: List<Tag>,
     val similarArtists: List<SimilarArtist>,
     val biography: String?,
-){
+) {
     @kotlinx.serialization.Serializable
     data class SimilarArtist(
         val name: String,

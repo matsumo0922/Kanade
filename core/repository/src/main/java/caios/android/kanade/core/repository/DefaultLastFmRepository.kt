@@ -78,10 +78,10 @@ class DefaultLastFmRepository @Inject constructor(
                         ArtistDetail.SimilarArtist(
                             name = artist.name,
                             url = artist.url,
-                            imageUrl = artist.image.findLast { image -> image.text.isNotBlank() }?.text
+                            imageUrl = artist.image.findLast { image -> image.text.isNotBlank() }?.text,
                         )
                     },
-                    biography = it.artist.biography.content.replace(Regex("<a.*>"), "").ifBlank { null }
+                    biography = it.artist.biography.content.replace(Regex("<a.*>"), "").ifBlank { null },
                 )
             }
         }.getOrNull()?.also {
@@ -102,9 +102,9 @@ class DefaultLastFmRepository @Inject constructor(
                         AlbumDetail.Track(
                             track = track.attr.rank,
                             musicName = track.name,
-                            url = track.url
+                            url = track.url,
                         )
-                    }
+                    },
                 )
             }
         }.getOrNull()?.also {
@@ -185,7 +185,7 @@ class DefaultLastFmRepository @Inject constructor(
         val file = File(context.filesDir, FILE_NAME)
         if (!file.exists()) return Ignores(emptyList(), emptyList())
 
-        return formatter.decodeFromString(Ignores.serializer(),  file.readText())
+        return formatter.decodeFromString(Ignores.serializer(), file.readText())
     }
 
     private fun saveIgnores(ignores: Ignores) {
@@ -236,7 +236,7 @@ class DefaultLastFmRepository @Inject constructor(
                     id = 0,
                     artistId = artistDetail.data.artistId,
                     web = artistDetail.imageUrl,
-                )
+                ),
             )
         } else {
             artworkDao.update(artwork.copy(web = artistDetail.imageUrl))
@@ -285,7 +285,7 @@ class DefaultLastFmRepository @Inject constructor(
                     id = 0,
                     albumId = albumDetail.data.albumId,
                     web = albumDetail.imageUrl,
-                )
+                ),
             )
         } else {
             artworkDao.update(artwork.copy(web = albumDetail.imageUrl))
@@ -330,8 +330,6 @@ class DefaultLastFmRepository @Inject constructor(
 
     companion object {
         private const val ENDPOINT = "http://ws.audioscrobbler.com/2.0/"
-        private const val NOT_DOWNLOADED_IDS = "not_downloaded_ids"
-
         private const val FILE_NAME = "MusicDetailIgnores.json"
     }
 }

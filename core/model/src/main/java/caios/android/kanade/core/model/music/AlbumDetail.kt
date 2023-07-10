@@ -5,12 +5,12 @@ data class AlbumDetail(
     val mbid: String?,
     val imageUrl: String?,
     val tags: List<Tag>,
-    val tracks: List<Track>
+    val tracks: List<Track>,
 ) {
     @kotlinx.serialization.Serializable
     data class Track(
         val track: Int,
         val musicName: String,
-        val url: String
+        val url: String,
     )
 }

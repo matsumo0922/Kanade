@@ -32,7 +32,7 @@ class PlaylistTopViewModel @Inject constructor(
         musicRepository.config,
         playlistRepository.data,
         lastFmRepository.albumDetails,
-        ::Triple
+        ::Triple,
     ).map { (config, _, _) ->
         musicRepository.fetchPlaylist(config)
 
