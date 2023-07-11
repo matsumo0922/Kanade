@@ -25,7 +25,7 @@ object ToastUtil {
                     override fun onToastHidden() {
                         currentToast = null
                     }
-                }
+                },
             )
         }
     }

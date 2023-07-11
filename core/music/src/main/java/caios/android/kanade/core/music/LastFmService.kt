@@ -168,7 +168,6 @@ class LastFmService : Service(), CoroutineScope {
 
     companion object {
         private const val NOTIFY_ID = 94
-        private const val NOTIFY_INTENT_ID = 95
         private const val NOTIFY_CHANNEL_ID = "KanadeNotify2"
     }
 }

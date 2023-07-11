@@ -35,7 +35,7 @@ class ArtistDetailViewModel @Inject constructor(
                     ArtistDetailUiState(
                         artist = artist,
                         artistDetail = artistDetail,
-                    )
+                    ),
                 )
             } else {
                 ScreenState.Error(
