@@ -82,6 +82,7 @@ dependencies {
     implementation(project(":feature:queue"))
     implementation(project(":feature:search"))
     implementation(project(":feature:sort"))
+    implementation(project(":feature:lyrics"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
