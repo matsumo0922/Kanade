@@ -25,6 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -81,15 +82,18 @@ class MusicService : MediaBrowserServiceCompat() {
 
     private val updateProcess by lazy {
         scope.launch(start = CoroutineStart.LAZY, context = main) {
+            var a = 0
             while (isActive) {
                 musicController.setPlayerPosition(exoPlayer.currentPosition)
                 updatePlaybackState()
+                a++
                 delay(200)
             }
         }
     }
 
     override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot {
+        Timber.d("onGetRoot: $clientPackageName, $clientUid, $rootHints")
         return BrowserRoot(MEDIA_BROWSER_ROOT_ID, null)
     }
 
@@ -110,7 +114,7 @@ class MusicService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
 
-        mediaSession = MediaSessionCompat(this, "KanadeMediaSession").apply {
+        mediaSession = MediaSessionCompat(this, "KanadeMediaSession3").apply {
             setSessionActivity(null)
             setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
             this@MusicService.sessionToken = sessionToken
@@ -132,6 +136,7 @@ class MusicService : MediaBrowserServiceCompat() {
         updateProcess.start()
 
         scope.launch {
+            delay(1000)
             notificationManager.setForegroundService(true)
         }
     }
@@ -144,6 +149,7 @@ class MusicService : MediaBrowserServiceCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
+        mediaSession.release()
         exoPlayer.stop()
         exoPlayer.release()
     }
@@ -157,7 +163,7 @@ class MusicService : MediaBrowserServiceCompat() {
         }
 
         val playbackState = PlaybackStateCompat.Builder()
-            .setActions(PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP or PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_FAST_FORWARD or PlaybackStateCompat.ACTION_REWIND)
+            .setActions(PlaybackStateCompat.ACTION_PREPARE or PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP or PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_FAST_FORWARD or PlaybackStateCompat.ACTION_REWIND)
             .setState(playerState, exoPlayer.currentPosition, 1f)
             .build()
 

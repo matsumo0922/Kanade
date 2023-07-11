@@ -57,12 +57,19 @@ class NotificationManager(
         }
         val mainPendingIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
+        val isPlaying = (musicController.playerState.first() == PlayerState.Playing)
+        val pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+
+        val stopActionIntent = Intent(PlaybackStateCompat.STATE_BUFFERING.toString()).apply { addFlags(0x01000000) }
+        val stopActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, stopActionIntent, pendingIntentFlags)
+
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionToken)
                     .setShowActionsInCompactView(0, 1, 2)
-                    .setShowCancelButton(true),
+                    .setShowCancelButton(true)
+                    .setCancelButtonIntent(stopActionPendingIntent),
             )
             .setSmallIcon(R.drawable.vec_songs_off)
             .setContentTitle(song?.title)
@@ -70,11 +77,7 @@ class NotificationManager(
             .setAutoCancel(false)
             .setColorized(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setCategory(Notification.CATEGORY_SERVICE)
             .setContentIntent(mainPendingIntent)
-
-        val isPlaying = (musicController.playerState.first() == PlayerState.Playing)
-        val pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 
         val playActionIntent = Intent(PlaybackStateCompat.ACTION_PLAY.toString()).apply { addFlags(0x01000000) }
         val playActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, playActionIntent, pendingIntentFlags)

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v4.media.session.PlaybackStateCompat
 import caios.android.kanade.core.model.player.PlayerEvent
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -14,6 +15,8 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
     lateinit var musicController: MusicController
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        Timber.d("onReceive: ${intent?.action?.toLongOrNull()}")
+
         val playerEvent = when (intent?.action?.toLongOrNull()) {
             PlaybackStateCompat.ACTION_PLAY -> PlayerEvent.Play
             PlaybackStateCompat.ACTION_PAUSE -> PlayerEvent.Pause

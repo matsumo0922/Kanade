@@ -87,6 +87,7 @@ class MediaSessionManager(
     }
 
     val callback = object : MediaSessionCompat.Callback() {
+
         override fun onPlay() {
             if (!musicController.isInitialized.value) {
                 Timber.d("onPlay: cannot play because MusicController is not initialized")
@@ -96,6 +97,7 @@ class MediaSessionManager(
             }
 
             withAudioFocus {
+                mediaSession.isActive = true
                 player.play()
             }
         }
@@ -108,6 +110,7 @@ class MediaSessionManager(
         override fun onStop() {
             releaseAudioFocus()
             player.stop()
+            mediaSession.isActive = false
         }
 
         override fun onSkipToNext() {

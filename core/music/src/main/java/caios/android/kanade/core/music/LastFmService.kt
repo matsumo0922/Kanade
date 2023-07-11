@@ -32,6 +32,7 @@ class LastFmService : Service(), CoroutineScope {
     private val manager by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     private var processJob: Job? = null
+    private val scrapingInterval = if (BuildConfig.DEBUG) 500L else 1000L * 3
 
     @Inject
     @Dispatcher(KanadeDispatcher.IO)
@@ -98,7 +99,7 @@ class LastFmService : Service(), CoroutineScope {
             }
 
             downloadedCount++
-            delay(SCRAPING_INTERVAL)
+            delay(scrapingInterval)
         }
 
         for (album in notDownloadedAlbums) {
@@ -112,7 +113,7 @@ class LastFmService : Service(), CoroutineScope {
             }
 
             downloadedCount++
-            delay(SCRAPING_INTERVAL)
+            delay(scrapingInterval)
         }
 
         musicRepository.fetchAlbumArtwork()
@@ -166,10 +167,8 @@ class LastFmService : Service(), CoroutineScope {
     }
 
     companion object {
-        const val NOTIFY_ID = 94
-        const val NOTIFY_INTENT_ID = 95
-        const val NOTIFY_CHANNEL_ID = "KanadeNotify2"
-
-        const val SCRAPING_INTERVAL = 1000L * 3
+        private const val NOTIFY_ID = 94
+        private const val NOTIFY_INTENT_ID = 95
+        private const val NOTIFY_CHANNEL_ID = "KanadeNotify2"
     }
 }

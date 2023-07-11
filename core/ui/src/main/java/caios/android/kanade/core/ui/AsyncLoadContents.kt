@@ -45,10 +45,12 @@ fun <T> AsyncLoadContents(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            ErrorView(
-                errorState = screenState as ScreenState.Error,
-                retryAction = retryAction,
-            )
+            if (screenState is ScreenState.Error) {
+                ErrorView(
+                    errorState = screenState,
+                    retryAction = retryAction,
+                )
+            }
         }
     }
 }
@@ -88,10 +90,12 @@ fun <T> FullAsyncLoadContents(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            ErrorView(
-                errorState = screenState as ScreenState.Error,
-                retryAction = retryAction,
-            )
+            if (screenState is ScreenState.Error) {
+                ErrorView(
+                    errorState = screenState,
+                    retryAction = retryAction,
+                )
+            }
         }
     }
 }

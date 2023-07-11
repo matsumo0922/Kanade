@@ -70,7 +70,7 @@ internal fun MainControllerArtworkSection(
                 }
             }
 
-            if (realIndex != lastPlayedIndex && realIndex != index) {
+            if (realIndex != lastPlayedIndex) {
                 lastPlayedIndex = realIndex
                 onSwipeArtwork.invoke(realIndex)
             }

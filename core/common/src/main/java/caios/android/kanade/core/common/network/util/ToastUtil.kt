@@ -1,6 +1,7 @@
 package caios.android.kanade.core.common.network.util
 
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
 import androidx.annotation.StringRes
 
@@ -17,6 +18,16 @@ object ToastUtil {
         if (doCancel) cancel()
         currentToast = Toast.makeText(context, text, duration)
         currentToast?.show()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            currentToast?.addCallback(
+                object : Toast.Callback() {
+                    override fun onToastHidden() {
+                        currentToast = null
+                    }
+                }
+            )
+        }
     }
 
     fun show(
