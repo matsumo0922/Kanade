@@ -22,7 +22,7 @@ class QueueViewModel @Inject constructor(
 ) : ViewModel() {
 
     val screenState = combine(musicController.currentQueue, musicController.playerState, ::Pair).map { (queue, state) ->
-        if (queue != null) {
+        if (queue != null && queue.items.isNotEmpty()) {
             ScreenState.Idle(
                 QueueUiState(
                     queue = queue.items.mapIndexed { index, song -> QueueItem(song, index) },

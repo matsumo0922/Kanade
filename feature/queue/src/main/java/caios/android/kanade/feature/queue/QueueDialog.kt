@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -19,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
@@ -112,12 +110,6 @@ fun Activity.showQueueDialog(
     showAsButtonSheet(userData, rectCorner = true) { onDismiss ->
         val viewModel = hiltViewModel<QueueViewModel>()
         val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-
-        LaunchedEffect(screenState) {
-            if (screenState is ScreenState.Error) {
-                onDismiss.invoke()
-            }
-        }
 
         AsyncLoadContents(
             modifier = Modifier.fillMaxSize(),

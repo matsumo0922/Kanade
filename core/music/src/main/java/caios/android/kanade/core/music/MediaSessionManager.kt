@@ -92,7 +92,17 @@ class MediaSessionManager(
             if (!musicController.isInitialized.value) {
                 Timber.d("onPlay: cannot play because MusicController is not initialized")
 
-                musicController.playerEvent(PlayerEvent.Initialize(true))
+                scope.launch {
+                    musicRepository.fetchSongs()
+                    musicRepository.fetchArtists()
+                    musicRepository.fetchAlbums()
+                    musicRepository.fetchPlaylist()
+                    musicRepository.fetchAlbumArtwork()
+                    musicRepository.fetchArtistArtwork()
+
+                    musicController.playerEvent(PlayerEvent.Initialize(true))
+                }
+
                 return
             }
 

@@ -42,7 +42,7 @@ class NotificationManager(
                 service.startForeground(NOTIFY_ID, notification)
             } else {
                 manager.notify(NOTIFY_ID, notification)
-                service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+                service.stopForeground(false)
             }
         } catch (e: Throwable) {
             Timber.e(e, "cannot set foreground service.")
