@@ -35,14 +35,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.ArtistDetail
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.FullAsyncLoadContents
 import caios.android.kanade.core.ui.music.AlbumDetailHeader
 import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SongDetailHeader
 import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.CoordinatorData
 import caios.android.kanade.core.ui.view.CoordinatorScaffold
+import caios.android.kanade.feature.artist.detail.items.ArtistDetailBiography
 
 @Composable
 internal fun ArtistDetailRoute(
@@ -62,7 +64,7 @@ internal fun ArtistDetailRoute(
         viewModel.fetch(artistId)
     }
 
-    AsyncLoadContents(
+    FullAsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
         retryAction = { terminate.invoke() },
@@ -71,6 +73,7 @@ internal fun ArtistDetailRoute(
             ArtistDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 artist = it.artist,
+                artistDetail = it.artistDetail,
                 onClickSeeAll = navigateToSongDetail,
                 onClickSongHolder = viewModel::onNewPlay,
                 onClickSongMenu = navigateToSongMenu,
@@ -87,6 +90,7 @@ internal fun ArtistDetailRoute(
 @Composable
 private fun ArtistDetailScreen(
     artist: Artist,
+    artistDetail: ArtistDetail?,
     onClickSeeAll: (String, List<Long>) -> Unit,
     onClickSongHolder: (List<Song>, Int) -> Unit,
     onClickSongMenu: (Song) -> Unit,
@@ -164,6 +168,25 @@ private fun ArtistDetailScreen(
                             onClickMenu = { onClickAlbumMenu.invoke(album) },
                         )
                     }
+                }
+            }
+
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                )
+            }
+
+            artistDetail?.biography?.also {
+                item {
+                    ArtistDetailBiography(
+                        modifier = Modifier.fillMaxWidth(),
+                        biography = it,
+                    )
                 }
             }
 

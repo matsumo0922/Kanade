@@ -1,7 +1,9 @@
 package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.AlbumDetail
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.ArtistDetail
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.PlayHistory
@@ -35,6 +37,8 @@ interface MusicRepository {
     fun getPlaylist(playlistId: Long): Playlist?
     fun getLyrics(song: Song): Lyrics?
     fun getPlayHistory(song: Song): List<PlayHistory>
+    fun getArtistDetail(artist: Artist): ArtistDetail?
+    fun getAlbumDetail(album: Album): AlbumDetail?
 
     suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int)
     suspend fun saveProgress(progress: Long)

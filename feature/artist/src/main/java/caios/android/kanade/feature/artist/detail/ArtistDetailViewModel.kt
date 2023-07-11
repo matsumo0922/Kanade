@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.ArtistDetail
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.ShuffleMode
@@ -27,9 +28,15 @@ class ArtistDetailViewModel @Inject constructor(
     fun fetch(artistId: Long) {
         viewModelScope.launch {
             val artist = musicRepository.getArtist(artistId)
+            val artistDetail = artist?.let { musicRepository.getArtistDetail(it) }
 
             screenState.value = if (artist != null) {
-                ScreenState.Idle(ArtistDetailUiState(artist))
+                ScreenState.Idle(
+                    ArtistDetailUiState(
+                        artist = artist,
+                        artistDetail = artistDetail,
+                    )
+                )
             } else {
                 ScreenState.Error(
                     message = R.string.error_no_data,
@@ -66,4 +73,5 @@ class ArtistDetailViewModel @Inject constructor(
 @Stable
 data class ArtistDetailUiState(
     val artist: Artist,
+    val artistDetail: ArtistDetail?,
 )

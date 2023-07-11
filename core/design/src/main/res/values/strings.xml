@@ -23,6 +23,7 @@
     <string name="common_albums">アルバム</string>
     <string name="common_playlists">プレイリスト</string>
     <string name="common_genres">ジャンル</string>
+    <string name="common_details">詳細</string>
 
     <!-- Common Unit -->
     <string name="unit_song">%1$s 曲</string>

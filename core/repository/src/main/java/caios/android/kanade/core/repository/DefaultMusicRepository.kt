@@ -4,7 +4,9 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.AlbumDetail
 import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.ArtistDetail
 import caios.android.kanade.core.model.music.LastQueue
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.PlayHistory
@@ -31,6 +33,7 @@ class DefaultMusicRepository @Inject constructor(
     private val artworkRepository: ArtworkRepository,
     private val lyricsRepository: LyricsRepository,
     private val playHistoryRepository: PlayHistoryRepository,
+    private val lastFmRepository: LastFmRepository,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
 ) : MusicRepository {
 
@@ -81,6 +84,14 @@ class DefaultMusicRepository @Inject constructor(
 
     override fun getPlayHistory(song: Song): List<PlayHistory> {
         return playHistoryRepository.gets(song)
+    }
+
+    override fun getArtistDetail(artist: Artist): ArtistDetail? {
+        return lastFmRepository.getArtistDetails()[artist.artistId]
+    }
+
+    override fun getAlbumDetail(album: Album): AlbumDetail? {
+        return lastFmRepository.getAlbumDetails()[album.albumId]
     }
 
     override suspend fun saveQueue(currentQueue: List<Song>, originalQueue: List<Song>, index: Int) {
