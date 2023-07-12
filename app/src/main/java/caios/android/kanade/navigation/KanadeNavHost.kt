@@ -22,6 +22,8 @@ import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.artist.top.artistTopScreen
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
+import caios.android.kanade.feature.lyrics.top.lyricsTopScreen
+import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
 import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
 import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
@@ -72,6 +74,9 @@ fun KanadeNavHost(
             navigateToAlbumDetail = {
                 navController.navigateToAlbumDetail(it)
             },
+            navigateToLyricsTop = {
+                navController.navigateToLyricsTop(it)
+            }
         )
     }
 
@@ -265,6 +270,12 @@ fun KanadeNavHost(
             navigateToCreatePlaylist = { songIds ->
                 navController.navigateToCreatePlaylist(songIds)
             },
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        lyricsTopScreen(
             terminate = {
                 navController.popBackStack()
             },

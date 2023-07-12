@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -53,6 +54,7 @@ import caios.android.kanade.core.ui.amlv.rememberLyricsViewState
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
+import caios.android.kanade.core.ui.controller.items.MainControllerEmptyLyricsItem
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerTextSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
@@ -60,6 +62,7 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
@@ -82,16 +85,16 @@ fun MainController(
     onClickShuffle: (ShuffleMode) -> Unit,
     onClickRepeat: (RepeatMode) -> Unit,
     onClickSeek: (Float) -> Unit,
-    onClickLyrics: () -> Unit,
+    onClickLyrics: (Long) -> Unit,
     onClickFavorite: () -> Unit,
     onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
     onClickKaraoke: () -> Unit,
     onFetchFavorite: suspend (Song) -> Boolean,
-    onRequestLyrics: (Song) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val isDarkMode = uiState.userData?.isDarkMode()
     var isFavorite by remember { mutableStateOf(false) }
     var isLyricsVisible by remember { mutableStateOf(false) }
@@ -170,19 +173,33 @@ fun MainController(
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {
-                LyricsView(
-                    state = state,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(
-                        top = 24.dp,
-                        bottom = 32.dp,
-                        start = 16.dp,
-                        end = 16.dp,
-                    ),
-                    darkTheme = isDarkMode ?: false,
-                    fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
-                    fontSize = 28.sp,
-                )
+                if (uiState.lyrics != null) {
+                    LyricsView(
+                        state = state,
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(
+                            top = 24.dp,
+                            bottom = 32.dp,
+                            start = 16.dp,
+                            end = 16.dp,
+                        ),
+                        darkTheme = isDarkMode ?: false,
+                        fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
+                        fontSize = 28.sp,
+                    )
+                } else {
+                    MainControllerEmptyLyricsItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClickSetLyrics = {
+                            scope.launch {
+                                uiState.song?.let {
+                                    onClickClose.invoke()
+                                    onClickLyrics.invoke(it.id)
+                                }
+                            }
+                        },
+                    )
+                }
             }
 
             androidx.compose.animation.AnimatedVisibility(
@@ -247,10 +264,7 @@ fun MainController(
                 .fillMaxWidth()
                 .wrapContentSize(),
             isFavorite = isFavorite,
-            onClickLyrics = {
-                isLyricsVisible = !isLyricsVisible
-                uiState.song?.let { onRequestLyrics.invoke(it) }
-            },
+            onClickLyrics = { isLyricsVisible = !isLyricsVisible },
             onClickFavorite = {
                 isFavorite = !isFavorite
                 onClickFavorite.invoke()
@@ -335,7 +349,6 @@ private fun Preview() {
             onClickSleepTimer = { },
             onClickQueue = { },
             onClickKaraoke = { },
-            onRequestLyrics = { },
             onFetchFavorite = { true },
         )
     }

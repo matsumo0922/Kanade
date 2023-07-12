@@ -18,5 +18,5 @@ dependencies {
 
     implementation(libs.androidx.media)
 
-    implementation(libs.skrapeit)
+    implementation(libs.jsoup)
 }

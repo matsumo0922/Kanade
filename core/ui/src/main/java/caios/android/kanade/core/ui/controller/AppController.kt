@@ -25,13 +25,12 @@ fun AppController(
     onClickBottomController: () -> Unit,
     onClickCloseExpanded: () -> Unit,
     onClickFavorite: (Song) -> Unit,
-    onRequestLyrics: (Song) -> Unit,
     onFetchFavorite: suspend (Song) -> Boolean,
     navigateToSearch: () -> Unit,
     navigateToArtist: (Long) -> Unit,
     navigateToAlbum: (Long) -> Unit,
     navigateToAddToPlaylist: (Long) -> Unit,
-    navigateToLyrics: () -> Unit,
+    navigateToLyrics: (Long) -> Unit,
     navigateToSleepTimer: () -> Unit,
     navigateToQueue: () -> Unit,
     navigateToKaraoke: () -> Unit,
@@ -88,7 +87,6 @@ fun AppController(
                 onClickSleepTimer = navigateToSleepTimer,
                 onClickQueue = navigateToQueue,
                 onClickKaraoke = navigateToKaraoke,
-                onRequestLyrics = onRequestLyrics,
                 onFetchFavorite = onFetchFavorite,
             )
         }

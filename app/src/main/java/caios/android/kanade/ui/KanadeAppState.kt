@@ -22,6 +22,7 @@ import caios.android.kanade.feature.artist.top.ArtistTopRoute
 import caios.android.kanade.feature.artist.top.navigateToArtistTop
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.navigateToHome
+import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.top.PlaylistTopRoute
@@ -107,6 +108,9 @@ class KanadeAppState(
                     navigateToAlbumDetail = { albumId ->
                         navController.navigateToAlbumDetail(albumId)
                     },
+                    navigateToLyricsTop = { songId ->
+                        navController.navigateToLyricsTop(songId)
+                    }
                 )
             },
             navigateToAddToPlaylist = {

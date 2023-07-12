@@ -227,6 +227,7 @@ fun Activity.showSongMenuDialog(
     navigateToAddToPlaylist: (List<Long>) -> Unit,
     navigateToArtistDetail: (Long) -> Unit,
     navigateToAlbumDetail: (Long) -> Unit,
+    navigateToLyricsTop: (Long) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         val scope = rememberCoroutineScope()
@@ -260,7 +261,7 @@ fun Activity.showSongMenuDialog(
             onClickAlbum = { navigateToAlbumDetail.invoke(it.albumId) },
             onClickAnalyzeMusicInfo = { /*TODO*/ },
             onClickEditMusicInfo = { /*TODO*/ },
-            onClickLyrics = { /*TODO*/ },
+            onClickLyrics = { navigateToLyricsTop.invoke(it.id) },
             onClickMusicDetailInfo = { /*TODO*/ },
             onClickShare = { /*TODO*/ },
             onClickDelete = { /*TODO*/ },

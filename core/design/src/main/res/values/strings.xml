@@ -96,6 +96,9 @@
     <string name="controller_menu_edit">音楽情報を編集</string>
     <string name="controller_menu_analyze">音楽情報を解析</string>
     <string name="controller_menu_detail_info">詳細情報</string>
+    <string name="controller_lyrics_empty_title">歌詞が設定されていません</string>
+    <string name="controller_lyrics_empty_description">以下のボタンより歌詞を編集できます</string>
+    <string name="controller_lyrics_empty_button">歌詞を編集</string>
 
     <!-- Menu -->
     <string name="menu_play_next">次に再生</string>
@@ -159,4 +162,7 @@
     <string name="playlist_error_rename_system_playlist">システムが管理しているプレイリストは名前を変更できません</string>
     <string name="playlist_name">プレイリスト名</string>
     <string name="playlist_rename_title">プレイリスト名を変更</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics_edit_title">歌詞を編集</string>
 </resources>

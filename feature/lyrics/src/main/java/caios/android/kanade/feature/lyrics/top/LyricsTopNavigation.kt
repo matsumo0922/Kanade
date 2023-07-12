@@ -1,12 +1,13 @@
 package caios.android.kanade.feature.lyrics.top
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import caios.android.kanade.core.design.animation.NavigateAnimation
-import caios.android.kanade.core.model.music.Song
 
 const val LyricsTopId = "lyricsTopId"
 const val LyricsTopRoute = "lyricsTop/{$LyricsTopId}"
@@ -18,7 +19,6 @@ fun NavController.navigateToLyricsTop(songId: Long) {
 }
 
 fun NavGraphBuilder.lyricsTopScreen(
-    navigateToSongMenu: (Song) -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
@@ -29,6 +29,10 @@ fun NavGraphBuilder.lyricsTopScreen(
         popEnterTransition = { NavigateAnimation.Detail.popEnter },
         popExitTransition = { NavigateAnimation.Detail.popExit },
     ) {
-
+        LyricsTopRoute(
+            modifier = Modifier.fillMaxSize(),
+            songId = it.arguments!!.getLong(LyricsTopId),
+            terminate = terminate,
+        )
     }
 }

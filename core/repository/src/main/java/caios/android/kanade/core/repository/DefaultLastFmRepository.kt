@@ -31,13 +31,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
-import it.skrape.core.htmlDocument
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.jsoup.Jsoup
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -161,9 +161,10 @@ class DefaultLastFmRepository @Inject constructor(
 
     private suspend fun fetchArtistArtwork(artistFmUrl: String): String? {
         return runCatching {
-            htmlDocument(client.get(artistFmUrl).bodyAsText()) {
-                findFirst(".header-new-background-image").attribute("content")
-            }
+            val html = client.get(artistFmUrl).bodyAsText()
+            val doc = Jsoup.parse(html)
+
+            doc.selectFirst(".header-new-background-image")?.attr("content")
         }.getOrNull()
     }
 

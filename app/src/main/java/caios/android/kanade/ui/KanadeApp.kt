@@ -60,6 +60,7 @@ import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
+import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.search.navigateToSearch
 import caios.android.kanade.navigation.KanadeNavHost
@@ -224,11 +225,6 @@ fun KanadeApp(
                                     musicViewModel.onFavorite(it)
                                 }
                             },
-                            onRequestLyrics = {
-                                scope.launch {
-                                    musicViewModel.fetchLyrics(it)
-                                }
-                            },
                             onFetchFavorite = {
                                 musicViewModel.fetchFavorite(it)
                             },
@@ -244,7 +240,9 @@ fun KanadeApp(
                             navigateToSearch = {
                                 appState.navController.navigateToSearch()
                             },
-                            navigateToLyrics = { },
+                            navigateToLyrics = {
+                                appState.navController.navigateToLyricsTop(it)
+                            },
                             navigateToSleepTimer = { },
                             navigateToQueue = { appState.navigateToQueue(activity, userData, musicViewModel) },
                             navigateToKaraoke = { },
