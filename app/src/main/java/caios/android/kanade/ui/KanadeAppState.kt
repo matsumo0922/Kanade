@@ -110,7 +110,7 @@ class KanadeAppState(
                     },
                     navigateToLyricsTop = { songId ->
                         navController.navigateToLyricsTop(songId)
-                    }
+                    },
                 )
             },
             navigateToAddToPlaylist = {

@@ -76,7 +76,7 @@ fun KanadeNavHost(
             },
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
-            }
+            },
         )
     }
 
