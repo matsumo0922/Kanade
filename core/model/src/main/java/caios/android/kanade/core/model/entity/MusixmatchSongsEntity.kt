@@ -1,30 +1,29 @@
 package caios.android.kanade.core.model.entity
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class MusixmatchSongsEntity(
     @SerialName("message")
-    val message: Message
+    val message: Message,
 ) {
     @Serializable
     data class Message(
         @SerialName("body")
         val body: Body,
         @SerialName("header")
-        val header: Header
+        val header: Header,
     ) {
         @Serializable
         data class Body(
             @SerialName("track_list")
-            val trackList: List<Track>
+            val trackList: List<Track>,
         ) {
             @Serializable
             data class Track(
                 @SerialName("track")
-                val track: Track
+                val track: Track,
             ) {
                 @Serializable
                 data class Track(
@@ -107,17 +106,17 @@ data class MusixmatchSongsEntity(
                     @SerialName("track_xboxmusic_id")
                     val trackXboxmusicId: String,
                     @SerialName("updated_time")
-                    val updatedTime: String
+                    val updatedTime: String,
                 ) {
                     @Serializable
                     data class PrimaryGenres(
                         @SerialName("music_genre_list")
-                        val musicGenreList: List<MusicGenre>
+                        val musicGenreList: List<MusicGenre>,
                     ) {
                         @Serializable
                         data class MusicGenre(
                             @SerialName("music_genre")
-                            val musicGenre: MusicGenre
+                            val musicGenre: MusicGenre,
                         ) {
                             @Serializable
                             data class MusicGenre(
@@ -130,7 +129,7 @@ data class MusixmatchSongsEntity(
                                 @SerialName("music_genre_parent_id")
                                 val musicGenreParentId: Long,
                                 @SerialName("music_genre_vanity")
-                                val musicGenreVanity: String
+                                val musicGenreVanity: String,
                             )
                         }
                     }
@@ -138,12 +137,12 @@ data class MusixmatchSongsEntity(
                     @Serializable
                     data class SecondaryGenres(
                         @SerialName("music_genre_list")
-                        val musicGenreList: List<MusicGenre>
+                        val musicGenreList: List<MusicGenre>,
                     ) {
                         @Serializable
                         data class MusicGenre(
                             @SerialName("music_genre")
-                            val musicGenre: MusicGenre
+                            val musicGenre: MusicGenre,
                         ) {
                             @Serializable
                             data class MusicGenre(
@@ -156,7 +155,7 @@ data class MusixmatchSongsEntity(
                                 @SerialName("music_genre_parent_id")
                                 val musicGenreParentId: Long,
                                 @SerialName("music_genre_vanity")
-                                val musicGenreVanity: String
+                                val musicGenreVanity: String,
                             )
                         }
                     }
@@ -164,14 +163,14 @@ data class MusixmatchSongsEntity(
                     @Serializable
                     data class TrackNameTranslation(
                         @SerialName("track_name_translation")
-                        val trackNameTranslation: TrackNameTranslation
+                        val trackNameTranslation: TrackNameTranslation,
                     ) {
                         @Serializable
                         data class TrackNameTranslation(
                             @SerialName("language")
                             val language: String,
                             @SerialName("translation")
-                            val translation: String
+                            val translation: String,
                         )
                     }
                 }
@@ -185,7 +184,7 @@ data class MusixmatchSongsEntity(
             @SerialName("execute_time")
             val executeTime: Double,
             @SerialName("status_code")
-            val statusCode: Int
+            val statusCode: Int,
         )
     }
 }

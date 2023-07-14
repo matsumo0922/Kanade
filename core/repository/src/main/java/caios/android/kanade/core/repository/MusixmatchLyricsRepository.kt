@@ -43,7 +43,7 @@ class MusixmatchLyricsRepository @Inject constructor(
             onFailure = {
                 Timber.w(it)
                 null
-            }
+            },
         )
     }
 

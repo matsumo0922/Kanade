@@ -1,25 +1,24 @@
 package caios.android.kanade.core.model.entity
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class MusixmatchLyricsEntity(
     @SerialName("message")
-    val message: Message
+    val message: Message,
 ) {
     @Serializable
     data class Message(
         @SerialName("body")
         val body: Body,
         @SerialName("header")
-        val header: Header
+        val header: Header,
     ) {
         @Serializable
         data class Body(
             @SerialName("subtitle")
-            val subtitle: Subtitle
+            val subtitle: Subtitle,
         ) {
             @Serializable
             data class Subtitle(
@@ -59,7 +58,7 @@ data class MusixmatchLyricsEntity(
             @SerialName("instrumental")
             val instrumental: Int,
             @SerialName("status_code")
-            val statusCode: Int
+            val statusCode: Int,
         )
     }
 }

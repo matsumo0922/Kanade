@@ -53,8 +53,8 @@ class LyricsTopViewModel @Inject constructor(
                     ScreenState.Idle(
                         LyricsTopUiState(
                             song = song,
-                            lyrics = it
-                        )
+                            lyrics = it,
+                        ),
                     )
                 },
                 onFailure = {
@@ -62,7 +62,7 @@ class LyricsTopViewModel @Inject constructor(
                         LyricsTopUiState(
                             song = song,
                             lyrics = null,
-                        )
+                        ),
                     )
                 },
             )
