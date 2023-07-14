@@ -6,4 +6,5 @@ data class KanadeConfig(
     val isDebug: Boolean,
     val lastFmApiKey: String,
     val lastFmApiSecret: String,
+    val musixmatchApiKey: String,
 )

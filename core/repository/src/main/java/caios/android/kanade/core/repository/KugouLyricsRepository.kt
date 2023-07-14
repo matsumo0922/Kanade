@@ -15,7 +15,7 @@ import io.ktor.util.decodeBase64String
 import timber.log.Timber
 import javax.inject.Inject
 
-class DefaultLyricsRepository @Inject constructor(
+class KugouLyricsRepository @Inject constructor(
     private val client: HttpClient,
     private val lyricsPreference: LyricsPreference,
 ) : LyricsRepository {

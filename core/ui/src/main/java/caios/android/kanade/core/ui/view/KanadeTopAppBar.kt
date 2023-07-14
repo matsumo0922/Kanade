@@ -42,6 +42,7 @@ fun KanadeTopAppBar(
     onClickMenuAddToPlaylist: () -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
+    isVisibleMenu: Boolean = true,
 ) {
     val context = LocalContext.current
     var isExpandedMenu by remember { mutableStateOf(false) }
@@ -70,57 +71,59 @@ fun KanadeTopAppBar(
             )
         },
         actions = {
-            Box {
-                Icon(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .aspectRatio(1f)
-                        .clip(RoundedCornerShape(50))
-                        .clickable { isExpandedMenu = !isExpandedMenu }
-                        .padding(8.dp),
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = null,
-                )
+            if (isVisibleMenu) {
+                Box {
+                    Icon(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(50))
+                            .clickable { isExpandedMenu = !isExpandedMenu }
+                            .padding(8.dp),
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null,
+                    )
 
-                DropdownMenu(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .background(
-                            MaterialTheme.colorScheme.applyTonalElevation(
-                                backgroundColor = MaterialTheme.colorScheme.surface,
-                                elevation = 3.dp,
+                    DropdownMenu(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .background(
+                                MaterialTheme.colorScheme.applyTonalElevation(
+                                    backgroundColor = MaterialTheme.colorScheme.surface,
+                                    elevation = 3.dp,
+                                ),
                             ),
-                        ),
-                    expanded = isExpandedMenu,
-                    onDismissRequest = { isExpandedMenu = false },
-                ) {
-                    listOf(
-                        DropDownMenuItemData(
-                            text = R.string.menu_play_next,
-                            onClick = {
-                                onClickMenuPlayNext.invoke()
-                                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                            },
-                        ),
-                        DropDownMenuItemData(
-                            text = R.string.menu_add_to_queue,
-                            onClick = {
-                                onClickMenuAddToQueue.invoke()
-                                ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                            },
-                        ),
-                        DropDownMenuItemData(
-                            text = R.string.menu_add_to_playlist,
-                            onClick = onClickMenuAddToPlaylist,
-                        ),
-                    ).forEach {
-                        DropDownMenuItem(
-                            text = it.text,
-                            onClick = {
-                                isExpandedMenu = false
-                                it.onClick.invoke()
-                            },
-                        )
+                        expanded = isExpandedMenu,
+                        onDismissRequest = { isExpandedMenu = false },
+                    ) {
+                        listOf(
+                            DropDownMenuItemData(
+                                text = R.string.menu_play_next,
+                                onClick = {
+                                    onClickMenuPlayNext.invoke()
+                                    ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                                },
+                            ),
+                            DropDownMenuItemData(
+                                text = R.string.menu_add_to_queue,
+                                onClick = {
+                                    onClickMenuAddToQueue.invoke()
+                                    ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                                },
+                            ),
+                            DropDownMenuItemData(
+                                text = R.string.menu_add_to_playlist,
+                                onClick = onClickMenuAddToPlaylist,
+                            ),
+                        ).forEach {
+                            DropDownMenuItem(
+                                text = it.text,
+                                onClick = {
+                                    isExpandedMenu = false
+                                    it.onClick.invoke()
+                                },
+                            )
+                        }
                     }
                 }
             }

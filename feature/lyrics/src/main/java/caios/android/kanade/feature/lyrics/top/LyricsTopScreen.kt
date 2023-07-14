@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.design.R
@@ -48,6 +50,7 @@ internal fun LyricsTopRoute(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 song = it.song,
                 lyrics = it.lyrics,
+                onFetchSyncedLyrics = viewModel::fetchLyrics,
                 onTerminate = terminate,
             )
         }
@@ -59,6 +62,7 @@ internal fun LyricsTopRoute(
 private fun LyricsTopScreen(
     song: Song,
     lyrics: Lyrics?,
+    onFetchSyncedLyrics: (Song) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -76,6 +80,7 @@ private fun LyricsTopScreen(
                 onClickMenuAddToQueue = { },
                 onClickMenuAddToPlaylist = { },
                 onTerminate = onTerminate,
+                isVisibleMenu = false,
             )
         },
     ) { paddingValues ->
@@ -87,9 +92,16 @@ private fun LyricsTopScreen(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "${song.title},${lyrics != null}",
+                text = lyrics?.text ?: "no data",
                 style = MaterialTheme.typography.bodyMedium,
             )
+
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = { onFetchSyncedLyrics.invoke(song) },
+            ) {
+                Text(stringResource(R.string.lyrics_datastore_musixmatch))
+            }
         }
     }
 }

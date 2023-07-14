@@ -31,6 +31,7 @@ import caios.android.kanade.core.design.theme.Teal40
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.util.extraSize
 import coil.compose.AsyncImage
+import coil.compose.LocalImageLoader
 
 @Composable
 fun Artwork(
@@ -71,6 +72,7 @@ private fun ArtworkFromMediaStore(
         model = artwork.uri,
         contentDescription = null,
         contentScale = ContentScale.Crop,
+        imageLoader = LocalImageLoader.current,
     )
 }
 

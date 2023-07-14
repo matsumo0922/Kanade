@@ -21,6 +21,7 @@ object AppModule {
             isDebug = BuildConfig.DEBUG,
             lastFmApiKey = BuildConfig.LAST_FM_API_KEY,
             lastFmApiSecret = BuildConfig.LAST_FM_API_SECRET,
+            musixmatchApiKey = BuildConfig.MUSIXMATCH_API_KEY,
         )
     }
 }

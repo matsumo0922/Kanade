@@ -17,6 +17,7 @@ import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
+import caios.android.kanade.core.repository.di.LyricsKugou
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -31,9 +32,9 @@ class DefaultMusicRepository @Inject constructor(
     private val albumRepository: AlbumRepository,
     private val playlistRepository: PlaylistRepository,
     private val artworkRepository: ArtworkRepository,
-    private val lyricsRepository: LyricsRepository,
     private val playHistoryRepository: PlayHistoryRepository,
     private val lastFmRepository: LastFmRepository,
+    @LyricsKugou private val lyricsRepository: LyricsRepository,
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
 ) : MusicRepository {
 

@@ -12,6 +12,9 @@ data class Lyrics(
     val lines: List<Line>,
     val isSynchronized: Boolean,
 ) {
+    val text
+        get() = lines.joinToString(separator = "\n") { it.content }
+
     val optimalDurationMillis
         get() = lines.maxOfOrNull { it.startAt + it.duration } ?: 0L
 

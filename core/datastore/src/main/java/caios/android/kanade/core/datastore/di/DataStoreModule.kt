@@ -12,6 +12,7 @@ import caios.android.kanade.core.datastore.MusicPreference
 import caios.android.kanade.core.datastore.MusicPreferenceSerializer
 import caios.android.kanade.core.datastore.QueuePreference
 import caios.android.kanade.core.datastore.QueuePreferenceSerializer
+import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.datastore.UserPreference
 import caios.android.kanade.core.datastore.UserPreferenceSerializer
 import dagger.Module
@@ -80,5 +81,13 @@ object DataStoreModule {
         @ApplicationScope scope: CoroutineScope,
     ): LyricsPreference {
         return LyricsPreference(context, io, CoroutineScope(scope.coroutineContext + io))
+    }
+
+    @Provides
+    @Singleton
+    fun provideTokenPreference(
+        @ApplicationContext context: Context,
+    ): TokenPreference {
+        return TokenPreference(context)
     }
 }

@@ -7,15 +7,16 @@ import caios.android.kanade.core.repository.DefaultAlbumRepository
 import caios.android.kanade.core.repository.DefaultArtistRepository
 import caios.android.kanade.core.repository.DefaultArtworkRepository
 import caios.android.kanade.core.repository.DefaultLastFmRepository
-import caios.android.kanade.core.repository.DefaultLyricsRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
 import caios.android.kanade.core.repository.DefaultPlayHistoryRepository
 import caios.android.kanade.core.repository.DefaultPlaylistRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
+import caios.android.kanade.core.repository.KugouLyricsRepository
 import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
+import caios.android.kanade.core.repository.MusixmatchLyricsRepository
 import caios.android.kanade.core.repository.PlayHistoryRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import caios.android.kanade.core.repository.SongRepository
@@ -24,7 +25,16 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class LyricsKugou
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class LyricsMusixmatch
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -72,10 +82,18 @@ interface RepositoryModule {
         artworkRepository: DefaultArtworkRepository,
     ): ArtworkRepository
 
+    @LyricsKugou
     @Singleton
     @Binds
-    fun bindLyricsRepository(
-        lyricsRepository: DefaultLyricsRepository,
+    fun bindKugouLyricsRepository(
+        lyricsRepository: KugouLyricsRepository,
+    ): LyricsRepository
+
+    @LyricsMusixmatch
+    @Singleton
+    @Binds
+    fun bindMusixmatchLyricsRepository(
+        lyricsRepository: MusixmatchLyricsRepository,
     ): LyricsRepository
 
     @Singleton

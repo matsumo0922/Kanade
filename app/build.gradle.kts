@@ -3,6 +3,7 @@
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.ResValue
 import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.Serializable
 
 plugins {
     id("kanade.application")
@@ -49,8 +50,11 @@ android {
             val appName = if (it.buildType == "release") "Kanade" else "KanadeDebug3"
             it.resValues.put(it.makeResValueKey("string", "app_name"), ResValue(appName, null))
 
-            it.buildConfigFields.put("LAST_FM_API_KEY", BuildConfigField("String", localProperties.getProperty("LAST_FM_API_KEY") ?: System.getenv("LAST_FM_API_KEY") ?: "-", null))
-            it.buildConfigFields.put("LAST_FM_API_SECRET", BuildConfigField("String", localProperties.getProperty("LAST_FM_API_SECRET") ?: System.getenv("LAST_FM_API_SECRET") ?: "-", null))
+            it.buildConfigFields.apply {
+                putBuildConfig(localProperties, "LAST_FM_API_KEY")
+                putBuildConfig(localProperties, "LAST_FM_API_SECRET")
+                putBuildConfig(localProperties, "MUSIXMATCH_API_KEY")
+            }
         }
     }
 
@@ -108,3 +112,12 @@ dependencies {
 }
 
 plugins.apply("com.google.gms.google-services")
+
+fun MapProperty<String, BuildConfigField<out Serializable>>.putBuildConfig(
+    localProperties: Properties,
+    key: String,
+    type: String = "String",
+    comment: String? = null
+) {
+    put(key, BuildConfigField(type, localProperties.getProperty(key) ?: System.getenv(key) ?: "", comment))
+}

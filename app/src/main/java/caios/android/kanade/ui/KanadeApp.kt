@@ -162,8 +162,10 @@ fun KanadeApp(
                 }
             }
 
-            LaunchedEffect(musicViewModel.uiState.isInitialized) {
-                activity.startService(Intent(activity, LastFmService::class.java))
+            LaunchedEffect(musicViewModel.uiState.isReadyToFmService) {
+                if (musicViewModel.uiState.isReadyToFmService) {
+                    activity.startService(Intent(activity, LastFmService::class.java))
+                }
             }
 
             Scaffold(

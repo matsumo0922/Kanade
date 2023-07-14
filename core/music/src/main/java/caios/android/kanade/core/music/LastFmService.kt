@@ -127,6 +127,7 @@ class LastFmService : Service(), CoroutineScope {
             startForeground(NOTIFY_ID, createMusicNotification(baseContext, title, progress, max))
         } else {
             stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
         }
     }
 
