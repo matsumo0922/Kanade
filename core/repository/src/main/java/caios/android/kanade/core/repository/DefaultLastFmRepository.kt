@@ -130,16 +130,21 @@ class DefaultLastFmRepository @Inject constructor(
     }
 
     private suspend fun fetchAlbumInfo(artistName: String, albumName: String): LastFmAlbumDetailEntity? {
-        return client.get {
-            url(ENDPOINT)
-            parameter("api_key", kanadeConfig.lastFmApiKey)
-            parameter("lang", "ja")
-            parameter("autocorrect", 1)
-            parameter("format", "json")
-            parameter("artist", artistName)
-            parameter("album", albumName)
-            parameter("method", "album.getinfo")
-        }.parse()
+        return try {
+            client.get {
+                url(ENDPOINT)
+                parameter("api_key", kanadeConfig.lastFmApiKey)
+                parameter("lang", "ja")
+                parameter("autocorrect", 1)
+                parameter("format", "json")
+                parameter("artist", artistName)
+                parameter("album", albumName)
+                parameter("method", "album.getinfo")
+            }.parse()
+        } catch (e: Throwable) {
+            Timber.w(e)
+            null
+        }
     }
 
     private suspend fun fetchArtistInfo(artistName: String): LastFmArtistDetailEntity? {

@@ -79,6 +79,7 @@ private fun SearchScreen(
             screenState = screenState,
         ) { uiState ->
             SearchResultSection(
+                modifier = Modifier.fillMaxSize(),
                 uiState = uiState ?: SearchUiState(),
                 onClickSong = onClickSong,
                 onClickArtist = onClickArtist,

@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,6 +95,7 @@ fun MainController(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val view = LocalView.current
     val scope = rememberCoroutineScope()
     val isDarkMode = uiState.userData?.isDarkMode()
     var isFavorite by remember { mutableStateOf(false) }
@@ -127,6 +129,10 @@ fun MainController(
 
         artworkColor = getArtworkColor(context, artwork, isDarkMode ?: false)
         isFavorite = onFetchFavorite.invoke(song)
+    }
+
+    LaunchedEffect(isLyricsVisible) {
+        view.keepScreenOn = (isLyricsVisible && uiState.lyrics != null)
     }
 
     Column(

@@ -26,7 +26,7 @@ object HttpClientModule {
     fun provideHttpClient(): HttpClient {
         return HttpClient(OkHttp) {
             install(Logging) {
-                level = LogLevel.HEADERS
+                level = LogLevel.INFO
                 logger = object : Logger {
                     override fun log(message: String) {
                         Timber.d(message)

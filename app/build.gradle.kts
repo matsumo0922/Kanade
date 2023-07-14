@@ -119,5 +119,5 @@ fun MapProperty<String, BuildConfigField<out Serializable>>.putBuildConfig(
     type: String = "String",
     comment: String? = null
 ) {
-    put(key, BuildConfigField(type, localProperties.getProperty(key) ?: System.getenv(key) ?: "", comment))
+    put(key, BuildConfigField(type, localProperties.getProperty(key) ?: System.getenv(key) ?: "\"\"", comment))
 }

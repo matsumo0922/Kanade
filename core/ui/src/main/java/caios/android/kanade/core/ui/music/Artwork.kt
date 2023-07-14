@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -31,7 +32,7 @@ import caios.android.kanade.core.design.theme.Teal40
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.ui.util.extraSize
 import coil.compose.AsyncImage
-import coil.compose.LocalImageLoader
+import coil.request.ImageRequest
 
 @Composable
 fun Artwork(
@@ -56,7 +57,10 @@ private fun ArtworkFromWeb(
 ) {
     AsyncImage(
         modifier = modifier,
-        model = artwork.url,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(artwork.url)
+            .crossfade(true)
+            .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
     )
@@ -69,10 +73,12 @@ private fun ArtworkFromMediaStore(
 ) {
     AsyncImage(
         modifier = modifier,
-        model = artwork.uri,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(artwork.uri)
+            .crossfade(true)
+            .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
-        imageLoader = LocalImageLoader.current,
     )
 }
 
