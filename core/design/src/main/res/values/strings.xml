@@ -165,6 +165,7 @@
 
     <!-- Lyrics -->
     <string name="lyrics_edit_title">歌詞を編集</string>
+    <string name="lyrics_edit_placeholder">LRC形式の同期歌詞を入力</string>
     <string name="lyrics_datastore_default">デフォルト</string>
     <string name="lyrics_datastore_musixmatch">Musixmatch</string>
 </resources>

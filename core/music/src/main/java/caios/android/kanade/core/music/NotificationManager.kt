@@ -25,6 +25,7 @@ class NotificationManager(
 ) {
 
     private val manager = NotificationManagerCompat.from(service.baseContext)
+    private var isForeground = false
 
     init {
         createNotificationChannel()
@@ -39,7 +40,9 @@ class NotificationManager(
 
         try {
             if (isForeground) {
-                service.startForeground(NOTIFY_ID, notification)
+                if (!this.isForeground) {
+                    service.startForeground(NOTIFY_ID, notification)
+                }
             } else {
                 manager.notify(NOTIFY_ID, notification)
                 service.stopForeground(false)
@@ -47,6 +50,8 @@ class NotificationManager(
         } catch (e: Throwable) {
             Timber.e(e, "cannot set foreground service.")
         }
+
+        this.isForeground = isForeground
     }
 
     @SuppressLint("WrongConstant")

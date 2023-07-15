@@ -194,7 +194,8 @@ class MusicControllerImpl @Inject constructor(
     }
 
     override fun addToQueue(songs: List<Song>, index: Int?) {
-        queueManager.addItems(index ?: currentQueue.value?.items?.size ?: 0, songs)
+        val i = if (currentQueue.value?.items?.isEmpty() == true) 0 else index
+        queueManager.addItems(i ?: currentQueue.value?.items?.size ?: 0, songs)
     }
 
     override fun removeFromQueue(index: Int) {

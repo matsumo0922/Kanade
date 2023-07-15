@@ -139,7 +139,7 @@ fun Activity.showArtistMenuDialog(
             onClickPlayNext = {
                 musicViewModel.addToQueue(
                     songs = artist.songs,
-                    index = musicViewModel.uiState.queueIndex,
+                    index = musicViewModel.uiState.queueIndex + 1,
                 )
             },
             onClickPlayOnly = {

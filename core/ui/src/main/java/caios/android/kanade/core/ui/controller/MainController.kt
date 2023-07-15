@@ -264,13 +264,21 @@ fun MainController(
             modifier = Modifier
                 .navigationBarsPadding()
                 .padding(
-                    top = 8.dp,
+                    top = 4.dp,
                     bottom = 24.dp,
                 )
                 .fillMaxWidth()
                 .wrapContentSize(),
             isFavorite = isFavorite,
             onClickLyrics = { isLyricsVisible = !isLyricsVisible },
+            onClickLyricsEdit = {
+                scope.launch {
+                    uiState.song?.let {
+                        onClickClose.invoke()
+                        onClickLyrics.invoke(it.id)
+                    }
+                }
+            },
             onClickFavorite = {
                 isFavorite = !isFavorite
                 onClickFavorite.invoke()
@@ -284,7 +292,11 @@ fun MainController(
     }
 }
 
-private suspend fun getArtworkColor(context: Context, artwork: Artwork, isDarkMode: Boolean): Color {
+private suspend fun getArtworkColor(
+    context: Context,
+    artwork: Artwork,
+    isDarkMode: Boolean
+): Color {
     try {
         val builder = when (artwork) {
             is Artwork.Internal -> {
@@ -297,13 +309,15 @@ private suspend fun getArtworkColor(context: Context, artwork: Artwork, isDarkMo
                     else -> throw IllegalArgumentException("Unknown album name.")
                 }
             }
+
             is Artwork.Web -> ImageRequest.Builder(context).data(artwork.url)
             is Artwork.MediaStore -> ImageRequest.Builder(context).data(artwork.uri)
             else -> return Color.Transparent
         }.allowHardware(false)
 
         val request = builder.build()
-        val result = (ImageLoader(context).execute(request) as? SuccessResult)?.drawable ?: return Color.Transparent
+        val result = (ImageLoader(context).execute(request) as? SuccessResult)?.drawable
+            ?: return Color.Transparent
         val palette = Palette.from((result as BitmapDrawable).bitmap).generate()
 
         val list = listOfNotNull(

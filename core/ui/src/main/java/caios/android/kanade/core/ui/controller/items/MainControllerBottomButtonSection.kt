@@ -1,6 +1,8 @@
 package caios.android.kanade.core.ui.controller.items
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -25,10 +27,12 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.Red40
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun MainControllerBottomButtonSection(
     isFavorite: Boolean,
     onClickLyrics: () -> Unit,
+    onClickLyricsEdit: () -> Unit,
     onClickFavorite: () -> Unit,
     onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
@@ -45,20 +49,23 @@ internal fun MainControllerBottomButtonSection(
     ) {
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(RoundedCornerShape(50))
-                .clickable { onClickLyrics.invoke() }
-                .padding(4.dp),
+                .combinedClickable(
+                    onClick = onClickLyrics,
+                    onLongClick = onClickLyricsEdit,
+                )
+                .padding(8.dp),
             imageVector = Icons.Outlined.Article,
             contentDescription = null,
         )
 
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickFavorite.invoke() }
-                .padding(4.dp),
+                .padding(8.dp),
             imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
             contentDescription = null,
             tint = if (isFavorite) Red40 else LocalContentColor.current,
@@ -66,30 +73,30 @@ internal fun MainControllerBottomButtonSection(
 
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickSleepTimer.invoke() }
-                .padding(4.dp),
+                .padding(8.dp),
             imageVector = Icons.Outlined.Bedtime,
             contentDescription = null,
         )
 
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickQueue.invoke() }
-                .padding(4.dp),
+                .padding(8.dp),
             imageVector = Icons.Outlined.PlaylistPlay,
             contentDescription = null,
         )
 
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(RoundedCornerShape(50))
                 .clickable { onClickKaraoke.invoke() }
-                .padding(4.dp),
+                .padding(8.dp),
             imageVector = Icons.Outlined.GraphicEq,
             contentDescription = null,
         )
@@ -103,6 +110,7 @@ private fun MainControllerBottomButtonSectionPreview() {
         MainControllerBottomButtonSection(
             isFavorite = false,
             onClickLyrics = { },
+            onClickLyricsEdit = { },
             onClickFavorite = { },
             onClickSleepTimer = { },
             onClickQueue = { },
