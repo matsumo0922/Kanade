@@ -28,7 +28,7 @@ fun SimpleAlertDialog(
                 onClick = {
                     onPositiveClick.invoke()
                     onDismiss.invoke()
-                }
+                },
             ) {
                 Text(positiveText)
             }
@@ -38,7 +38,7 @@ fun SimpleAlertDialog(
                 onClick = {
                     onNegativeClick.invoke()
                     onDismiss.invoke()
-                }
+                },
             ) {
                 Text(negativeText)
             }

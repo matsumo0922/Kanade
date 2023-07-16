@@ -295,7 +295,7 @@ fun MainController(
 private suspend fun getArtworkColor(
     context: Context,
     artwork: Artwork,
-    isDarkMode: Boolean
+    isDarkMode: Boolean,
 ): Color {
     try {
         val builder = when (artwork) {

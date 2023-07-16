@@ -32,7 +32,7 @@ internal fun LyricsTopSongSection(
             artist.withChainParams(topMargin = 2.dp),
             chainStyle = ChainStyle.Packed,
         )
-        
+
         Card(
             modifier = Modifier
                 .size(64.dp)
@@ -41,14 +41,14 @@ internal fun LyricsTopSongSection(
                     start.linkTo(parent.start, 24.dp)
                     bottom.linkTo(parent.bottom, 16.dp)
                 },
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
             Artwork(
                 modifier = Modifier.fillMaxSize(),
                 artwork = song.albumArtwork,
             )
         }
-        
+
         Text(
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(artwork.top)

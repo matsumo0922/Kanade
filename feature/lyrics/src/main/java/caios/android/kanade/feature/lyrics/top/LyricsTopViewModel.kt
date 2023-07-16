@@ -39,7 +39,7 @@ class LyricsTopViewModel @Inject constructor(
                             LyricsTopUiState(
                                 song = state.data.song,
                                 lyrics = lyrics,
-                            )
+                            ),
                         )
                     }
                 }

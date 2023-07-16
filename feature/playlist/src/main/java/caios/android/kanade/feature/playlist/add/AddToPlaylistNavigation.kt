@@ -26,7 +26,7 @@ fun NavGraphBuilder.addToPlaylistDialog(
 ) {
     dialog(
         route = AddToPlaylistDialogRoute,
-        arguments = listOf(navArgument(AddToPlaylistSongs) { type = NavType.StringType },),
+        arguments = listOf(navArgument(AddToPlaylistSongs) { type = NavType.StringType }),
     ) {
         AddToPlaylistDialog(
             modifier = Modifier

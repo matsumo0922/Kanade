@@ -42,7 +42,7 @@ class LyricsDownloadViewModel @Inject constructor(
                         song = song,
                         lyrics = lyrics,
                         token = token,
-                    )
+                    ),
                 )
             } else {
                 ScreenState.Error(
@@ -75,8 +75,8 @@ class LyricsDownloadViewModel @Inject constructor(
                         LyricsDownloadUiState.State.Downloaded
                     } else {
                         LyricsDownloadUiState.State.Error
-                    }
-                )
+                    },
+                ),
             )
         }
     }

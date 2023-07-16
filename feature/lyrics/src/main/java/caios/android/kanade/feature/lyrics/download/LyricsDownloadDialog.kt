@@ -191,7 +191,7 @@ private fun LyricsDownloadDialog(
                     annotatedString.getStringAnnotations("link", it, it).firstOrNull()?.let { annotation ->
                         onClickTokenWebPage.invoke(url)
                     }
-                }
+                },
             )
         }
 

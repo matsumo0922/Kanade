@@ -150,7 +150,7 @@ private fun LyricsTopScreen(
             },
             onDismiss = {
                 isShowNotSaveDialog = false
-            }
+            },
         )
     }
 
@@ -256,7 +256,7 @@ private fun LyricsTopScreen(
                     } ?: kotlin.run {
                         isError = true
                     }
-                }
+                },
             )
         }
     }
