@@ -57,6 +57,7 @@ import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.feature.search.SearchRoute
 import caios.android.kanade.feature.search.SearchViewModel
 
+@Suppress("ViewModelInjection")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun KanadeTopBar(
@@ -86,7 +87,7 @@ fun KanadeTopBar(
     val toolbarPadding by animateDpAsState(
         targetValue = if (active) 0.dp else with(density) { TopAppBarDefaults.windowInsets.getTop(density).toFloat().toDp() },
         label = "toolbarPadding",
-        animationSpec = tween(400)
+        animationSpec = tween(400),
     )
 
     LaunchedEffect(active) {
@@ -108,7 +109,7 @@ fun KanadeTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(24.dp - toolbarPadding)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         )
 
         SearchBar(
@@ -201,14 +202,14 @@ fun SearchBarSample() {
                             active = false
                         }
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                 )
             }
         }
 
         LazyColumn(
             contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             val list = List(100) { "Text $it" }
             items(count = list.size) {
@@ -216,7 +217,7 @@ fun SearchBarSample() {
                     list[it],
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 16.dp),
                 )
             }
         }
