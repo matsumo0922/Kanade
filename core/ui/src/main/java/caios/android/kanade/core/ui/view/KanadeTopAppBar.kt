@@ -37,11 +37,11 @@ import caios.android.kanade.core.design.theme.applyTonalElevation
 fun KanadeTopAppBar(
     title: String,
     behavior: TopAppBarScrollBehavior,
-    onClickMenuPlayNext: () -> Unit,
-    onClickMenuAddToQueue: () -> Unit,
-    onClickMenuAddToPlaylist: () -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
+    onClickMenuPlayNext: () -> Unit = {},
+    onClickMenuAddToQueue: () -> Unit = {},
+    onClickMenuAddToPlaylist: () -> Unit = {},
     isVisibleMenu: Boolean = true,
 ) {
     val context = LocalContext.current

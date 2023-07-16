@@ -4,8 +4,11 @@ import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Song
 import timber.log.Timber
 
-internal fun parseLrc(song: Song, input: String): Lyrics? {
+fun parseLrc(song: Song, input: String): Lyrics? {
     if (input.isEmpty()) return null
+
+    Timber.d("Parsing LRC: ${song.title} - ${song.artist}")
+    Timber.d(input)
 
     try {
         val title = LRC_TITLE_REGEX.find(input)?.groupValues?.get(1)?.trim() ?: song.title

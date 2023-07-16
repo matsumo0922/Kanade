@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ internal fun LyricsTopButtonSection(
     onClickDownload: () -> Unit,
     onClickPaste: () -> Unit,
     onClickSelectAll: () -> Unit,
+    onClickSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -86,6 +88,18 @@ internal fun LyricsTopButtonSection(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+
+        Icon(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(50))
+                .clickable { onClickSave.invoke() }
+                .padding(8.dp)
+                .weight(1f),
+            imageVector = Icons.Default.Save,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -98,5 +112,6 @@ private fun LyricsTopButtonSectionPreview() {
         onClickDownload = {},
         onClickPaste = {},
         onClickSelectAll = {},
+        onClickSave = {},
     )
 }

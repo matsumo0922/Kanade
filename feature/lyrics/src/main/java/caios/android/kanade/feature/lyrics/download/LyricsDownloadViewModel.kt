@@ -3,6 +3,8 @@ package caios.android.kanade.feature.lyrics.download
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.common.network.KanadeConfig
+import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Lyrics
@@ -19,6 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LyricsDownloadViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
+    private val kanadeConfig: KanadeConfig,
+    private val tokenPreference: TokenPreference,
     @LyricsKugou private val kugouLyrics: LyricsRepository,
     @LyricsMusixmatch private val musixmatchLyrics: LyricsRepository,
 ) : ViewModel() {
@@ -30,12 +34,14 @@ class LyricsDownloadViewModel @Inject constructor(
 
             val song = musicRepository.getSong(songId)
             val lyrics = song?.let { kugouLyrics.get(it) }
+            val token = tokenPreference.get(TokenPreference.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else null
 
             screenState.value = if (song != null) {
                 ScreenState.Idle(
                     LyricsDownloadUiState(
                         song = song,
                         lyrics = lyrics,
+                        token = token,
                     )
                 )
             } else {
@@ -46,10 +52,44 @@ class LyricsDownloadViewModel @Inject constructor(
             }
         }
     }
+
+    fun download(song: Song, isUseMusixmatch: Boolean, token: String?) {
+        viewModelScope.launch {
+            screenState.value = ScreenState.Loading
+
+            val lyrics = kotlin.runCatching {
+                if (isUseMusixmatch && token != null) {
+                    tokenPreference.set(TokenPreference.KEY_MUSIXMATCH, token)
+                    musixmatchLyrics.lyrics(song)
+                } else {
+                    kugouLyrics.lyrics(song)
+                }
+            }.getOrNull()
+
+            screenState.value = ScreenState.Idle(
+                LyricsDownloadUiState(
+                    song = song,
+                    lyrics = lyrics,
+                    token = token,
+                    state = if (lyrics != null) {
+                        LyricsDownloadUiState.State.Downloaded
+                    } else {
+                        LyricsDownloadUiState.State.Error
+                    }
+                )
+            )
+        }
+    }
 }
 
 @Stable
 data class LyricsDownloadUiState(
     val song: Song,
     val lyrics: Lyrics?,
-)
+    val token: String?,
+    val state: State = State.Idle,
+) {
+    enum class State {
+        Idle, Downloaded, Error;
+    }
+}

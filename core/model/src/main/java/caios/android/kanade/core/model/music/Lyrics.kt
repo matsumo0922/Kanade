@@ -18,7 +18,7 @@ data class Lyrics(
 
     val lrc
         get() = if (isSynchronized) {
-            lines.joinToString(separator = "\n") { "[${it.lrcTime}]${it.content}" }
+            lines.joinToString(separator = "\n") { "[${it.lrcTime}] ${it.content}" }
         } else {
             lines.joinToString(separator = "\n") { it.content }
         }
@@ -46,14 +46,14 @@ data class Lyrics(
                     val second = (startAt / 1000) % 60
                     val mills = (startAt % 1000) / 10
 
-                    String.format(Locale.getDefault(), "%02d:%02d:%02d", minutes, second, mills)
+                    String.format(Locale.getDefault(), "%02d:%02d.%02d", minutes, second, mills)
                 }
 
                 else -> {
                     val second = (startAt / 1000) % 60
                     val mills = (startAt % 1000) / 10
 
-                    String.format(Locale.getDefault(), "00:%02d:%02d", second, mills)
+                    String.format(Locale.getDefault(), "00:%02d.%02d", second, mills)
                 }
             }
     }

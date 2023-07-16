@@ -19,6 +19,7 @@ fun NavController.navigateToLyricsTop(songId: Long) {
 }
 
 fun NavGraphBuilder.lyricsTopScreen(
+    navigateToLyricsDownload: (Long) -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
@@ -32,6 +33,7 @@ fun NavGraphBuilder.lyricsTopScreen(
         LyricsTopRoute(
             modifier = Modifier.fillMaxSize(),
             songId = it.arguments!!.getLong(LyricsTopId),
+            navigateToLyricsDownload = navigateToLyricsDownload,
             terminate = terminate,
         )
     }

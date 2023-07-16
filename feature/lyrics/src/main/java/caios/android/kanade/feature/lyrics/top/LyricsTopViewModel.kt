@@ -13,6 +13,7 @@ import caios.android.kanade.core.repository.di.LyricsMusixmatch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,29 @@ class LyricsTopViewModel @Inject constructor(
 ) : ViewModel() {
 
     val screenState = MutableStateFlow<ScreenState<LyricsTopUiState>>(ScreenState.Loading)
+
+    init {
+        viewModelScope.launch {
+            lyricsRepository.data.collect { data ->
+                Timber.d("lyricsRepository.data.collect")
+
+                val state = screenState.value
+
+                if (state is ScreenState.Idle) {
+                    val lyrics = data.find { state.data.song.id == it.songId }
+
+                    if (lyrics != null) {
+                        screenState.value = ScreenState.Idle(
+                            LyricsTopUiState(
+                                song = state.data.song,
+                                lyrics = lyrics,
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     fun fetch(songId: Long) {
         viewModelScope.launch {
@@ -43,29 +67,9 @@ class LyricsTopViewModel @Inject constructor(
         }
     }
 
-    fun fetchLyrics(song: Song) {
+    fun save(lyrics: Lyrics) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
-            screenState.value = kotlin.runCatching {
-                lyricsRepository.lyrics(song)
-            }.fold(
-                onSuccess = {
-                    ScreenState.Idle(
-                        LyricsTopUiState(
-                            song = song,
-                            lyrics = it,
-                        ),
-                    )
-                },
-                onFailure = {
-                    ScreenState.Idle(
-                        LyricsTopUiState(
-                            song = song,
-                            lyrics = null,
-                        ),
-                    )
-                },
-            )
+            lyricsRepository.save(lyrics)
         }
     }
 }

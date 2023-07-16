@@ -17,6 +17,7 @@
     <string name="common_caution">注意</string>
     <string name="common_error">エラー</string>
     <string name="common_warning">警告</string>
+    <string name="common_save">保存</string>
     <string name="common_unknown">不明</string>
     <string name="common_songs">楽曲</string>
     <string name="common_artists">アーティスト</string>
@@ -166,6 +167,19 @@
     <!-- Lyrics -->
     <string name="lyrics_edit_title">歌詞を編集</string>
     <string name="lyrics_edit_placeholder">LRC形式の同期歌詞を入力</string>
+    <string name="lyrics_edit_error">保存できませんでした\nLRC形式の歌詞である必要があります</string>
+    <string name="lyrics_edit_toast_saved">保存しました</string>
+    <string name="lyrics_edit_not_save">保存しない</string>
+    <string name="lyrics_edit_not_saved_message">変更が保存されていません\n保存しますか？</string>
     <string name="lyrics_datastore_default">デフォルト</string>
     <string name="lyrics_datastore_musixmatch">Musixmatch</string>
+    <string name="lyrics_download_dialog_title">LRC歌詞をダウンロード</string>
+    <string name="lyrics_download_dialog_confirm">ダウンロード</string>
+    <string name="lyrics_download_dialog_kugou_error">歌詞が見つかりませんでした\nタイトルやアーティスト名を確認してください</string>
+    <string name="lyrics_download_dialog_musixmatch_label">Musixmatch を使用する</string>
+    <string name="lyrics_download_dialog_musixmatch_token">API key</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint1">Musixmatch API を使用するためには有効なAPIキーが必要です。こちらの </string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint2">Webページ</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint3"> に記載されている手順で取得してください。</string>
+    <string name="lyrics_download_dialog_musixmatch_error">有効なAPI keyではないか、クールタイム中です。しばらくしてから再度お試しください。</string>
 </resources>

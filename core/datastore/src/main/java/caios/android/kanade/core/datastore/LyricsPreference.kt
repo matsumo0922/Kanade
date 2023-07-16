@@ -8,6 +8,8 @@ import caios.android.kanade.core.model.music.Lyrics
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.ListSerializer
@@ -21,9 +23,9 @@ class LyricsPreference @Inject constructor(
     @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val formatter = Json { ignoreUnknownKeys = true }
-    private val _data = mutableSetOf<Lyrics>()
+    private val _data = MutableStateFlow(emptyList<Lyrics>())
 
-    val data get() = _data.toList()
+    val data get() = _data.asSharedFlow()
 
     init {
         scope.launch {
@@ -43,7 +45,7 @@ class LyricsPreference @Inject constructor(
 
         file.writeText(json)
 
-        _data.addAll(lyricsList)
+        _data.value = lyricsList.toList()
     }
 
     private suspend fun fetch(): List<Lyrics> = withContext(io) {
@@ -54,7 +56,7 @@ class LyricsPreference @Inject constructor(
         val serializer = ListSerializer(Lyrics.serializer())
         val lyricsList = formatter.decodeFromString(serializer, json)
 
-        _data.addAll(lyricsList)
+        _data.value = lyricsList.toList()
 
         return@withContext lyricsList
     }

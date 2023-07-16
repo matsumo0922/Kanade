@@ -12,8 +12,6 @@ data class MusixmatchSongsEntity(
     data class Message(
         @SerialName("body")
         val body: Body,
-        @SerialName("header")
-        val header: Header,
     ) {
         @Serializable
         data class Body(
@@ -176,15 +174,5 @@ data class MusixmatchSongsEntity(
                 }
             }
         }
-
-        @Serializable
-        data class Header(
-            @SerialName("available")
-            val available: Int,
-            @SerialName("execute_time")
-            val executeTime: Double,
-            @SerialName("status_code")
-            val statusCode: Int,
-        )
     }
 }
