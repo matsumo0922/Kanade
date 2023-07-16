@@ -178,8 +178,8 @@
     <string name="lyrics_download_dialog_kugou_error">歌詞が見つかりませんでした\nタイトルやアーティスト名を確認してください</string>
     <string name="lyrics_download_dialog_musixmatch_label">Musixmatch を使用する</string>
     <string name="lyrics_download_dialog_musixmatch_token">API key</string>
-    <string name="lyrics_download_dialog_musixmatch_token_hint1">Musixmatch API を使用するためには有効なAPIキーが必要です。こちらの </string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint1">Musixmatch API を使用するためには有効なAPIキーが必要です。こちらの</string>
     <string name="lyrics_download_dialog_musixmatch_token_hint2">Webページ</string>
-    <string name="lyrics_download_dialog_musixmatch_token_hint3"> に記載されている手順で取得してください。</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint3">に記載されている手順で取得してください。</string>
     <string name="lyrics_download_dialog_musixmatch_error">有効なAPI keyではないか、クールタイム中です。しばらくしてから再度お試しください。</string>
 </resources>

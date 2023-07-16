@@ -12,7 +12,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import caios.android.kanade.core.common.network.util.ToastUtil
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.model.music.Artist
+import caios.android.kanade.core.model.music.Playlist
+import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.album.top.AlbumTopRoute
@@ -23,8 +29,12 @@ import caios.android.kanade.feature.artist.top.navigateToArtistTop
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.navigateToHome
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
+import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
+import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
+import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
+import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.top.PlaylistTopRoute
 import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
 import caios.android.kanade.feature.queue.showQueueDialog
@@ -36,16 +46,22 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun rememberKanadeAppState(
     windowSize: WindowSizeClass,
+    musicViewModel: MusicViewModel,
+    userData: UserData?,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ): KanadeAppState {
     return remember(
         navController,
+        musicViewModel,
+        userData,
         coroutineScope,
         windowSize,
     ) {
         KanadeAppState(
             navController,
+            musicViewModel,
+            userData,
             coroutineScope,
             windowSize,
         )
@@ -55,6 +71,8 @@ fun rememberKanadeAppState(
 @Stable
 class KanadeAppState(
     val navController: NavHostController,
+    val musicViewModel: MusicViewModel,
+    val userData: UserData?,
     val coroutineScope: CoroutineScope,
     val windowSize: WindowSizeClass,
 ) {
@@ -91,7 +109,7 @@ class KanadeAppState(
         }
     }
 
-    fun navigateToQueue(activity: Activity, userData: UserData?, musicViewModel: MusicViewModel) {
+    fun navigateToQueue(activity: Activity) {
         activity.showQueueDialog(
             userData = userData,
             navigateToSongMenu = { song ->
@@ -115,6 +133,63 @@ class KanadeAppState(
             },
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
+            },
+        )
+    }
+
+    fun showSongMenuDialog(activity: Activity, song: Song) {
+        activity.showSongMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            song = song,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            },
+            navigateToArtistDetail = {
+                navController.navigateToArtistDetail(it)
+            },
+            navigateToAlbumDetail = {
+                navController.navigateToAlbumDetail(it)
+            },
+            navigateToLyricsTop = {
+                navController.navigateToLyricsTop(it)
+            },
+        )
+    }
+
+    fun showArtistMenuDialog(activity: Activity, artist: Artist) {
+        activity.showArtistMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            artist = artist,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            },
+        )
+    }
+
+    fun showAlbumMenuDialog(activity: Activity, album: Album) {
+        activity.showAlbumMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            album = album,
+            navigateToAddToPlaylist = {
+                navController.navigateToAddToPlaylist(it)
+            },
+        )
+    }
+
+    fun showPlaylistMenuDialog(activity: Activity, playlist: Playlist) {
+        activity.showPlaylistMenuDialog(
+            musicViewModel = musicViewModel,
+            userData = userData,
+            playlist = playlist,
+            navigateToRename = {
+                if (it.isSystemPlaylist) {
+                    ToastUtil.show(activity, R.string.playlist_error_rename_system_playlist)
+                } else {
+                    navController.navigateToRenamePlaylist(it.id)
+                }
             },
         )
     }

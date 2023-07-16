@@ -2,7 +2,6 @@ package caios.android.kanade.feature.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,7 +15,6 @@ import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.FullAsyncLoadContents
 import caios.android.kanade.feature.search.items.SearchResultSection
-import caios.android.kanade.feature.search.items.SearchTopBarSection
 
 @Composable
 fun SearchRoute(
@@ -27,7 +25,6 @@ fun SearchRoute(
     navigateToArtistMenu: (Artist) -> Unit,
     navigateToAlbumMenu: (Album) -> Unit,
     navigateToPlaylistMenu: (Playlist) -> Unit,
-    terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -36,8 +33,6 @@ fun SearchRoute(
     SearchScreen(
         modifier = modifier,
         screenState = screenState,
-        search = viewModel::search,
-        onClickNavigateUp = terminate,
         onClickSong = viewModel::onNewPlay,
         onClickArtist = { navigateToArtistDetail.invoke(it.artistId) },
         onClickAlbum = { navigateToAlbumDetail.invoke(it.albumId) },
@@ -52,8 +47,6 @@ fun SearchRoute(
 @Composable
 private fun SearchScreen(
     screenState: ScreenState<SearchUiState>,
-    search: suspend (List<String>) -> Unit,
-    onClickNavigateUp: () -> Unit,
     onClickSong: (List<Song>, Int) -> Unit,
     onClickArtist: (Artist) -> Unit,
     onClickAlbum: (Album) -> Unit,
@@ -68,12 +61,6 @@ private fun SearchScreen(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SearchTopBarSection(
-            modifier = Modifier.fillMaxWidth(),
-            search = search,
-            onClickNavigateUp = onClickNavigateUp,
-        )
-
         FullAsyncLoadContents(
             modifier = Modifier.fillMaxSize(),
             screenState = screenState,

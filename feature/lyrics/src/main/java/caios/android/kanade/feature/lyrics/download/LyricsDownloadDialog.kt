@@ -150,7 +150,7 @@ private fun LyricsDownloadDialog(
             val url = "https://spicetify.app/docs/faq/#:~:text=It%20should%20look%20like%20this"
             val annotatedString = buildAnnotatedString {
                 withStyle(MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant).toSpanStyle()) {
-                    append(stringResource(R.string.lyrics_download_dialog_musixmatch_token_hint1))
+                    append(stringResource(R.string.lyrics_download_dialog_musixmatch_token_hint1) + " ")
                 }
 
                 pushStringAnnotation(
@@ -165,7 +165,7 @@ private fun LyricsDownloadDialog(
                 pop()
 
                 withStyle(MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant).toSpanStyle()) {
-                    append(stringResource(R.string.lyrics_download_dialog_musixmatch_token_hint3))
+                    append(" " + stringResource(R.string.lyrics_download_dialog_musixmatch_token_hint3))
                 }
             }
 
@@ -234,12 +234,12 @@ private fun LyricsDownloadDialog(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(4.dp),
                 onClick = { song?.let { onClickDownload.invoke(it, isUseMusixmatch, apikey) } },
-                enabled = (!isUseMusixmatch || !token.isNullOrBlank()) && !isMusixmatchError && !isKugouError,
+                enabled = (!isUseMusixmatch || apikey.isNotBlank()) && !isMusixmatchError && !isKugouError,
             ) {
                 Text(
                     text = stringResource(R.string.common_ok),
                     style = MaterialTheme.typography.labelMedium,
-                    color = if ((!isUseMusixmatch || !token.isNullOrBlank()) && !isMusixmatchError && !isKugouError) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                    color = if ((!isUseMusixmatch || apikey.isNotBlank()) && !isMusixmatchError && !isKugouError) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.design.component.LibraryTopBar
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.design.component.rememberLibraryTopBarScrollState
 import caios.android.kanade.core.model.UserData
@@ -62,7 +61,7 @@ import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
-import caios.android.kanade.feature.search.navigateToSearch
+import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -92,7 +91,7 @@ fun KanadeApp(
                     currentSong = musicViewModel.uiState.song,
                     currentDestination = appState.currentDestination,
                     onClickItem = appState::navigateToLibrary,
-                    navigateToQueue = { appState.navigateToQueue(activity, userData, musicViewModel) },
+                    navigateToQueue = { appState.navigateToQueue(activity) },
                     navigateToSetting = { },
                     navigateToAppInfo = { },
                     navigateToSupport = { },
@@ -100,6 +99,9 @@ fun KanadeApp(
             },
             gesturesEnabled = true,
         ) {
+            var isSearchActive by remember { mutableStateOf(false) }
+            val isShouldHideBottomController = isSearchActive || appState.currentLibraryDestination == null
+
             var topBarHeight by remember { mutableFloatStateOf(0f) }
             var bottomBarHeight by remember { mutableFloatStateOf(0f) }
             var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
@@ -112,7 +114,7 @@ fun KanadeApp(
             )
 
             val bottomSheetPeekHeight by animateDpAsState(
-                targetValue = if (appState.currentLibraryDestination == null) {
+                targetValue = if (isShouldHideBottomController) {
                     val passing = WindowInsets.navigationBars.asPaddingValues()
                     72.dp + passing.calculateBottomPadding() + passing.calculateTopPadding()
                 } else {
@@ -126,7 +128,7 @@ fun KanadeApp(
             )
 
             val bottomBarOffset by animateDpAsState(
-                targetValue = with(density) { bottomBarHeight.toDp() } * if (appState.currentLibraryDestination == null) 1f else (1f - bottomSheetOffsetRate),
+                targetValue = with(density) { bottomBarHeight.toDp() } * if (isShouldHideBottomController) 1f else (1f - bottomSheetOffsetRate),
                 label = "bottomBarOffset",
                 animationSpec = tween(
                     durationMillis = 200,
@@ -136,7 +138,6 @@ fun KanadeApp(
 
             val scope = rememberCoroutineScope()
             val scaffoldState = rememberBottomSheetScaffoldState()
-
             val topAppBarState = rememberLibraryTopBarScrollState()
             val scrollBehavior = LibraryTopBarScrollBehavior(
                 state = topAppBarState,
@@ -239,14 +240,14 @@ fun KanadeApp(
                             navigateToAlbum = {
                                 appState.navController.navigateToAlbumDetail(it)
                             },
-                            navigateToSearch = {
-                                appState.navController.navigateToSearch()
-                            },
                             navigateToLyrics = {
                                 appState.navController.navigateToLyricsTop(it)
                             },
+                            navigateToSearch = {
+                                isSearchActive = true
+                            },
                             navigateToSleepTimer = { },
-                            navigateToQueue = { appState.navigateToQueue(activity, userData, musicViewModel) },
+                            navigateToQueue = { appState.navigateToQueue(activity) },
                             navigateToKaraoke = { },
                         )
                     },
@@ -256,20 +257,34 @@ fun KanadeApp(
                 ) {
                     Box {
                         if (topBarAlpha > 0f) {
-                            LibraryTopBar(
+                            KanadeTopBar(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .onGloballyPositioned { topBarHeight = it.size.height.toFloat() }
+                                    .onGloballyPositioned {
+                                        if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
+                                    }
                                     .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
                                     .alpha(topBarAlpha),
-                                onClickMenu = {
+                                active = isSearchActive,
+                                onChangeActive = { isSearchActive = it },
+                                onClickDrawerMenu = {
                                     scope.launch {
                                         drawerState.open()
                                     }
                                 },
-                                onClickSearch = {
-                                    appState.navController.navigateToSearch()
+                                navigateToArtistDetail = {
+                                    appState.navController.navigateToArtistDetail(it)
                                 },
+                                navigateToAlbumDetail = {
+                                    appState.navController.navigateToAlbumDetail(it)
+                                },
+                                navigateToPlaylistDetail = {
+                                    appState.navController.navigateToPlaylistDetail(it)
+                                },
+                                navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
+                                navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
+                                navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
+                                navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
                                 scrollBehavior = scrollBehavior,
                             )
                         }

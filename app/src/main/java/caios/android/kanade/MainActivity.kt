@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val windowSize = calculateWindowSizeClass(this)
-            val appState = rememberKanadeAppState(windowSize)
             val systemUiController = rememberSystemUiController()
             val shouldUseDarkTheme = shouldUseDarkTheme(screenState)
 
@@ -76,6 +75,8 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 screenState = screenState,
             ) { userData ->
+                val appState = rememberKanadeAppState(windowSize, musicViewModel, userData)
+
                 KanadeTheme(
                     shouldUseDarkTheme = shouldUseDarkTheme,
                     enableDynamicTheme = shouldUseDynamicColor(screenState),
