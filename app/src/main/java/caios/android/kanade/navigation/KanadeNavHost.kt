@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.Version
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
@@ -23,6 +24,7 @@ import caios.android.kanade.feature.artist.top.artistTopScreen
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.information.about.aboutScreen
+import caios.android.kanade.feature.information.versions.showVersionHistoryDialog
 import caios.android.kanade.feature.lyrics.download.lyricsDownloadDialog
 import caios.android.kanade.feature.lyrics.download.navigateToLyricsDownload
 import caios.android.kanade.feature.lyrics.top.lyricsTopScreen
@@ -134,6 +136,13 @@ fun KanadeNavHost(
             musicViewModel = musicViewModel,
             userData = userData,
             type = type,
+        )
+    }
+
+    fun showVersionHistory(versionHistory: List<Version>) {
+        activity.showVersionHistoryDialog(
+            userData = userData,
+            versionHistory = versionHistory,
         )
     }
 
@@ -274,8 +283,7 @@ fun KanadeNavHost(
         )
 
         aboutScreen(
-            navigateToVersionHistory = {
-            },
+            navigateToVersionHistory = ::showVersionHistory,
             navigateToDonate = {
             },
             terminate = {

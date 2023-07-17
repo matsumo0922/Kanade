@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+    
     api(libs.bundles.infra.api)
 
     implementation(libs.androidx.media)

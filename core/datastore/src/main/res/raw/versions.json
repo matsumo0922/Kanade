@@ -1,0 +1,254 @@
+[
+  {
+    "versionName": "1.0.0.D",
+    "versionCode": 1,
+    "date": "2021/01/13",
+    "logJp": "・アプリの開発を開始",
+    "logEn": "・Start developing this app"
+  },
+  {
+    "versionName": "1.0.29.D",
+    "versionCode": 30,
+    "date": "2021/01/31",
+    "logJp": "・アプリのタイトルを\"Kanade Music\"へ変更",
+    "logEn": "・Changed the title of the application to \"Kanade Music\"."
+  },
+  {
+    "versionName": "1.0.51.D",
+    "versionCode": 52,
+    "date": "2021/02/17",
+    "logJp": "・アプリのレイアウト確定\n・イコライザー、ダイナミックノーマライザーを追加",
+    "logEn": "・Fixed the layout of the application and added the equalizer and dynamic normalizer."
+  },
+  {
+    "versionName": "1.0.81.D",
+    "versionCode": 82,
+    "date": "2021/04/23",
+    "logJp": "・\"更新履歴\"ダイアログを追加",
+    "logEn": "・Added the \"Update History\" dialog."
+  },
+  {
+    "versionName": "1.1.0.D",
+    "versionCode": 83,
+    "date": "2021/04/23",
+    "logJp": "・PlayStoreにてαテストを開始",
+    "logEn": "・Alpha test started on PlayStore."
+  },
+  {
+    "versionName": "1.1.2.D",
+    "versionCode": 84,
+    "date": "2021/04/24",
+    "logJp": "・\"寄付のお願い\"ダイアログを追加",
+    "logEn": "・Added the donate dialog."
+  },
+  {
+    "versionName": "1.1.4.D",
+    "versionCode": 87,
+    "date": "2021/04/26",
+    "logJp": "・課金処理システムを完成",
+    "logEn": "・Completed the billing processing system."
+  },
+  {
+    "versionName": "1.1.6.D",
+    "versionCode": 89,
+    "date": "2021/04/27",
+    "logJp": "・ウィジェットを追加",
+    "logEn": "・Add a widget controller."
+  },
+  {
+    "versionName": "1.1.8.D",
+    "versionCode": 91,
+    "date": "2021/04/27",
+    "logJp": "・起動速度を改善\n・アートワークの遅延読み込みを追加",
+    "logEn": "・Improving start speed.\n・Added delay read of artwork."
+  },
+  {
+    "versionName": "1.1.10.D",
+    "versionCode": 93,
+    "date": "2021/04/29",
+    "logJp": "・GoogleCast (ChromeCast) に試験的に対応",
+    "logEn": "・Trial support for GoogleCast (ChromeCast)."
+  },
+  {
+    "versionName": "1.1.11.D",
+    "versionCode": 94,
+    "date": "2021/04/30",
+    "logJp": "・歌詞の編集機能を追加",
+    "logEn": "・Added lyrics editing function."
+  },
+  {
+    "versionName": "1.1.12.D",
+    "versionCode": 95,
+    "date": "2021/05/02",
+    "logJp": "・アプリアイコン完成",
+    "logEn": "・App icon added."
+  },
+  {
+    "versionName": "1.1.13.D",
+    "versionCode": 96,
+    "date": "2021/05/02",
+    "logJp": "・リリース前最終調整\n・テーマカラーの調整\n・広告配信の頻度を調整\n・サンプルミュージックを追加\n・デフォルトの言語を英語に変更",
+    "logEn": "・Final adjustment before release\n・Adjustment of theme color\n・Adjustment of frequency of advertisement distribution\n・Add sample music\n・Change default language to English"
+  },
+  {
+    "versionName": "1.2.0",
+    "versionCode": 97,
+    "date": "2021/05/02",
+    "logJp": "・正式版公開",
+    "logEn": "・Official version released"
+  },
+  {
+    "versionName": "1.2.2",
+    "versionCode": 99,
+    "date": "2021/05/07",
+    "logJp": "・再生する楽曲がない状態で、シャッフルを切り替えるとアプリがクラッシュする問題を修正\n・翻訳の不備を修正\n・アプリの起動時に広告の初期化を行わないように変更",
+    "logEn": "・Fixed the problem that the app crashes when switching shuffle when there is no song to play \n・Fixed translation deficiency \n・Changed not to initialize ads when the app starts"
+  },
+  {
+    "versionName": "1.2.4",
+    "versionCode": 101,
+    "date": "2021/05/09",
+    "logJp": "・不明な楽曲をプレイリストに追加できてしまう問題を修正\n・ライブラリ画面での広告のサイズを縮小\n・プレイリストの編集機能を追加\n・Android O (API28) 以降でAdaptive Iconに対応\n・Android S (API31) への対応準備",
+    "logEn": "・Correct the problem that can be added to the playlist of unknown songs\n・Reduce ad size on library screen\n・Add editing function of playlist\n・Supports Adaptive Icon in Android O or later\n・Preparing to respond to Android 12"
+  },
+  {
+    "versionName": "1.2.9",
+    "versionCode": 106,
+    "date": "2021/05/19",
+    "logJp": "・楽曲情報の編集方法を変更（以前はシステム上の情報を編集していたため、実際の楽曲ファイルには編集した内容が追加されていませんでしたが、バージョン1.2.9より実際の楽曲ファイルの楽曲情報を編集するようになりました）\n・Android 12 (レターコード:S, API31) への対応準備",
+    "logEn": "・Changing how to edit music information (previously edited the information on the system, the actual music file has not been added, but the music information of the actual music file than version 1.2.9 Now it came to edit)\n・Preparing to respond to Android 12"
+  },
+  {
+    "versionName": "1.2.15",
+    "versionCode": 114,
+    "date": "2021/06/05",
+    "logJp": "・アルバム, プレイリストの楽曲を自由に並び替えることができる機能を追加\n・Firebase Messaging Serviceに対応\n・アプリ起動時に「ワンステップバック」が機能しない問題を修正",
+    "logEn": "・Added a function that allows you to freely rearrange songs in albums and playlists.\n・Supports Firebase Messaging Service.\n・Fixed an issue where \"One Step Back\" did not work when the app was started."
+  },
+  {
+    "versionName": "1.2.16",
+    "versionCode": 115,
+    "date": "2021/06/29",
+    "logJp": "・編集したタイトル, アーティスト情報から歌詞を検索できる機能を追加\n・リンクから歌詞を追加できる機能を追加\n・アプリ内のアニメーションを抑制できる設定を追加\n・「シャッフル状態を維持」の初期設定を無効に変更\n・検索画面からアーティスト詳細, アルバム詳細画面へ遷移すると画面が透明になってしまう問題を修正\n・アクセントカラーを変更する機能の対応準備\n・Android 12 (レターコード：S, API31) に対応\n・Microsoft Windows 11 への対応準備",
+    "logEn": "・Added a function to search lyrics from edited titles and artist information \n・Added a function to add lyrics from links\n・Added a setting to suppress animation in the app\n・\"Keep shuffled\" Disable default setting\n・Fixed the problem that the screen became transparent when transitioning from the search screen to the artist details and album details screen\n・Preparation for the function to change the accent color\n・Official support for Android 12\n・Preparation to support Microsoft Windows 11"
+  },
+  {
+    "versionName": "1.2.17",
+    "versionCode": 116,
+    "date": "2021/07/08",
+    "logJp": "・楽曲の解析を無効にする設定を追加\n・楽曲を一括で解析できる機能を追加\n・アプリの使い心地を確認するダイアログを追加\n・Firebase Crashlytics APIに対応\n・アクセントカラーを変更する機能の対応準備\n・Microsoft Windows 11 への対応準備",
+    "logEn": "・Added a setting to disable the analyze of songs\n・Added the ability to analyze songs in batches\n・Added a dialog to check the comfort of the application\n・Support for Firebase Crashlytics API\n・Preparation for the function to change the accent color\n・Preparation to support Microsoft Windows 11"
+  },
+  {
+    "versionName": "1.2.18",
+    "versionCode": 117,
+    "date": "2021/07/10",
+    "logJp": "・メインプレイヤー画面のシークバーの色を変更できる機能を追加\n・楽曲解析を無効にしたにも関わらず、楽曲解析が実行されてしまう不具合を修正",
+    "logEn": "・Added the ability to change the color of the seek bar on the main player screen\n・Fixed a bug that music analysis was executed even though it was disabled"
+  },
+  {
+    "versionName": "1.2.19",
+    "versionCode": 118,
+    "date": "2021/07/23",
+    "logJp": "・タスクキル時に再生中の音楽を停止する機能を追加\n・アプリの起動時に楽曲が読み込まれない不具合を修正\n・イコライザー画面で端末を横向きにするとレイアウトが崩れる問題を修正",
+    "logEn": "・Added a function to stop the music playing when task is killed\n・Fixed the problem that songs are not loaded when the application is started\n・Fixed a problem that the layout of the equalizer screen is broken when the device is turned sideways"
+  },
+  {
+    "versionName": "1.3.0",
+    "versionCode": 119,
+    "date": "2021/10/06",
+    "logJp": "・検索画面のレイアウトを一新\n・再生画面のシークバーの色を変更できる機能を廃止\n・開発者専用の機能Yを追加",
+    "logEn": "・New layout of the search screen\n・Discontinued the ability to change the color of the seek bar on the playback screen.\n・Added a function Y for developers only."
+  },
+  {
+    "versionName": "1.3.1",
+    "versionCode": 120,
+    "date": "2021/10/07",
+    "logJp": "・プレイリストの書き出し機能を追加\n・外部プレイリストの読み込み機能を追加\n・プレイリストの複数選択メニューに「プレイリスをに追加」を追加\n・旧検索画面が誤って表示されてしまう問題を修正\n・検索画面が重ねて表示される問題を修正\n・アイテムの複数選択時にイベントをキャンセルしても選択状態が保たれるように変更",
+    "logEn": "・Added the function of exporting the playlist.\n・Added the ability to load external playlists.\n・Added \"Add to playlist\" to the multiple selection menu of the playlist.\n・Fixed the problem that the old search screen is displayed incorrectly.\n・Fixed the problem that the search screen is displayed overlaid.\n・Changed so that the selection state is maintained even if the event is canceled when multiple items are selected."
+  },
+  {
+    "versionName": "1.4.0",
+    "versionCode": 121,
+    "date": "2021/10/18",
+    "logJp": "・ボーカルキャンセル機能を追加\n・再生システムをExoPlayerに変更\n・メインコントローラーのレイアウトを変更\n・サンプルミュージックを「シャイニングスター」へ変更\n・検索コマンドを導入",
+    "logEn": "・Added Real-time Vocal Canceling Technology\n・Changed playback system to ExoPlayer\n・Changed layout of main controller\n・hanged sample music to \"Shining Star\"\n・Introduced search command"
+  },
+  {
+    "versionName": "1.4.1",
+    "versionCode": 122,
+    "date": "2021/10/20",
+    "logJp": "・外部の音楽ファイルをファイルマネージャーなどのアプリから直接再生できる機能を追加",
+    "logEn": "・Add the function that can play external music files directly from apps such as file managers"
+  },
+  {
+    "versionName": "1.4.2",
+    "versionCode": 123,
+    "date": "2022/01/12",
+    "logJp": "・サンプルミュージックを削除できる機能を追加\n・検索で大文字小文字を区別しないように変更",
+    "logEn": "・Added the ability to delete sample music\n・Changed the search to be case-insensitive"
+  },
+  {
+    "versionName": "1.4.3",
+    "versionCode": 124,
+    "date": "2022/01/13",
+    "logJp": "・Android12にてホームにウィジェットを配置しているとアプリが起動しなくなる問題を修正",
+    "logEn": "・Fixed a problem where apps would not launch on Android 12 when widgets were placed on the home screen"
+  },
+  {
+    "versionName": "1.4.4",
+    "versionCode": 125,
+    "date": "2022/01/18",
+    "logJp": "・COLDスタート時に画面がブラックアウトする問題を修正\n・プレイリスト詳細画面から曲一覧へ移動できる機能を追加\n・アルバム詳細画面から曲一覧へ移動できる機能を追加\n・広告のサイズを変更\n・プレイリストを登録順にソートできるように変更\n・プレイリストの登録順を変更できる機能を追加\n・広告ロード失敗時のレイアウトを改善",
+    "logEn": "・Fixed the problem of the screen blacking out when starting COLD\n・Added the ability to move from the playlist detail screen to the song list\n・Added the ability to move from the album detail screen to the song list\n・Changed the size of the advertisement\n・Added the ability to move from the playlist detail screen to the song list\n・Added the ability to change the registration order of the playlist\n・Improved the layout when the ad load fails"
+  },
+  {
+    "versionName": "1.4.5",
+    "versionCode": 126,
+    "date": "2022/02/20",
+    "logJp": "・アルバム詳細画面にてソートがプレイリスト用のものになってしまう不具合を修正\n・アルバム楽曲用のソートタイプを追加（デフォルトはトラック基準となっています）",
+    "logEn": "・Fixed a bug that sorting was for playlists on the album details screen\n・Added sort type for album songs (default is track-based)"
+  },
+  {
+    "versionName": "1.4.6",
+    "versionCode": 127,
+    "date": "2022/03/23",
+    "logJp": "・特定のコーデックの楽曲情報を編集できない問題を修正\n・最近の追加画面へ遷移時にフリーズする問題を修正\n・Android11以降で通知のスタイル設定を廃止\n・外部ファイルをライブラリに直接登録する機能を廃止\n・楽曲詳細画面にコメントを表示できるように改善\n・楽曲のスキャン機能をベータ版として公開\n・楽曲情報編集画面でアーティスト名とアルバム名の候補を表示する機能を追加\n・アップデート時に更新履歴を表示する機能を追加\n・アプリサイズを大幅に削減",
+    "logEn": "・Fixed an issue where song information for a specific codec could not be edited\n・Fixed an issue that caused a momentary freeze when transitioning to a recently added screen\n・Android 11 or later eliminates notification styling\n・Abolished the function to register external files in the library\n・Improved to be able to display comments on the music details screen\n・Music scanning function is now available as a beta version\n・Added a function to display artist name and album name candidates on the music information edit screen\n・Added the ability to display the update history when updating\n・Significantly reduce app size"
+  },
+  {
+    "versionName": "1.4.7",
+    "versionCode": 128,
+    "date": "2022/03/25",
+    "logJp": "・楽曲が再生できなくなる不具合を修正",
+    "logEn": "・Fixed a bug that music could not be played"
+  },
+  {
+    "versionName": "1.4.8",
+    "versionCode": 129,
+    "date": "2022/03/26",
+    "logJp": "・スリープタイマーを設定したことがある場合、アプリが起動不可となる不具合を修正",
+    "logEn": "・Fixed a bug that the app cannot be started if the sleep timer has been set."
+  },
+  {
+    "versionName": "1.4.9",
+    "versionCode": 130,
+    "date": "2022/08/10",
+    "logJp": "・横スワイプでメニューを表示できる機能を追加\n・Kanadeをバッテリー最適化の対象外に設定する機能を追加\n・CAIOS IDをコピーできる機能を追加\n・ダイアログ出現時のアニメーションを変更\n・楽曲の再スキャン時にアプリが再起動する問題を修正\n・歌詞を閉じる際に稀にクラッシュする問題を修正\n・Android T (API33) への対応準備",
+    "logEn": "・Added the ability to display the menu by swiping horizontally\n・Added the ability to exclude Kanade from battery optimization\n・Added the ability to copy CAIOS ID.\n・Changed the animation when the dialog appears\n・Fixed an issue where the app would restart when rescanning songs\n・Fixed a rare crash when closing lyrics\n・Preparation for Android T (API33)"
+  },
+  {
+    "versionName": "1.4.10",
+    "versionCode": 131,
+    "date": "2022/08/14",
+    "logJp": "・解析済みの楽曲に対して再度解析を行ってしまう不具合を修正\n・楽曲の再スキャンダイアログを閉じられない問題を修正\n・課金情報が稀に反映されない問題を修正\n・ライトテーマで生じるレイアウトの問題を修正\n・横スワイプでメニューの感度を調整\n・購入状態の確認に失敗時のエラーメッセージを改善\n・次バージョンにおける大幅なレイアウト変更の準備\n・Android T (API33) に対応\n\n～Android 13 での改善点・変更点～\n・初回通知に通知権限をリクエストするように変更\n・アプリ別に言語設定を行えるように変更（JP,EN）\n・予測型「戻る」ジェスチャーに対応\n・日本語の折り返しが自然となるように改善\n・WRITE_EXTERNAL_STORAGE権限を廃止し、READ_MEDIA_AUDIO権限に移行",
+    "logEn": "・Fixed a problem in which the music analysis is performed again for a song that has already been analyzed\n・Fixed a problem in which the \"Rescan Songs\" dialog box could not be closed\n・Fixed a problem in which billing information was not reflected in rare cases\n・Fixed a layout issue with the light theme\n・Adjusted sensitivity of menu when swiping horizontally\n・Improved error message when purchase status fails to be confirmed\n・Preparation for major layout changes in the next version\n・Supported Android T (API33)\n\n~ Improvements and changes in Android 13 ~\n・Changed to request notification permission for the first notification\n・Changed so that language settings can be configured for each app (JP,EN)\n・Support for predictive \"back\" gesture\n・Improved Japanese wrapping to be more natural\n・WRITE_EXTERNAL_STORAGE authority has been removed and moved to READ_MEDIA_AUDIO authority"
+  },
+  {
+    "versionName": "2.0.0",
+    "versionCode": 132,
+    "date": "2022/07/17",
+    "logJp": "・UIリニューアル\n・コードを100％ Jetpack Compose に置き換え\n・コードの置き換えに伴う複数の機能変更\n・コードをOSSとして公開",
+    "logEn": "・UI renewal\n・Replace code with 100% Jetpack Compose\n・Multiple functional changes due to code replacement\n・Publish the code as OSS"
+  }
+]

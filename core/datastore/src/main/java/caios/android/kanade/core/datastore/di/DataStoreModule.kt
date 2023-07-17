@@ -15,6 +15,7 @@ import caios.android.kanade.core.datastore.QueuePreferenceSerializer
 import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.datastore.UserPreference
 import caios.android.kanade.core.datastore.UserPreferenceSerializer
+import caios.android.kanade.core.datastore.VersionPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -89,5 +90,13 @@ object DataStoreModule {
         @ApplicationContext context: Context,
     ): TokenPreference {
         return TokenPreference(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVersionPreference(
+        @ApplicationContext context: Context,
+    ): VersionPreference {
+        return VersionPreference(context)
     }
 }

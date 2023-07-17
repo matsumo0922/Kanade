@@ -109,7 +109,7 @@ private fun AboutSupportItem(
             .clickable { onClick.invoke() }
             .padding(horizontal = 24.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Icon(
             modifier = Modifier.size(20.dp),
