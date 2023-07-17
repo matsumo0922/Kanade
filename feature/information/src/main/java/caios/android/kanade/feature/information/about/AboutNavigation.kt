@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.model.Version
+import kotlinx.collections.immutable.ImmutableList
 
 const val AboutRoute = "about"
 
@@ -15,7 +16,7 @@ fun NavController.navigateToAbout() {
 }
 
 fun NavGraphBuilder.aboutScreen(
-    navigateToVersionHistory: (List<Version>) -> Unit,
+    navigateToVersionHistory: (ImmutableList<Version>) -> Unit,
     navigateToDonate: () -> Unit,
     terminate: () -> Unit,
 ) {

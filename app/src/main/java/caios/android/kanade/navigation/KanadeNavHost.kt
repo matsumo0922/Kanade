@@ -50,6 +50,7 @@ import caios.android.kanade.feature.song.detail.songDetailScreen
 import caios.android.kanade.feature.song.top.songTopScreen
 import caios.android.kanade.feature.sort.showSortDialog
 import caios.android.kanade.ui.KanadeAppState
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.reflect.KClass
 
 @Composable
@@ -139,7 +140,7 @@ fun KanadeNavHost(
         )
     }
 
-    fun showVersionHistory(versionHistory: List<Version>) {
+    fun showVersionHistory(versionHistory: ImmutableList<Version>) {
         activity.showVersionHistoryDialog(
             userData = userData,
             versionHistory = versionHistory,

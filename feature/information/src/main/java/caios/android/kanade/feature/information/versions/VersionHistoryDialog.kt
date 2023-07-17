@@ -26,11 +26,13 @@ import caios.android.kanade.core.design.theme.start
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.Version
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import java.time.format.DateTimeFormatter
 
 @Composable
 private fun VersionHistoryDialog(
-    versionHistory: List<Version>,
+    versionHistory: ImmutableList<Version>,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -107,12 +109,12 @@ private fun VersionItem(
 
 fun Activity.showVersionHistoryDialog(
     userData: UserData?,
-    versionHistory: List<Version>,
+    versionHistory: ImmutableList<Version>,
 ) {
     showAsButtonSheet(userData, rectCorner = true) { _ ->
         VersionHistoryDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            versionHistory = versionHistory.reversed(),
+            versionHistory = versionHistory.reversed().toImmutableList(),
         )
     }
 }

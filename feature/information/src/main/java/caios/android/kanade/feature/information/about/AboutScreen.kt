@@ -29,10 +29,12 @@ import caios.android.kanade.core.ui.view.KanadeTopAppBar
 import caios.android.kanade.feature.information.about.items.AboutAppSection
 import caios.android.kanade.feature.information.about.items.AboutDeveloperSection
 import caios.android.kanade.feature.information.about.items.AboutSupportSection
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun AboutRoute(
-    navigateToVersionHistory: (List<Version>) -> Unit,
+    navigateToVersionHistory: (ImmutableList<Version>) -> Unit,
     navigateToDonate: () -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -63,7 +65,7 @@ internal fun AboutRoute(
                 onClickMao = { openLink("https://maou.audio/") },
                 onClickMaoTwitter = { openLink("https://twitter.com/koichi_maou?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor") },
                 onClick358Design = { openLink("https://www.instagram.com/0358_design/") },
-                onClickVersionHistory = { navigateToVersionHistory.invoke(uiState.versions) },
+                onClickVersionHistory = { navigateToVersionHistory.invoke(uiState.versions.toImmutableList()) },
                 onClickDonate = { navigateToDonate.invoke() },
                 onTerminate = terminate,
             )
