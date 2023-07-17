@@ -59,6 +59,7 @@ import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
+import caios.android.kanade.feature.information.about.navigateToAbout
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
@@ -93,11 +94,11 @@ fun KanadeApp(
                     onClickItem = appState::navigateToLibrary,
                     navigateToQueue = { appState.navigateToQueue(activity) },
                     navigateToSetting = { },
-                    navigateToAppInfo = { },
+                    navigateToAbout = { appState.navController.navigateToAbout() },
                     navigateToSupport = { },
                 )
             },
-            gesturesEnabled = true,
+            gesturesEnabled = (appState.currentLibraryDestination != null),
         ) {
             var isSearchActive by remember { mutableStateOf(false) }
             val isShouldHideBottomController = isSearchActive || appState.currentLibraryDestination == null
@@ -106,6 +107,14 @@ fun KanadeApp(
             var bottomBarHeight by remember { mutableFloatStateOf(0f) }
             var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
             var bottomSheetOffsetRate by remember { mutableFloatStateOf(-1f) }
+
+            val scope = rememberCoroutineScope()
+            val scaffoldState = rememberBottomSheetScaffoldState()
+            val topAppBarState = rememberLibraryTopBarScrollState()
+            val scrollBehavior = LibraryTopBarScrollBehavior(
+                state = topAppBarState,
+                topBarHeight = topBarHeight,
+            )
 
             val topBarAlpha by animateFloatAsState(
                 targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
@@ -136,13 +145,7 @@ fun KanadeApp(
                 ),
             )
 
-            val scope = rememberCoroutineScope()
-            val scaffoldState = rememberBottomSheetScaffoldState()
-            val topAppBarState = rememberLibraryTopBarScrollState()
-            val scrollBehavior = LibraryTopBarScrollBehavior(
-                state = topAppBarState,
-                topBarHeight = topBarHeight,
-            )
+            val toolbarOffset = with(density) { if (!isSearchActive) scrollBehavior.state.yOffset.toDp() else 0.dp }
 
             bottomSheetOffsetRate = try {
                 val offset = scaffoldState.bottomSheetState.requireOffset()
@@ -151,6 +154,12 @@ fun KanadeApp(
                 (offset / defaultHeight).coerceIn(0f, 1f)
             } catch (e: Throwable) {
                 1f
+            }
+
+            LaunchedEffect(appState.currentLibraryDestination) {
+                scope.launch {
+                    scrollBehavior.show()
+                }
             }
 
             LaunchedEffect(musicViewModel.uiState.isExpandedController) {
@@ -266,6 +275,7 @@ fun KanadeApp(
                                     .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
                                     .alpha(topBarAlpha),
                                 active = isSearchActive,
+                                yOffset = toolbarOffset,
                                 onChangeActive = { isSearchActive = it },
                                 onClickDrawerMenu = {
                                     scope.launch {
@@ -285,7 +295,6 @@ fun KanadeApp(
                                 navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
                                 navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
                                 navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
-                                scrollBehavior = scrollBehavior,
                             )
                         }
 

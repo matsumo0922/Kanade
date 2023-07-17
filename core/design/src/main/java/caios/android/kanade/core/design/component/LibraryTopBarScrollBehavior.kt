@@ -20,10 +20,8 @@ class LibraryTopBarScrollBehavior(
     }
 
     fun show() {
-        state.yOffset = 0f
-    }
-
-    fun hide() {
-        state.yOffset = -topBarHeight
+        for (y in state.yOffset.toInt() downTo  0) {
+            state.yOffset = y.toFloat()
+        }
     }
 }

@@ -42,14 +42,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
-import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
@@ -62,6 +63,7 @@ import caios.android.kanade.feature.search.SearchViewModel
 @Composable
 fun KanadeTopBar(
     active: Boolean,
+    yOffset: Dp,
     onChangeActive: (Boolean) -> Unit,
     onClickDrawerMenu: () -> Unit,
     navigateToArtistDetail: (Long) -> Unit,
@@ -72,20 +74,17 @@ fun KanadeTopBar(
     navigateToAlbumMenu: (Album) -> Unit,
     navigateToPlaylistMenu: (Playlist) -> Unit,
     modifier: Modifier = Modifier,
-    scrollBehavior: LibraryTopBarScrollBehavior? = null,
 ) {
     val density = LocalDensity.current
     val searchViewModel = hiltViewModel<SearchViewModel>()
-    val yOffset = with(density) {
-        scrollBehavior?.state?.yOffset?.toDp() ?: 0.dp
-    }
 
     val image = AnimatedImageVector.animatedVectorResource(R.drawable.av_drawer_to_arrow)
     var atEnd by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
 
+    val toolBarTopPadding = with(density) { TopAppBarDefaults.windowInsets.getTop(density).toFloat().toDp() }
     val toolbarPadding by animateDpAsState(
-        targetValue = if (active) 0.dp else with(density) { TopAppBarDefaults.windowInsets.getTop(density).toFloat().toDp() },
+        targetValue = if (active) 0.dp else toolBarTopPadding,
         label = "toolbarPadding",
         animationSpec = tween(400),
     )
@@ -108,7 +107,8 @@ fun KanadeTopBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(24.dp - toolbarPadding)
+                .height(toolBarTopPadding)
+                .alpha(1f - toolbarPadding / toolBarTopPadding)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         )
 
@@ -156,6 +156,7 @@ fun KanadeTopBar(
 private fun Preview() {
     KanadeTopBar(
         active = false,
+        yOffset = 0.dp,
         onChangeActive = { },
         onClickDrawerMenu = { },
         navigateToArtistDetail = { },

@@ -38,6 +38,7 @@
     <string name="error_unknown">不明なエラーが発生しました</string>
     <string name="error_no_data">データがありません</string>
     <string name="error_network">通信エラーが発生しました</string>
+    <string name="error_developing_feature">開発中の機能です</string>
 
     <!-- Music -->
     <string name="music_title">タイトル</string>
@@ -182,4 +183,22 @@
     <string name="lyrics_download_dialog_musixmatch_token_hint2">Webページ</string>
     <string name="lyrics_download_dialog_musixmatch_token_hint3">に記載されている手順で取得してください。</string>
     <string name="lyrics_download_dialog_musixmatch_error">有効なAPI keyではないか、クールタイム中です。しばらくしてから再度お試しください。</string>
+
+    <!-- About -->
+    <string name="about_title">アプリについて</string>
+    <string name="about_name">Kanade</string>
+    <string name="about_developer_name">CAIOS</string>
+    <string name="about_developer_prefix">Developed and designed by</string>
+    <string name="about_special_thanks">SPECIAL THANKS</string>
+    <string name="about_special_thanks_mao">魔王魂</string>
+    <string name="about_special_thanks_mao_description">月間平均150万PVを誇る魔王魂を運営するプロ作曲家。アプリ内のサンプル楽曲「シャイニングスター」提供元。</string>
+    <string name="about_special_thanks_358">358 Design</string>
+    <string name="about_special_thanks_358_description">企業ロゴからアプリアイコンまで、様々なデザインを行うグラフィックデザイナー。このアプリのアイコンを担当。</string>
+    <string name="about_contribute">CONTRIBUTE</string>
+    <string name="about_contribute_description">このアプリは OSS となっており、GPL でライセンスされています。コントリビュートはいつでも誰でも歓迎です。特に中国語への翻訳を手伝ってくれる方を探しています。</string>
+    <string name="about_support">SUPPORT</string>
+    <string name="about_support_version_history">更新履歴</string>
+    <string name="about_support_rate_app">アプリを評価</string>
+    <string name="about_support_opinion">ご意見・ご要望</string>
+    <string name="about_support_donate">寄付</string>
 </resources>

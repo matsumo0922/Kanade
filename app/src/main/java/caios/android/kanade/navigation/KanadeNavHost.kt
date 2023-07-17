@@ -22,6 +22,7 @@ import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.artist.top.artistTopScreen
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
+import caios.android.kanade.feature.information.about.aboutScreen
 import caios.android.kanade.feature.lyrics.download.lyricsDownloadDialog
 import caios.android.kanade.feature.lyrics.download.navigateToLyricsDownload
 import caios.android.kanade.feature.lyrics.top.lyricsTopScreen
@@ -267,6 +268,18 @@ fun KanadeNavHost(
         )
 
         lyricsDownloadDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        aboutScreen(
+            navigateToVersionHistory = {
+
+            },
+            navigateToDonate = {
+
+            },
             terminate = {
                 navController.popBackStack()
             },

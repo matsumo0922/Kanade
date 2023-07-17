@@ -67,7 +67,7 @@ fun KanadeDrawer(
     onClickItem: (LibraryDestination) -> Unit,
     navigateToQueue: () -> Unit,
     navigateToSetting: () -> Unit,
-    navigateToAppInfo: () -> Unit,
+    navigateToAbout: () -> Unit,
     navigateToSupport: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -153,7 +153,7 @@ fun KanadeDrawer(
                 state = state,
                 label = stringResource(R.string.navigation_app_info),
                 icon = Icons.Outlined.Info,
-                onClick = navigateToAppInfo,
+                onClick = navigateToAbout,
             )
 
             NavigationDrawerItem(

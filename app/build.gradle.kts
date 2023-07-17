@@ -51,6 +51,8 @@ android {
             it.resValues.put(it.makeResValueKey("string", "app_name"), ResValue(appName, null))
 
             it.buildConfigFields.apply {
+                putBuildConfig(localProperties, "VERSION_NAME", libs.versions.versionName.get().toStringLiteral())
+                putBuildConfig(localProperties, "VERSION_CODE", libs.versions.versionCode.get().toStringLiteral())
                 putBuildConfig(localProperties, "LAST_FM_API_KEY")
                 putBuildConfig(localProperties, "LAST_FM_API_SECRET")
                 putBuildConfig(localProperties, "MUSIXMATCH_API_KEY")
@@ -87,6 +89,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:sort"))
     implementation(project(":feature:lyrics"))
+    implementation(project(":feature:information"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
@@ -116,8 +119,13 @@ plugins.apply("com.google.gms.google-services")
 fun MapProperty<String, BuildConfigField<out Serializable>>.putBuildConfig(
     localProperties: Properties,
     key: String,
+    value: String? = null,
     type: String = "String",
     comment: String? = null
 ) {
-    put(key, BuildConfigField(type, localProperties.getProperty(key) ?: System.getenv(key) ?: "\"\"", comment))
+    put(key, BuildConfigField(type, value ?: localProperties.getProperty(key) ?: System.getenv(key) ?: "\"\"", comment))
+}
+
+fun Any.toStringLiteral(): String {
+    return "\"$this\""
 }

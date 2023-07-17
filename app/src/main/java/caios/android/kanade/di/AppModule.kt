@@ -18,6 +18,8 @@ object AppModule {
         return KanadeConfig(
             applicationId = BuildConfig.APPLICATION_ID,
             buildType = BuildConfig.BUILD_TYPE,
+            versionCode = BuildConfig.VERSION_CODE,
+            versionName = BuildConfig.VERSION_NAME,
             isDebug = BuildConfig.DEBUG,
             lastFmApiKey = BuildConfig.LAST_FM_API_KEY,
             lastFmApiSecret = BuildConfig.LAST_FM_API_SECRET,
