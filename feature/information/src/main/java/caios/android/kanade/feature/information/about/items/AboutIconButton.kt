@@ -32,7 +32,7 @@ internal fun AboutIconButton(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 shape = RoundedCornerShape(50),
             )
-            .clickable { onClick.invoke() }
+            .clickable { onClick.invoke() },
     ) {
         Icon(
             modifier = Modifier

@@ -20,7 +20,7 @@ class LibraryTopBarScrollBehavior(
     }
 
     fun show() {
-        for (y in state.yOffset.toInt() downTo  0) {
+        for (y in state.yOffset.toInt() downTo 0) {
             state.yOffset = y.toFloat()
         }
     }

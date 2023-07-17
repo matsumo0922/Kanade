@@ -91,7 +91,7 @@ internal fun AboutDeveloperSection(
                         horizontalArrangement = Arrangement.spacedBy(
                             space = 16.dp,
                             alignment = Alignment.CenterHorizontally,
-                        )
+                        ),
                     ) {
                         AboutIconButton(
                             modifier = Modifier.size(28.dp),
@@ -131,7 +131,7 @@ internal fun AboutDeveloperSection(
                         modifier = Modifier.fillMaxWidth(),
                         titleRes = R.string.about_special_thanks_mao,
                         descriptionRes = R.string.about_special_thanks_mao_description,
-                        iconPainter = painterResource(R.drawable.vec_maou_damashii)
+                        iconPainter = painterResource(R.drawable.vec_maou_damashii),
                     ) {
                         AboutIconButton(
                             modifier = Modifier.size(28.dp),
@@ -153,7 +153,7 @@ internal fun AboutDeveloperSection(
                                 top = 8.dp,
                                 bottom = 8.dp,
                                 start = 92.dp,
-                                end = 24.dp
+                                end = 24.dp,
                             ),
                     )
 
@@ -161,7 +161,7 @@ internal fun AboutDeveloperSection(
                         modifier = Modifier.fillMaxWidth(),
                         titleRes = R.string.about_special_thanks_358,
                         descriptionRes = R.string.about_special_thanks_358_description,
-                        iconPainter = painterResource(R.drawable.ic_358_design)
+                        iconPainter = painterResource(R.drawable.ic_358_design),
                     ) {
                         AboutIconButton(
                             modifier = Modifier.size(28.dp),

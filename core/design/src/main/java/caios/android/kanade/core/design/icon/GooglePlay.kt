@@ -40,5 +40,4 @@ val Icons.Outlined.GooglePlay: ImageVector
         cache = it
     }
 
-
 private var cache: ImageVector? = null

@@ -19,8 +19,8 @@ class AboutViewModel @Inject constructor(
             AboutUiState(
                 versions = emptyList(),
                 config = kanadeConfig,
-            )
-        )
+            ),
+        ),
     )
 }
 

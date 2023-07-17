@@ -275,10 +275,8 @@ fun KanadeNavHost(
 
         aboutScreen(
             navigateToVersionHistory = {
-
             },
             navigateToDonate = {
-
             },
             terminate = {
                 navController.popBackStack()
