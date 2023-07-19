@@ -201,4 +201,15 @@
     <string name="about_support_rate_app">アプリを評価</string>
     <string name="about_support_opinion">ご意見・ご要望</string>
     <string name="about_support_donate">寄付</string>
+
+    <!-- Settings -->
+    <string name="setting_title">設定</string>
+    <string name="setting_top_theme">テーマ</string>
+    <string name="setting_top_theme_description">アプリのテーマや Material You の設定を行います</string>
+    <string name="setting_top_playing">再生</string>
+    <string name="setting_top_playing_description">音楽再生や高音質化設定、再生画面のテーマ設定などを行います</string>
+    <string name="setting_top_library">ライブラリ</string>
+    <string name="setting_top_library_description">ライブラリ構築方法やソート、画面遷移の設定などを行います</string>
+    <string name="setting_top_others">その他</string>
+    <string name="setting_top_others_description">アプリの詳細情報や購入情報の復元、オープンソースライセンスを行います</string>
 </resources>

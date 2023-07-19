@@ -63,6 +63,7 @@ import caios.android.kanade.feature.information.about.navigateToAbout
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
+import caios.android.kanade.feature.setting.top.navigateToSettingTop
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -93,7 +94,7 @@ fun KanadeApp(
                     currentDestination = appState.currentDestination,
                     onClickItem = appState::navigateToLibrary,
                     navigateToQueue = { appState.navigateToQueue(activity) },
-                    navigateToSetting = { },
+                    navigateToSetting = { appState.navController.navigateToSettingTop() },
                     navigateToAbout = { appState.navController.navigateToAbout() },
                     navigateToSupport = { },
                 )

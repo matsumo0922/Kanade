@@ -90,6 +90,7 @@ dependencies {
     implementation(project(":feature:sort"))
     implementation(project(":feature:lyrics"))
     implementation(project(":feature:information"))
+    implementation(project(":feature:setting"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
