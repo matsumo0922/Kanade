@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.Version
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
@@ -54,6 +55,7 @@ internal fun AboutRoute(
         if (uiState != null) {
             AboutScreen(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                userData = uiState.userData,
                 config = uiState.config,
                 onClickGithub = { openLink("https://github.com/matsumo0922/KanadeMark3") },
                 onClickGithubProfile = { openLink("https://github.com/matsumo0922") },
@@ -76,6 +78,7 @@ internal fun AboutRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AboutScreen(
+    userData: UserData,
     config: KanadeConfig,
     onClickGithub: () -> Unit,
     onClickGithubProfile: () -> Unit,
@@ -114,6 +117,7 @@ private fun AboutScreen(
             item {
                 AboutAppSection(
                     modifier = Modifier.fillMaxWidth(),
+                    userData = userData,
                     config = config,
                     onClickGithub = onClickGithub,
                     onClickDiscord = onClickDiscord,

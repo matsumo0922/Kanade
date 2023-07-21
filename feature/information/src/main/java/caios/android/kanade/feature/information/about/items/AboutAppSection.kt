@@ -27,9 +27,11 @@ import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.icon.Discord
 import caios.android.kanade.core.design.icon.Github
 import caios.android.kanade.core.design.icon.GooglePlay
+import caios.android.kanade.core.model.UserData
 
 @Composable
 internal fun AboutAppSection(
+    userData: UserData,
     config: KanadeConfig,
     onClickGithub: () -> Unit,
     onClickDiscord: () -> Unit,
@@ -80,7 +82,12 @@ internal fun AboutAppSection(
 
                         width = Dimension.fillToConstraints
                     },
-                    text = "${config.versionName}:${config.versionCode}",
+                    text = "${config.versionName}:${config.versionCode}" + when {
+                        userData.isPremiumMode && userData.isDeveloperMode -> "[P+D]"
+                        userData.isPremiumMode -> "[Premium]"
+                        userData.isDeveloperMode -> "[Developer]"
+                        else -> ""
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -124,6 +131,7 @@ internal fun AboutAppSection(
 private fun AboutAppSectionPreview() {
     AboutAppSection(
         modifier = Modifier.fillMaxWidth(),
+        userData = UserData.dummy(),
         config = KanadeConfig.dummy(),
         onClickGithub = { },
         onClickDiscord = { },

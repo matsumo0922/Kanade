@@ -9,7 +9,13 @@ option java_multiple_files = true;
 message UserPreference {
   ThemeConfigProto theme_config = 1;
 
-  bool use_dynamic_color = 2;
-  bool is_developer_mode = 3;
-  bool is_premium_mode = 4;
+  optional bool is_use_dynamic_color = 2;
+  optional bool is_developer_mode = 3;
+  optional bool is_premium_mode = 4;
+  optional bool is_use_dynamic_normalizer = 5;
+  optional bool is_use_one_step_back = 6;
+  optional bool is_use_keep_audio_focus = 7;
+  optional bool is_use_stop_when_taskkill = 8;
+  optional bool is_use_ignore_short_music = 9;
+  optional bool is_use_ignore_not_music = 10;
 }

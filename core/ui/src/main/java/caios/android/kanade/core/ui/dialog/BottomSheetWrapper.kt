@@ -97,7 +97,7 @@ fun Activity.showAsButtonSheet(
 
             KanadeTheme(
                 shouldUseDarkTheme = shouldUseDarkTheme,
-                enableDynamicTheme = userData?.useDynamicColor ?: false,
+                enableDynamicTheme = userData?.isDynamicColor ?: false,
             ) {
                 KanadeBackground(
                     modifier = Modifier.fillMaxWidth(),

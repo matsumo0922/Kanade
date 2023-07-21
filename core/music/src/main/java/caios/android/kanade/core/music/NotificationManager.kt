@@ -33,6 +33,8 @@ class NotificationManager(
 
     @SuppressLint("MissingPermission")
     suspend fun setForegroundService(isForeground: Boolean) {
+        Timber.d("setForegroundService: $isForeground, ${this.isForeground}")
+
         val notification = createMusicNotification(
             context = service.baseContext,
             song = musicController.currentSong.first(),

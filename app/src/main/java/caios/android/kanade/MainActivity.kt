@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun shouldUseDynamicColor(screenState: ScreenState<UserData>): Boolean {
         return when (screenState) {
-            is ScreenState.Idle -> screenState.data.useDynamicColor
+            is ScreenState.Idle -> screenState.data.isDynamicColor
             else -> false
         }
     }

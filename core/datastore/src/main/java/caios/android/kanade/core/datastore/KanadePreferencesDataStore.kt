@@ -26,14 +26,20 @@ class KanadePreferencesDataStore @Inject constructor(
     val userData = userPreference.data
         .map {
             UserData(
-                useDynamicColor = true, // it.useDynamicColor,
-                isDeveloperMode = it.isDeveloperMode,
-                isPremiumMode = it.isPremiumMode,
                 themeConfig = when (it.themeConfig) {
                     ThemeConfigProto.THEME_CONFIG_LIGHT -> ThemeConfig.Light
                     ThemeConfigProto.THEME_CONFIG_DARK -> ThemeConfig.Dark
                     else -> ThemeConfig.System
                 },
+                isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else true,
+                isDeveloperMode = if (it.hasIsDeveloperMode()) it.isDeveloperMode else false,
+                isPremiumMode = if (it.hasIsPremiumMode()) it.isPremiumMode else false,
+                isDynamicNormalizer = if(it.hasIsUseDynamicNormalizer()) it.isUseDynamicNormalizer else false,
+                isOneStepBack = if (it.hasIsUseOneStepBack()) it.isUseOneStepBack else true,
+                isKeepAudioFocus = if (it.hasIsUseKeepAudioFocus()) it.isUseKeepAudioFocus else false,
+                isStopWhenTaskkill = if (it.hasIsUseStopWhenTaskkill()) it.isUseStopWhenTaskkill else false,
+                isIgnoreShortMusic = if (it.hasIsUseIgnoreShortMusic()) it.isUseIgnoreShortMusic else true,
+                isIgnoreNotMusic = if (it.hasIsUseIgnoreNotMusic()) it.isUseIgnoreNotMusic else true,
             )
         }
 
@@ -119,7 +125,7 @@ class KanadePreferencesDataStore @Inject constructor(
     suspend fun setUseDynamicColor(useDynamicColor: Boolean) = withContext(io) {
         userPreference.updateData {
             it.copy {
-                this.useDynamicColor = useDynamicColor
+                this.isUseDynamicColor = useDynamicColor
             }
         }
     }
@@ -136,6 +142,54 @@ class KanadePreferencesDataStore @Inject constructor(
         userPreference.updateData {
             it.copy {
                 this.isPremiumMode = isPremiumMode
+            }
+        }
+    }
+
+    suspend fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseDynamicNormalizer = useDynamicNormalizer
+            }
+        }
+    }
+
+    suspend fun setUseOneStepBack(useOneStepBack: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseOneStepBack = useOneStepBack
+            }
+        }
+    }
+
+    suspend fun setUseKeepAudioFocus(useKeepAudioFocus: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseKeepAudioFocus = useKeepAudioFocus
+            }
+        }
+    }
+
+    suspend fun setUseStopWhenTaskkill(useStopWhenTaskkill: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseStopWhenTaskkill = useStopWhenTaskkill
+            }
+        }
+    }
+
+    suspend fun setUseIgnoreShortMusic(useIgnoreShortMusic: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseIgnoreShortMusic = useIgnoreShortMusic
+            }
+        }
+    }
+
+    suspend fun setUseIgnoreNotMusic(useIgnoreNotMusic: Boolean) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.isUseIgnoreNotMusic = useIgnoreNotMusic
             }
         }
     }

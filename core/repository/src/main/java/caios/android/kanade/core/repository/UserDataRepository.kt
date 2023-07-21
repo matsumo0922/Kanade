@@ -12,4 +12,10 @@ interface UserDataRepository {
     suspend fun setUseDynamicColor(useDynamicColor: Boolean)
     suspend fun setDeveloperMode(isDeveloperMode: Boolean)
     suspend fun setPremiumMode(isPremiumMode: Boolean)
+    suspend fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean)
+    suspend fun setUseOneStepBack(isOneStepBack: Boolean)
+    suspend fun setUseKeepAudioFocus(isKeepAudioFocus: Boolean)
+    suspend fun setUseStopWhenTaskkill(isStopWhenTaskkill: Boolean)
+    suspend fun setUseIgnoreShortMusic(isIgnoreShortMusic: Boolean)
+    suspend fun setUseIgnoreNotMusic(isIgnoreNotMusic: Boolean)
 }

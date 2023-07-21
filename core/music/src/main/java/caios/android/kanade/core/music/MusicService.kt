@@ -77,16 +77,18 @@ class MusicService : MediaBrowserServiceCompat() {
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             mediaItem?.mediaMetadata?.let { musicController.setPlayerItem(it) }
+
+            scope.launch(main) {
+                notificationManager.setForegroundService(true)
+            }
         }
     }
 
     private val updateProcess by lazy {
         scope.launch(start = CoroutineStart.LAZY, context = main) {
-            var a = 0
             while (isActive) {
                 musicController.setPlayerPosition(exoPlayer.currentPosition)
                 updatePlaybackState()
-                a++
                 delay(200)
             }
         }

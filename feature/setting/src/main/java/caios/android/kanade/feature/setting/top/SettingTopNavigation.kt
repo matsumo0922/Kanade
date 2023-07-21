@@ -23,7 +23,7 @@ fun NavGraphBuilder.settingTopScreen(
         popEnterTransition = { NavigateAnimation.Detail.popEnter },
         popExitTransition = { NavigateAnimation.Detail.popExit },
     ) {
-        SettingTopScreen(
+        SettingTopRoute(
             modifier = Modifier.fillMaxSize(),
             terminate = terminate,
         )

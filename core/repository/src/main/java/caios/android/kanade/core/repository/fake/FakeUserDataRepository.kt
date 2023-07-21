@@ -1,12 +1,13 @@
-package caios.android.kanade.core.repository
+package caios.android.kanade.core.repository.fake
 
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.repository.UserDataRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DefaultUserDataRepository @Inject constructor(
+class FakeUserDataRepository @Inject constructor(
     private val kanadePreferencesDataStore: KanadePreferencesDataStore,
 ) : UserDataRepository {
 
