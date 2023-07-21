@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
+import java.io.File
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -225,5 +226,9 @@ class DefaultMusicRepository @Inject constructor(
 
     override suspend fun setPlaylistOrder(musicOrder: MusicOrder) {
         kanadePreferencesDataStore.setPlaylistOrder(musicOrder)
+    }
+
+    override suspend fun <T> useSongFile(song: Song, action: (File?) -> T): T {
+        return songRepository.useFile(song, action)
     }
 }

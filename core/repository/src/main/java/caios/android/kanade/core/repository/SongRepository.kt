@@ -6,6 +6,7 @@ import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
+import java.io.File
 
 interface SongRepository {
 
@@ -21,6 +22,7 @@ interface SongRepository {
     suspend fun songs(musicConfig: MusicConfig): List<Song>
     suspend fun songs(cursor: Cursor?): List<Song>
 
+    suspend fun <T> useFile(song: Song, action: (File?) -> T): T
     suspend fun makeCursor(
         selection: String = "",
         selectionValues: List<String> = emptyList(),

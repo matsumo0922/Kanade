@@ -29,6 +29,7 @@ import caios.android.kanade.core.model.music.getMetadataBuilder
 import caios.android.kanade.core.model.player.ControlAction
 import caios.android.kanade.core.model.player.ControlKey
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.music.analyze.VolumeAnalyzer
 import caios.android.kanade.core.repository.MusicRepository
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -46,8 +47,10 @@ class MediaSessionManager(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val queueManager: QueueManager,
+    private val volumeAnalyzer: VolumeAnalyzer,
     private val scope: CoroutineScope,
 ) {
+
     private val audioManager by lazy { service.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private val audioFocusRequest by lazy {
         AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
@@ -180,6 +183,12 @@ class MediaSessionManager(
             }
 
             mediaSession.setMetadata(metadata.build())
+
+            if (!volumeAnalyzer.isAnalyzed(song)) {
+                musicController.setAnalyzing(true)
+                volumeAnalyzer.analyze(song)
+                musicController.setAnalyzing(false)
+            }
 
             if (playWhenReady) {
                 musicRepository.addToPlayHistory(song)

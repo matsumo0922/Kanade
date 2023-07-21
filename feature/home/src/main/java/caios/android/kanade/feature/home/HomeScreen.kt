@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -116,6 +117,9 @@ internal fun HomeScreen(
     ) {
         item {
             HomeHeaderSection(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth(),
                 onClickHistory = onClickHistory,
                 onClickRecentlyAdded = onClickRecentlyAdded,
                 onClickMostPlayed = onClickMostPlayed,

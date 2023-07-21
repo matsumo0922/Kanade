@@ -16,6 +16,7 @@ import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.datastore.UserPreference
 import caios.android.kanade.core.datastore.UserPreferenceSerializer
 import caios.android.kanade.core.datastore.VersionPreference
+import caios.android.kanade.core.datastore.VolumePreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -98,5 +99,15 @@ object DataStoreModule {
         @ApplicationContext context: Context,
     ): VersionPreference {
         return VersionPreference(context)
+    }
+
+    @Provides
+    @Singleton
+    fun providesVolumePreference(
+        @ApplicationContext context: Context,
+        @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
+        @ApplicationScope scope: CoroutineScope,
+    ): VolumePreference {
+        return VolumePreference(context, io, CoroutineScope(scope.coroutineContext + io))
     }
 }

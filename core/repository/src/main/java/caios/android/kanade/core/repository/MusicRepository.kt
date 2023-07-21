@@ -14,6 +14,7 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface MusicRepository {
 
@@ -75,4 +76,6 @@ interface MusicRepository {
     suspend fun setArtistOrder(musicOrder: MusicOrder)
     suspend fun setAlbumOrder(musicOrder: MusicOrder)
     suspend fun setPlaylistOrder(musicOrder: MusicOrder)
+
+    suspend fun <T> useSongFile(song: Song, action: (File?) -> T): T
 }

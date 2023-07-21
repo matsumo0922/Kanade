@@ -36,6 +36,7 @@ import javax.inject.Inject
 
 interface MusicController {
     val isInitialized: StateFlow<Boolean>
+    val isAnalyzing: StateFlow<Boolean>
     val currentSong: StateFlow<Song?>
     val currentQueue: StateFlow<Queue?>
     val playerPosition: StateFlow<Long>
@@ -43,6 +44,8 @@ interface MusicController {
 
     fun initialize()
     fun terminate()
+
+    fun setAnalyzing(isAnalyzing: Boolean)
 
     fun setPlayerPlaying(isPlaying: Boolean)
     fun setPlayerState(state: Int)
@@ -65,12 +68,14 @@ class MusicControllerImpl @Inject constructor(
 ) : MusicController {
 
     private var _isInitialized = MutableStateFlow(false)
+    private var _isAnalyzing = MutableStateFlow(false)
     private var _currentSong = MutableStateFlow<Song?>(null)
     private var _currentQueue = MutableStateFlow<Queue?>(null)
     private var _playerPosition = MutableStateFlow(0L)
     private var _playerState = MutableStateFlow(PlayerState.Initialize)
 
     override val isInitialized = _isInitialized.asStateFlow()
+    override val isAnalyzing = _isAnalyzing.asStateFlow()
     override val currentSong = _currentSong.asStateFlow()
     override val currentQueue = _currentQueue.asStateFlow()
     override val playerPosition = _playerPosition.asStateFlow()
@@ -159,6 +164,10 @@ class MusicControllerImpl @Inject constructor(
             delay(500)
             _isInitialized.value = false
         }
+    }
+
+    override fun setAnalyzing(isAnalyzing: Boolean) {
+        _isAnalyzing.value = isAnalyzing
     }
 
     override fun setPlayerPlaying(isPlaying: Boolean) {

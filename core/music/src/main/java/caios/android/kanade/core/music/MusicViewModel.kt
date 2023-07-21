@@ -50,6 +50,7 @@ class MusicViewModel @Inject constructor(
                 musicController.currentQueue,
                 musicController.playerState,
                 musicController.playerPosition,
+                musicController.isAnalyzing,
             ) { data ->
                 val userData = data[0] as UserData
                 val config = data[1] as MusicConfig
@@ -57,6 +58,7 @@ class MusicViewModel @Inject constructor(
                 val queue = data[3] as Queue?
                 val state = data[4] as PlayerState
                 val position = data[5] as Long
+                val isAnalyzing = data[6] as Boolean
 
                 uiState.copy(
                     userData = userData,
@@ -72,6 +74,7 @@ class MusicViewModel @Inject constructor(
                     artistOrder = config.artistOrder,
                     albumOrder = config.albumOrder,
                     playlistOrder = config.playlistOrder,
+                    isAnalyzing = isAnalyzing,
                 )
             }.collect {
                 uiState = it
@@ -104,10 +107,6 @@ class MusicViewModel @Inject constructor(
 
     fun playerEvent(event: PlayerEvent) {
         musicController.playerEvent(event)
-    }
-
-    suspend fun fetchLyrics(song: Song) {
-        musicRepository.fetchLyrics(song)
     }
 
     suspend fun fetchFavorite(song: Song): Boolean {

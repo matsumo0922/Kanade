@@ -8,6 +8,7 @@ import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.Media
+import android.webkit.MimeTypeMap
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.MusicConfig
@@ -22,6 +23,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import okhttp3.internal.toImmutableMap
 import timber.log.Timber
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -87,6 +89,25 @@ class DefaultSongRepository @Inject constructor(
         }
         cursor?.close()
         return songs
+    }
+
+    override suspend fun <T> useFile(song: Song, action: (File?) -> T): T {
+        val file = kotlin.runCatching {
+            val outputFileName = "${song.id}.${MimeTypeMap.getSingleton().getExtensionFromMimeType(song.mimeType)}"
+            val outputFile = File(context.cacheDir, outputFileName)
+
+            context.contentResolver.openInputStream(song.uri)?.use { inputStream ->
+                inputStream.copyTo(outputFile.outputStream())
+            }
+
+            if (outputFile.exists()) outputFile else null
+        }.getOrNull()
+
+        val result =  action.invoke(file)
+
+        file?.delete()
+
+        return result
     }
 
     override suspend fun makeCursor(
