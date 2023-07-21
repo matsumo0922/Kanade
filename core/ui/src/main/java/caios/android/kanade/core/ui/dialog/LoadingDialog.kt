@@ -20,6 +20,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import caios.android.kanade.core.design.R
 
+@Suppress("ModifierMissing")
 @Composable
 fun LoadingDialog(@StringRes title: Int = R.string.common_loading) {
     Dialog(

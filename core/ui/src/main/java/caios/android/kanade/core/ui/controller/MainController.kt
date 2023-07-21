@@ -346,7 +346,7 @@ private suspend fun getArtworkColor(
             palette.vibrantSwatch,
             palette.lightVibrantSwatch,
             palette.darkVibrantSwatch,
-            palette.darkMutedSwatch
+            palette.darkMutedSwatch,
         )
 
         Timber.d("artwork palette: ${list.map { it.rgb.toHexString() }}")

@@ -63,7 +63,6 @@ class MusicControllerImpl @Inject constructor(
     private val musicRepository: MusicRepository,
     private val queueManager: QueueManager,
     @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : MusicController {
 

@@ -26,10 +26,9 @@ class MusicModule {
         musicRepository: MusicRepository,
         musicQueue: QueueManager,
         @ApplicationContext context: Context,
-        @Dispatcher(KanadeDispatcher.Main) main: CoroutineDispatcher,
         @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
     ): MusicController {
-        return MusicControllerImpl(musicRepository, musicQueue, context, main, io)
+        return MusicControllerImpl(musicRepository, musicQueue, context, io)
     }
 
     @Provides

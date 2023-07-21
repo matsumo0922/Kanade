@@ -103,7 +103,7 @@ class DefaultSongRepository @Inject constructor(
             if (outputFile.exists()) outputFile else null
         }.getOrNull()
 
-        val result =  action.invoke(file)
+        val result = action.invoke(file)
 
         file?.delete()
 
