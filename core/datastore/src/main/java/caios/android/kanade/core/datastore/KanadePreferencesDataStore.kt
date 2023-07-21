@@ -34,7 +34,7 @@ class KanadePreferencesDataStore @Inject constructor(
                 isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else true,
                 isDeveloperMode = if (it.hasIsDeveloperMode()) it.isDeveloperMode else false,
                 isPremiumMode = if (it.hasIsPremiumMode()) it.isPremiumMode else false,
-                isDynamicNormalizer = if(it.hasIsUseDynamicNormalizer()) it.isUseDynamicNormalizer else false,
+                isDynamicNormalizer = if (it.hasIsUseDynamicNormalizer()) it.isUseDynamicNormalizer else false,
                 isOneStepBack = if (it.hasIsUseOneStepBack()) it.isUseOneStepBack else true,
                 isKeepAudioFocus = if (it.hasIsUseKeepAudioFocus()) it.isUseKeepAudioFocus else false,
                 isStopWhenTaskkill = if (it.hasIsUseStopWhenTaskkill()) it.isUseStopWhenTaskkill else false,

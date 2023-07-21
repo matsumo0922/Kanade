@@ -94,7 +94,7 @@ private fun PreviewSettingTextItem1() {
         SettingTextItem(
             title = android.R.string.copy,
             description = android.R.string.copyUrl,
-            onClick = {}
+            onClick = {},
         )
     }
 }

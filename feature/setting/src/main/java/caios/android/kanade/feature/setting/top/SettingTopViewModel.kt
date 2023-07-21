@@ -26,7 +26,7 @@ class SettingTopViewModel @Inject constructor(
             SettingTopUiState(
                 userData = it,
                 config = kanadeConfig,
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,

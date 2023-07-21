@@ -28,7 +28,7 @@ class AboutViewModel @Inject constructor(
                 userData = it,
                 config = kanadeConfig,
                 versions = versionPreference.get(),
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,
