@@ -73,12 +73,12 @@ class MusicEffector @Inject constructor(
 
     private fun buildBassBoost() {
         setEnableBassBoost(false)
-        //setBassBoost()
+        // setBassBoost()
     }
 
     private fun buildEqualizer() {
         setEnableEqualizer(false)
-        //setEqualizer()
+        // setEqualizer()
     }
 
     private fun setEnableLoudness(isEnable: Boolean) {
