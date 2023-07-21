@@ -1,4 +1,4 @@
-package caios.android.kanade.core.music.analyze
+package caios.android.kanade.core.music.analyzer
 
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
@@ -41,6 +41,10 @@ class VolumeAnalyzer @Inject constructor(
     }
 
     val data: SharedFlow<List<Volume>> = _data.asSharedFlow()
+
+    fun getVolume(song: Song): Volume? {
+        return cache[song.id]
+    }
 
     fun isAnalyzed(song: Song): Boolean {
         return cache.containsKey(song.id)

@@ -12,7 +12,7 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.music.toMediaItem
 import caios.android.kanade.core.model.player.PlayerState
-import caios.android.kanade.core.music.analyze.VolumeAnalyzer
+import caios.android.kanade.core.music.analyzer.VolumeAnalyzer
 import caios.android.kanade.core.repository.MusicRepository
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -43,6 +43,9 @@ class MusicService : MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var volumeAnalyzer: VolumeAnalyzer
+
+    @Inject
+    lateinit var musicEffector: MusicEffector
 
     @Inject
     @Dispatcher(KanadeDispatcher.IO)
@@ -135,11 +138,12 @@ class MusicService : MediaBrowserServiceCompat() {
             musicRepository = musicRepository,
             queueManager = queueManager,
             volumeAnalyzer = volumeAnalyzer,
+            musicEffector = musicEffector,
             scope = scope,
         )
 
+        musicEffector.create(exoPlayer.audioSessionId)
         mediaSession.setCallback(mediaSessionManager.callback)
-
         updateProcess.start()
 
         scope.launch {
@@ -156,6 +160,7 @@ class MusicService : MediaBrowserServiceCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
+        musicEffector.release()
         mediaSession.release()
         exoPlayer.stop()
         exoPlayer.release()
