@@ -101,7 +101,7 @@ fun Activity.showAsButtonSheet(
             ) {
                 KanadeBackground(
                     modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = Color.Transparent,
+                    background = Color.Transparent,
                 ) {
                     BottomSheetWrapper(
                         parent = viewGroup,

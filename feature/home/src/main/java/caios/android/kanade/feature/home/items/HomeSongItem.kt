@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import caios.android.kanade.core.design.theme.applyTonalElevation
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
 
@@ -36,8 +37,10 @@ internal fun HomeSongItem(
             modifier = Modifier.clickable { onClickHolder.invoke() },
             shape = RoundedCornerShape(4.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                contentColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                containerColor = MaterialTheme.colorScheme.applyTonalElevation(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    elevation = 1.dp,
+                ),
             ),
         ) {
             ConstraintLayout(Modifier.fillMaxWidth()) {

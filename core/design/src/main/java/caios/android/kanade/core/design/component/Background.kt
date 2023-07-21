@@ -16,7 +16,7 @@ import caios.android.kanade.core.design.theme.LocalBackgroundTheme
 @Composable
 fun KanadeBackground(
     modifier: Modifier = Modifier,
-    backgroundColor: Color? = null,
+    background: Color? = null,
     content: @Composable () -> Unit,
 ) {
     val localColor = LocalBackgroundTheme.current.color
@@ -26,7 +26,7 @@ fun KanadeBackground(
     val totalElevation = if (localTotalElevation == Dp.Unspecified) 0.dp else localTotalElevation
 
     Surface(
-        color = backgroundColor ?: color,
+        color = background ?: color,
         contentColor = contentColorFor(color),
         tonalElevation = totalElevation,
         modifier = modifier,

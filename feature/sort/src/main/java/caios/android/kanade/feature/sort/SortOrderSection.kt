@@ -41,7 +41,7 @@ internal fun SortOrderSection(
 @Preview
 @Composable
 private fun SortOrderSectionPreview() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         SortOrderSection(
             modifier = Modifier.fillMaxWidth(),
             order = Order.ASC,

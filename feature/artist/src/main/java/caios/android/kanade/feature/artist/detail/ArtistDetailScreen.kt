@@ -30,9 +30,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.ArtistDetail
@@ -101,8 +103,15 @@ private fun ArtistDetailScreen(
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     var isVisibleFAB by remember { mutableStateOf(false) }
-    val coordinatorData = remember { CoordinatorData.Artist(artist.artist, artist.artist, artist.artwork) }
+    val coordinatorData = remember {
+        CoordinatorData.Artist(
+            title = artist.artist,
+            summary = context.getString(R.string.unit_song, artist.songs.size),
+            artwork = artist.artwork,
+        )
+    }
 
     LaunchedEffect(artist) {
         isVisibleFAB = true

@@ -20,7 +20,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.palette.graphics.Palette
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.Blue40
+import caios.android.kanade.core.design.theme.DarkDefaultColorScheme
 import caios.android.kanade.core.design.theme.Green40
 import caios.android.kanade.core.design.theme.Orange40
 import caios.android.kanade.core.design.theme.Purple40
@@ -64,6 +68,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+import okhttp3.internal.toHexString
 import timber.log.Timber
 
 @Composable
@@ -127,7 +132,7 @@ fun MainController(
         val song = uiState.song ?: return@LaunchedEffect
         val artwork = song.albumArtwork
 
-        artworkColor = getArtworkColor(context, artwork, isDarkMode ?: false)
+        artworkColor = getArtworkColor(context, artwork)
         isFavorite = onFetchFavorite.invoke(song)
     }
 
@@ -135,167 +140,182 @@ fun MainController(
         view.keepScreenOn = (isLyricsVisible && uiState.lyrics != null)
     }
 
-    Column(
-        modifier = modifier.background(
-            brush = Brush.verticalGradient(
-                listOf(gradientColor, Color.Transparent),
+    MainControllerBackground {
+        Column(
+            modifier = modifier.background(
+                brush = Brush.verticalGradient(
+                    listOf(gradientColor, Color.Transparent),
+                ),
             ),
-        ),
-    ) {
-        MainControllerToolBarSection(
-            modifier = Modifier
-                .statusBarsPadding()
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            onClickClose = onClickClose,
-            onClickSearch = {
-                onClickClose.invoke()
-                onClickSearch.invoke()
-            },
-            onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
-            onClickMenuArtist = {
-                onClickClose.invoke()
-                uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
-            },
-            onClickMenuAlbum = {
-                onClickClose.invoke()
-                uiState.song?.albumId?.let { onClickMenuAlbum.invoke(it) }
-            },
-            onClickMenuEqualizer = onClickMenuEqualizer,
-            onClickMenuEdit = onClickMenuEdit,
-            onClickMenuAnalyze = onClickMenuAnalyze,
-            onClickMenuDetailInfo = onClickMenuDetailInfo,
-        )
-
-        Box(
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth()
-                .weight(1f),
         ) {
-            androidx.compose.animation.AnimatedVisibility(
-                modifier = Modifier.fillMaxSize(),
-                visible = isLyricsVisible,
-                enter = fadeIn(),
-                exit = fadeOut(),
+            MainControllerToolBarSection(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                onClickClose = onClickClose,
+                onClickSearch = {
+                    onClickClose.invoke()
+                    onClickSearch.invoke()
+                },
+                onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
+                onClickMenuArtist = {
+                    onClickClose.invoke()
+                    uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
+                },
+                onClickMenuAlbum = {
+                    onClickClose.invoke()
+                    uiState.song?.albumId?.let { onClickMenuAlbum.invoke(it) }
+                },
+                onClickMenuEqualizer = onClickMenuEqualizer,
+                onClickMenuEdit = onClickMenuEdit,
+                onClickMenuAnalyze = onClickMenuAnalyze,
+                onClickMenuDetailInfo = onClickMenuDetailInfo,
+            )
+
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth()
+                    .weight(1f),
             ) {
-                if (uiState.lyrics != null) {
-                    LyricsView(
-                        state = state,
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(
-                            top = 24.dp,
-                            bottom = 32.dp,
-                            start = 16.dp,
-                            end = 16.dp,
-                        ),
-                        darkTheme = isDarkMode ?: false,
-                        fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
-                        fontSize = 28.sp,
-                    )
-                } else {
-                    MainControllerEmptyLyricsItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClickSetLyrics = {
-                            scope.launch {
-                                uiState.song?.let {
-                                    onClickClose.invoke()
-                                    onClickLyrics.invoke(it.id)
+                androidx.compose.animation.AnimatedVisibility(
+                    modifier = Modifier.fillMaxSize(),
+                    visible = isLyricsVisible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    if (uiState.lyrics != null) {
+                        LyricsView(
+                            state = state,
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(
+                                top = 24.dp,
+                                bottom = 32.dp,
+                                start = 16.dp,
+                                end = 16.dp,
+                            ),
+                            darkTheme = isDarkMode ?: false,
+                            fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
+                            fontSize = 28.sp,
+                        )
+                    } else {
+                        MainControllerEmptyLyricsItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClickSetLyrics = {
+                                scope.launch {
+                                    uiState.song?.let {
+                                        onClickClose.invoke()
+                                        onClickLyrics.invoke(it.id)
+                                    }
                                 }
-                            }
-                        },
-                    )
-                }
-            }
-
-            androidx.compose.animation.AnimatedVisibility(
-                modifier = Modifier.fillMaxSize(),
-                visible = !isLyricsVisible,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                Column {
-                    MainControllerArtworkSection(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .weight(1f),
-                        songs = uiState.queueItems.toImmutableList(),
-                        index = uiState.queueIndex,
-                        onSwipeArtwork = onClickSkipToQueue,
-                    )
-
-                    MainControllerTextSection(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        song = uiState.song,
-                    )
-                }
-            }
-        }
-
-        MainControllerInfoSection(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            uiState = uiState,
-            onSeek = onClickSeek,
-        )
-
-        MainControllerControlButtonSection(
-            modifier = Modifier
-                .padding(
-                    top = 16.dp,
-                    bottom = 24.dp,
-                )
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            uiState = uiState,
-            onClickPlay = onClickPlay,
-            onClickPause = onClickPause,
-            onClickSkipToNext = onClickSkipToNext,
-            onClickSkipToPrevious = onClickSkipToPrevious,
-            onClickShuffle = onClickShuffle,
-            onClickRepeat = onClickRepeat,
-        )
-
-        MainControllerBottomButtonSection(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .padding(
-                    top = 4.dp,
-                    bottom = 24.dp,
-                )
-                .fillMaxWidth()
-                .wrapContentSize(),
-            isFavorite = isFavorite,
-            onClickLyrics = { isLyricsVisible = !isLyricsVisible },
-            onClickLyricsEdit = {
-                scope.launch {
-                    uiState.song?.let {
-                        onClickClose.invoke()
-                        onClickLyrics.invoke(it.id)
+                            },
+                        )
                     }
                 }
-            },
-            onClickFavorite = {
-                isFavorite = !isFavorite
-                onClickFavorite.invoke()
-            },
-            onClickSleepTimer = onClickSleepTimer,
-            onClickQueue = onClickQueue,
-            onClickKaraoke = onClickKaraoke,
-        )
 
-        Spacer(Modifier.height(12.dp))
+                androidx.compose.animation.AnimatedVisibility(
+                    modifier = Modifier.fillMaxSize(),
+                    visible = !isLyricsVisible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Column {
+                        MainControllerArtworkSection(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            songs = uiState.queueItems.toImmutableList(),
+                            index = uiState.queueIndex,
+                            onSwipeArtwork = onClickSkipToQueue,
+                        )
+
+                        MainControllerTextSection(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            song = uiState.song,
+                        )
+                    }
+                }
+            }
+
+            MainControllerInfoSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                uiState = uiState,
+                onSeek = onClickSeek,
+            )
+
+            MainControllerControlButtonSection(
+                modifier = Modifier
+                    .padding(
+                        top = 16.dp,
+                        bottom = 24.dp,
+                    )
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                uiState = uiState,
+                onClickPlay = onClickPlay,
+                onClickPause = onClickPause,
+                onClickSkipToNext = onClickSkipToNext,
+                onClickSkipToPrevious = onClickSkipToPrevious,
+                onClickShuffle = onClickShuffle,
+                onClickRepeat = onClickRepeat,
+            )
+
+            MainControllerBottomButtonSection(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(
+                        top = 4.dp,
+                        bottom = 24.dp,
+                    )
+                    .fillMaxWidth()
+                    .wrapContentSize(),
+                isFavorite = isFavorite,
+                onClickLyrics = { isLyricsVisible = !isLyricsVisible },
+                onClickLyricsEdit = {
+                    scope.launch {
+                        uiState.song?.let {
+                            onClickClose.invoke()
+                            onClickLyrics.invoke(it.id)
+                        }
+                    }
+                },
+                onClickFavorite = {
+                    isFavorite = !isFavorite
+                    onClickFavorite.invoke()
+                },
+                onClickSleepTimer = onClickSleepTimer,
+                onClickQueue = onClickQueue,
+                onClickKaraoke = onClickKaraoke,
+            )
+
+            Spacer(Modifier.height(12.dp))
+        }
+    }
+}
+
+@Composable
+private fun MainControllerBackground(content: @Composable () -> Unit) {
+    val colorScheme = DarkDefaultColorScheme.copy(
+        primary = Color.White,
+        surfaceVariant = Color.DarkGray,
+    )
+
+    MaterialTheme(colorScheme = colorScheme) {
+        CompositionLocalProvider(LocalContentColor provides Color.White) {
+            content.invoke()
+        }
     }
 }
 
 private suspend fun getArtworkColor(
     context: Context,
     artwork: Artwork,
-    isDarkMode: Boolean,
 ): Color {
     try {
         val builder = when (artwork) {
@@ -321,13 +341,17 @@ private suspend fun getArtworkColor(
         val palette = Palette.from((result as BitmapDrawable).bitmap).generate()
 
         val list = listOfNotNull(
-            palette.lightVibrantSwatch,
+            palette.mutedSwatch,
+            palette.lightMutedSwatch,
             palette.vibrantSwatch,
+            palette.lightVibrantSwatch,
             palette.darkVibrantSwatch,
-            palette.darkMutedSwatch,
+            palette.darkMutedSwatch
         )
 
-        return Color((if (isDarkMode) list.last() else list.first()).rgb)
+        Timber.d("artwork palette: ${list.map { it.rgb.toHexString() }}")
+
+        return Color(list.first().rgb)
     } catch (e: Throwable) {
         Timber.e(e)
         return Color.Transparent
@@ -337,7 +361,7 @@ private suspend fun getArtworkColor(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    KanadeBackground {
+    KanadeBackground(background = Color(0xFF121212)) {
         MainController(
             uiState = MusicUiState().copy(
                 song = Song.dummy(),

@@ -136,7 +136,7 @@ fun Activity.showQueueDialog(
 @Preview
 @Composable
 private fun QueueDialogPreview() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         QueueDialog(
             modifier = Modifier.fillMaxSize(),
             uiState = QueueUiState(

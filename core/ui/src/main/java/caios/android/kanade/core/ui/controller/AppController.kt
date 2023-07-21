@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
@@ -63,7 +64,7 @@ fun AppController(
                 modifier = Modifier
                     .alpha(1f - offsetRate)
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(Color(0xFF121314)),
                 uiState = uiState,
                 onClickClose = onClickCloseExpanded,
                 onClickSearch = navigateToSearch,

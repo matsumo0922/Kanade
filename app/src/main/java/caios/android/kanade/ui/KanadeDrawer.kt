@@ -77,7 +77,7 @@ fun KanadeDrawer(
                 .width(256.dp)
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+                .background(MaterialTheme.colorScheme.surface),
         ) {
             NavigationDrawerHeader(
                 modifier = Modifier
@@ -180,7 +180,7 @@ private fun NavigationDrawerItem(
     val contentColor: Color
 
     if (isSelected) {
-        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
         contentColor = MaterialTheme.colorScheme.primary
     } else {
         containerColor = Color.Transparent

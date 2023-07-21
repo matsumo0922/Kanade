@@ -28,11 +28,11 @@
     <string name="common_details">詳細</string>
 
     <!-- Common Unit -->
-    <string name="unit_song">%1$s 曲</string>
-    <string name="unit_artist">%1$s 名</string>
-    <string name="unit_album">%1$s 枚</string>
-    <string name="unit_playlist">%1$s 枚</string>
-    <string name="unit_play_times">%1$s 回再生</string>
+    <string name="unit_song">%1$d 曲</string>
+    <string name="unit_artist">%1$d 名</string>
+    <string name="unit_album">%1$d 枚</string>
+    <string name="unit_playlist">%1$d 枚</string>
+    <string name="unit_play_times">%1$d 回再生</string>
 
     <!-- Common Error -->
     <string name="error_executed">エラーが発生しました</string>

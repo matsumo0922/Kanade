@@ -36,6 +36,7 @@ fun AnimatedIcon(
         },
         update = { view ->
             view.isChecked = isSelected
+            view.setColorFilter(tint.toArgb())
         },
     )
 }

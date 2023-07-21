@@ -88,7 +88,7 @@ internal fun SettingSwitchItem(
 @Preview
 @Composable
 private fun PreviewSettingSwitchItem1() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         SettingSwitchItem(
             title = android.R.string.copy,
             description = android.R.string.copyUrl,
@@ -101,7 +101,7 @@ private fun PreviewSettingSwitchItem1() {
 @Preview
 @Composable
 private fun PreviewSettingSwitchItem2() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         SettingSwitchItem(
             title = android.R.string.copy,
             description = android.R.string.copyUrl,

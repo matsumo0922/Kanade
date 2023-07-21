@@ -90,7 +90,7 @@ internal fun SettingTextItem(
 @Preview
 @Composable
 private fun PreviewSettingTextItem1() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         SettingTextItem(
             title = android.R.string.copy,
             description = android.R.string.copyUrl,
@@ -102,7 +102,7 @@ private fun PreviewSettingTextItem1() {
 @Preview
 @Composable
 private fun PreviewSettingTextItem2() {
-    KanadeBackground(backgroundColor = MaterialTheme.colorScheme.surface) {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
         SettingTextItem(
             title = android.R.string.copy,
             description = android.R.string.copyUrl,
