@@ -6,6 +6,8 @@ import caios.android.kanade.core.model.player.MusicConfig
 
 interface ArtistRepository {
 
+    fun clear()
+
     fun get(artistId: Long): Artist?
     fun gets(artistIds: List<Long>): List<Artist>
     fun gets(): List<Artist>

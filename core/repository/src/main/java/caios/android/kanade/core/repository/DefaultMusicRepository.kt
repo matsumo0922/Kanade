@@ -47,6 +47,14 @@ class DefaultMusicRepository @Inject constructor(
     override val playlists: List<Playlist> get() = playlistRepository.gets()
     override val playHistory: List<PlayHistory> get() = playHistoryRepository.gets()
 
+    override fun clear() {
+        songRepository.clear()
+        artistRepository.clear()
+        albumRepository.clear()
+        playlistRepository.clear()
+        artworkRepository.clear()
+    }
+
     override fun sortedSongs(musicConfig: MusicConfig): List<Song> {
         return songRepository.songsSort(songs, musicConfig)
     }

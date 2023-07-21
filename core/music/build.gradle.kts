@@ -24,6 +24,6 @@ dependencies {
     implementation(libs.androidx.media)
 
     implementation(libs.google.exoplayer)
-
     implementation(libs.coil.compose)
+    implementation(libs.ffmpeg)
 }

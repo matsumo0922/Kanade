@@ -33,6 +33,11 @@ class DefaultPlaylistRepository @Inject constructor(
 
     override val data: SharedFlow<List<Playlist>> = _data.asSharedFlow()
 
+    override fun clear() {
+        cache.clear()
+        _data.value = emptyList()
+    }
+
     override fun get(playlistId: Long): Playlist? = cache[playlistId]
 
     override fun gets(): List<Playlist> = cache.values.toList()

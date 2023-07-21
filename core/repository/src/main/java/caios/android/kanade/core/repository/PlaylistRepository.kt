@@ -9,6 +9,8 @@ interface PlaylistRepository {
 
     val data: SharedFlow<List<Playlist>>
 
+    fun clear()
+
     fun get(playlistId: Long): Playlist?
     fun gets(): List<Playlist>
 

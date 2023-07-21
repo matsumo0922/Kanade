@@ -138,18 +138,12 @@ class MusicControllerImpl @Inject constructor(
                 }
             }
         }
-
-        scope.launch(main) {
-            musicRepository.lastQueue.collect {
-                if (!isInitialized.value) {
-                    initialize()
-                }
-            }
-        }
     }
 
     override fun initialize() {
         Timber.d("Initialize MusicController. isInitialized: ${isInitialized.value}")
+
+        if (isInitialized.value) return
 
         transportLooper.start()
         createConnection()
@@ -160,6 +154,11 @@ class MusicControllerImpl @Inject constructor(
 
         transportLooper.cancel()
         terminateConnection()
+
+        scope.launch {
+            delay(500)
+            _isInitialized.value = false
+        }
     }
 
     override fun setPlayerPlaying(isPlaying: Boolean) {

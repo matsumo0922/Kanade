@@ -18,10 +18,4 @@ class LibraryTopBarScrollBehavior(
             return Offset.Zero
         }
     }
-
-    fun show() {
-        for (y in state.yOffset.toInt() downTo 0) {
-            state.yOffset = y.toFloat()
-        }
-    }
 }

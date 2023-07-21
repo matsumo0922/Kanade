@@ -3,6 +3,7 @@ package caios.android.kanade.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -48,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.component.LibraryTopBarScrollBehavior
@@ -56,6 +58,7 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.music.LastFmService
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
+import caios.android.kanade.core.ui.dialog.LoadingDialog
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
@@ -158,18 +161,27 @@ fun KanadeApp(
             }
 
             LaunchedEffect(appState.currentLibraryDestination) {
-                scope.launch {
-                    scrollBehavior.show()
+                animate(
+                    initialValue = scrollBehavior.state.yOffset,
+                    targetValue = 0f,
+                    animationSpec = tween(
+                        durationMillis = 200,
+                        easing = NavigateAnimation.decelerateEasing,
+                    ),
+                ) { value, _ ->
+                    scrollBehavior.state.yOffset = value
                 }
             }
 
+            LaunchedEffect(isSearchActive) {
+                scrollBehavior.state.yOffset = 0f
+            }
+
             LaunchedEffect(musicViewModel.uiState.isExpandedController) {
-                scope.launch {
-                    if (musicViewModel.uiState.isExpandedController) {
-                        scaffoldState.bottomSheetState.expand()
-                    } else {
-                        scaffoldState.bottomSheetState.partialExpand()
-                    }
+                if (musicViewModel.uiState.isExpandedController) {
+                    scaffoldState.bottomSheetState.expand()
+                } else {
+                    scaffoldState.bottomSheetState.partialExpand()
                 }
             }
 
@@ -266,6 +278,10 @@ fun KanadeApp(
                     sheetPeekHeight = bottomSheetPeekHeight,
                 ) {
                     Box {
+                        if (musicViewModel.uiState.isAnalyzing) {
+                            LoadingDialog(R.string.common_analyzing)
+                        }
+
                         if (topBarAlpha > 0f) {
                             KanadeTopBar(
                                 modifier = Modifier

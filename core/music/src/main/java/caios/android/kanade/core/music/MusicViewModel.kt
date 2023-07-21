@@ -98,6 +98,10 @@ class MusicViewModel @Inject constructor(
         uiState = uiState.copy(isExpandedController = isExpanded)
     }
 
+    fun setAnalyzing(isAnalyzing: Boolean) {
+        uiState = uiState.copy(isAnalyzing = isAnalyzing)
+    }
+
     fun playerEvent(event: PlayerEvent) {
         musicController.playerEvent(event)
     }
@@ -157,6 +161,7 @@ data class MusicUiState(
     val playlistOrder: MusicOrder = MusicOrder.playlistDefault(),
     val isExpandedController: Boolean = false,
     val isReadyToFmService: Boolean = false,
+    val isAnalyzing: Boolean = false,
 ) {
     val isPlaying
         get() = (state == PlayerState.Playing)

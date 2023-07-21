@@ -19,6 +19,10 @@ class DefaultAlbumRepository @Inject constructor(
 
     private val cache = ConcurrentHashMap<Long, Album>()
 
+    override fun clear() {
+        cache.clear()
+    }
+
     override fun get(albumId: Long): Album? = cache[albumId]
 
     override fun gets(albumIds: List<Long>): List<Album> = albumIds.mapNotNull { get(it) }

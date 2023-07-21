@@ -14,6 +14,7 @@
     <string name="common_finish">完了</string>
     <string name="common_skip">スキップ</string>
     <string name="common_loading">処理中…</string>
+    <string name="common_analyzing">楽曲情報を解析中…</string>
     <string name="common_caution">注意</string>
     <string name="common_error">エラー</string>
     <string name="common_warning">警告</string>

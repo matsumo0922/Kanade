@@ -9,6 +9,8 @@ import caios.android.kanade.core.model.player.MusicOrderOption
 
 interface SongRepository {
 
+    fun clear()
+
     fun get(songId: Long): Song?
     fun gets(songIds: List<Long>): List<Song>
     fun gets(): List<Song>
@@ -19,7 +21,7 @@ interface SongRepository {
     suspend fun songs(musicConfig: MusicConfig): List<Song>
     suspend fun songs(cursor: Cursor?): List<Song>
 
-    fun makeCursor(
+    suspend fun makeCursor(
         selection: String = "",
         selectionValues: List<String> = emptyList(),
         vararg musicOrders: MusicOrder = arrayOf(MusicOrder(Order.ASC, MusicOrderOption.Song.NAME)),

@@ -32,6 +32,11 @@ class DefaultArtworkRepository @Inject constructor(
     override val albumArtworks: Map<Long, Artwork>
         get() = _albumArtwork.toMap()
 
+    override fun clear() {
+        _artistArtwork.clear()
+        _albumArtwork.clear()
+    }
+
     override suspend fun artistArtworks(): Map<Long, Artwork> = withContext(dispatcher) {
         artworkDao.loadArtists().associate { entity ->
             entity.artistId!! to entity.toArtwork()

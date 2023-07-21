@@ -3,12 +3,16 @@ package caios.android.kanade.feature.setting.top
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeConfig
+import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -17,11 +21,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingTopViewModel @Inject constructor(
+    private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
     private val kanadeConfig: KanadeConfig,
+    @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val screenState = userDataRepository.userData.map {
+        fetch()
+
         ScreenState.Idle(
             SettingTopUiState(
                 userData = it,
@@ -33,6 +41,18 @@ class SettingTopViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ScreenState.Loading,
     )
+
+    private fun fetch() {
+        viewModelScope.launch(dispatcher) {
+            musicRepository.clear()
+            musicRepository.fetchSongs()
+            musicRepository.fetchArtists()
+            musicRepository.fetchAlbums()
+            musicRepository.fetchPlaylist()
+            musicRepository.fetchAlbumArtwork()
+            musicRepository.fetchArtistArtwork()
+        }
+    }
 
     fun setThemeConfig(themeConfig: ThemeConfig) {
         viewModelScope.launch {

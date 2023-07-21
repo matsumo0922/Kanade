@@ -126,9 +126,15 @@ fun KanadeTopBar(
                 Icon(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(32.dp))
+                        .clip(RoundedCornerShape(50))
                         .padding(6.dp)
-                        .clickable { onClickDrawerMenu.invoke() },
+                        .clickable {
+                            if (active) {
+                                onChangeActive.invoke(false)
+                            } else {
+                                onClickDrawerMenu.invoke()
+                            }
+                        },
                     painter = rememberAnimatedVectorPainter(image, atEnd),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,

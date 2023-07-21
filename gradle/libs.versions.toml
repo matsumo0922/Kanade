@@ -64,6 +64,7 @@ jsoup = "1.16.1"
 detekt = "1.22.0"
 balloon = "1.5.3"
 orbital = "0.2.4"
+ffmpeg = "5.1"
 twitterComposeRule = "0.0.26"
 
 # Debugs
@@ -195,6 +196,7 @@ balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref 
 spell-checker = { module = "org.apache.lucene:lucene-spellchecker", version = "3.6.2" }
 reorderble-compose = { module = "org.burnoutcrew.composereorderable:reorderable", version = "0.9.6" }
 orbital = { module = "com.github.skydoves:orbital", version.ref = "orbital" }
+ffmpeg = { module = "com.arthenica:ffmpeg-kit-audio", version.ref = "ffmpeg" }
 twitter-compose-rule = { module = "com.twitter.compose.rules:detekt", version.ref = "twitterComposeRule" }
 
 # Debugs

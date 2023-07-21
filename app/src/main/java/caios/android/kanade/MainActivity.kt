@@ -23,7 +23,10 @@ import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.MusicViewModel
+import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.ui.KanadeApp
 import caios.android.kanade.ui.rememberKanadeAppState
@@ -32,6 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
@@ -39,6 +43,12 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
     private val musicViewModel by viewModels<MusicViewModel>()
+
+    @Inject
+    lateinit var musicController: MusicController
+
+    @Inject
+    lateinit var musicRepository: MusicRepository
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         val splashScreen = installSplashScreen()
@@ -93,6 +103,18 @@ class MainActivity : ComponentActivity() {
         if (intent?.extras?.getBoolean("notify") == true) {
             musicViewModel.setControllerState(true)
             intent?.extras?.remove("notify")
+        }
+
+        musicController.initialize()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val screenState = viewModel.screenState.value
+
+        if (screenState is ScreenState.Idle && screenState.data.isStopWhenTaskkill) {
+            musicViewModel.playerEvent(PlayerEvent.Pause)
         }
     }
 

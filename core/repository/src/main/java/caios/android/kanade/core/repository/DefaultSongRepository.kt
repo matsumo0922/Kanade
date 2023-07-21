@@ -19,6 +19,7 @@ import caios.android.kanade.core.repository.util.getString
 import caios.android.kanade.core.repository.util.getStringOrNull
 import caios.android.kanade.core.repository.util.sortList
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import okhttp3.internal.toImmutableMap
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class DefaultSongRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val artworkRepository: ArtworkRepository,
+    private val userDataRepository: UserDataRepository,
 ) : SongRepository {
 
     private val cache = ConcurrentHashMap<Long, Song>()
@@ -45,6 +47,10 @@ class DefaultSongRepository @Inject constructor(
         AudioColumns.ARTIST,
         AudioColumns.MIME_TYPE,
     )
+
+    override fun clear() {
+        cache.clear()
+    }
 
     override fun get(songId: Long): Song? = cache[songId]
 
@@ -83,7 +89,7 @@ class DefaultSongRepository @Inject constructor(
         return songs
     }
 
-    override fun makeCursor(
+    override suspend fun makeCursor(
         selection: String,
         selectionValues: List<String>,
         vararg musicOrders: MusicOrder,
@@ -91,7 +97,7 @@ class DefaultSongRepository @Inject constructor(
         val order = musicOrders.joinToString(separator = ", ") { it.create() }
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else Media.EXTERNAL_CONTENT_URI
 
-        var selectionFinal = AudioColumns.IS_MUSIC + "=1" + " AND " + AudioColumns.TITLE + " != ''"
+        var selectionFinal = AudioColumns.TITLE + " != ''"
         var selectionValuesFinal = emptyArray<String>()
 
         if (selection.isNotBlank()) {
@@ -99,7 +105,13 @@ class DefaultSongRepository @Inject constructor(
             selectionValuesFinal += selectionValues
         }
 
-        selectionFinal += " AND ${Media.DURATION} >= 5000"
+        if (userDataRepository.userData.first().isIgnoreNotMusic) {
+            selectionFinal += " AND ${AudioColumns.IS_MUSIC}=1"
+        }
+
+        if (userDataRepository.userData.first().isIgnoreShortMusic) {
+            selectionFinal += " AND ${Media.DURATION} >= 5000"
+        }
 
         return try {
             context.contentResolver.query(

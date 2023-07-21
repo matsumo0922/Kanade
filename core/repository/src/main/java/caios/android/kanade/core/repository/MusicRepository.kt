@@ -26,6 +26,8 @@ interface MusicRepository {
     val playlists: List<Playlist>
     val playHistory: List<PlayHistory>
 
+    fun clear()
+
     fun sortedSongs(musicConfig: MusicConfig): List<Song>
     fun sortedArtists(musicConfig: MusicConfig): List<Artist>
     fun sortedAlbums(musicConfig: MusicConfig): List<Album>

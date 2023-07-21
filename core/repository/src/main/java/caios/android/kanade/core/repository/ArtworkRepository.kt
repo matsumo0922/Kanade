@@ -9,6 +9,8 @@ interface ArtworkRepository {
     val artistArtworks: Map<Long, Artwork>
     val albumArtworks: Map<Long, Artwork>
 
+    fun clear()
+
     suspend fun artistArtwork(artistId: Long): Artwork
     suspend fun albumArtwork(albumId: Long): Artwork
 
