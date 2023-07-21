@@ -47,7 +47,7 @@ internal fun ArtistTopRoute(
             sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Artist::class) },
             onClickArtist = navigateToArtistDetail,
-            contentPadding = PaddingValues(top = topMargin),
+            contentPadding = PaddingValues(top = topMargin + 8.dp, bottom = 8.dp),
         )
     }
 }

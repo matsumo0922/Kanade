@@ -91,10 +91,7 @@ fun KanadeTopBar(
     Column(
         modifier = modifier
             .offset(y = yOffset)
-            .padding(
-                top = toolbarPadding,
-                bottom = 8.dp,
-            ),
+            .padding(top = toolbarPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(

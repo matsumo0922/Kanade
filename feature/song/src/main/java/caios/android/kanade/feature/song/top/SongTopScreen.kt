@@ -44,7 +44,7 @@ internal fun SongTopRoute(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             songs = uiState?.songs?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.songDefault(),
-            contentPadding = PaddingValues(top = topMargin),
+            contentPadding = PaddingValues(top = topMargin + 8.dp),
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Song::class) },
             onClickSong = viewModel::onNewPlay,
             onClickMenu = navigateToSongMenu,

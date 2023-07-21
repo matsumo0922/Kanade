@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.search.items
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +28,10 @@ internal fun SearchResultSection(
     onClickPlaylistMenu: (Playlist) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(bottom = 8.dp),
+    ) {
         if (uiState.resultSongs.isNotEmpty()) {
             item {
                 SearchHeaderItem(

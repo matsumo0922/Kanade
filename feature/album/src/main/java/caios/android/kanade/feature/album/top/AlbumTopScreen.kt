@@ -50,7 +50,7 @@ internal fun AlbumTopRoute(
             onClickAlbum = navigateToAlbumDetail,
             onClickPlay = viewModel::onNewPlay,
             onClickMenu = navigateToAlbumMenu,
-            contentPadding = PaddingValues(top = topMargin),
+            contentPadding = PaddingValues(top = topMargin + 8.dp, bottom = 8.dp),
         )
     }
 }

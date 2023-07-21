@@ -62,7 +62,7 @@ internal fun PlaylistTopRoute(
     ) { uiState ->
         PlaylistTopScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            contentPadding = PaddingValues(top = topMargin),
+            contentPadding = PaddingValues(top = topMargin + 8.dp, bottom = 8.dp),
             playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
             sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Playlist::class) },

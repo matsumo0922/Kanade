@@ -118,7 +118,7 @@ internal fun HomeScreen(
         item {
             HomeHeaderSection(
                 modifier = Modifier
-                    .padding(top = 8.dp)
+                    .padding(top = 16.dp)
                     .fillMaxWidth(),
                 onClickHistory = onClickHistory,
                 onClickRecentlyAdded = onClickRecentlyAdded,
