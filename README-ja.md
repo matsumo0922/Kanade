@@ -113,8 +113,6 @@ graph LR
   playlist --> music
   song --> ui
   song --> music
-  album --> ui
-  album --> music
   artist --> ui
   artist --> music
   album --> ui
