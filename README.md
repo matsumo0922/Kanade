@@ -26,7 +26,7 @@ Kanade is an elegant music player app that can display synchronized lyrics.
     <img src="./media/screenshots.png" width="100%" alt="screenshots">
 </p>
 
-<p align="center">Do you speak Japanese？Japanese <a href="./README-ja.md">READEME</a> is Here!</p>
+<p align="center">Do you speak Japanese? Japanese <a href="./README-ja.md">READEME</a> is Here!</p>
 
 ## Status
 #### WIP :construction:
@@ -118,8 +118,6 @@ graph LR
   album --> music
   artist --> ui
   artist --> music
-  album --> ui
-  album --> music
   ui --> design
   ui --> repository
   music --> design
