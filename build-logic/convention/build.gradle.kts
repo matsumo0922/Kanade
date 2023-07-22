@@ -39,7 +39,7 @@ gradlePlugin {
             id = "kanade.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
-        register("AndroidDetekt") {
+        register("androidDetekt") {
             id = "kanade.detekt"
             implementationClass = "AndroidDetektConventionPlugin"
         }

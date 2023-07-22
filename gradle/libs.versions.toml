@@ -9,7 +9,7 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Gradle
-gradle = "8.1.0-rc01"
+gradle = "8.0.2"
 
 # Kotlin
 kotlin = "1.8.22"
@@ -83,6 +83,7 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+module-graph = { id = "dev.iurysouza.modulegraph", version = "0.4.0" }
 
 [libraries]
 ## Dependency of the include build-logic
