@@ -72,10 +72,6 @@ class MusicService : MediaBrowserServiceCompat() {
     private val playerEventListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             musicController.setPlayerPlaying(isPlaying)
-
-            scope.launch(main) {
-                notificationManager.setForegroundService(isPlaying)
-            }
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -84,10 +80,6 @@ class MusicService : MediaBrowserServiceCompat() {
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             mediaItem?.mediaMetadata?.let { musicController.setPlayerItem(it) }
-
-            scope.launch(main) {
-                notificationManager.setForegroundService(true)
-            }
         }
     }
 
@@ -136,6 +128,7 @@ class MusicService : MediaBrowserServiceCompat() {
             mediaSession = mediaSession,
             musicController = musicController,
             musicRepository = musicRepository,
+            notificationManager = notificationManager,
             queueManager = queueManager,
             volumeAnalyzer = volumeAnalyzer,
             musicEffector = musicEffector,

@@ -23,9 +23,7 @@ class NotificationManager(
     private val mediaSession: MediaSessionCompat,
     private val musicController: MusicController,
 ) {
-
     private val manager = NotificationManagerCompat.from(service.baseContext)
-    private var isForeground = false
 
     init {
         createNotificationChannel()
@@ -33,27 +31,19 @@ class NotificationManager(
 
     @SuppressLint("MissingPermission")
     suspend fun setForegroundService(isForeground: Boolean) {
-        Timber.d("setForegroundService: $isForeground, ${this.isForeground}")
+        Timber.d("setForegroundService: $isForeground")
 
         val notification = createMusicNotification(
             context = service.baseContext,
             song = musicController.currentSong.first(),
         )
 
-        try {
-            if (isForeground) {
-                if (!this.isForeground) {
-                    service.startForeground(NOTIFY_ID, notification)
-                }
-            } else {
-                manager.notify(NOTIFY_ID, notification)
-                service.stopForeground(false)
-            }
-        } catch (e: Throwable) {
-            Timber.e(e, "cannot set foreground service.")
+        if (isForeground) {
+            service.startForeground(NOTIFY_ID, notification)
+        } else {
+            manager.notify(NOTIFY_ID, notification)
+            service.stopForeground(false)
         }
-
-        this.isForeground = isForeground
     }
 
     @SuppressLint("WrongConstant")

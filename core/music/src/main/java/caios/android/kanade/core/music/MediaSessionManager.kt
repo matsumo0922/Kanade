@@ -46,6 +46,7 @@ class MediaSessionManager(
     private val mediaSession: MediaSessionCompat,
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
+    private val notificationManager: NotificationManager,
     private val queueManager: QueueManager,
     private val volumeAnalyzer: VolumeAnalyzer,
     private val musicEffector: MusicEffector,
@@ -111,18 +112,21 @@ class MediaSessionManager(
 
             withAudioFocus {
                 mediaSession.isActive = true
+                setForeground(true)
                 player.play()
             }
         }
 
         override fun onPause() {
-            releaseAudioFocus()
             player.pause()
+            releaseAudioFocus()
+            setForeground(false)
         }
 
         override fun onStop() {
-            releaseAudioFocus()
             player.stop()
+            releaseAudioFocus()
+            setForeground(false)
             mediaSession.isActive = false
         }
 
@@ -222,6 +226,12 @@ class MediaSessionManager(
 
     private fun releaseAudioFocus(): Boolean {
         return (AudioManagerCompat.abandonAudioFocusRequest(audioManager, audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+    }
+
+    private fun setForeground(isForeground: Boolean) {
+        scope.launch {
+            notificationManager.setForegroundService(isForeground)
+        }
     }
 
     private suspend fun Artwork.toBitmap(context: Context): Bitmap? {
