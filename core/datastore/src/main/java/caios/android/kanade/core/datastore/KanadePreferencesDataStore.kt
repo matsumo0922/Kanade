@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.Order
+import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.LastQueue
@@ -30,6 +31,14 @@ class KanadePreferencesDataStore @Inject constructor(
                     ThemeConfigProto.THEME_CONFIG_LIGHT -> ThemeConfig.Light
                     ThemeConfigProto.THEME_CONFIG_DARK -> ThemeConfig.Dark
                     else -> ThemeConfig.System
+                },
+                themeColorConfig = when (it.themeColorConfig) {
+                    ThemeColorConfigProto.THEME_COLOR_CONFIG_BLUE -> ThemeColorConfig.Blue
+                    ThemeColorConfigProto.THEME_COLOR_CONFIG_BROWN -> ThemeColorConfig.Brown
+                    ThemeColorConfigProto.THEME_COLOR_CONFIG_GREEN -> ThemeColorConfig.Green
+                    ThemeColorConfigProto.THEME_COLOR_CONFIG_PURPLE -> ThemeColorConfig.Purple
+                    ThemeColorConfigProto.THEME_COLOR_CONFIG_PINK -> ThemeColorConfig.Pink
+                    else -> ThemeColorConfig.Default
                 },
                 isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else true,
                 isDeveloperMode = if (it.hasIsDeveloperMode()) it.isDeveloperMode else false,
@@ -117,6 +126,21 @@ class KanadePreferencesDataStore @Inject constructor(
                     ThemeConfig.Light -> ThemeConfigProto.THEME_CONFIG_LIGHT
                     ThemeConfig.Dark -> ThemeConfigProto.THEME_CONFIG_DARK
                     else -> ThemeConfigProto.THEME_CONFIG_SYSTEM
+                }
+            }
+        }
+    }
+
+    suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig) = withContext(io) {
+        userPreference.updateData {
+            it.copy {
+                this.themeColorConfig = when (themeColorConfig) {
+                    ThemeColorConfig.Blue -> ThemeColorConfigProto.THEME_COLOR_CONFIG_BLUE
+                    ThemeColorConfig.Brown -> ThemeColorConfigProto.THEME_COLOR_CONFIG_BROWN
+                    ThemeColorConfig.Green -> ThemeColorConfigProto.THEME_COLOR_CONFIG_GREEN
+                    ThemeColorConfig.Pink -> ThemeColorConfigProto.THEME_COLOR_CONFIG_PINK
+                    ThemeColorConfig.Purple -> ThemeColorConfigProto.THEME_COLOR_CONFIG_PURPLE
+                    else -> ThemeColorConfigProto.THEME_COLOR_CONFIG_DEFAULT
                 }
             }
         }

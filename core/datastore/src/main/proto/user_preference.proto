@@ -2,20 +2,22 @@
 syntax = "proto3";
 
 import "items/theme_config.proto";
+import "items/theme_color_config.proto";
 
 option java_package = "caios.android.kanade.core.datastore";
 option java_multiple_files = true;
 
 message UserPreference {
   ThemeConfigProto theme_config = 1;
+  ThemeColorConfigProto theme_color_config = 2;
 
-  optional bool is_use_dynamic_color = 2;
-  optional bool is_developer_mode = 3;
-  optional bool is_premium_mode = 4;
-  optional bool is_use_dynamic_normalizer = 5;
-  optional bool is_use_one_step_back = 6;
-  optional bool is_use_keep_audio_focus = 7;
-  optional bool is_use_stop_when_taskkill = 8;
-  optional bool is_use_ignore_short_music = 9;
-  optional bool is_use_ignore_not_music = 10;
+  optional bool is_use_dynamic_color = 3;
+  optional bool is_developer_mode = 4;
+  optional bool is_premium_mode = 5;
+  optional bool is_use_dynamic_normalizer = 6;
+  optional bool is_use_one_step_back = 7;
+  optional bool is_use_keep_audio_focus = 8;
+  optional bool is_use_stop_when_taskkill = 9;
+  optional bool is_use_ignore_short_music = 10;
+  optional bool is_use_ignore_not_music = 11;
 }

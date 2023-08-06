@@ -23,7 +23,7 @@ object NavigateAnimation {
         val exit = fadeOut(tween(240))
     }
 
-    object Detail {
+    object Vertical {
         private const val DURATION_FADE = 180
         private const val DURATION_SLIDE = 180
 
@@ -45,6 +45,31 @@ object NavigateAnimation {
         val exit = fadeOut(tween(DURATION_FADE)) + slideOut(
             animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
             targetOffset = { IntOffset(0, (it.height * 0.1).toInt()) },
+        )
+    }
+
+    object Horizontal {
+        private const val DURATION_FADE = 180
+        private const val DURATION_SLIDE = 180
+
+        val enter = fadeIn(tween(DURATION_FADE)) + slideIn(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
+            initialOffset = { IntOffset((it.width * 0.1).toInt(), 0) },
+        )
+
+        val popExit = fadeOut(tween(DURATION_FADE)) + slideOut(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
+            targetOffset = { IntOffset((it.width * 0.1).toInt(), 0) },
+        )
+
+        val popEnter = fadeIn(tween(DURATION_FADE)) + slideIn(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
+            initialOffset = { IntOffset((-it.width * 0.1).toInt(), 0) },
+        )
+
+        val exit = fadeOut(tween(DURATION_FADE)) + slideOut(
+            animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),
+            targetOffset = { IntOffset((-it.width * 0.1).toInt(), 0) },
         )
     }
 }

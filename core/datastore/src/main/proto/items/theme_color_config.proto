@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "caios.android.kanade.core.datastore";
+option java_multiple_files = true;
+
+enum ThemeColorConfigProto {
+  THEME_COLOR_CONFIG_UNSPECIFIED = 0;
+  THEME_COLOR_CONFIG_DEFAULT = 1;
+  THEME_COLOR_CONFIG_BLUE = 2;
+  THEME_COLOR_CONFIG_BROWN = 3;
+  THEME_COLOR_CONFIG_GREEN = 4;
+  THEME_COLOR_CONFIG_PINK = 5;
+  THEME_COLOR_CONFIG_PURPLE = 6;
+}

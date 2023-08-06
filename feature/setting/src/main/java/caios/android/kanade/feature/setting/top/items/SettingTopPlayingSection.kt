@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
-import caios.android.kanade.feature.setting.top.settings.SettingSwitchItem
-import caios.android.kanade.feature.setting.top.settings.SettingTextItem
+import caios.android.kanade.feature.setting.SettingSwitchItem
+import caios.android.kanade.feature.setting.SettingTextItem
 
 @Composable
 internal fun SettingTopPlayingSection(

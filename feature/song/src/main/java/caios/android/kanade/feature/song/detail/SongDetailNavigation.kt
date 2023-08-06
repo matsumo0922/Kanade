@@ -31,10 +31,10 @@ fun NavGraphBuilder.songDetailScreen(
             navArgument(SongDetailTitle) { type = NavType.StringType },
             navArgument(SongDetailIds) { type = NavType.StringType },
         ),
-        enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
-        popEnterTransition = { NavigateAnimation.Detail.popEnter },
-        popExitTransition = { NavigateAnimation.Detail.popExit },
+        enterTransition = { NavigateAnimation.Vertical.enter },
+        exitTransition = { NavigateAnimation.Vertical.exit },
+        popEnterTransition = { NavigateAnimation.Vertical.popEnter },
+        popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
         SongDetailRoute(
             modifier = Modifier.fillMaxSize(),

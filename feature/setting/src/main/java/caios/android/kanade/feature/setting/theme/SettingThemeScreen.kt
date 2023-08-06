@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.setting.top
+package caios.android.kanade.feature.setting.theme
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,22 +27,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.model.ThemeColorConfig
+import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.feature.setting.SettingSwitchItem
 import caios.android.kanade.feature.setting.SettingTheme
-import caios.android.kanade.feature.setting.top.items.SettingTopLibrarySection
-import caios.android.kanade.feature.setting.top.items.SettingTopOthersSection
-import caios.android.kanade.feature.setting.top.items.SettingTopPlayingSection
-import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
+import caios.android.kanade.feature.setting.theme.items.SettingThemeColorSection
+import caios.android.kanade.feature.setting.theme.items.SettingThemeTabsSection
 
 @Composable
-internal fun SettingTopRoute(
-    navigateToSettingTheme: () -> Unit,
+internal fun SettingThemeRoute(
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SettingTopViewModel = hiltViewModel(),
+    viewModel: SettingThemeViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -51,18 +50,12 @@ internal fun SettingTopRoute(
         screenState = screenState,
     ) {
         if (it != null) {
-            SettingTopScreen(
+            SettingThemeDialog(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 userData = it.userData,
-                config = it.config,
-                onClickTheme = navigateToSettingTheme,
-                onClickDynamicNormalizer = viewModel::setUseDynamicNormalizer,
-                onClickOneStepBack = viewModel::setOneStepBack,
-                onClickKeepAudioFocus = viewModel::setKeepAudioFocus,
-                onClickStopWhenTaskkill = viewModel::setStopWhenTaskkill,
-                onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
-                onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
-                onClickDeveloperMode = viewModel::setDeveloperMode,
+                onSelectTheme = viewModel::setThemeConfig,
+                onSelectThemeColor = viewModel::setThemeColorConfig,
+                onClickDynamicColor = viewModel::setUseDynamicColor,
                 onTerminate = terminate,
             )
         }
@@ -71,17 +64,11 @@ internal fun SettingTopRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SettingTopScreen(
+private fun SettingThemeDialog(
     userData: UserData,
-    config: KanadeConfig,
-    onClickTheme: () -> Unit,
-    onClickDynamicNormalizer: (Boolean) -> Unit,
-    onClickOneStepBack: (Boolean) -> Unit,
-    onClickKeepAudioFocus: (Boolean) -> Unit,
-    onClickStopWhenTaskkill: (Boolean) -> Unit,
-    onClickIgnoreShortMusic: (Boolean) -> Unit,
-    onClickIgnoreNotMusic: (Boolean) -> Unit,
-    onClickDeveloperMode: (Boolean) -> Unit,
+    onSelectTheme: (ThemeConfig) -> Unit,
+    onSelectThemeColor: (ThemeColorConfig) -> Unit,
+    onClickDynamicColor: (Boolean) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -96,7 +83,7 @@ private fun SettingTopScreen(
                     modifier = Modifier.fillMaxWidth(),
                     title = {
                         Text(
-                            text = stringResource(R.string.setting_title),
+                            text = stringResource(R.string.setting_theme_title),
                         )
                     },
                     navigationIcon = {
@@ -121,34 +108,32 @@ private fun SettingTopScreen(
             contentPadding = paddingValues,
         ) {
             item {
-                SettingTopThemeSection(
+                SettingThemeTabsSection(
                     modifier = Modifier.fillMaxWidth(),
-                    onClickAppTheme = onClickTheme,
+                    themeConfig = userData.themeConfig,
+                    onSelectTheme = onSelectTheme,
                 )
+            }
 
-                SettingTopPlayingSection(
-                    modifier = Modifier.fillMaxWidth(),
-                    userData = userData,
-                    onClickEqualizer = { },
-                    onClickDynamicNormalizer = onClickDynamicNormalizer,
-                    onClickOneStepBack = onClickOneStepBack,
-                    onClickKeepAudioFocus = onClickKeepAudioFocus,
-                    onClickStopWhenTaskkill = onClickStopWhenTaskkill,
+            item {
+                SettingSwitchItem(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    title = R.string.setting_theme_theme_dynamic_color,
+                    description = R.string.setting_theme_theme_dynamic_color_description,
+                    value = userData.isDynamicColor,
+                    onValueChanged = onClickDynamicColor,
                 )
+            }
 
-                SettingTopLibrarySection(
+            item {
+                SettingThemeColorSection(
                     modifier = Modifier.fillMaxWidth(),
-                    userData = userData,
-                    onClickScan = { },
-                    onClickIgnoreShotMusic = onClickIgnoreShortMusic,
-                    onClickIgnoreNotMusic = onClickIgnoreNotMusic,
-                )
-
-                SettingTopOthersSection(
-                    modifier = Modifier.fillMaxWidth(),
-                    config = config,
-                    userData = userData,
-                    onClickDeveloperMode = { },
+                    isUseDynamicColor = userData.isDynamicColor,
+                    themeConfig = userData.themeConfig,
+                    themeColorConfig = userData.themeColorConfig,
+                    onSelectThemeColor = onSelectThemeColor,
                 )
             }
         }

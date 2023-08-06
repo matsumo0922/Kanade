@@ -80,6 +80,10 @@ class MusicService : MediaBrowserServiceCompat() {
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             mediaItem?.mediaMetadata?.let { musicController.setPlayerItem(it) }
+
+            scope.launch {
+                notificationManager.setForegroundService(true)
+            }
         }
     }
 

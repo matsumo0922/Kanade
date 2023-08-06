@@ -45,6 +45,8 @@ import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.rename.renamePlaylistDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.queue.showQueueDialog
+import caios.android.kanade.feature.setting.theme.navigateToSettingTheme
+import caios.android.kanade.feature.setting.theme.settingThemeScreen
 import caios.android.kanade.feature.setting.top.settingTopScreen
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
@@ -294,6 +296,15 @@ fun KanadeNavHost(
         )
 
         settingTopScreen(
+            navigateToSettingTheme = {
+                navController.navigateToSettingTheme()
+            },
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        settingThemeScreen(
             terminate = {
                 navController.popBackStack()
             },

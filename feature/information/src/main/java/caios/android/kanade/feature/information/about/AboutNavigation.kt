@@ -22,10 +22,10 @@ fun NavGraphBuilder.aboutScreen(
 ) {
     composable(
         route = AboutRoute,
-        enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
-        popEnterTransition = { NavigateAnimation.Detail.popEnter },
-        popExitTransition = { NavigateAnimation.Detail.popExit },
+        enterTransition = { NavigateAnimation.Vertical.enter },
+        exitTransition = { NavigateAnimation.Vertical.exit },
+        popEnterTransition = { NavigateAnimation.Vertical.popEnter },
+        popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
         AboutRoute(
             modifier = Modifier.fillMaxSize(),

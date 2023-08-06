@@ -14,17 +14,19 @@ fun NavController.navigateToSettingTop() {
 }
 
 fun NavGraphBuilder.settingTopScreen(
+    navigateToSettingTheme: () -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
         route = SettingTopRoute,
-        enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
-        popEnterTransition = { NavigateAnimation.Detail.popEnter },
-        popExitTransition = { NavigateAnimation.Detail.popExit },
+        enterTransition = { NavigateAnimation.Vertical.enter },
+        exitTransition = { NavigateAnimation.Horizontal.exit },
+        popEnterTransition = { NavigateAnimation.Horizontal.popEnter },
+        popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
         SettingTopRoute(
             modifier = Modifier.fillMaxSize(),
+            navigateToSettingTheme = navigateToSettingTheme,
             terminate = terminate,
         )
     }

@@ -211,8 +211,6 @@
     <string name="setting_top_theme_app_light">ライトテーマ</string>
     <string name="setting_top_theme_app_dark">ダークテーマ</string>
     <string name="setting_top_theme_app_system">システムのテーマ</string>
-    <string name="setting_top_theme_material_you">Material You</string>
-    <string name="setting_top_theme_material_you_description">Material You Design を使用します。Android 12 以降でのみ使用可能です。</string>
     <string name="setting_top_playing">再生</string>
     <string name="setting_top_playing_equalizer">イコライザー</string>
     <string name="setting_top_playing_equalizer_description">イコライザーを調整して好みの音質に変更します。</string>
@@ -236,4 +234,9 @@
     <string name="setting_top_others_version">バージョン</string>
     <string name="setting_top_others_developer_mode">開発モード</string>
     <string name="setting_top_others_developer_mode_description">[Warning] Do not enable this mode if you are not a developer.</string>
+    <string name="setting_theme_title">テーマ</string>
+    <string name="setting_theme_theme_dynamic_color">Dynamic Color</string>
+    <string name="setting_theme_theme_dynamic_color_description">ホームに設定している壁紙などから色を自動抽出する Dynamic Color を使用します。Android 12 以降でのみ利用可能です。</string>
+    <string name="setting_theme_color">テーマカラー</string>
+    <string name="setting_theme_color_description">アプリのテーマカラーを設定します。Dynamic Color と同時使用はできません。</string>
 </resources>

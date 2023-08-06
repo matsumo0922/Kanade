@@ -1,6 +1,7 @@
 package caios.android.kanade.core.repository.fake
 
 import caios.android.kanade.core.datastore.KanadePreferencesDataStore
+import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.repository.UserDataRepository
@@ -15,6 +16,10 @@ class FakeUserDataRepository @Inject constructor(
 
     override suspend fun setThemeConfig(themeConfig: ThemeConfig) {
         kanadePreferencesDataStore.setThemeConfig(themeConfig)
+    }
+
+    override suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig) {
+        kanadePreferencesDataStore.setThemeColorConfig(themeColorConfig)
     }
 
     override suspend fun setDeveloperMode(isDeveloperMode: Boolean) {

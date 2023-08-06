@@ -28,13 +28,13 @@ fun NavGraphBuilder.albumTopScreen(
         enterTransition = {
             when (initialState.destination.route) {
                 "homeTop", "playlistTop", "songTop", "artistTop" -> NavigateAnimation.Library.enter
-                else -> NavigateAnimation.Detail.popEnter
+                else -> NavigateAnimation.Vertical.popEnter
             }
         },
         exitTransition = {
             when (targetState.destination.route) {
                 "homeTop", "playlistTop", "songTop", "artistTop" -> NavigateAnimation.Library.exit
-                else -> NavigateAnimation.Detail.exit
+                else -> NavigateAnimation.Vertical.exit
             }
         },
     ) {

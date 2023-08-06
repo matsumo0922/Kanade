@@ -66,12 +66,6 @@ class SettingTopViewModel @Inject constructor(
         }
     }
 
-    fun setUseDynamicColor(useDynamicColor: Boolean) {
-        viewModelScope.launch {
-            userDataRepository.setUseDynamicColor(useDynamicColor)
-        }
-    }
-
     fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean) {
         viewModelScope.launch {
             userDataRepository.setUseDynamicNormalizer(useDynamicNormalizer)

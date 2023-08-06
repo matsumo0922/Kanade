@@ -30,10 +30,10 @@ fun NavGraphBuilder.albumDetailScreen(
         arguments = listOf(
             navArgument(AlbumDetailId) { type = NavType.LongType },
         ),
-        enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
-        popEnterTransition = { NavigateAnimation.Detail.popEnter },
-        popExitTransition = { NavigateAnimation.Detail.popExit },
+        enterTransition = { NavigateAnimation.Vertical.enter },
+        exitTransition = { NavigateAnimation.Vertical.exit },
+        popEnterTransition = { NavigateAnimation.Vertical.popEnter },
+        popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
         AlbumDetailRoute(
             modifier = Modifier.fillMaxSize(),

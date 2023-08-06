@@ -28,10 +28,10 @@ fun NavGraphBuilder.playlistDetailScreen(
     composable(
         route = PlaylistDetailRoute,
         arguments = listOf(navArgument(PlaylistDetailId) { type = NavType.LongType }),
-        enterTransition = { NavigateAnimation.Detail.enter },
-        exitTransition = { NavigateAnimation.Detail.exit },
-        popEnterTransition = { NavigateAnimation.Detail.popEnter },
-        popExitTransition = { NavigateAnimation.Detail.popExit },
+        enterTransition = { NavigateAnimation.Vertical.enter },
+        exitTransition = { NavigateAnimation.Vertical.exit },
+        popEnterTransition = { NavigateAnimation.Vertical.popEnter },
+        popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
         PlaylistDetailRoute(
             modifier = Modifier.fillMaxSize(),

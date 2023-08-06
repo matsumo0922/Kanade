@@ -13,6 +13,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.design.theme.color.DarkBlueColorScheme
+import caios.android.kanade.core.design.theme.color.DarkBrownColorScheme
+import caios.android.kanade.core.design.theme.color.DarkGreenColorScheme
+import caios.android.kanade.core.design.theme.color.DarkPinkColorScheme
+import caios.android.kanade.core.design.theme.color.DarkPurpleColorScheme
+import caios.android.kanade.core.design.theme.color.LightBlueColorScheme
+import caios.android.kanade.core.design.theme.color.LightBrownColorScheme
+import caios.android.kanade.core.design.theme.color.LightGreenColorScheme
+import caios.android.kanade.core.design.theme.color.LightPinckColorScheme
+import caios.android.kanade.core.design.theme.color.LightPurpleColorScheme
+import caios.android.kanade.core.model.ThemeColorConfig
 
 val LightDefaultColorScheme = lightColorScheme(
     primary = Purple40,
@@ -72,6 +83,7 @@ val DarkDefaultColorScheme = darkColorScheme(
 
 @Composable
 fun KanadeTheme(
+    themeColorConfig: ThemeColorConfig = ThemeColorConfig.Default,
     shouldUseDarkTheme: Boolean = isSystemInDarkTheme(),
     enableDynamicTheme: Boolean = false,
     content: @Composable () -> Unit,
@@ -79,7 +91,14 @@ fun KanadeTheme(
     val context = LocalContext.current
     val colorScheme = when {
         enableDynamicTheme && supportsDynamicTheming() -> if (shouldUseDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        else -> if (shouldUseDarkTheme) DarkDefaultColorScheme else LightDefaultColorScheme
+        else -> when (themeColorConfig) {
+            ThemeColorConfig.Blue -> if (shouldUseDarkTheme) DarkBlueColorScheme else LightBlueColorScheme
+            ThemeColorConfig.Brown -> if (shouldUseDarkTheme) DarkBrownColorScheme else LightBrownColorScheme
+            ThemeColorConfig.Green -> if (shouldUseDarkTheme) DarkGreenColorScheme else LightGreenColorScheme
+            ThemeColorConfig.Purple -> if (shouldUseDarkTheme) DarkPurpleColorScheme else LightPurpleColorScheme
+            ThemeColorConfig.Pink -> if (shouldUseDarkTheme) DarkPinkColorScheme else LightPinckColorScheme
+            else -> if (shouldUseDarkTheme) DarkDefaultColorScheme else LightDefaultColorScheme
+        }
     }
 
     val backgroundTheme = BackgroundTheme(

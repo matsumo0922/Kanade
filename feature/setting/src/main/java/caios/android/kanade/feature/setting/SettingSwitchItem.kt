@@ -1,12 +1,15 @@
-package caios.android.kanade.feature.setting.top.settings
+package caios.android.kanade.feature.setting
 
+import android.R
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,10 +22,11 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
 
 @Composable
-internal fun SettingTextItem(
-    title: String,
-    description: String,
-    onClick: () -> Unit,
+internal fun SettingSwitchItem(
+    @StringRes title: Int,
+    @StringRes description: Int,
+    value: Boolean,
+    onValueChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
 ) {
@@ -42,71 +46,68 @@ internal fun SettingTextItem(
             }
     }
 
-    Column(
+    Row(
         modifier = modifier
             .clickable(
                 enabled = isEnabled,
-                onClick = { onClick.invoke() },
+                onClick = { onValueChanged.invoke(!value) },
             )
             .padding(horizontal = 24.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(
-            space = 4.dp,
-            alignment = Alignment.CenterVertically,
-        ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            color = titleColor,
-        )
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(
+                space = 4.dp,
+                alignment = Alignment.CenterVertically,
+            ),
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(title),
+                style = MaterialTheme.typography.bodyLarge,
+                color = titleColor,
+            )
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = descriptionColor,
-        )
-    }
-}
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(description),
+                style = MaterialTheme.typography.bodyMedium,
+                color = descriptionColor,
+            )
+        }
 
-@Composable
-internal fun SettingTextItem(
-    @StringRes title: Int,
-    @StringRes description: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    isEnabled: Boolean = true,
-) {
-    SettingTextItem(
-        modifier = modifier,
-        title = stringResource(title),
-        description = stringResource(description),
-        onClick = onClick,
-        isEnabled = isEnabled,
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewSettingTextItem1() {
-    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
-        SettingTextItem(
-            title = android.R.string.copy,
-            description = android.R.string.copyUrl,
-            onClick = {},
+        Switch(
+            enabled = isEnabled,
+            checked = value,
+            onCheckedChange = { onValueChanged.invoke(it) },
         )
     }
 }
 
 @Preview
 @Composable
-private fun PreviewSettingTextItem2() {
+private fun PreviewSettingSwitchItem1() {
     KanadeBackground(background = MaterialTheme.colorScheme.surface) {
-        SettingTextItem(
-            title = android.R.string.copy,
-            description = android.R.string.copyUrl,
-            onClick = {},
+        SettingSwitchItem(
+            title = R.string.copy,
+            description = R.string.copyUrl,
+            value = true,
+            onValueChanged = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSettingSwitchItem2() {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
+        SettingSwitchItem(
+            title = R.string.copy,
+            description = R.string.copyUrl,
+            value = true,
+            onValueChanged = {},
             isEnabled = false,
         )
     }

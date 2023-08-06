@@ -8,8 +8,8 @@ import androidx.compose.ui.res.stringResource
 import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
-import caios.android.kanade.feature.setting.top.settings.SettingSwitchItem
-import caios.android.kanade.feature.setting.top.settings.SettingTextItem
+import caios.android.kanade.feature.setting.SettingSwitchItem
+import caios.android.kanade.feature.setting.SettingTextItem
 
 @Composable
 internal fun SettingTopOthersSection(
@@ -35,9 +35,9 @@ internal fun SettingTopOthersSection(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(R.string.setting_top_others_version),
             description = "${config.versionName}:${config.versionCode}" + when {
-                userData.isPremiumMode && userData.isDeveloperMode -> "[P+D]"
-                userData.isPremiumMode -> "[Premium]"
-                userData.isDeveloperMode -> "[Developer]"
+                userData.isPremiumMode && userData.isDeveloperMode -> " [P+D]"
+                userData.isPremiumMode -> " [Premium]"
+                userData.isDeveloperMode -> " [Developer]"
                 else -> ""
             },
             onClick = { /* do nothing */ },

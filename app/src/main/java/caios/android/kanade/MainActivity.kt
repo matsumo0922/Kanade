@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.model.ScreenState
+import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.player.PlayerEvent
@@ -88,6 +89,7 @@ class MainActivity : ComponentActivity() {
                 val appState = rememberKanadeAppState(windowSize, musicViewModel, userData)
 
                 KanadeTheme(
+                    themeColorConfig = userData?.themeColorConfig ?: ThemeColorConfig.Default,
                     shouldUseDarkTheme = shouldUseDarkTheme,
                     enableDynamicTheme = shouldUseDynamicColor(screenState),
                 ) {
