@@ -1,3 +1,5 @@
+@file:Suppress("UnusedPrivateMember")
+
 package caios.android.kanade.core.design.theme.color
 
 import androidx.compose.material3.darkColorScheme
@@ -97,7 +99,6 @@ val LightPinckColorScheme = lightColorScheme(
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
 )
-
 
 val DarkPinkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,

@@ -110,32 +110,32 @@ private fun SettingThemeColorItem(
             .border(
                 width = 1.dp,
                 color = if (isSelected && isEnabled) tertiaryColor else Color.Transparent,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             )
             .background(backgroundColor.copy(alpha = if (isSelected && isEnabled) 1f else 0.5f))
             .clickable(
                 enabled = isEnabled,
                 onClick = onClick,
-            )
+            ),
     ) {
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(16.dp)
-                .clip(RoundedCornerShape(50))
+                .clip(RoundedCornerShape(50)),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(primaryColor.copy(alpha = if (isEnabled) 1f else 0.5f))
+                    .background(primaryColor.copy(alpha = if (isEnabled) 1f else 0.5f)),
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(secondaryColor.copy(alpha = if (isEnabled) 1f else 0.5f))
+                    .background(secondaryColor.copy(alpha = if (isEnabled) 1f else 0.5f)),
             )
         }
     }

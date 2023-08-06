@@ -7,7 +7,6 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
-import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingThemeViewModel @Inject constructor(
-    private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
@@ -26,7 +24,7 @@ class SettingThemeViewModel @Inject constructor(
         ScreenState.Idle(
             SettingThemeState(
                 userData = it,
-            )
+            ),
         )
     }.stateIn(
         scope = viewModelScope,

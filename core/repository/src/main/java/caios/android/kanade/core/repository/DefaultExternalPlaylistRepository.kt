@@ -87,10 +87,13 @@ class DefaultExternalPlaylistRepository @Inject constructor(
         val playlistUri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId)
 
         for (musicId in songIds) {
-            contentResolver.insert(playlistUri, ContentValues().apply {
-                put(MediaStore.Audio.Playlists.Members.AUDIO_ID, musicId)
-                put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, nextOrder)
-            })
+            contentResolver.insert(
+                playlistUri,
+                ContentValues().apply {
+                    put(MediaStore.Audio.Playlists.Members.AUDIO_ID, musicId)
+                    put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, nextOrder)
+                },
+            )
 
             nextOrder += 1
         }
