@@ -251,4 +251,8 @@
     <string name="setting_theme_color_description">アプリのテーマカラーを設定します。Dynamic Color と同時使用はできません。</string>
     <string name="setting_developer_title">開発モード</string>
     <string name="setting_developer_warning">You are trying to turn on this mode.Please enter the developer\'s PIN.\n\n[Warning] When this mode is turned on, you will not be able to receive any support.</string>
+
+    <!-- Share -->
+    <string name="share_title">共有先を選択</string>
+    <string name="share_error_no_data">共有するアイテムがありません</string>
 </resources>

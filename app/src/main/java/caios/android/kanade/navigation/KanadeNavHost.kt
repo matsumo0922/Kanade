@@ -54,6 +54,7 @@ import caios.android.kanade.feature.setting.developer.settingDeveloperDialog
 import caios.android.kanade.feature.setting.theme.navigateToSettingTheme
 import caios.android.kanade.feature.setting.theme.settingThemeScreen
 import caios.android.kanade.feature.setting.top.settingTopScreen
+import caios.android.kanade.feature.share.ShareUtil
 import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
 import caios.android.kanade.feature.song.top.songTopScreen
@@ -91,6 +92,9 @@ fun KanadeNavHost(
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
             },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, listOf(it))
+            }
         )
     }
 
@@ -101,6 +105,9 @@ fun KanadeNavHost(
             artist = artist,
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
+            },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
             },
         )
     }
@@ -113,6 +120,9 @@ fun KanadeNavHost(
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
             },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
+            }
         )
     }
 
@@ -131,6 +141,9 @@ fun KanadeNavHost(
             navigateToExport = {
                 navController.navigateToExportPlaylist(it.id)
             },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
+            },
         )
     }
 
@@ -140,6 +153,9 @@ fun KanadeNavHost(
             navigateToSongMenu = ::showSongMenuDialog,
             navigateToAddToPlaylist = {
                 appState.navController.navigateToAddToPlaylist(it)
+            },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it)
             },
         )
     }

@@ -35,7 +35,7 @@ private fun QueueDialog(
     uiState: QueueUiState,
     onClickDismiss: () -> Unit,
     onClickMenuAddPlaylist: (List<Long>) -> Unit,
-    onClickMenuShare: (List<Long>) -> Unit,
+    onClickMenuShare: (List<Song>) -> Unit,
     onClickSongMenu: (Song) -> Unit,
     onClickSkipToQueue: (Int) -> Unit,
     onDeleteItem: (Int) -> Unit,
@@ -61,7 +61,7 @@ private fun QueueDialog(
                 .fillMaxWidth(),
             onClickDismiss = onClickDismiss,
             onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue.map { it.song.id }) },
-            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue.map { it.song.id }) },
+            onClickMenuShare = { onClickMenuShare.invoke(uiState.queue.map { it.song }) },
         )
 
         QueueCurrentItemSection(
@@ -106,6 +106,7 @@ fun Activity.showQueueDialog(
     userData: UserData?,
     navigateToSongMenu: (Song) -> Unit,
     navigateToAddToPlaylist: (List<Long>) -> Unit,
+    navigateToShare: (List<Song>) -> Unit,
 ) {
     showAsButtonSheet(userData, rectCorner = true) { onDismiss ->
         val viewModel = hiltViewModel<QueueViewModel>()
@@ -122,7 +123,7 @@ fun Activity.showQueueDialog(
                     uiState = it,
                     onClickDismiss = onDismiss,
                     onClickMenuAddPlaylist = navigateToAddToPlaylist,
-                    onClickMenuShare = { },
+                    onClickMenuShare = navigateToShare,
                     onClickSongMenu = navigateToSongMenu,
                     onClickSkipToQueue = viewModel::onSkipToQueue,
                     onDeleteItem = viewModel::onDeleteItem,

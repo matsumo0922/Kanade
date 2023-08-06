@@ -39,6 +39,7 @@ import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.top.PlaylistTopRoute
 import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
 import caios.android.kanade.feature.queue.showQueueDialog
+import caios.android.kanade.feature.share.ShareUtil
 import caios.android.kanade.feature.song.top.SongTopRoute
 import caios.android.kanade.feature.song.top.navigateToSongTop
 import caios.android.kanade.navigation.LibraryDestination
@@ -130,10 +131,16 @@ class KanadeAppState(
                     navigateToLyricsTop = { songId ->
                         navController.navigateToLyricsTop(songId)
                     },
+                    navigateToShare = {
+                        ShareUtil.showShareDialog(activity, listOf(it))
+                    },
                 )
             },
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
+            },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it)
             },
         )
     }
@@ -155,6 +162,9 @@ class KanadeAppState(
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
             },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, listOf(it))
+            },
         )
     }
 
@@ -166,6 +176,9 @@ class KanadeAppState(
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
             },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
+            },
         )
     }
 
@@ -176,6 +189,9 @@ class KanadeAppState(
             album = album,
             navigateToAddToPlaylist = {
                 navController.navigateToAddToPlaylist(it)
+            },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
             },
         )
     }
@@ -194,6 +210,9 @@ class KanadeAppState(
             },
             navigateToExport = {
                 navController.navigateToExportPlaylist(it.id)
+            },
+            navigateToShare = {
+                ShareUtil.showShareDialog(activity, it.songs)
             },
         )
     }

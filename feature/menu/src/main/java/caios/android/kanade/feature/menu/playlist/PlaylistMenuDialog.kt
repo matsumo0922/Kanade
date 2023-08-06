@@ -143,6 +143,7 @@ fun Activity.showPlaylistMenuDialog(
     playlist: Playlist,
     navigateToRename: (Playlist) -> Unit,
     navigateToExport: (Playlist) -> Unit,
+    navigateToShare: (Playlist) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         PlaylistMenuDialog(
@@ -168,7 +169,7 @@ fun Activity.showPlaylistMenuDialog(
             },
             onClickRename = navigateToRename,
             onClickExport = navigateToExport,
-            onClickShare = {},
+            onClickShare = navigateToShare,
             onClickDelete = {
                 musicViewModel.removePlaylist(playlist)
             },

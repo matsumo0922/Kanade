@@ -131,6 +131,7 @@ fun Activity.showArtistMenuDialog(
     userData: UserData?,
     artist: Artist,
     navigateToAddToPlaylist: (List<Long>) -> Unit,
+    navigateToShare: (Artist) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         ArtistMenuDialog(
@@ -157,7 +158,7 @@ fun Activity.showArtistMenuDialog(
             onClickAddToPlaylist = { artist ->
                 navigateToAddToPlaylist.invoke(artist.songs.map { it.id })
             },
-            onClickShare = {},
+            onClickShare = navigateToShare,
             onClickDelete = {},
             onDismiss = onDismiss,
         )
