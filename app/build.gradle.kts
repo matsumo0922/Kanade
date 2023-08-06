@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":feature:information"))
     implementation(project(":feature:setting"))
     implementation(project(":feature:share"))
+    implementation(project(":feature:tag"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
