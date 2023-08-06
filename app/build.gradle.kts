@@ -92,6 +92,7 @@ dependencies {
     implementation(project(":feature:lyrics"))
     implementation(project(":feature:information"))
     implementation(project(":feature:setting"))
+    implementation(project(":feature:share"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
