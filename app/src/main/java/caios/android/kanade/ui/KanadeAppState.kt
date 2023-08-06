@@ -44,6 +44,7 @@ import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.feature.share.ShareUtil
 import caios.android.kanade.feature.song.top.SongTopRoute
 import caios.android.kanade.feature.song.top.navigateToSongTop
+import caios.android.kanade.feature.tag.navigateToTagEdit
 import caios.android.kanade.navigation.LibraryDestination
 import kotlinx.coroutines.CoroutineScope
 
@@ -133,6 +134,9 @@ class KanadeAppState(
                     navigateToLyricsTop = { songId ->
                         navController.navigateToLyricsTop(songId)
                     },
+                    navigateToTagEdit = {
+                        navController.navigateToTagEdit(it)
+                    },
                     navigateToSongInformation = {
                         navController.navigateToSongInformation(it)
                     },
@@ -169,6 +173,9 @@ class KanadeAppState(
             },
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
+            },
+            navigateToTagEdit = {
+                navController.navigateToTagEdit(it)
             },
             navigateToSongInformation = {
                 navController.navigateToSongInformation(it)

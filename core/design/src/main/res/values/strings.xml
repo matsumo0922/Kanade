@@ -279,4 +279,17 @@
     <!-- Share -->
     <string name="share_title">共有先を選択</string>
     <string name="share_error_no_data">共有するアイテムがありません</string>
+
+    <!-- Tag Edit -->
+    <string name="tag_editor">タグエディター</string>
+    <string name="tag_edit_title">タイトル</string>
+    <string name="tag_edit_artist">アーティスト</string>
+    <string name="tag_edit_album">アルバム</string>
+    <string name="tag_edit_composer">作曲者</string>
+    <string name="tag_edit_genre">ジャンル</string>
+    <string name="tag_edit_year">年</string>
+    <string name="tag_edit_track_total">トラック数</string>
+    <string name="tag_edit_track">トラック</string>
+    <string name="tag_edit_disc_total">ディスク数</string>
+    <string name="tag_edit_disc">ディスク</string>
 </resources>

@@ -63,6 +63,8 @@ import caios.android.kanade.feature.song.detail.navigateToSongDetail
 import caios.android.kanade.feature.song.detail.songDetailScreen
 import caios.android.kanade.feature.song.top.songTopScreen
 import caios.android.kanade.feature.sort.showSortDialog
+import caios.android.kanade.feature.tag.navigateToTagEdit
+import caios.android.kanade.feature.tag.tagEditScreen
 import caios.android.kanade.ui.KanadeAppState
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.reflect.KClass
@@ -95,6 +97,9 @@ fun KanadeNavHost(
             },
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
+            },
+            navigateToTagEdit = {
+                navController.navigateToTagEdit(it)
             },
             navigateToSongInformation = {
                 navController.navigateToSongInformation(it)
@@ -349,6 +354,12 @@ fun KanadeNavHost(
         )
 
         lyricsDownloadDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        tagEditScreen(
             terminate = {
                 navController.popBackStack()
             },
