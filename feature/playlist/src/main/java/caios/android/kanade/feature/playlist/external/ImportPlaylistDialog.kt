@@ -27,6 +27,8 @@ import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.ExternalPlaylist
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.ui.AsyncLoadContents
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun ImportPlaylistRoute(
@@ -44,8 +46,8 @@ internal fun ImportPlaylistRoute(
     ) {
         if (it != null) {
             ImportPlaylistDialog(
-                playlists = it.playlists,
-                externalPlaylists = it.externalPlaylists,
+                playlists = it.playlists.toImmutableList(),
+                externalPlaylists = it.externalPlaylists.toImmutableList(),
                 onClickImport = viewModel::import,
                 onTerminate = terminate,
             )
@@ -55,8 +57,8 @@ internal fun ImportPlaylistRoute(
 
 @Composable
 private fun ImportPlaylistDialog(
-    playlists: List<Playlist>,
-    externalPlaylists: List<ExternalPlaylist>,
+    playlists: ImmutableList<Playlist>,
+    externalPlaylists: ImmutableList<ExternalPlaylist>,
     onClickImport: (ExternalPlaylist) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -101,7 +103,7 @@ private fun ImportPlaylistDialog(
                 Row(
                     Modifier
                         .clickable {
-                            if (playlists.find { it.name == externalPlaylist.name} == null) {
+                            if (playlists.find { it.name == externalPlaylist.name } == null) {
                                 onClickImport.invoke(externalPlaylist)
                                 onTerminate.invoke()
 
@@ -113,7 +115,7 @@ private fun ImportPlaylistDialog(
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Text(
                         modifier = Modifier.weight(1f),

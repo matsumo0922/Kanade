@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class ImportPlaylistViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository,
@@ -31,7 +30,7 @@ class ImportPlaylistViewModel @Inject constructor(
                 ImportPlaylistUiState(
                     playlists = playlists,
                     externalPlaylists = externalPlaylists,
-                )
+                ),
             )
         } else {
             ScreenState.Error(
@@ -55,5 +54,5 @@ class ImportPlaylistViewModel @Inject constructor(
 @Stable
 data class ImportPlaylistUiState(
     val playlists: List<Playlist>,
-    val externalPlaylists: List<ExternalPlaylist>
+    val externalPlaylists: List<ExternalPlaylist>,
 )
