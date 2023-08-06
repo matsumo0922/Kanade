@@ -167,9 +167,14 @@
     <string name="playlist_name">プレイリスト名</string>
     <string name="playlist_rename_title">プレイリスト名を変更</string>
     <string name="playlist_export_title">エクスポート</string>
-    <string name="playlist_export_description">プレイリストのエクスポートを実行します。プレイリストはAndroidシステム全体で共有され、他の音楽アプリなども取得可能になります。また、Kanadeをアンインストールしても書き出したプレイリストが削除されることはありません。\n\n書き出されたプレイリストはKanadeの管理対象ではなくなり、Kanade上でプレイリストの編集を行っても書き出されたプレイリストには反映されません。再度書き出しを行えば、変更内容が反映されます。</string>
+    <string name="playlist_export_description">プレイリストのエクスポートを実行します。プレイリストは Android システム全体で共有され、他の音楽アプリなども取得可能になります。また、Kanade をアンインストールしても書き出したプレイリストが削除されることはありません。\n\n書き出されたプレイリストは Kanade の管理対象ではなくなり、Kanade 上でプレイリストの編集を行っても書き出されたプレイリストには反映されません。再度書き出しを行えば、変更内容が反映されます。</string>
     <string name="playlist_export_action">エクスポート</string>
     <string name="playlist_export_toast">プレイリストをエクスポートしました</string>
+    <string name="playlist_import_title">インポート</string>
+    <string name="playlist_import_description">プレイリストのインポートを実行します。インポートしたプレイリストは Android システムの管理対象ではなくなり、別アプリなどで楽曲を追加したりしても Kanade 上では反映されません。再度インポートすると反映されるようになります。</string>
+    <string name="playlist_import_toast">プレイリストをインポートしました</string>
+    <string name="playlist_import_toast_error">同名のプレイリストがすでに存在するため、インポートできません</string>
+    <string name="playlist_import_error_no_data">外部プレイリストが見つかりません</string>
 
     <!-- Lyrics -->
     <string name="lyrics_edit_title">歌詞を編集</string>

@@ -41,6 +41,8 @@ import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.feature.playlist.detail.playlistDetailScreen
 import caios.android.kanade.feature.playlist.export.exportPlaylistDialog
 import caios.android.kanade.feature.playlist.export.navigateToExportPlaylist
+import caios.android.kanade.feature.playlist.external.importPlaylistDialog
+import caios.android.kanade.feature.playlist.external.navigateToImportPlaylist
 import caios.android.kanade.feature.playlist.fab.fabPlaylistDialog
 import caios.android.kanade.feature.playlist.fab.navigateToFabPlaylist
 import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
@@ -252,6 +254,9 @@ fun KanadeNavHost(
             navigateToCreatePlaylist = {
                 navController.navigateToCreatePlaylist(emptyList())
             },
+            navigateToImportPlaylist = {
+                navController.navigateToImportPlaylist()
+            },
             terminate = {
                 navController.popBackStack()
             },
@@ -279,6 +284,12 @@ fun KanadeNavHost(
         )
 
         exportPlaylistDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        importPlaylistDialog(
             terminate = {
                 navController.popBackStack()
             },

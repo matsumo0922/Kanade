@@ -18,6 +18,7 @@ fun NavController.navigateToFabPlaylist() {
 
 fun NavGraphBuilder.fabPlaylistDialog(
     navigateToCreatePlaylist: () -> Unit,
+    navigateToImportPlaylist: () -> Unit,
     terminate: () -> Unit,
 ) {
     dialog(
@@ -29,6 +30,7 @@ fun NavGraphBuilder.fabPlaylistDialog(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
             navigateToCreatePlaylist = navigateToCreatePlaylist,
+            navigateToImportPlaylist = navigateToImportPlaylist,
             terminate = terminate,
         )
     }

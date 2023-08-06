@@ -22,16 +22,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 
 @Composable
 fun FabPlaylistRoute(
     navigateToCreatePlaylist: () -> Unit,
+    navigateToImportPlaylist: () -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -54,6 +59,7 @@ fun FabPlaylistRoute(
                 .fillMaxWidth()
                 .clickable {
                     terminate.invoke()
+                    navigateToImportPlaylist.invoke()
                 },
             textRes = R.string.playlist_fab_external,
             imageVector = Icons.Default.Public,
@@ -63,6 +69,7 @@ fun FabPlaylistRoute(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
+                    ToastUtil.show(context, R.string.error_developing_feature)
                     terminate.invoke()
                 },
             textRes = R.string.playlist_fab_import,
