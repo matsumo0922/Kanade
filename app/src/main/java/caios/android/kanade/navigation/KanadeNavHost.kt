@@ -39,12 +39,16 @@ import caios.android.kanade.feature.playlist.create.createPlaylistDialog
 import caios.android.kanade.feature.playlist.create.navigateToCreatePlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.feature.playlist.detail.playlistDetailScreen
+import caios.android.kanade.feature.playlist.export.exportPlaylistDialog
+import caios.android.kanade.feature.playlist.export.navigateToExportPlaylist
 import caios.android.kanade.feature.playlist.fab.fabPlaylistDialog
 import caios.android.kanade.feature.playlist.fab.navigateToFabPlaylist
 import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.rename.renamePlaylistDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.queue.showQueueDialog
+import caios.android.kanade.feature.setting.developer.navigateToSettingDeveloper
+import caios.android.kanade.feature.setting.developer.settingDeveloperDialog
 import caios.android.kanade.feature.setting.theme.navigateToSettingTheme
 import caios.android.kanade.feature.setting.theme.settingThemeScreen
 import caios.android.kanade.feature.setting.top.settingTopScreen
@@ -121,6 +125,9 @@ fun KanadeNavHost(
                 } else {
                     navController.navigateToRenamePlaylist(it.id)
                 }
+            },
+            navigateToExport = {
+                navController.navigateToExportPlaylist(it.id)
             },
         )
     }
@@ -271,6 +278,12 @@ fun KanadeNavHost(
             },
         )
 
+        exportPlaylistDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
         lyricsTopScreen(
             navigateToLyricsDownload = {
                 navController.navigateToLyricsDownload(it)
@@ -299,12 +312,21 @@ fun KanadeNavHost(
             navigateToSettingTheme = {
                 navController.navigateToSettingTheme()
             },
+            navigateToSettingDeveloper = {
+                navController.navigateToSettingDeveloper()
+            },
             terminate = {
                 navController.popBackStack()
             },
         )
 
         settingThemeScreen(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        settingDeveloperDialog(
             terminate = {
                 navController.popBackStack()
             },

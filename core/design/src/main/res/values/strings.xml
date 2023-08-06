@@ -119,6 +119,7 @@
     <string name="menu_detail_info">詳細情報</string>
     <string name="menu_share">共有</string>
     <string name="menu_rename">名前を変更</string>
+    <string name="menu_export">エクスポート</string>
     <string name="menu_delete">デバイスから削除</string>
     <string name="menu_delete_playlist">プレイリストを削除</string>
     <string name="menu_toast_add_to_queue">再生待ちリストに追加しました</string>
@@ -165,6 +166,10 @@
     <string name="playlist_error_rename_system_playlist">システムが管理しているプレイリストは名前を変更できません</string>
     <string name="playlist_name">プレイリスト名</string>
     <string name="playlist_rename_title">プレイリスト名を変更</string>
+    <string name="playlist_export_title">エクスポート</string>
+    <string name="playlist_export_description">プレイリストのエクスポートを実行します。プレイリストはAndroidシステム全体で共有され、他の音楽アプリなども取得可能になります。また、Kanadeをアンインストールしても書き出したプレイリストが削除されることはありません。\n\n書き出されたプレイリストはKanadeの管理対象ではなくなり、Kanade上でプレイリストの編集を行っても書き出されたプレイリストには反映されません。再度書き出しを行えば、変更内容が反映されます。</string>
+    <string name="playlist_export_action">エクスポート</string>
+    <string name="playlist_export_toast">プレイリストをエクスポートしました</string>
 
     <!-- Lyrics -->
     <string name="lyrics_edit_title">歌詞を編集</string>
@@ -239,4 +244,6 @@
     <string name="setting_theme_theme_dynamic_color_description">ホームに設定している壁紙などから色を自動抽出する Dynamic Color を使用します。Android 12 以降でのみ利用可能です。</string>
     <string name="setting_theme_color">テーマカラー</string>
     <string name="setting_theme_color_description">アプリのテーマカラーを設定します。Dynamic Color と同時使用はできません。</string>
+    <string name="setting_developer_title">開発モード</string>
+    <string name="setting_developer_warning">You are trying to turn on this mode.Please enter the developer\'s PIN.\n\n[Warning] When this mode is turned on, you will not be able to receive any support.</string>
 </resources>

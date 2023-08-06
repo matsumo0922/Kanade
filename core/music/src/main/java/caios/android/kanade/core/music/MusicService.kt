@@ -82,7 +82,7 @@ class MusicService : MediaBrowserServiceCompat() {
             mediaItem?.mediaMetadata?.let { musicController.setPlayerItem(it) }
 
             scope.launch {
-                notificationManager.setForegroundService(true)
+                notificationManager.updateNotification()
             }
         }
     }

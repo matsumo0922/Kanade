@@ -46,6 +46,16 @@ class NotificationManager(
         }
     }
 
+    @SuppressLint("MissingPermission")
+    suspend fun updateNotification() {
+        val notification = createMusicNotification(
+            context = service.baseContext,
+            song = musicController.currentSong.first(),
+        )
+
+        manager.notify(NOTIFY_ID, notification)
+    }
+
     @SuppressLint("WrongConstant")
     private suspend fun createMusicNotification(context: Context, song: Song?): Notification {
         val mainIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {

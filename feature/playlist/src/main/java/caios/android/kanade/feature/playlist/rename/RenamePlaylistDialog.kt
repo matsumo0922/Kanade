@@ -27,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Playlist
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.AsyncNoLoadContents
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -45,9 +45,10 @@ internal fun RenamePlaylistDialog(
         viewModel.fetch(playlistId)
     }
 
-    AsyncLoadContents(
+    AsyncNoLoadContents(
         modifier = modifier,
         screenState = screenState,
+        cornerShape = RoundedCornerShape(16.dp),
     ) {
         RenamePlaylistDialog(
             playlist = it?.playlist ?: Playlist.dummy(),
@@ -125,11 +126,12 @@ private fun RenamePlaylistDialog(
 
                     ToastUtil.show(context, R.string.playlist_created_toast)
                 },
+                enabled = name.isNotBlank() && !isNameError,
             ) {
                 Text(
                     text = stringResource(R.string.common_ok),
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (isNameError) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onPrimary,
+                    color = if (isNameError || name.isBlank()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onPrimary,
                 )
             }
         }

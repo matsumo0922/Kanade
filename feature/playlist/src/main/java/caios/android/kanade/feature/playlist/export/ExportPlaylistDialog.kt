@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.playlist.create
+package caios.android.kanade.feature.playlist.export
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,98 +10,81 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
-import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.ui.AsyncNoLoadContents
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun CreatePlaylistDialog(
-    onTerminate: () -> Unit,
+internal fun ExportPlaylistRoute(
+    playlistId: Long,
+    terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    songIds: ImmutableList<Long> = persistentListOf(),
-    viewModel: CreatePlaylistViewModel = hiltViewModel(),
+    viewModel: ExportPlaylistViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(playlistId) {
+        viewModel.fetch(playlistId)
+    }
 
     AsyncNoLoadContents(
         modifier = modifier,
         screenState = screenState,
         cornerShape = RoundedCornerShape(16.dp),
-    ) { uiState ->
-        CreatePlaylistDialog(
-            playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
-            onRegister = { name ->
-                val songs = songIds.mapNotNull { id -> uiState?.songs?.find { id == it.id } }
-                viewModel.createPlaylist(name, songs)
-            },
-            onTerminate = onTerminate,
+    ) {
+        ExportPlaylistDialog(
+            playlist = it?.playlist,
+            onExport = viewModel::export,
+            onTerminate = terminate,
         )
     }
 }
 
 @Composable
-private fun CreatePlaylistDialog(
-    playlists: ImmutableList<Playlist>,
-    onRegister: (String) -> Unit,
+private fun ExportPlaylistDialog(
+    playlist: Playlist?,
+    onExport: (Playlist) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    var name by remember { mutableStateOf("") }
-    var isNameError by remember { mutableStateOf(false) }
-
-    LaunchedEffect(name) {
-        isNameError = playlists.any { it.name == name }
-    }
 
     Column(
-        modifier = modifier.padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.playlist_create_title),
+            text = stringResource(R.string.playlist_export_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        OutlinedTextField(
+        Text(
             modifier = Modifier.fillMaxWidth(),
-            value = name,
-            onValueChange = { name = it },
-            label = { Text(stringResource(R.string.playlist_name)) },
-            singleLine = true,
-            isError = isNameError,
-            supportingText = {
-                if (isNameError) {
-                    Text(stringResource(R.string.playlist_error_existed))
-                }
-            },
+            text = stringResource(R.string.playlist_export_description),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -121,32 +104,20 @@ private fun CreatePlaylistDialog(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
-                    onTerminate.invoke()
-                    onRegister.invoke(name)
+                    if (playlist != null) {
+                        onExport.invoke(playlist)
+                        onTerminate.invoke()
 
-                    ToastUtil.show(context, R.string.playlist_created_toast)
+                        ToastUtil.show(context, R.string.playlist_export_toast)
+                    }
                 },
-                enabled = !isNameError,
             ) {
                 Text(
-                    text = stringResource(R.string.common_ok),
+                    text = stringResource(R.string.playlist_export_action),
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (isNameError) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun CreatePlaylistDialogPreview() {
-    KanadeBackground {
-        CreatePlaylistDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            playlists = Playlist.dummies(5).toImmutableList(),
-            onRegister = { },
-            onTerminate = { },
-        )
     }
 }

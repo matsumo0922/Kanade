@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoubleArrow
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.LibraryAdd
 import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.filled.Share
@@ -39,6 +40,7 @@ fun PlaylistMenuDialog(
     onClickPlayOnly: () -> Unit,
     onClickAddToQueue: () -> Unit,
     onClickRename: (Playlist) -> Unit,
+    onClickExport: (Playlist) -> Unit,
     onClickShare: (Playlist) -> Unit,
     onClickDelete: (Playlist) -> Unit,
     onDismiss: () -> Unit,
@@ -107,6 +109,15 @@ fun PlaylistMenuDialog(
         )
 
         MenuItemSection(
+            titleRes = R.string.menu_export,
+            imageVector = Icons.Default.FileUpload,
+            onClick = {
+                onDismiss.invoke()
+                onClickExport.invoke(playlist)
+            },
+        )
+
+        MenuItemSection(
             titleRes = R.string.menu_share,
             imageVector = Icons.Default.Share,
             onClick = {
@@ -131,6 +142,7 @@ fun Activity.showPlaylistMenuDialog(
     userData: UserData?,
     playlist: Playlist,
     navigateToRename: (Playlist) -> Unit,
+    navigateToExport: (Playlist) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         PlaylistMenuDialog(
@@ -155,6 +167,7 @@ fun Activity.showPlaylistMenuDialog(
                 musicViewModel.addToQueue(playlist.songs)
             },
             onClickRename = navigateToRename,
+            onClickExport = navigateToExport,
             onClickShare = {},
             onClickDelete = {
                 musicViewModel.removePlaylist(playlist)
@@ -175,6 +188,7 @@ private fun PlaylistMenuDialogPreview() {
             onClickPlayOnly = {},
             onClickAddToQueue = {},
             onClickRename = {},
+            onClickExport = {},
             onClickShare = {},
             onClickDelete = {},
             onDismiss = {},

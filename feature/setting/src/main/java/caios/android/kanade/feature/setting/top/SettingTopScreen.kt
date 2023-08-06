@@ -40,6 +40,7 @@ import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
 @Composable
 internal fun SettingTopRoute(
     navigateToSettingTheme: () -> Unit,
+    navigateToSettingDeveloper: () -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingTopViewModel = hiltViewModel(),
@@ -49,12 +50,12 @@ internal fun SettingTopRoute(
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-    ) {
-        if (it != null) {
+    ) { uiState ->
+        if (uiState != null) {
             SettingTopScreen(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                userData = it.userData,
-                config = it.config,
+                userData = uiState.userData,
+                config = uiState.config,
                 onClickTheme = navigateToSettingTheme,
                 onClickDynamicNormalizer = viewModel::setUseDynamicNormalizer,
                 onClickOneStepBack = viewModel::setOneStepBack,
@@ -62,7 +63,13 @@ internal fun SettingTopRoute(
                 onClickStopWhenTaskkill = viewModel::setStopWhenTaskkill,
                 onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
                 onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
-                onClickDeveloperMode = viewModel::setDeveloperMode,
+                onClickDeveloperMode = { isEnable ->
+                    if (isEnable) {
+                        navigateToSettingDeveloper()
+                    } else {
+                        viewModel.setDeveloperMode(false)
+                    }
+                },
                 onTerminate = terminate,
             )
         }
@@ -148,7 +155,7 @@ private fun SettingTopScreen(
                     modifier = Modifier.fillMaxWidth(),
                     config = config,
                     userData = userData,
-                    onClickDeveloperMode = { },
+                    onClickDeveloperMode = onClickDeveloperMode,
                 )
             }
         }

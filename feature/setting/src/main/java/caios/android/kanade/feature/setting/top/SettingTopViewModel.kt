@@ -7,7 +7,6 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
-import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
@@ -51,12 +50,6 @@ class SettingTopViewModel @Inject constructor(
             musicRepository.fetchPlaylist()
             musicRepository.fetchAlbumArtwork()
             musicRepository.fetchArtistArtwork()
-        }
-    }
-
-    fun setThemeConfig(themeConfig: ThemeConfig) {
-        viewModelScope.launch {
-            userDataRepository.setThemeConfig(themeConfig)
         }
     }
 

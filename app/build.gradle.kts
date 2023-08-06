@@ -53,6 +53,7 @@ android {
             it.buildConfigFields.apply {
                 putBuildConfig(localProperties, "VERSION_NAME", libs.versions.versionName.get().toStringLiteral())
                 putBuildConfig(localProperties, "VERSION_CODE", libs.versions.versionCode.get().toStringLiteral())
+                putBuildConfig(localProperties, "DEVELOPER_PASSWORD")
                 putBuildConfig(localProperties, "LAST_FM_API_KEY")
                 putBuildConfig(localProperties, "LAST_FM_API_SECRET")
                 putBuildConfig(localProperties, "MUSIXMATCH_API_KEY")

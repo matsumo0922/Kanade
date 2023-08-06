@@ -21,6 +21,7 @@ object AppModule {
             versionCode = BuildConfig.VERSION_CODE,
             versionName = BuildConfig.VERSION_NAME,
             isDebug = BuildConfig.DEBUG,
+            developerPassword = BuildConfig.DEVELOPER_PASSWORD,
             lastFmApiKey = BuildConfig.LAST_FM_API_KEY,
             lastFmApiSecret = BuildConfig.LAST_FM_API_SECRET,
             musixmatchApiKey = BuildConfig.MUSIXMATCH_API_KEY,

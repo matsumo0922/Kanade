@@ -6,12 +6,14 @@ import caios.android.kanade.core.repository.ArtworkRepository
 import caios.android.kanade.core.repository.DefaultAlbumRepository
 import caios.android.kanade.core.repository.DefaultArtistRepository
 import caios.android.kanade.core.repository.DefaultArtworkRepository
+import caios.android.kanade.core.repository.DefaultExternalPlaylistRepository
 import caios.android.kanade.core.repository.DefaultLastFmRepository
 import caios.android.kanade.core.repository.DefaultMusicRepository
 import caios.android.kanade.core.repository.DefaultPlayHistoryRepository
 import caios.android.kanade.core.repository.DefaultPlaylistRepository
 import caios.android.kanade.core.repository.DefaultSongRepository
 import caios.android.kanade.core.repository.DefaultUserDataRepository
+import caios.android.kanade.core.repository.ExternalPlaylistRepository
 import caios.android.kanade.core.repository.KugouLyricsRepository
 import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.LyricsRepository
@@ -75,6 +77,12 @@ interface RepositoryModule {
     fun bindPlaylistRepository(
         playlistRepository: DefaultPlaylistRepository,
     ): PlaylistRepository
+
+    @Singleton
+    @Binds
+    fun bindExternalPlaylistRepository(
+        externalPlaylistRepository: DefaultExternalPlaylistRepository,
+    ): ExternalPlaylistRepository
 
     @Singleton
     @Binds

@@ -15,6 +15,7 @@ fun NavController.navigateToSettingTop() {
 
 fun NavGraphBuilder.settingTopScreen(
     navigateToSettingTheme: () -> Unit,
+    navigateToSettingDeveloper: () -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
@@ -27,6 +28,7 @@ fun NavGraphBuilder.settingTopScreen(
         SettingTopRoute(
             modifier = Modifier.fillMaxSize(),
             navigateToSettingTheme = navigateToSettingTheme,
+            navigateToSettingDeveloper = navigateToSettingDeveloper,
             terminate = terminate,
         )
     }

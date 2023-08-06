@@ -34,6 +34,7 @@ import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
 import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
+import caios.android.kanade.feature.playlist.export.navigateToExportPlaylist
 import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.top.PlaylistTopRoute
 import caios.android.kanade.feature.playlist.top.navigateToPlaylistTop
@@ -190,6 +191,9 @@ class KanadeAppState(
                 } else {
                     navController.navigateToRenamePlaylist(it.id)
                 }
+            },
+            navigateToExport = {
+                navController.navigateToExportPlaylist(it.id)
             },
         )
     }

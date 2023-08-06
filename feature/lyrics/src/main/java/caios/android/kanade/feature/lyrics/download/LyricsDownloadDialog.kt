@@ -1,7 +1,6 @@
 package caios.android.kanade.feature.lyrics.download
 
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,6 +55,7 @@ internal fun LyricsDownloadRoute(
         modifier = modifier,
         screenState = screenState,
         retryAction = { terminate.invoke() },
+        cornerShape = RoundedCornerShape(16.dp),
     ) { uiState ->
         LaunchedEffect(uiState?.state) {
             if (uiState?.state == LyricsDownloadUiState.State.Downloaded) {
@@ -64,7 +64,6 @@ internal fun LyricsDownloadRoute(
         }
 
         LyricsDownloadDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             song = uiState?.song,
             token = uiState?.token,
             state = uiState?.state ?: LyricsDownloadUiState.State.Idle,
