@@ -29,7 +29,7 @@ class ArtistTopViewModel @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val screenState = combine(musicRepository.config, musicRepository.updateFlag, lastFmRepository.artistDetails, ::Triple).map { (config,_,  _) ->
+    val screenState = combine(musicRepository.config, musicRepository.updateFlag, lastFmRepository.artistDetails, ::Triple).map { (config, _, _) ->
         withContext(io) {
             musicRepository.fetchArtistArtwork()
             musicRepository.fetchArtists(config)

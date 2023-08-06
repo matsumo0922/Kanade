@@ -141,7 +141,7 @@ class KanadeAppState(
                     },
                     navigateToDelete = {
                         navController.navigateToDeleteSong(listOf(it.id))
-                    }
+                    },
                 )
             },
             navigateToAddToPlaylist = {
@@ -178,7 +178,7 @@ class KanadeAppState(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(listOf(it.id))
-            }
+            },
         )
     }
 
@@ -195,7 +195,7 @@ class KanadeAppState(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(it.songs.map { song -> song.id })
-            }
+            },
         )
     }
 
@@ -212,7 +212,7 @@ class KanadeAppState(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(it.songs.map { song -> song.id })
-            }
+            },
         )
     }
 

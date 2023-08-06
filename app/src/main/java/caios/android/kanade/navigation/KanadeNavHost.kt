@@ -104,7 +104,7 @@ fun KanadeNavHost(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(listOf(it.id))
-            }
+            },
         )
     }
 
@@ -121,7 +121,7 @@ fun KanadeNavHost(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(it.songs.map { song -> song.id })
-            }
+            },
         )
     }
 
@@ -138,7 +138,7 @@ fun KanadeNavHost(
             },
             navigateToDelete = {
                 navController.navigateToDeleteSong(it.songs.map { song -> song.id })
-            }
+            },
         )
     }
 

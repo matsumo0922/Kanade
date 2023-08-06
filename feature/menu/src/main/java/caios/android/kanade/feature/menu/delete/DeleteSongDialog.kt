@@ -30,11 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 internal fun DeleteSongDialog(
-    songIds: List<Long>,
+    songIds: ImmutableList<Long>,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DeleteSongViewModel = hiltViewModel(),
@@ -64,6 +66,7 @@ internal fun DeleteSongDialog(
                             ToastUtil.show(context, R.string.song_delete_toast)
                         }
                     } catch (e: Throwable) {
+                        Timber.e(e)
                         ToastUtil.show(context, R.string.song_delete_error_toast)
                     }
                 }
@@ -137,11 +140,11 @@ internal fun DeleteSongDialog(
                                 } else {
                                     ToastUtil.show(context, R.string.song_delete_error_toast)
                                 }
-                            }
+                            },
                         )
                     }
                 },
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.errorContainer)
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.errorContainer),
             ) {
                 Text(
                     text = stringResource(R.string.common_delete),
