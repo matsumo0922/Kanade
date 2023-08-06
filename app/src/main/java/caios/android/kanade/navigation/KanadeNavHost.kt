@@ -94,7 +94,7 @@ fun KanadeNavHost(
             },
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, listOf(it))
-            }
+            },
         )
     }
 
@@ -122,7 +122,7 @@ fun KanadeNavHost(
             },
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, it.songs)
-            }
+            },
         )
     }
 
