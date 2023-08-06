@@ -38,7 +38,7 @@ class SongInformationViewModel @Inject constructor(
                         volume = volume,
                         playCount = playCount,
                         isFavorite = isFavorite,
-                    )
+                    ),
                 )
             } else {
                 screenState.value = ScreenState.Error(
