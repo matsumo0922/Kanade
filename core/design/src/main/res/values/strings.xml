@@ -146,6 +146,25 @@
     <string name="song_detail_title_history">最近の再生</string>
     <string name="song_detail_title_recently_add">最近の追加</string>
     <string name="song_detail_title_most_played">再生回数トップ</string>
+    <string name="song_information_title">詳細情報</string>
+    <string name="song_information_path">デバイス内の場所</string>
+    <string name="song_information_uri">システム内の場所</string>
+    <string name="song_information_song_title">タイトル</string>
+    <string name="song_information_song_artist">アーティスト</string>
+    <string name="song_information_song_album">アルバム</string>
+    <string name="song_information_size">サイズ</string>
+    <string name="song_information_id">ID</string>
+    <string name="song_information_year">年</string>
+    <string name="song_information_track">トラック</string>
+    <string name="song_information_play_count">再生回数</string>
+    <string name="song_information_favorite">お気に入り</string>
+    <string name="song_information_duration">曲長</string>
+    <string name="song_information_mime">MIME</string>
+    <string name="song_information_extension">拡張子</string>
+    <string name="song_information_encoder">エンコーダー</string>
+    <string name="song_information_max_volume">最大音量</string>
+    <string name="song_information_mean_volume">平均音量</string>
+    <string name="song_information_not_analyzed_yet">未解析</string>
 
     <!-- Queue -->
     <string name="queue_title">再生待ちリスト</string>

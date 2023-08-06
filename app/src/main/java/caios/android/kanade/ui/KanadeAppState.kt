@@ -28,6 +28,7 @@ import caios.android.kanade.feature.artist.top.ArtistTopRoute
 import caios.android.kanade.feature.artist.top.navigateToArtistTop
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.navigateToHome
+import caios.android.kanade.feature.information.song.navigateToSongInformation
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
 import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
@@ -131,6 +132,9 @@ class KanadeAppState(
                     navigateToLyricsTop = { songId ->
                         navController.navigateToLyricsTop(songId)
                     },
+                    navigateToSongInformation = {
+                        navController.navigateToSongInformation(it)
+                    },
                     navigateToShare = {
                         ShareUtil.showShareDialog(activity, listOf(it))
                     },
@@ -161,6 +165,9 @@ class KanadeAppState(
             },
             navigateToLyricsTop = {
                 navController.navigateToLyricsTop(it)
+            },
+            navigateToSongInformation = {
+                navController.navigateToSongInformation(it)
             },
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, listOf(it))

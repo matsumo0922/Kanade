@@ -58,7 +58,7 @@ private fun SongMenuDialog(
     onClickAnalyzeMusicInfo: (Song) -> Unit,
     onClickEditMusicInfo: (Song) -> Unit,
     onClickLyrics: (Song) -> Unit,
-    onClickMusicDetailInfo: (Song) -> Unit,
+    onClickSongInfo: (Long) -> Unit,
     onClickShare: (Song) -> Unit,
     onClickDelete: (Song) -> Unit,
     onFetchFavorite: suspend (Song) -> Boolean,
@@ -196,7 +196,7 @@ private fun SongMenuDialog(
             imageVector = Icons.Default.Info,
             onClick = {
                 onDismiss.invoke()
-                onClickMusicDetailInfo.invoke(song)
+                onClickSongInfo.invoke(song.id)
             },
         )
 
@@ -228,6 +228,7 @@ fun Activity.showSongMenuDialog(
     navigateToArtistDetail: (Long) -> Unit,
     navigateToAlbumDetail: (Long) -> Unit,
     navigateToLyricsTop: (Long) -> Unit,
+    navigateToSongInformation: (Long) -> Unit,
     navigateToShare: (Song) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
@@ -263,7 +264,7 @@ fun Activity.showSongMenuDialog(
             onClickAnalyzeMusicInfo = { /*TODO*/ },
             onClickEditMusicInfo = { /*TODO*/ },
             onClickLyrics = { navigateToLyricsTop.invoke(it.id) },
-            onClickMusicDetailInfo = { /*TODO*/ },
+            onClickSongInfo = navigateToSongInformation,
             onClickShare = navigateToShare,
             onClickDelete = { /*TODO*/ },
             onFetchFavorite = { musicViewModel.fetchFavorite(song) },
@@ -289,7 +290,7 @@ private fun SongMenuDialogPreview() {
             onClickAnalyzeMusicInfo = {},
             onClickEditMusicInfo = {},
             onClickLyrics = {},
-            onClickMusicDetailInfo = {},
+            onClickSongInfo = {},
             onClickShare = {},
             onClickDelete = {},
             onDismiss = {},
