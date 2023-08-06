@@ -29,6 +29,8 @@ interface SongRepository {
         vararg musicOrders: MusicOrder = arrayOf(MusicOrder(Order.ASC, MusicOrderOption.Song.NAME)),
     ): Cursor?
 
+    suspend fun delete(songIds: List<Long>)
+
     fun fetchArtwork()
     fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song>
 }

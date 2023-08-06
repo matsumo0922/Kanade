@@ -13,6 +13,7 @@ import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Random
 import javax.inject.Inject
@@ -25,8 +26,22 @@ class SongDetailViewModel @Inject constructor(
 
     val screenState = MutableStateFlow<ScreenState<SongDetailUiState>>(ScreenState.Loading)
 
+    private var songIds: List<Long>? = null
+
+    init {
+        viewModelScope.launch {
+            musicRepository.updateFlag.collectLatest {
+                if (songIds != null) {
+                    fetch(songIds!!)
+                }
+            }
+        }
+    }
+
     fun fetch(songIds: List<Long>) {
         viewModelScope.launch {
+            this@SongDetailViewModel.songIds = songIds
+
             val songs = songIds.map { musicRepository.getSong(it) }
             val queue = musicController.currentQueue.value
 

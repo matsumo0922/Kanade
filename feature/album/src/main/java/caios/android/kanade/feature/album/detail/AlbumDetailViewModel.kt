@@ -13,6 +13,7 @@ import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Random
 import javax.inject.Inject
@@ -25,8 +26,22 @@ class AlbumDetailViewModel @Inject constructor(
 
     val screenState = MutableStateFlow<ScreenState<AlbumDetailUiState>>(ScreenState.Loading)
 
+    private var albumId: Long? = null
+
+    init {
+        viewModelScope.launch {
+            musicRepository.updateFlag.collectLatest {
+                if (albumId != null) {
+                    fetch(albumId!!)
+                }
+            }
+        }
+    }
+
     fun fetch(albumId: Long) {
         viewModelScope.launch {
+            this@AlbumDetailViewModel.albumId = albumId
+
             val album = musicRepository.getAlbum(albumId)
 
             screenState.value = if (album != null) {

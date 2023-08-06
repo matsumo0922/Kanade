@@ -29,7 +29,7 @@ class PlaylistDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            combine(musicRepository.config, playlistRepository.data, ::Pair).collect { (config, data) ->
+            combine(musicRepository.config, musicRepository.updateFlag, playlistRepository.data, ::Triple).collect { (config, _, data) ->
                 musicRepository.fetchPlaylist(config)
 
                 if (screenState.value is ScreenState.Idle) {

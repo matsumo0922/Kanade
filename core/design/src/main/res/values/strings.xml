@@ -26,6 +26,7 @@
     <string name="common_playlists">プレイリスト</string>
     <string name="common_genres">ジャンル</string>
     <string name="common_details">詳細</string>
+    <string name="common_delete">削除</string>
 
     <!-- Common Unit -->
     <string name="unit_song">%1$d 曲</string>
@@ -165,6 +166,10 @@
     <string name="song_information_max_volume">最大音量</string>
     <string name="song_information_mean_volume">平均音量</string>
     <string name="song_information_not_analyzed_yet">未解析</string>
+    <string name="song_delete_title">デバイスから削除</string>
+    <string name="song_delete_description">%1$d曲をデバイスから削除しますか？\nこの操作は取り消しできません。</string>
+    <string name="song_delete_toast">削除しました</string>
+    <string name="song_delete_error_toast">削除に失敗しました</string>
 
     <!-- Queue -->
     <string name="queue_title">再生待ちリスト</string>

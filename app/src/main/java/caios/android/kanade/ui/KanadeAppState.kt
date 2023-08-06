@@ -32,6 +32,7 @@ import caios.android.kanade.feature.information.song.navigateToSongInformation
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.menu.album.showAlbumMenuDialog
 import caios.android.kanade.feature.menu.artist.showArtistMenuDialog
+import caios.android.kanade.feature.menu.delete.navigateToDeleteSong
 import caios.android.kanade.feature.menu.playlist.showPlaylistMenuDialog
 import caios.android.kanade.feature.menu.song.showSongMenuDialog
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
@@ -138,6 +139,9 @@ class KanadeAppState(
                     navigateToShare = {
                         ShareUtil.showShareDialog(activity, listOf(it))
                     },
+                    navigateToDelete = {
+                        navController.navigateToDeleteSong(listOf(it.id))
+                    }
                 )
             },
             navigateToAddToPlaylist = {
@@ -172,6 +176,9 @@ class KanadeAppState(
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, listOf(it))
             },
+            navigateToDelete = {
+                navController.navigateToDeleteSong(listOf(it.id))
+            }
         )
     }
 
@@ -186,6 +193,9 @@ class KanadeAppState(
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, it.songs)
             },
+            navigateToDelete = {
+                navController.navigateToDeleteSong(it.songs.map { song -> song.id })
+            }
         )
     }
 
@@ -200,6 +210,9 @@ class KanadeAppState(
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, it.songs)
             },
+            navigateToDelete = {
+                navController.navigateToDeleteSong(it.songs.map { song -> song.id })
+            }
         )
     }
 

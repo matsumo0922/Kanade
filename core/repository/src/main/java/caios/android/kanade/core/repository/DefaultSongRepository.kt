@@ -1,5 +1,6 @@
 package caios.android.kanade.core.repository
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -145,6 +146,14 @@ class DefaultSongRepository @Inject constructor(
         } catch (ex: SecurityException) {
             Timber.w(ex, "Permission denied")
             return null
+        }
+    }
+
+    override suspend fun delete(songIds: List<Long>) {
+        val contentResolver = context.contentResolver
+
+        for (uri in songIds.map { ContentUris.withAppendedId(Media.EXTERNAL_CONTENT_URI, it) }) {
+            contentResolver.delete(uri, null, null)
         }
     }
 

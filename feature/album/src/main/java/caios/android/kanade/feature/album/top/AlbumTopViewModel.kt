@@ -31,7 +31,7 @@ class AlbumTopViewModel @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val screenState = combine(musicRepository.config, lastFmRepository.albumDetails, ::Pair).map { (config, _) ->
+    val screenState = combine(musicRepository.config, musicRepository.updateFlag, lastFmRepository.albumDetails, ::Triple).map { (config, _, _) ->
         withContext(io) {
             musicRepository.fetchAlbums(config)
             musicRepository.fetchAlbumArtwork()

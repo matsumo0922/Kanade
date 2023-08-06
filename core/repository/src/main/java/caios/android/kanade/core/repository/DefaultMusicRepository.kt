@@ -20,7 +20,11 @@ import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.repository.di.LyricsKugou
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import java.io.File
 import java.time.LocalDateTime
@@ -39,8 +43,11 @@ class DefaultMusicRepository @Inject constructor(
     @Dispatcher(KanadeDispatcher.Main) private val main: CoroutineDispatcher,
 ) : MusicRepository {
 
+    private val _updateFlag = MutableStateFlow(0)
+
     override val config: Flow<MusicConfig> = kanadePreferencesDataStore.musicConfig.flowOn(main)
     override val lastQueue: Flow<LastQueue> = kanadePreferencesDataStore.lastQueue.flowOn(main)
+    override val updateFlag: StateFlow<Int> = _updateFlag.asStateFlow()
 
     override val songs: List<Song> get() = songRepository.gets()
     override val artists: List<Artist> get() = artistRepository.gets()
@@ -48,12 +55,16 @@ class DefaultMusicRepository @Inject constructor(
     override val playlists: List<Playlist> get() = playlistRepository.gets()
     override val playHistory: List<PlayHistory> get() = playHistoryRepository.gets()
 
-    override fun clear() {
+    override suspend fun clear() {
         songRepository.clear()
         artistRepository.clear()
         albumRepository.clear()
         playlistRepository.clear()
         artworkRepository.clear()
+    }
+
+    override suspend fun refresh() {
+        _updateFlag.tryEmit((updateFlag.firstOrNull() ?: 0) + 1)
     }
 
     override fun sortedSongs(musicConfig: MusicConfig): List<Song> {

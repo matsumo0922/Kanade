@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(
         musicController.currentQueue,
         playlistRepository.data,
         lastFmRepository.albumDetails,
+        musicRepository.updateFlag,
     ) { data ->
         val config = data[0] as MusicConfig
         val queue = data[1] as Queue

@@ -230,6 +230,7 @@ fun Activity.showSongMenuDialog(
     navigateToLyricsTop: (Long) -> Unit,
     navigateToSongInformation: (Long) -> Unit,
     navigateToShare: (Song) -> Unit,
+    navigateToDelete: (Song) -> Unit,
 ) {
     showAsButtonSheet(userData) { onDismiss ->
         val scope = rememberCoroutineScope()
@@ -266,7 +267,7 @@ fun Activity.showSongMenuDialog(
             onClickLyrics = { navigateToLyricsTop.invoke(it.id) },
             onClickSongInfo = navigateToSongInformation,
             onClickShare = navigateToShare,
-            onClickDelete = { /*TODO*/ },
+            onClickDelete = navigateToDelete,
             onFetchFavorite = { musicViewModel.fetchFavorite(song) },
             onDismiss = onDismiss,
         )

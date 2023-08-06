@@ -14,12 +14,14 @@ import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.File
 
 interface MusicRepository {
 
     val config: Flow<MusicConfig>
     val lastQueue: Flow<LastQueue>
+    val updateFlag: StateFlow<Int>
 
     val songs: List<Song>
     val artists: List<Artist>
@@ -27,7 +29,8 @@ interface MusicRepository {
     val playlists: List<Playlist>
     val playHistory: List<PlayHistory>
 
-    fun clear()
+    suspend fun clear()
+    suspend fun refresh()
 
     fun sortedSongs(musicConfig: MusicConfig): List<Song>
     fun sortedArtists(musicConfig: MusicConfig): List<Artist>

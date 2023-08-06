@@ -50,6 +50,7 @@ class SettingTopViewModel @Inject constructor(
             musicRepository.fetchPlaylist()
             musicRepository.fetchAlbumArtwork()
             musicRepository.fetchArtistArtwork()
+            musicRepository.refresh()
         }
     }
 
