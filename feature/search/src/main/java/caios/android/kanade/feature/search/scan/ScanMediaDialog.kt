@@ -82,7 +82,7 @@ internal fun ScanMediaDialog(
 
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth(),
-                progress = (uiState.progress.toDouble() / uiState.total.toDouble()).toFloat()
+                progress = (uiState.progress.toDouble() / uiState.total.toDouble()).toFloat(),
             )
         }
     }
