@@ -129,13 +129,13 @@ private fun TagEditScreen(
                             trackTotal = trackTotal,
                             disc = discNumber,
                             discTotal = discTotal,
-                        )
+                        ),
                     )
 
                     ToastUtil.show(context, if (result) R.string.tag_edit_toast_success else R.string.tag_edit_toast_failure)
                 }
             }
-        }
+        },
     )
 
     LaunchedEffect(true) {
@@ -305,7 +305,7 @@ private fun TagEditScreen(
                                     trackTotal = trackTotal,
                                     disc = discNumber,
                                     discTotal = discTotal,
-                                )
+                                ),
                             )
 
                             ToastUtil.show(context, if (result) R.string.tag_edit_toast_success else R.string.tag_edit_toast_failure)

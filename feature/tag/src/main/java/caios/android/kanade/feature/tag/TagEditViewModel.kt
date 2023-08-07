@@ -62,7 +62,7 @@ class TagEditViewModel @Inject constructor(
             onFailure = {
                 Timber.e(it)
                 false
-            }
+            },
         )
     }
 
