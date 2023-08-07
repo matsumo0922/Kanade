@@ -18,6 +18,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.design.theme.SystemBars
+
+fun Modifier.systemBarsPadding(systemBars: SystemBars) = this.padding(
+    top = systemBars.top,
+    bottom = systemBars.bottom,
+)
 
 fun Modifier.extraSize(width: Dp, height: Dp) = this.layout { measurable, constraints ->
     val placeable = measurable.measure(

@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.LocalSystemBars
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
@@ -42,6 +43,7 @@ private fun QueueDialog(
     onMoveQueue: (Int, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val systemBars = LocalSystemBars.current
     var index by remember { mutableIntStateOf(uiState.index) }
     var data = remember { mutableStateListOf(*uiState.queue.toTypedArray()) }
     val scope = rememberCoroutineScope()
@@ -57,7 +59,7 @@ private fun QueueDialog(
     Column(modifier) {
         QueueHeaderSection(
             modifier = Modifier
-                .statusBarsPadding()
+                .padding(top = systemBars.top)
                 .fillMaxWidth(),
             onClickDismiss = onClickDismiss,
             onClickMenuAddPlaylist = { onClickMenuAddPlaylist.invoke(uiState.queue.map { it.song.id }) },

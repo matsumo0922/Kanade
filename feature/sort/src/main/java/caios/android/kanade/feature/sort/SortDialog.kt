@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.design.theme.LocalSystemBars
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
@@ -31,7 +31,7 @@ private fun SortDialog(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.surface)
-            .navigationBarsPadding(),
+            .padding(bottom = LocalSystemBars.current.bottom),
     ) {
         SortOrderSection(
             modifier = Modifier

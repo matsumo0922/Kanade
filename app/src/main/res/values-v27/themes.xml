@@ -3,5 +3,6 @@
     <style name="PlatformAdjusted.Theme.Kanade" parent="NightAdjusted.Theme.Kanade">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 </resources>

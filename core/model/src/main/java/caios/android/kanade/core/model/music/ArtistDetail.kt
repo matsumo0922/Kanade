@@ -5,7 +5,7 @@ data class ArtistDetail(
     val mbid: String?,
     val url: String,
     val imageUrl: String?,
-    val tags: List<Tag>,
+    val tags: List<FmTag>,
     val similarArtists: List<SimilarArtist>,
     val biography: String?,
 ) {

@@ -23,7 +23,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.AlbumDetail
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.ArtistDetail
-import caios.android.kanade.core.model.music.Tag
+import caios.android.kanade.core.model.music.FmTag
 import caios.android.kanade.core.repository.util.parse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.ktor.client.HttpClient
@@ -73,7 +73,7 @@ class DefaultLastFmRepository @Inject constructor(
                     mbid = it.artist.mbid,
                     url = it.artist.url,
                     imageUrl = fetchArtistArtwork(it.artist.url),
-                    tags = it.artist.tags.tag.map { tag -> Tag(name = tag.name, url = tag.url) },
+                    tags = it.artist.tags.tag.map { tag -> FmTag(name = tag.name, url = tag.url) },
                     similarArtists = it.artist.similar.artist.map { artist ->
                         ArtistDetail.SimilarArtist(
                             name = artist.name,
@@ -97,7 +97,7 @@ class DefaultLastFmRepository @Inject constructor(
                     data = album,
                     mbid = it.album.mbid,
                     imageUrl = it.album.images.findLast { image -> image.text.isNotBlank() }?.text,
-                    tags = it.album.tags.tag.map { tag -> Tag(tag.name, tag.url) },
+                    tags = it.album.tags.tag.map { tag -> FmTag(tag.name, tag.url) },
                     tracks = it.album.tracks.track.map { track ->
                         AlbumDetail.Track(
                             track = track.attr.rank,
@@ -305,7 +305,7 @@ class DefaultLastFmRepository @Inject constructor(
             mbid = artistDetail.mbid,
             url = artistDetail.url,
             imageUrl = artistDetail.imageUrl,
-            tags = tags.map { tag -> Tag(tag.name, tag.url) },
+            tags = tags.map { tag -> FmTag(tag.name, tag.url) },
             similarArtists = similarArtists.map { data ->
                 ArtistDetail.SimilarArtist(
                     name = data.name,
@@ -323,7 +323,7 @@ class DefaultLastFmRepository @Inject constructor(
             data = album,
             mbid = albumDetail.mbid,
             imageUrl = albumDetail.imageUrl,
-            tags = tags.map { tag -> Tag(tag.name, tag.url) },
+            tags = tags.map { tag -> FmTag(tag.name, tag.url) },
             tracks = tracks.map { track ->
                 AlbumDetail.Track(
                     track = track.track,

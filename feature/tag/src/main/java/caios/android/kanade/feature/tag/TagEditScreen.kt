@@ -1,5 +1,12 @@
 package caios.android.kanade.feature.tag
 
+import android.app.Activity
+import android.content.ContentUris
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -31,19 +38,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.music.Tag
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
 import caios.android.kanade.feature.tag.items.TagEditSongSection
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun TagEditRoute(
@@ -66,7 +78,7 @@ internal fun TagEditRoute(
         if (it != null) {
             TagEditScreen(
                 song = it.song,
-                onClickSave = {},
+                onClickSave = viewModel::edit,
                 onTerminate = terminate,
             )
         }
@@ -77,10 +89,12 @@ internal fun TagEditRoute(
 @Composable
 private fun TagEditScreen(
     song: Song,
-    onClickSave: () -> Unit,
+    onClickSave: suspend (Song, Tag) -> Boolean,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val state = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(state)
 
@@ -96,6 +110,33 @@ private fun TagEditScreen(
     var discTotal by remember { mutableStateOf("") }
 
     var isVisibleFAB by remember { mutableStateOf(false) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = {
+            if (it.resultCode == Activity.RESULT_OK) {
+                scope.launch {
+                    val result = onClickSave.invoke(
+                        song,
+                        Tag(
+                            title = title,
+                            artist = artist,
+                            album = album,
+                            composer = composer,
+                            genre = genre,
+                            year = year,
+                            track = trackNumber,
+                            trackTotal = trackTotal,
+                            disc = discNumber,
+                            discTotal = discTotal,
+                        )
+                    )
+
+                    ToastUtil.show(context, if (result) R.string.tag_edit_toast_success else R.string.tag_edit_toast_failure)
+                }
+            }
+        }
+    )
 
     LaunchedEffect(true) {
         isVisibleFAB = true
@@ -243,7 +284,34 @@ private fun TagEditScreen(
         ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { onClickSave.invoke() },
+                onClick = {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, song.id)
+                        val pendingIntent = MediaStore.createWriteRequest(context.contentResolver, listOf(uri))
+
+                        launcher.launch(IntentSenderRequest.Builder(pendingIntent.intentSender).build())
+                    } else {
+                        scope.launch {
+                            val result = onClickSave.invoke(
+                                song,
+                                Tag(
+                                    title = title,
+                                    artist = artist,
+                                    album = album,
+                                    composer = composer,
+                                    genre = genre,
+                                    year = year,
+                                    track = trackNumber,
+                                    trackTotal = trackTotal,
+                                    disc = discNumber,
+                                    discTotal = discTotal,
+                                )
+                            )
+
+                            ToastUtil.show(context, if (result) R.string.tag_edit_toast_success else R.string.tag_edit_toast_failure)
+                        }
+                    }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,

@@ -1,10 +1,12 @@
 package caios.android.kanade.core.ui.dialog
 
 import android.app.Activity
+import android.graphics.Rect
 import android.view.ViewGroup
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +15,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +25,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.KanadeTheme
+import caios.android.kanade.core.design.theme.LocalSystemBars
+import caios.android.kanade.core.design.theme.SystemBars
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +63,8 @@ private fun BottomSheetWrapper(
         }
     }
 
+    Timber.d("window insets: ${WindowInsets.displayCutout}")
+
     if (isOpen) {
         ModalBottomSheet(
             modifier = modifier,
@@ -66,7 +75,6 @@ private fun BottomSheetWrapper(
                 topStart = cornerRadius.value,
                 topEnd = cornerRadius.value,
             ),
-            windowInsets = WindowInsets(0, 0, 0, 0),
             onDismissRequest = { isOpen = false },
         ) {
             content {
@@ -89,10 +97,20 @@ fun Activity.showAsButtonSheet(
     val view = ComposeView(viewGroup.context).apply {
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
+            val density = LocalDensity.current
             val shouldUseDarkTheme = when (userData?.themeConfig) {
                 ThemeConfig.Light -> false
                 ThemeConfig.Dark -> true
                 else -> isSystemInDarkTheme()
+            }
+
+            val systemBars = this@showAsButtonSheet.systemBarsInsets().let {
+                with(density) {
+                    SystemBars(
+                        top = it.first.toDp(),
+                        bottom = it.second.toDp(),
+                    )
+                }
             }
 
             KanadeTheme(
@@ -103,17 +121,30 @@ fun Activity.showAsButtonSheet(
                     modifier = Modifier.fillMaxWidth(),
                     background = Color.Transparent,
                 ) {
-                    BottomSheetWrapper(
-                        parent = viewGroup,
-                        composeView = this,
-                        skipPartiallyExpanded = skipPartiallyExpanded,
-                        rectCorner = rectCorner,
-                        content = content,
-                    )
+                    CompositionLocalProvider(LocalSystemBars provides systemBars) {
+                        BottomSheetWrapper(
+                            parent = viewGroup,
+                            composeView = this,
+                            skipPartiallyExpanded = skipPartiallyExpanded,
+                            rectCorner = rectCorner,
+                            content = content,
+                        )
+                    }
                 }
             }
         }
     }
 
     viewGroup.addView(view)
+}
+
+fun Activity.systemBarsInsets(): Pair<Int, Int> {
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+        val insets = windowManager.currentWindowMetrics.windowInsets.getInsetsIgnoringVisibility(android.view.WindowInsets.Type.systemBars())
+        insets.top to insets.bottom
+    } else {
+        val rect = Rect()
+        this.window.decorView.getWindowVisibleDisplayFrame(rect)
+        rect.top to (this.window.decorView.height - rect.bottom)
+    }
 }

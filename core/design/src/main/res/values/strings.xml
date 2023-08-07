@@ -292,4 +292,6 @@
     <string name="tag_edit_track">トラック</string>
     <string name="tag_edit_disc_total">ディスク数</string>
     <string name="tag_edit_disc">ディスク</string>
+    <string name="tag_edit_toast_success">編集に成功しました</string>
+    <string name="tag_edit_toast_failure">編集に失敗しました</string>
 </resources>

@@ -337,8 +337,9 @@ private fun RequestPermissions(onGranted: () -> Unit) {
     val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
     val storagePermission =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    val locationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) android.Manifest.permission.ACCESS_FINE_LOCATION else null
 
-    val permissionList = listOfNotNull(storagePermission, notifyPermission)
+    val permissionList = listOfNotNull(storagePermission, notifyPermission, locationPermission)
     val permissionsState = rememberMultiplePermissionsState(permissionList) {
         isPermissionRequested = true
     }

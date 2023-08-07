@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -37,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.LocalSystemBars
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
@@ -72,11 +72,7 @@ private fun SongMenuDialog(
         isFavorite = onFetchFavorite.invoke(song)
     }
 
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .navigationBarsPadding(),
-    ) {
+    Column(modifier.verticalScroll(rememberScrollState())) {
         SongMenuHeader(
             modifier = Modifier.fillMaxWidth(),
             song = song,
@@ -237,7 +233,9 @@ fun Activity.showSongMenuDialog(
         val scope = rememberCoroutineScope()
 
         SongMenuDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(bottom = LocalSystemBars.current.bottom),
             song = song,
             onClickFavorite = {
                 scope.launch {

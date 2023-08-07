@@ -6,10 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DismissDirection
@@ -22,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import caios.android.kanade.core.design.component.KanadeBackground
+import caios.android.kanade.core.design.theme.LocalSystemBars
 import caios.android.kanade.core.model.music.QueueItem
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.IndexedSongHolder
@@ -49,8 +47,7 @@ internal fun QueueListSection(
     onClickSongMenu: (Song) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current
-    val navigationBarsPadding = WindowInsets.navigationBars.getBottom(density)
+    val systemBars = LocalSystemBars.current
 
     fun getItemIndex(item: QueueItem): Int {
         return queue.indexOfFirst { it.index == item.index }
@@ -65,7 +62,7 @@ internal fun QueueListSection(
             state = state.listState,
             contentPadding = PaddingValues(
                 top = 16.dp,
-                bottom = with(density) { navigationBarsPadding.toDp() },
+                bottom = systemBars.bottom,
             ),
         ) {
             items(
