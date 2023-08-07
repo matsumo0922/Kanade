@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import caios.android.kanade.core.music.MusicUiState
 @Composable
 fun AppController(
     uiState: MusicUiState,
+    windowSize: WindowSizeClass,
     offsetRate: Float,
     onControllerEvent: (event: PlayerEvent) -> Unit,
     onClickBottomController: () -> Unit,
@@ -66,6 +68,7 @@ fun AppController(
                     .fillMaxSize()
                     .background(Color(0xFF121314)),
                 uiState = uiState,
+                windowSize = windowSize,
                 onClickClose = onClickCloseExpanded,
                 onClickSearch = navigateToSearch,
                 onClickMenuAddPlaylist = navigateToAddToPlaylist,

@@ -5,23 +5,15 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -33,11 +25,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.atLeast
 import androidx.palette.graphics.Palette
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.Blue40
@@ -51,15 +48,11 @@ import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicUiState
-import caios.android.kanade.core.music.MusicUiState.Companion.isDarkMode
-import caios.android.kanade.core.ui.amlv.FadingEdge
-import caios.android.kanade.core.ui.amlv.LyricsView
 import caios.android.kanade.core.ui.amlv.LyricsViewState
 import caios.android.kanade.core.ui.amlv.rememberLyricsViewState
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
-import caios.android.kanade.core.ui.controller.items.MainControllerEmptyLyricsItem
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerTextSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
@@ -74,6 +67,7 @@ import timber.log.Timber
 @Composable
 fun MainController(
     uiState: MusicUiState,
+    windowSize: WindowSizeClass,
     onClickClose: () -> Unit,
     onClickSearch: () -> Unit,
     onClickMenuAddPlaylist: (Long) -> Unit,
@@ -99,10 +93,13 @@ fun MainController(
     onFetchFavorite: suspend (Song) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
+    Timber.d("MainController: ${windowSize.heightSizeClass}")
+
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()
-    val isDarkMode = uiState.userData?.isDarkMode()
+    val isLargeDevice = windowSize.heightSizeClass == WindowHeightSizeClass.Expanded
     var isFavorite by remember { mutableStateOf(false) }
     var isLyricsVisible by remember { mutableStateOf(false) }
     var artworkColor by remember { mutableStateOf(Color.Transparent) }
@@ -141,122 +138,103 @@ fun MainController(
     }
 
     MainControllerBackground {
-        Column(
-            modifier = modifier.background(
-                brush = Brush.verticalGradient(
-                    listOf(gradientColor, Color.Transparent),
-                ),
-            ),
+        ConstraintLayout(
+            modifier = modifier
+                .background(Brush.verticalGradient(listOf(gradientColor, Color.Transparent)))
+                .navigationBarsPadding()
+                .statusBarsPadding(),
         ) {
-            MainControllerToolBarSection(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                onClickClose = onClickClose,
-                onClickSearch = {
-                    onClickClose.invoke()
-                    onClickSearch.invoke()
-                },
-                onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
-                onClickMenuArtist = {
-                    onClickClose.invoke()
-                    uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
-                },
-                onClickMenuAlbum = {
-                    onClickClose.invoke()
-                    uiState.song?.albumId?.let { onClickMenuAlbum.invoke(it) }
-                },
-                onClickMenuEqualizer = onClickMenuEqualizer,
-                onClickMenuEdit = onClickMenuEdit,
-                onClickMenuAnalyze = onClickMenuAnalyze,
-                onClickMenuDetailInfo = onClickMenuDetailInfo,
+            val (toolbar, artwork, text, info, control, button) = createRefs()
+
+            createVerticalChain(
+                artwork,
+                text,
+                info,
+                control,
+                button,
+                chainStyle = ChainStyle.Spread,
             )
 
-            Box(
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .fillMaxWidth()
-                    .weight(1f),
-            ) {
-                androidx.compose.animation.AnimatedVisibility(
-                    modifier = Modifier.fillMaxSize(),
-                    visible = isLyricsVisible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    if (uiState.lyrics != null) {
-                        LyricsView(
-                            state = state,
-                            modifier = Modifier.fillMaxWidth(),
-                            contentPadding = PaddingValues(
-                                top = 24.dp,
-                                bottom = 32.dp,
-                                start = 16.dp,
-                                end = 16.dp,
-                            ),
-                            darkTheme = isDarkMode ?: false,
-                            fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
-                            fontSize = 28.sp,
-                        )
-                    } else {
-                        MainControllerEmptyLyricsItem(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClickSetLyrics = {
-                                scope.launch {
-                                    uiState.song?.let {
-                                        onClickClose.invoke()
-                                        onClickLyrics.invoke(it.id)
-                                    }
-                                }
-                            },
-                        )
-                    }
-                }
+            if (isLargeDevice) {
+                MainControllerToolBarSection(
+                    modifier = Modifier.constrainAs(toolbar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
 
-                androidx.compose.animation.AnimatedVisibility(
-                    modifier = Modifier.fillMaxSize(),
-                    visible = !isLyricsVisible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    Column {
-                        MainControllerArtworkSection(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            songs = uiState.queueItems.toImmutableList(),
-                            index = uiState.queueIndex,
-                            onSwipeArtwork = onClickSkipToQueue,
-                        )
-
-                        MainControllerTextSection(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            song = uiState.song,
-                        )
-                    }
-                }
+                        width = Dimension.fillToConstraints
+                    },
+                    onClickClose = onClickClose,
+                    onClickSearch = {
+                        onClickClose.invoke()
+                        onClickSearch.invoke()
+                    },
+                    onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
+                    onClickMenuArtist = {
+                        onClickClose.invoke()
+                        uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
+                    },
+                    onClickMenuAlbum = {
+                        onClickClose.invoke()
+                        uiState.song?.albumId?.let { onClickMenuAlbum.invoke(it) }
+                    },
+                    onClickMenuEqualizer = onClickMenuEqualizer,
+                    onClickMenuEdit = onClickMenuEdit,
+                    onClickMenuAnalyze = onClickMenuAnalyze,
+                    onClickMenuDetailInfo = onClickMenuDetailInfo,
+                )
             }
 
-            MainControllerInfoSection(
+            MainControllerArtworkSection(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
+                    .constrainAs(artwork) {
+                        top.linkTo(if (isLargeDevice) toolbar.bottom else parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(info.top)
+
+                        width = Dimension.fillToConstraints
+                    }
+                    .padding(top = if (isLargeDevice) 32.dp else 0.dp),
+                songs = uiState.queueItems.toImmutableList(),
+                index = uiState.queueIndex,
+                onSwipeArtwork = onClickSkipToQueue,
+            )
+
+            MainControllerTextSection(
+                modifier = Modifier.constrainAs(text) {
+                    top.linkTo(artwork.bottom)
+                    bottom.linkTo(info.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+
+                    width = Dimension.fillToConstraints
+                },
+                song = uiState.song,
+            )
+
+            MainControllerInfoSection(
+                modifier = Modifier.constrainAs(info) {
+                    top.linkTo(text.bottom)
+                    bottom.linkTo(control.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+
+                    width = Dimension.fillToConstraints
+                },
                 uiState = uiState,
                 onSeek = onClickSeek,
             )
 
             MainControllerControlButtonSection(
-                modifier = Modifier
-                    .padding(
-                        top = 16.dp,
-                        bottom = 24.dp,
-                    )
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
+                modifier = Modifier.constrainAs(control) {
+                    top.linkTo(info.bottom)
+                    bottom.linkTo(button.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+
+                    width = Dimension.preferredWrapContent.atLeast(configuration.screenWidthDp.dp * 0.8f)
+                },
                 uiState = uiState,
                 onClickPlay = onClickPlay,
                 onClickPause = onClickPause,
@@ -268,13 +246,15 @@ fun MainController(
 
             MainControllerBottomButtonSection(
                 modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(
-                        top = 4.dp,
-                        bottom = 24.dp,
-                    )
-                    .fillMaxWidth()
-                    .wrapContentSize(),
+                    .constrainAs(button) {
+                        top.linkTo(control.bottom)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+
+                        width = Dimension.wrapContent
+                    }
+                    .padding(top = 8.dp),
                 isFavorite = isFavorite,
                 onClickLyrics = { isLyricsVisible = !isLyricsVisible },
                 onClickLyricsEdit = {
@@ -293,8 +273,6 @@ fun MainController(
                 onClickQueue = onClickQueue,
                 onClickKaraoke = onClickKaraoke,
             )
-
-            Spacer(Modifier.height(12.dp))
         }
     }
 }
@@ -358,6 +336,7 @@ private suspend fun getArtworkColor(
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
@@ -371,6 +350,7 @@ private fun Preview() {
                 shuffleMode = ShuffleMode.ON,
                 repeatMode = RepeatMode.ALL,
             ),
+            windowSize = WindowSizeClass.calculateFromSize(DpSize.Zero),
             onClickClose = { },
             onClickSearch = { },
             onClickMenuAddPlaylist = { },

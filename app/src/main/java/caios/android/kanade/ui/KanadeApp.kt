@@ -233,6 +233,7 @@ fun KanadeApp(
                         AppController(
                             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                             uiState = musicViewModel.uiState,
+                            windowSize = appState.windowSize,
                             offsetRate = bottomSheetOffsetRate,
                             onControllerEvent = musicViewModel::playerEvent,
                             onClickBottomController = {

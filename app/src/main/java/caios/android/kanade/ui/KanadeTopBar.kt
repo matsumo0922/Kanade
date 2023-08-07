@@ -72,9 +72,9 @@ fun KanadeTopBar(
     var atEnd by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
 
-    val toolBarTopPadding = with(density) { TopAppBarDefaults.windowInsets.getTop(density).toFloat().toDp() }
+    val navigationBarHeight = with(density) { TopAppBarDefaults.windowInsets.getTop(density).toFloat().toDp() }
     val toolbarPadding by animateDpAsState(
-        targetValue = if (active) 0.dp else toolBarTopPadding,
+        targetValue = if (active) 0.dp else navigationBarHeight,
         label = "toolbarPadding",
         animationSpec = tween(400),
     )
@@ -97,13 +97,12 @@ fun KanadeTopBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(toolBarTopPadding)
-                .alpha(1f - toolbarPadding / toolBarTopPadding)
+                .height(navigationBarHeight - toolbarPadding)
+                .alpha(1f - toolbarPadding / navigationBarHeight)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         )
 
         SearchBar(
-            modifier = Modifier,
             query = query,
             onQueryChange = { query = it },
             onSearch = { },
