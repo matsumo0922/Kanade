@@ -69,6 +69,12 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
+
+                <action android:name="caios.system.kanade3.play" />
+                <action android:name="caios.system.kanade3.pause" />
+                <action android:name="caios.system.kanade3.stop" />
+                <action android:name="caios.system.kanade3.skip_to_next" />
+                <action android:name="caios.system.kanade3.skip_to_previous" />
             </intent-filter>
         </receiver>
 

@@ -2,7 +2,6 @@ package caios.android.kanade.core.music
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.media.session.PlaybackStateCompat
 import caios.android.kanade.core.model.player.PlayerEvent
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -17,12 +16,12 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.d("onReceive: ${intent?.action?.toLongOrNull()}")
 
-        val playerEvent = when (intent?.action?.toLongOrNull()) {
-            PlaybackStateCompat.ACTION_PLAY -> PlayerEvent.Play
-            PlaybackStateCompat.ACTION_PAUSE -> PlayerEvent.Pause
-            PlaybackStateCompat.ACTION_STOP -> PlayerEvent.Stop
-            PlaybackStateCompat.ACTION_SKIP_TO_NEXT -> PlayerEvent.SkipToNext
-            PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS -> PlayerEvent.SkipToPrevious
+        val playerEvent = when (intent?.action) {
+            NotificationManager.ACTION_PLAY -> PlayerEvent.Play
+            NotificationManager.ACTION_PAUSE -> PlayerEvent.Pause
+            NotificationManager.ACTION_STOP -> PlayerEvent.Stop
+            NotificationManager.ACTION_SKIP_TO_NEXT -> PlayerEvent.SkipToNext
+            NotificationManager.ACTION_SKIP_TO_PREVIOUS -> PlayerEvent.SkipToPrevious
             else -> return
         }
 
