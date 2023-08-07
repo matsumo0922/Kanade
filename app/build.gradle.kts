@@ -94,6 +94,7 @@ dependencies {
     implementation(project(":feature:setting"))
     implementation(project(":feature:share"))
     implementation(project(":feature:tag"))
+    implementation(project(":feature:download"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
