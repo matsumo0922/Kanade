@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search.util
+package caios.android.kanade.feature.search.top.util
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search
+package caios.android.kanade.feature.search.top
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel

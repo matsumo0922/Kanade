@@ -1,6 +1,6 @@
 @file:Suppress("MatchingDeclarationName")
 
-package caios.android.kanade.feature.search.items
+package caios.android.kanade.feature.search.top.items
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

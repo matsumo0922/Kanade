@@ -3,6 +3,8 @@ package caios.android.kanade.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -66,6 +68,7 @@ import caios.android.kanade.feature.information.about.navigateToAbout
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
+import caios.android.kanade.feature.search.scan.navigateToScanMedia
 import caios.android.kanade.feature.setting.top.navigateToSettingTop
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -88,6 +91,13 @@ fun KanadeApp(
         val activity = (LocalContext.current as Activity)
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
+        val safLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.OpenDocumentTree(),
+            onResult = { uri ->
+                uri?.let { appState.navController.navigateToScanMedia(it) }
+            },
+        )
+
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
@@ -97,6 +107,7 @@ fun KanadeApp(
                     currentDestination = appState.currentDestination,
                     onClickItem = appState::navigateToLibrary,
                     navigateToQueue = { appState.navigateToQueue(activity) },
+                    navigateToMediaScan = { safLauncher.launch(null) },
                     navigateToSetting = { appState.navController.navigateToSettingTop() },
                     navigateToAbout = { appState.navController.navigateToAbout() },
                     navigateToSupport = { },

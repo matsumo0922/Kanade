@@ -53,6 +53,7 @@ import caios.android.kanade.feature.playlist.rename.navigateToRenamePlaylist
 import caios.android.kanade.feature.playlist.rename.renamePlaylistDialog
 import caios.android.kanade.feature.playlist.top.playlistTopScreen
 import caios.android.kanade.feature.queue.showQueueDialog
+import caios.android.kanade.feature.search.scan.scanMediaDialog
 import caios.android.kanade.feature.setting.developer.navigateToSettingDeveloper
 import caios.android.kanade.feature.setting.developer.settingDeveloperDialog
 import caios.android.kanade.feature.setting.theme.navigateToSettingTheme
@@ -360,6 +361,12 @@ fun KanadeNavHost(
         )
 
         tagEditScreen(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        scanMediaDialog(
             terminate = {
                 navController.popBackStack()
             },

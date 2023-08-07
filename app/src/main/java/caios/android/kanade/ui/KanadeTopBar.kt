@@ -45,8 +45,8 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.feature.search.SearchRoute
-import caios.android.kanade.feature.search.SearchViewModel
+import caios.android.kanade.feature.search.top.SearchRoute
+import caios.android.kanade.feature.search.top.SearchViewModel
 
 @Suppress("ViewModelInjection")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
@@ -145,8 +145,7 @@ fun KanadeTopBar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, backgroundColor = 1)
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     KanadeTopBar(

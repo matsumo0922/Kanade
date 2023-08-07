@@ -58,6 +58,7 @@
     <string name="navigation_genre">ジャンル</string>
     <string name="navigation_folder">フォルダー</string>
     <string name="navigation_queue">再生待ちリスト</string>
+    <string name="navigation_scan">スキャン</string>
     <string name="navigation_setting">設定</string>
     <string name="navigation_app_info">アプリについて</string>
     <string name="navigation_support">アプリを応援</string>
@@ -294,4 +295,8 @@
     <string name="tag_edit_disc">ディスク</string>
     <string name="tag_edit_toast_success">編集に成功しました</string>
     <string name="tag_edit_toast_failure">編集に失敗しました</string>
+
+    <!-- Scan -->
+    <string name="scan_title">スキャン</string>
+    <string name="scan_initializing">処理中…</string>
 </resources>

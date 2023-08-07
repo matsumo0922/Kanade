@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search
+package caios.android.kanade.feature.search.top
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +14,7 @@ import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.FullAsyncLoadContents
-import caios.android.kanade.feature.search.items.SearchResultSection
+import caios.android.kanade.feature.search.top.items.SearchResultSection
 
 @Composable
 fun SearchRoute(

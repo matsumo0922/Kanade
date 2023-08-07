@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search.items
+package caios.android.kanade.feature.search.top.items
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

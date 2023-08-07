@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search.items
+package caios.android.kanade.feature.search.top.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,31 +20,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.model.music.Song
+import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.ui.music.Artwork
-import caios.android.kanade.feature.search.util.getAnnotatedString
-import java.util.Locale
+import caios.android.kanade.feature.search.top.util.getAnnotatedString
 
 @Composable
-fun SearchSongHolder(
-    song: Song,
+fun SearchArtistHolder(
+    artist: Artist,
     range: IntRange,
     onClickHolder: () -> Unit,
-    onClickMenu: (Song) -> Unit,
+    onClickMenu: (Artist) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier.clickable { onClickHolder.invoke() }) {
-        val (artwork, title, artist, duration, menu) = createRefs()
-
-        createVerticalChain(
-            title.withChainParams(bottomMargin = 2.dp),
-            artist.withChainParams(topMargin = 2.dp),
-            chainStyle = ChainStyle.Packed,
-        )
+        val (artwork, title, menu) = createRefs()
 
         Card(
             modifier = Modifier
@@ -54,53 +46,28 @@ fun SearchSongHolder(
                     bottom.linkTo(parent.bottom, 12.dp)
                     start.linkTo(parent.start, 16.dp)
                 },
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(50),
         ) {
             Artwork(
                 modifier = Modifier.fillMaxSize(),
-                artwork = song.albumArtwork,
+                artwork = artist.artwork,
             )
         }
 
         Text(
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(artwork.top)
+                bottom.linkTo(artwork.bottom)
                 start.linkTo(artwork.end, 16.dp)
                 end.linkTo(menu.start, 8.dp)
 
                 width = Dimension.fillToConstraints
             },
-            text = getAnnotatedString(song.title, range),
+            text = getAnnotatedString(artist.artist, range),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-        )
-
-        Text(
-            modifier = Modifier.constrainAs(artist) {
-                top.linkTo(title.bottom)
-                start.linkTo(title.start)
-                end.linkTo(duration.start, 16.dp)
-
-                width = Dimension.fillToConstraints
-            },
-            text = song.artist,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-
-        Text(
-            modifier = Modifier.constrainAs(duration) {
-                top.linkTo(artist.top)
-                bottom.linkTo(artist.bottom)
-                end.linkTo(menu.start, 8.dp)
-            },
-            text = getDurationTime(song.duration),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Icon(
@@ -113,7 +80,7 @@ fun SearchSongHolder(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end, 12.dp)
                 }
-                .clickable { onClickMenu.invoke(song) }
+                .clickable { onClickMenu.invoke(artist) }
                 .padding(4.dp),
             imageVector = Icons.Default.MoreVert,
             contentDescription = null,
@@ -121,25 +88,13 @@ fun SearchSongHolder(
     }
 }
 
-private fun getDurationTime(duration: Long): String {
-    val second = duration / 1000
-    val minute = second / 60
-    val hour = minute / 60
-
-    return if (hour > 0) {
-        String.format(Locale.getDefault(), "%02d:%02d:%02d", hour, minute % 60, second % 60)
-    } else {
-        String.format(Locale.getDefault(), "%02d:%02d", minute, second % 60)
-    }
-}
-
 @Preview
 @Composable
-private fun SearchSongHolderPreview() {
+private fun SearchArtistHolderPreview() {
     KanadeBackground(Modifier.background(MaterialTheme.colorScheme.surface)) {
-        SearchSongHolder(
+        SearchArtistHolder(
             modifier = Modifier.fillMaxWidth(),
-            song = Song.dummy(),
+            artist = Artist.dummy(),
             range = 4..5,
             onClickMenu = {},
             onClickHolder = {},

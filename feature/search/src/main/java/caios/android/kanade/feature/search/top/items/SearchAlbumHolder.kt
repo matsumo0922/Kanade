@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.search.items
+package caios.android.kanade.feature.search.top.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,21 +26,20 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.model.music.Playlist
-import caios.android.kanade.core.ui.music.GridArtwork
-import caios.android.kanade.feature.search.util.getAnnotatedString
-import kotlinx.collections.immutable.toImmutableList
+import caios.android.kanade.core.model.music.Album
+import caios.android.kanade.core.ui.music.Artwork
+import caios.android.kanade.feature.search.top.util.getAnnotatedString
 
 @Composable
-fun SearchPlaylistHolder(
-    playlist: Playlist,
+fun SearchAlbumHolder(
+    album: Album,
     range: IntRange,
     onClickHolder: () -> Unit,
-    onClickMenu: (Playlist) -> Unit,
+    onClickMenu: (Album) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier.clickable { onClickHolder.invoke() }) {
-        val (artwork, title, artist, menu) = createRefs()
+        val (artwork, title, artist, duration, menu) = createRefs()
 
         createVerticalChain(
             title.withChainParams(bottomMargin = 2.dp),
@@ -58,9 +57,9 @@ fun SearchPlaylistHolder(
                 },
             shape = RoundedCornerShape(8.dp),
         ) {
-            GridArtwork(
+            Artwork(
                 modifier = Modifier.fillMaxSize(),
-                songs = playlist.songs.toImmutableList(),
+                artwork = album.artwork,
             )
         }
 
@@ -72,7 +71,7 @@ fun SearchPlaylistHolder(
 
                 width = Dimension.fillToConstraints
             },
-            text = getAnnotatedString(playlist.name, range),
+            text = getAnnotatedString(album.album, range),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
@@ -83,15 +82,26 @@ fun SearchPlaylistHolder(
             modifier = Modifier.constrainAs(artist) {
                 top.linkTo(title.bottom)
                 start.linkTo(title.start)
-                end.linkTo(menu.start, 8.dp)
+                end.linkTo(duration.start, 16.dp)
 
                 width = Dimension.fillToConstraints
             },
-            text = stringResource(R.string.unit_song, playlist.songs.size),
+            text = album.artist,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+        )
+
+        Text(
+            modifier = Modifier.constrainAs(duration) {
+                top.linkTo(artist.top)
+                bottom.linkTo(artist.bottom)
+                end.linkTo(menu.start, 8.dp)
+            },
+            text = stringResource(R.string.unit_song, album.songs.size),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Icon(
@@ -104,7 +114,7 @@ fun SearchPlaylistHolder(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end, 12.dp)
                 }
-                .clickable { onClickMenu.invoke(playlist) }
+                .clickable { onClickMenu.invoke(album) }
                 .padding(4.dp),
             imageVector = Icons.Default.MoreVert,
             contentDescription = null,
@@ -116,9 +126,9 @@ fun SearchPlaylistHolder(
 @Composable
 private fun SearchAlbumHolderPreview() {
     KanadeBackground(Modifier.background(MaterialTheme.colorScheme.surface)) {
-        SearchPlaylistHolder(
+        SearchAlbumHolder(
             modifier = Modifier.fillMaxWidth(),
-            playlist = Playlist.dummy(),
+            album = Album.dummy(),
             range = 4..5,
             onClickMenu = {},
             onClickHolder = {},
