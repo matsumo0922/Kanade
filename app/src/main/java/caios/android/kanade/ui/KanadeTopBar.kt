@@ -103,6 +103,7 @@ fun KanadeTopBar(
         )
 
         SearchBar(
+            modifier = Modifier.padding(horizontal = 16.dp),
             query = query,
             onQueryChange = { query = it },
             onSearch = { },
