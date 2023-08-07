@@ -71,6 +71,7 @@ private fun BottomSheetWrapper(
             sheetState = state,
             dragHandle = { },
             containerColor = MaterialTheme.colorScheme.surface,
+            windowInsets = WindowInsets(0, 0, 0, 0),
             shape = RoundedCornerShape(
                 topStart = cornerRadius.value,
                 topEnd = cornerRadius.value,
