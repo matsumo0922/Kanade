@@ -94,7 +94,12 @@ fun KanadeApp(
         val safLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.OpenDocumentTree(),
             onResult = { uri ->
-                uri?.let { appState.navController.navigateToScanMedia(it) }
+                uri?.let {
+                    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+                    activity.contentResolver.takePersistableUriPermission(it, flag)
+                    appState.navController.navigateToScanMedia(it)
+                }
             },
         )
 

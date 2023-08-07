@@ -1,28 +1,23 @@
 package caios.android.kanade.feature.search.scan
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Build
-import android.os.storage.StorageManager
-import android.os.storage.StorageVolume
-import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import androidx.compose.runtime.Stable
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.repository.MusicRepository
+import com.hippo.unifile.UniFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.io.File
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,9 +41,11 @@ class ScanMediaViewModel @Inject constructor(
             val paths = getPaths(context, uri)
             val mimeTypes = paths.map { MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExtension(it)) }
 
+            Timber.d("ScanMediaViewModel scan: paths=${paths.size}")
+
             uiState.value = uiState.value.copy(
-                progress = 0,
-                total = paths.size,
+                progress = if (paths.isEmpty()) -1 else 0,
+                total = if (paths.isEmpty()) -1 else paths.size,
             )
 
             MediaScannerConnection.scanFile(context, paths.toTypedArray(), mimeTypes.toTypedArray()) { path, _ ->
@@ -79,37 +76,17 @@ class ScanMediaViewModel @Inject constructor(
     }
 
     private fun getPaths(context: Context, uri: Uri): List<String> {
-        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
-        val documentsContract = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri))
-        val documentsTree = DocumentFile.fromTreeUri(context, documentsContract) ?: return emptyList()
+        val uniFile = UniFile.fromUri(context, uri)
+        val paths = getPathFromDocumentFile(uniFile)
 
-        return documentsTree.listFiles().map { getPathFromDocumentFile(storageManager, it) }.flatten().filterNotNull()
+        Timber.d("ScanMediaViewModel getPaths: ${paths.size}")
+
+        return paths
     }
 
-    @SuppressLint("DiscouragedPrivateApi")
-    private fun getPathFromDocumentFile(storageManager: StorageManager, documentFile: DocumentFile): List<String?> {
-        if (documentFile.isFile) {
-            val documentId = DocumentsContract.getDocumentId(documentFile.uri)
-            val documentParts = documentId.split(":")
-            val documentType = documentParts.first()
-
-            for (volume in storageManager.storageVolumes) {
-                if ((volume.isPrimary && documentType.equals("primary", true)) || volume.uuid?.equals(documentType, true) == true) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        return listOf(File(volume.directory?.absolutePath, documentParts[1]).absolutePath)
-                    } else {
-                        val getPath = StorageVolume::class.java.getDeclaredMethod("getPath")
-                        return listOf(getPath.invoke(volume) as String?)
-                    }
-                }
-            }
-
-            return listOf(null)
-        }
-
-        if (documentFile.isDirectory) {
-            return documentFile.listFiles().map { getPathFromDocumentFile(storageManager, it) }.flatten()
-        }
+    private fun getPathFromDocumentFile(uniFile: UniFile): List<String> {
+        if (uniFile.isDirectory) return uniFile.listFiles()?.map { getPathFromDocumentFile(it) }?.flatten() ?: emptyList()
+        if (uniFile.isFile) return listOfNotNull(uniFile.filePath)
 
         return emptyList()
     }

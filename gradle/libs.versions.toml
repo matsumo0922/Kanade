@@ -196,7 +196,7 @@ balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon" }
 spell-checker = { module = "org.apache.lucene:lucene-spellchecker", version = "3.6.2" }
 reorderble-compose = { module = "org.burnoutcrew.composereorderable:reorderable", version = "0.9.6" }
-orbital = { module = "com.github.skydoves:orbital", version.ref = "orbital" }
+unifile = { module = "com.github.tachiyomiorg:unifile", version = "17bec43" }
 ffmpeg = { module = "com.arthenica:ffmpeg-kit-audio", version.ref = "ffmpeg" }
 twitter-compose-rule = { module = "com.twitter.compose.rules:detekt", version.ref = "twitterComposeRule" }
 

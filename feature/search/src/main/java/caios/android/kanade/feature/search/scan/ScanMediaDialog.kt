@@ -68,7 +68,9 @@ internal fun ScanMediaDialog(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            LinearProgressIndicator()
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+            )
         } else {
             Text(
                 modifier = Modifier.fillMaxWidth(),

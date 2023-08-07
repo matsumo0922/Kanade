@@ -110,7 +110,6 @@ dependencies {
     implementation(libs.play.service.billing)
     implementation(libs.play.service.oss)
     implementation(libs.google.material)
-    implementation(libs.orbital)
 
     debugImplementation(libs.facebook.flipper)
     debugImplementation(libs.facebook.flipper.network)
