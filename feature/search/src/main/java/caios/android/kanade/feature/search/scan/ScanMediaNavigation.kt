@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -31,6 +32,10 @@ fun NavGraphBuilder.scanMediaDialog(
         arguments = listOf(
             navArgument(ScanMediaUri) { type = NavType.StringType },
         ),
+        dialogProperties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        )
     ) {
         ScanMediaDialog(
             modifier = Modifier
