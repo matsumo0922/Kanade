@@ -19,5 +19,6 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(libs.bundles.ui.implementation)
+    implementation(libs.bundles.youtubedl)
     kapt(libs.bundles.ui.kapt)
 }

@@ -15,6 +15,14 @@ plugins {
 android {
     namespace = "caios.android.kanade"
 
+    splits {
+        abi {
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            isUniversalApk = false
+        }
+    }
+
     val localProperties = Properties().apply {
         load(project.rootDir.resolve("local.properties").inputStream())
     }
@@ -102,6 +110,7 @@ dependencies {
     implementation(libs.bundles.ui.implementation)
     implementation(libs.bundles.firebase)
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.youtubedl)
 
     kapt(libs.bundles.ui.kapt)
 
