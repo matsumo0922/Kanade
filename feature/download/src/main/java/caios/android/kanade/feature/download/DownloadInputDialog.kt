@@ -69,7 +69,7 @@ internal fun DownloadInputDialog(
                             color = MaterialTheme.colorScheme.error,
                         )
                     }
-                }
+                },
             )
 
             Row(
@@ -83,7 +83,7 @@ internal fun DownloadInputDialog(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(4.dp),
                     onClick = { terminate.invoke() },
-                    enabled = uiState.state == State.Idle
+                    enabled = uiState.state == State.Idle,
                 ) {
                     Text(
                         text = stringResource(R.string.common_cancel),

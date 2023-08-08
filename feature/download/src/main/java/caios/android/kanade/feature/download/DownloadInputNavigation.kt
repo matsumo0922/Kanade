@@ -19,8 +19,7 @@ fun NavGraphBuilder.downloadInputDialog(
         dialogProperties = DialogProperties(
             dismissOnBackPress = false,
             dismissOnClickOutside = false,
-        )
+        ),
     ) {
-
     }
 }

@@ -35,7 +35,7 @@ fun NavGraphBuilder.scanMediaDialog(
         dialogProperties = DialogProperties(
             dismissOnBackPress = false,
             dismissOnClickOutside = false,
-        )
+        ),
     ) {
         ScanMediaDialog(
             modifier = Modifier

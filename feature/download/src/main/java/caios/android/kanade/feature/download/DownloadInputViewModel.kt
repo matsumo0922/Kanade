@@ -22,7 +22,7 @@ class DownloadInputViewModel @Inject constructor() : ViewModel() {
     fun updateUrl(input: String) {
         uiState = uiState.copy(
             url = input,
-            error = if (Patterns.WEB_URL.matcher(input).matches()) null else R.string.download_input_error_invalid_url
+            error = if (Patterns.WEB_URL.matcher(input).matches()) null else R.string.download_input_error_invalid_url,
         )
     }
 
