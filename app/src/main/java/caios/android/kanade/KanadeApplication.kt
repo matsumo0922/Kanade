@@ -58,10 +58,12 @@ class KanadeApplication : Application() {
     private fun startCrushReportActivity(e: Throwable) {
         Timber.e(e)
 
-        startActivity(Intent(this, CrushReportActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra("report", getVersionReport() + "\n" + e.stackTraceToString())
-        })
+        startActivity(
+            Intent(this, CrushReportActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                putExtra("report", getVersionReport() + "\n" + e.stackTraceToString())
+            },
+        )
     }
 
     private fun getVersionReport() = buildString {

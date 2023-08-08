@@ -49,20 +49,20 @@ internal fun CrushReportScreen(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 onClick = { onClickCopy.invoke(report) },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Default.BugReport,
-                    contentDescription = null
+                    contentDescription = null,
                 )
 
                 Text(
                     modifier = Modifier.padding(start = 6.dp),
-                    text = stringResource(R.string.report_crush_copy)
+                    text = stringResource(R.string.report_crush_copy),
                 )
             }
-        }
+        },
     ) {
         Column(
             modifier = Modifier
