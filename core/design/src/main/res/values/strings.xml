@@ -307,4 +307,10 @@
     <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。選択可能な音質から自動的に最高のものを選択し、ダウンロードを行います。</string>
     <string name="download_input_error_invalid_url">無効なURL形式です</string>
     <string name="download_input_error_failed">ダウンロード可能なファイルが見つかりませんでした</string>
+
+    <!-- Report -->
+    <string name="report_crush_title">Oops! Something went wrong</string>
+    <string name="report_crush_description">申し訳ありません…\n技術的な要因により、Kanade がクラッシュしました。\n以下のレポートを開発者に送付してください。</string>
+    <string name="report_crush_copy">コピー</string>
+    <string name="report_crush_toast_copy">コピーしました</string>
 </resources>

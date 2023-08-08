@@ -50,6 +50,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".feature.report.CrushReportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Kanade" />
+
         <service
             android:name=".core.music.MusicService"
             android:enabled="true"
