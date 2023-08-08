@@ -60,6 +60,7 @@
     <string name="navigation_folder">フォルダー</string>
     <string name="navigation_queue">再生待ちリスト</string>
     <string name="navigation_scan">スキャン</string>
+    <string name="navigation_download">ダウンロード</string>
     <string name="navigation_setting">設定</string>
     <string name="navigation_app_info">アプリについて</string>
     <string name="navigation_support">アプリを応援</string>

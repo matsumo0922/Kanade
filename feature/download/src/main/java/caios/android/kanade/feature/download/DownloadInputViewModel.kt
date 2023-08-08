@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,13 +23,18 @@ class DownloadInputViewModel @Inject constructor() : ViewModel() {
     fun updateUrl(input: String) {
         uiState = uiState.copy(
             url = input,
-            error = if (Patterns.WEB_URL.matcher(input).matches()) null else R.string.download_input_error_invalid_url,
+            error = if (Patterns.WEB_URL.matcher(input).matches() || input.isEmpty()) null else R.string.download_input_error_invalid_url,
         )
     }
 
     fun fetchInfo() {
         viewModelScope.launch {
             uiState = uiState.copy(state = State.Loading)
+            delay(1000)
+            uiState = uiState.copy(
+                state = State.Idle,
+                error = R.string.download_input_error_failed,
+            )
         }
     }
 }

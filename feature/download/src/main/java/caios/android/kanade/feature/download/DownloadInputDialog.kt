@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.State
@@ -33,9 +35,19 @@ internal fun DownloadInputDialog(
 ) {
     val uiState = viewModel.uiState
 
-    Box(modifier) {
+    ConstraintLayout(modifier) {
+        val (content, loading) = createRefs()
+
         Column(
             modifier = Modifier
+                .constrainAs(content) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+
+                    width = Dimension.fillToConstraints
+                }
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -95,7 +107,7 @@ internal fun DownloadInputDialog(
                 Button(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(4.dp),
-                    onClick = {},
+                    onClick = { viewModel.fetchInfo() },
                     enabled = uiState.url.isNotBlank() && uiState.error == null && uiState.state == State.Idle,
                 ) {
                     Text(
@@ -107,8 +119,19 @@ internal fun DownloadInputDialog(
             }
         }
 
-        AnimatedVisibility(uiState.state == State.Loading) {
-            Box(Modifier.background(Color.Black.copy(0.2f))) {
+        AnimatedVisibility(
+            modifier = Modifier.constrainAs(loading) {
+                top.linkTo(content.top)
+                bottom.linkTo(content.bottom)
+                start.linkTo(content.start)
+                end.linkTo(content.end)
+
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
+            },
+            visible = uiState.state == State.Loading,
+        ) {
+            Box(Modifier.background(Color.Black.copy(0.5f))) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
                     color = MaterialTheme.colorScheme.primary,

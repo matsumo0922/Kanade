@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.QueueMusic
 import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
@@ -66,6 +67,7 @@ fun KanadeDrawer(
     onClickItem: (LibraryDestination) -> Unit,
     navigateToQueue: () -> Unit,
     navigateToMediaScan: () -> Unit,
+    navigateToDownloadInput: () -> Unit,
     navigateToSetting: () -> Unit,
     navigateToAbout: () -> Unit,
     navigateToSupport: () -> Unit,
@@ -147,6 +149,13 @@ fun KanadeDrawer(
                 label = stringResource(R.string.navigation_scan),
                 icon = Icons.Default.Scanner,
                 onClick = navigateToMediaScan,
+            )
+
+            NavigationDrawerItem(
+                state = state,
+                label = stringResource(R.string.navigation_download),
+                icon = Icons.Outlined.CloudDownload,
+                onClick = navigateToDownloadInput,
             )
 
             NavigationDrawerItem(

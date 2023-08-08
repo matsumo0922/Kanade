@@ -21,6 +21,7 @@ import caios.android.kanade.feature.album.top.albumTopScreen
 import caios.android.kanade.feature.artist.detail.artistDetailScreen
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.artist.top.artistTopScreen
+import caios.android.kanade.feature.download.downloadInputDialog
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.information.about.aboutScreen
@@ -367,6 +368,12 @@ fun KanadeNavHost(
         )
 
         scanMediaDialog(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        downloadInputDialog(
             terminate = {
                 navController.popBackStack()
             },

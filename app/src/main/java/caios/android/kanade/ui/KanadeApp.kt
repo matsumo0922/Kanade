@@ -64,6 +64,7 @@ import caios.android.kanade.core.ui.dialog.LoadingDialog
 import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
+import caios.android.kanade.feature.download.navigateToDownloadInput
 import caios.android.kanade.feature.information.about.navigateToAbout
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
@@ -113,6 +114,7 @@ fun KanadeApp(
                     onClickItem = appState::navigateToLibrary,
                     navigateToQueue = { appState.navigateToQueue(activity) },
                     navigateToMediaScan = { safLauncher.launch(null) },
+                    navigateToDownloadInput = { appState.navController.navigateToDownloadInput() },
                     navigateToSetting = { appState.navController.navigateToSettingTop() },
                     navigateToAbout = { appState.navController.navigateToAbout() },
                     navigateToSupport = { },
