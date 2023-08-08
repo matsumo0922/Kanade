@@ -27,6 +27,7 @@
     <string name="common_genres">ジャンル</string>
     <string name="common_details">詳細</string>
     <string name="common_delete">削除</string>
+    <string name="common_download">ダウンロード</string>
 
     <!-- Common Unit -->
     <string name="unit_song">%1$d 曲</string>
@@ -299,4 +300,10 @@
     <!-- Scan -->
     <string name="scan_title">スキャン</string>
     <string name="scan_initializing">処理中…</string>
+
+    <!-- Download -->
+    <string name="download_input_title">楽曲のダウンロード</string>
+    <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。選択可能な音質から自動的に最高のものを選択し、ダウンロードを行います。</string>
+    <string name="download_input_error_invalid_url">無効なURL形式です</string>
+    <string name="download_input_error_failed">ダウンロード可能なファイルが見つかりませんでした</string>
 </resources>
