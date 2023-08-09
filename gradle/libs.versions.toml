@@ -12,8 +12,8 @@ compileSdk = "34"
 gradle = "8.1.0"
 
 # Kotlin
-kotlin = "1.8.22"
-kotlinCompiler = "1.4.8"
+kotlin = "1.9.0"
+kotlinCompiler = "1.5.1"
 
 # KotlinX
 kotlinxCoroutines = "1.7.3"
@@ -52,11 +52,11 @@ playServiceOss = "17.0.1"
 material = "1.9.0"
 exoPlayer = "2.19.0"
 accompanist = "0.30.1"
-ksp = "1.8.22-1.0.11"
+ksp = "1.9.0-1.0.13"
 
 # Protobuf
 protobuf = "3.23.0"
-protobufPlugin = "0.9.3"
+protobufPlugin = "0.9.4"
 
 # Others
 dagger = "2.47"
