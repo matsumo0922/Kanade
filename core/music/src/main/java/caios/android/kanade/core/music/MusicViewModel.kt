@@ -21,8 +21,10 @@ import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
+import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
+import caios.android.kanade.core.repository.di.LyricsMusixmatch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -34,6 +36,7 @@ class MusicViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
+    @LyricsMusixmatch private val lyricsRepository: LyricsRepository,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(MusicUiState())
@@ -51,6 +54,7 @@ class MusicViewModel @Inject constructor(
                 musicController.playerState,
                 musicController.playerPosition,
                 musicController.isAnalyzing,
+                lyricsRepository.data,
             ) { data ->
                 val userData = data[0] as UserData
                 val config = data[1] as MusicConfig

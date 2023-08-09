@@ -2,10 +2,17 @@ package caios.android.kanade.core.ui.controller
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -23,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -31,6 +39,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -48,11 +57,15 @@ import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
 import caios.android.kanade.core.music.MusicUiState
+import caios.android.kanade.core.music.MusicUiState.Companion.isDarkMode
+import caios.android.kanade.core.ui.amlv.FadingEdge
+import caios.android.kanade.core.ui.amlv.LyricsView
 import caios.android.kanade.core.ui.amlv.LyricsViewState
 import caios.android.kanade.core.ui.amlv.rememberLyricsViewState
 import caios.android.kanade.core.ui.controller.items.MainControllerArtworkSection
 import caios.android.kanade.core.ui.controller.items.MainControllerBottomButtonSection
 import caios.android.kanade.core.ui.controller.items.MainControllerControlButtonSection
+import caios.android.kanade.core.ui.controller.items.MainControllerEmptyLyricsItem
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerTextSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
@@ -99,6 +112,7 @@ fun MainController(
     val configuration = LocalConfiguration.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()
+    val isDarkMode = uiState.userData?.isDarkMode()
     val isLargeDevice = windowSize.heightSizeClass == WindowHeightSizeClass.Expanded
     var isFavorite by remember { mutableStateOf(false) }
     var isLyricsVisible by remember { mutableStateOf(false) }
@@ -107,6 +121,11 @@ fun MainController(
         targetValue = artworkColor,
         animationSpec = tween(300, 0, LinearEasing),
         label = "gradientColor",
+    )
+    val lyricsAlpha by animateFloatAsState(
+        targetValue = if (isLyricsVisible) 1f else 0f,
+        animationSpec = tween(200, 0, LinearEasing),
+        label = "lyricsAlpha",
     )
 
     val state = rememberLyricsViewState(
@@ -144,7 +163,15 @@ fun MainController(
                 .navigationBarsPadding()
                 .statusBarsPadding(),
         ) {
-            val (toolbar, artwork, text, info, control, button) = createRefs()
+            val (
+                toolbar,
+                artwork,
+                text,
+                info,
+                control,
+                button,
+                lyrics,
+            ) = createRefs()
 
             createVerticalChain(
                 artwork,
@@ -169,7 +196,13 @@ fun MainController(
                         onClickClose.invoke()
                         onClickSearch.invoke()
                     },
-                    onClickMenuAddPlaylist = { uiState.song?.id?.let { onClickMenuAddPlaylist.invoke(it) } },
+                    onClickMenuAddPlaylist = {
+                        uiState.song?.id?.let {
+                            onClickMenuAddPlaylist.invoke(
+                                it
+                            )
+                        }
+                    },
                     onClickMenuArtist = {
                         onClickClose.invoke()
                         uiState.song?.artistId?.let { onClickMenuArtist.invoke(it) }
@@ -187,6 +220,7 @@ fun MainController(
 
             MainControllerArtworkSection(
                 modifier = Modifier
+                    .alpha(1f - lyricsAlpha)
                     .constrainAs(artwork) {
                         top.linkTo(if (isLargeDevice) toolbar.bottom else parent.top)
                         start.linkTo(parent.start)
@@ -202,16 +236,61 @@ fun MainController(
             )
 
             MainControllerTextSection(
-                modifier = Modifier.constrainAs(text) {
-                    top.linkTo(artwork.bottom)
-                    bottom.linkTo(info.top)
+                modifier = Modifier
+                    .alpha(1f - lyricsAlpha)
+                    .constrainAs(text) {
+                        top.linkTo(artwork.bottom)
+                        bottom.linkTo(info.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+
+                        width = Dimension.fillToConstraints
+                    },
+                song = uiState.song,
+            )
+
+            AnimatedVisibility(
+                modifier = Modifier.constrainAs(lyrics) {
+                    top.linkTo(artwork.top)
+                    bottom.linkTo(text.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
 
                     width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
                 },
-                song = uiState.song,
-            )
+                visible = isLyricsVisible,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                if (uiState.lyrics != null) {
+                    LyricsView(
+                        state = state,
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(
+                            top = 24.dp,
+                            bottom = 32.dp,
+                            start = 16.dp,
+                            end = 16.dp,
+                        ),
+                        darkTheme = isDarkMode ?: false,
+                        fadingEdge = FadingEdge(top = 32.dp, bottom = 64.dp),
+                        fontSize = 28.sp,
+                    )
+                } else {
+                    MainControllerEmptyLyricsItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClickSetLyrics = {
+                            scope.launch {
+                                uiState.song?.let {
+                                    onClickClose.invoke()
+                                    onClickLyrics.invoke(it.id)
+                                }
+                            }
+                        },
+                    )
+                }
+            }
 
             MainControllerInfoSection(
                 modifier = Modifier.constrainAs(info) {
@@ -233,7 +312,8 @@ fun MainController(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
 
-                    width = Dimension.preferredWrapContent.atLeast(configuration.screenWidthDp.dp * 0.8f)
+                    width =
+                        Dimension.preferredWrapContent.atLeast(configuration.screenWidthDp.dp * 0.8f)
                 },
                 uiState = uiState,
                 onClickPlay = onClickPlay,
