@@ -47,6 +47,7 @@ class DownloadInputViewModel @Inject constructor(
                     uiState.copy(
                         state = State.Idle,
                         error = null,
+                        videoInfo = it,
                     )
                 },
                 onFailure = {
@@ -89,4 +90,5 @@ data class DownloadInputUiState(
     val state: State = State.Idle,
     val url: String = "",
     val error: Int? = null,
+    val videoInfo: VideoInfo? = null,
 )

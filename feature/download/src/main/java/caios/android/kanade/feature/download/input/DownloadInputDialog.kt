@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,14 +26,23 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.State
+import caios.android.kanade.core.model.download.VideoInfo
 
 @Composable
 internal fun DownloadInputDialog(
+    navigateToDownloadFormat: (VideoInfo) -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DownloadInputViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState
+
+    LaunchedEffect(uiState.videoInfo) {
+        if (uiState.videoInfo != null) {
+            terminate.invoke()
+            navigateToDownloadFormat.invoke(uiState.videoInfo)
+        }
+    }
 
     ConstraintLayout(modifier) {
         val (content, loading) = createRefs()

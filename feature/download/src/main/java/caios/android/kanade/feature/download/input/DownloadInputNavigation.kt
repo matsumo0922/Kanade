@@ -10,6 +10,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
+import caios.android.kanade.core.model.download.VideoInfo
 
 const val DownloadInputRoute = "downloadInput"
 
@@ -18,6 +19,7 @@ fun NavController.navigateToDownloadInput() {
 }
 
 fun NavGraphBuilder.downloadInputDialog(
+    navigateToDownloadFormat: (VideoInfo) -> Unit,
     terminate: () -> Unit,
 ) {
     dialog(
@@ -32,6 +34,7 @@ fun NavGraphBuilder.downloadInputDialog(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .clip(RoundedCornerShape(16.dp)),
+            navigateToDownloadFormat = navigateToDownloadFormat,
             terminate = terminate,
         )
     }

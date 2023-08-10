@@ -1,5 +1,7 @@
 package caios.android.kanade.feature.download.format
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -31,6 +33,10 @@ fun NavGraphBuilder.downloadFormatScreen(
         popEnterTransition = { NavigateAnimation.Vertical.popEnter },
         popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
-
+        DownloadFormatRoute(
+            modifier = Modifier.fillMaxSize(),
+            videoInfo = formatter.decodeFromString(VideoInfo.serializer(), it.arguments?.getString(DownloadFormatInfo)!!),
+            terminate = terminate,
+        )
     }
 }
