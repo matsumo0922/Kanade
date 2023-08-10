@@ -104,7 +104,6 @@ private fun AboutScreen(
             KanadeTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.about_title),
-                isVisibleMenu = false,
                 behavior = behavior,
                 onTerminate = onTerminate,
             )

@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.download
+package caios.android.kanade.feature.download.input
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight

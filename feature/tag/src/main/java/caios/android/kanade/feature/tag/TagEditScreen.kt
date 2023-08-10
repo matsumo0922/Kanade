@@ -151,7 +151,6 @@ private fun TagEditScreen(
                     title = stringResource(R.string.lyrics_edit_title),
                     behavior = behavior,
                     onTerminate = { onTerminate.invoke() },
-                    isVisibleMenu = false,
                 )
             },
         ) { paddingValues ->

@@ -39,12 +39,8 @@ fun KanadeTopAppBar(
     behavior: TopAppBarScrollBehavior,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickMenuPlayNext: () -> Unit = {},
-    onClickMenuAddToQueue: () -> Unit = {},
-    onClickMenuAddToPlaylist: () -> Unit = {},
-    isVisibleMenu: Boolean = true,
+    dropDownMenuItems: List<DropDownMenuItemData> = emptyList(),
 ) {
-    val context = LocalContext.current
     var isExpandedMenu by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -71,7 +67,7 @@ fun KanadeTopAppBar(
             )
         },
         actions = {
-            if (isVisibleMenu) {
+            if (dropDownMenuItems.isNotEmpty()) {
                 Box {
                     Icon(
                         modifier = Modifier
@@ -96,26 +92,7 @@ fun KanadeTopAppBar(
                         expanded = isExpandedMenu,
                         onDismissRequest = { isExpandedMenu = false },
                     ) {
-                        listOf(
-                            DropDownMenuItemData(
-                                text = R.string.menu_play_next,
-                                onClick = {
-                                    onClickMenuPlayNext.invoke()
-                                    ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                                },
-                            ),
-                            DropDownMenuItemData(
-                                text = R.string.menu_add_to_queue,
-                                onClick = {
-                                    onClickMenuAddToQueue.invoke()
-                                    ToastUtil.show(context, R.string.menu_toast_add_to_queue)
-                                },
-                            ),
-                            DropDownMenuItemData(
-                                text = R.string.menu_add_to_playlist,
-                                onClick = onClickMenuAddToPlaylist,
-                            ),
-                        ).forEach {
+                        dropDownMenuItems.forEach {
                             DropDownMenuItem(
                                 text = it.text,
                                 onClick = {

@@ -29,13 +29,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.common.network.util.ToastUtil
+import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.SongHolder
+import caios.android.kanade.core.ui.view.DropDownMenuItemData
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -92,6 +96,7 @@ private fun SongDetailScreen(
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val state = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.pinnedScrollBehavior(state)
     var isVisibleFAB by remember { mutableStateOf(false) }
@@ -107,10 +112,29 @@ private fun SongDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = title,
                 behavior = behavior,
-                onClickMenuPlayNext = { onClickMenuAddToQueue.invoke(songs, queue?.index) },
-                onClickMenuAddToQueue = { onClickMenuAddToQueue.invoke(songs, null) },
-                onClickMenuAddToPlaylist = { onClickMenuAddToPlaylist.invoke(songs) },
                 onTerminate = onTerminate,
+                dropDownMenuItems = listOf(
+                    DropDownMenuItemData(
+                        text = R.string.menu_play_next,
+                        onClick = {
+                            onClickMenuAddToQueue.invoke(songs, queue?.index)
+                            ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                        },
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.menu_add_to_queue,
+                        onClick = {
+                            onClickMenuAddToQueue.invoke(songs, null)
+                            ToastUtil.show(context, R.string.menu_toast_add_to_queue)
+                        },
+                    ),
+                    DropDownMenuItemData(
+                        text = R.string.menu_add_to_playlist,
+                        onClick = {
+                            onClickMenuAddToPlaylist.invoke(songs)
+                        },
+                    ),
+                )
             )
         },
     ) { paddingValues ->

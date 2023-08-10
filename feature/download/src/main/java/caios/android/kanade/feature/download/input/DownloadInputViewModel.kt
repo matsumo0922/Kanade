@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.download
+package caios.android.kanade.feature.download.input
 
 import android.util.Patterns
 import androidx.compose.runtime.Stable
@@ -16,7 +16,6 @@ import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json

@@ -168,7 +168,6 @@ private fun LyricsTopScreen(
                         onTerminate.invoke()
                     }
                 },
-                isVisibleMenu = false,
             )
         },
     ) { paddingValues ->
