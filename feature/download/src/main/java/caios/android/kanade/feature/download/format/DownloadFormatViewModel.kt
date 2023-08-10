@@ -3,7 +3,6 @@ package caios.android.kanade.feature.download.format
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import caios.android.kanade.core.model.ScreenState
-import caios.android.kanade.core.model.State
 import caios.android.kanade.core.model.download.VideoInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

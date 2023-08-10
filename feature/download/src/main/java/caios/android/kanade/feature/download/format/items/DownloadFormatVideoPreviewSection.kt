@@ -33,7 +33,7 @@ internal fun DownloadFormatVideoPreviewSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Box(modifier.weight(1f)) {
+        Box(Modifier.weight(1f)) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),

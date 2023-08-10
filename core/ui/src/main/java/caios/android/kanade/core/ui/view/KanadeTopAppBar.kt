@@ -25,12 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import caios.android.kanade.core.common.network.util.ToastUtil
-import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.applyTonalElevation
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +38,7 @@ fun KanadeTopAppBar(
     behavior: TopAppBarScrollBehavior,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
-    dropDownMenuItems: List<DropDownMenuItemData> = emptyList(),
+    dropDownMenuItems: ImmutableList<DropDownMenuItemData> = persistentListOf(),
 ) {
     var isExpandedMenu by remember { mutableStateOf(false) }
 

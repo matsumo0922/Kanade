@@ -23,7 +23,7 @@ inline fun <T> LazyGridScope.itemsWithEdgeSpace(
     val itemSize = items.size
     val rowCount = if (itemSize % spanCount == 0) itemSize / spanCount else itemSize / spanCount + 1
 
-    (0 until rowCount).forEach { index ->
+    for (index in 0..<rowCount) {
         item { Spacer(modifier = Modifier.fillMaxWidth()) }
 
         val childItems = items.subList(

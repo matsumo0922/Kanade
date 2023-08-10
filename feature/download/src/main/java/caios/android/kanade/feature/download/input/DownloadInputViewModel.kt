@@ -55,7 +55,7 @@ class DownloadInputViewModel @Inject constructor(
                         state = State.Error,
                         error = R.string.download_input_error_failed,
                     )
-                }
+                },
             )
         }
     }
@@ -71,7 +71,7 @@ class DownloadInputViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getVideoInfo(request: YoutubeDLRequest): Result<VideoInfo> = withContext(io){
+    private suspend fun getVideoInfo(request: YoutubeDLRequest): Result<VideoInfo> = withContext(io) {
         request.addOption("--dump-json")
 
         kotlin.runCatching {

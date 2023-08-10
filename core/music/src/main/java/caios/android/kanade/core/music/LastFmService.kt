@@ -77,8 +77,12 @@ class LastFmService : Service(), CoroutineScope {
         val albums = musicRepository.albums.toList()
 
         val ignores = lastFmRepository.getIgnores()
-        val notDownloadedArtists = artists.filterNot { lastFmRepository.getArtistDetails()[it.artistId] != null || ignores.artistIds.contains(it.artistId) }
-        val notDownloadedAlbums = albums.filterNot { lastFmRepository.getAlbumDetails()[it.albumId] != null || ignores.albumIds.contains(it.albumId) }
+        val notDownloadedArtists = artists.filterNot {
+            lastFmRepository.getArtistDetails()[it.artistId] != null || ignores.artistIds.contains(it.artistId)
+        }
+        val notDownloadedAlbums = albums.filterNot {
+            lastFmRepository.getAlbumDetails()[it.albumId] != null || ignores.albumIds.contains(it.albumId)
+        }
 
         if (notDownloadedArtists.isEmpty() && notDownloadedAlbums.isEmpty()) {
             Timber.d("All artists and albums are downloaded.")

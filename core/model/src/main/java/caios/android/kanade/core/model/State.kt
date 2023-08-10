@@ -4,5 +4,4 @@ enum class State {
     Idle,
     Loading,
     Error,
-    ;
 }

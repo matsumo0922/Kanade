@@ -125,6 +125,6 @@ data class VideoInfo(
         @SerialName("start_time")
         val startTime: Double? = null,
         @SerialName("end_time")
-        val endTime: Double? = null
+        val endTime: Double? = null,
     )
 }

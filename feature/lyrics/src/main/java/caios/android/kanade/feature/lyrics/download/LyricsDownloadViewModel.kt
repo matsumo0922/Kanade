@@ -90,6 +90,6 @@ data class LyricsDownloadUiState(
     val state: State = State.Idle,
 ) {
     enum class State {
-        Idle, Downloaded, Error;
+        Idle, Downloaded, Error
     }
 }

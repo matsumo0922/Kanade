@@ -65,7 +65,9 @@ internal fun AboutRoute(
                 onClickGooglePlayDeveloper = { openLink("https://play.google.com/store/apps/developer?id=CAIOS") },
                 onClickTwitter = { openLink("https://twitter.com/matsumo0922") },
                 onClickMao = { openLink("https://maou.audio/") },
-                onClickMaoTwitter = { openLink("https://twitter.com/koichi_maou?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor") },
+                onClickMaoTwitter = {
+                    openLink("https://twitter.com/koichi_maou?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor")
+                },
                 onClick358Design = { openLink("https://www.instagram.com/0358_design/") },
                 onClickVersionHistory = { navigateToVersionHistory.invoke(uiState.versions.toImmutableList()) },
                 onClickDonate = { navigateToDonate.invoke() },

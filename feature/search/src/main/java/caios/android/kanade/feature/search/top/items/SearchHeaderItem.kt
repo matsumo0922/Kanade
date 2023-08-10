@@ -111,7 +111,9 @@ private fun SearchHeaderItemPreview3() {
             size = 871,
         )
     }
-} @Preview(showBackground = true)
+}
+
+@Preview(showBackground = true)
 @Composable
 private fun SearchHeaderItemPreview4() {
     KanadeBackground {

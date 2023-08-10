@@ -42,6 +42,7 @@ import caios.android.kanade.core.ui.music.SongHolder
 import caios.android.kanade.core.ui.view.DropDownMenuItemData
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -113,7 +114,7 @@ private fun SongDetailScreen(
                 title = title,
                 behavior = behavior,
                 onTerminate = onTerminate,
-                dropDownMenuItems = listOf(
+                dropDownMenuItems = persistentListOf(
                     DropDownMenuItemData(
                         text = R.string.menu_play_next,
                         onClick = {
@@ -134,7 +135,7 @@ private fun SongDetailScreen(
                             onClickMenuAddToPlaylist.invoke(songs)
                         },
                     ),
-                )
+                ),
             )
         },
     ) { paddingValues ->
