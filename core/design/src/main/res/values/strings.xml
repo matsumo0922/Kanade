@@ -307,6 +307,11 @@
     <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。選択可能な音質から自動的に最高のものを選択し、ダウンロードを行います。</string>
     <string name="download_input_error_invalid_url">無効なURL形式です</string>
     <string name="download_input_error_failed">ダウンロード可能なファイルが見つかりませんでした</string>
+    <string name="download_format_title">ファイル形式の選択</string>
+    <string name="download_format_suggestion">推奨</string>
+    <string name="download_format_audio">音声</string>
+    <string name="download_format_video">動画</string>
+    <string name="download_format_save_path">保存先</string>
 
     <!-- Report -->
     <string name="report_crush_title">Oops! Something went wrong</string>

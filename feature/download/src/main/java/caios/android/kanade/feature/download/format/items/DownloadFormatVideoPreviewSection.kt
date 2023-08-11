@@ -30,7 +30,6 @@ internal fun DownloadFormatVideoPreviewSection(
 ) {
     Row(
         modifier = modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(Modifier.weight(1f)) {
