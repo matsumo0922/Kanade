@@ -7,6 +7,7 @@ import androidx.datastore.dataStoreFile
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
+import caios.android.kanade.core.datastore.DownloadPathPreference
 import caios.android.kanade.core.datastore.LyricsPreference
 import caios.android.kanade.core.datastore.MusicPreference
 import caios.android.kanade.core.datastore.MusicPreferenceSerializer
@@ -109,5 +110,13 @@ object DataStoreModule {
         @ApplicationScope scope: CoroutineScope,
     ): VolumePreference {
         return VolumePreference(context, io, CoroutineScope(scope.coroutineContext + io))
+    }
+
+    @Provides
+    @Singleton
+    fun providesDownloadPathPreference(
+        @ApplicationContext context: Context,
+    ): DownloadPathPreference {
+        return DownloadPathPreference(context)
     }
 }

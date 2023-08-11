@@ -312,6 +312,9 @@
     <string name="download_format_audio">音声</string>
     <string name="download_format_video">動画</string>
     <string name="download_format_save_path">保存先</string>
+    <string name="download_format_alert_message">ダウンロードを中止しますか？</string>
+    <string name="download_format_alert_confirm">中止</string>
+    <string name="download_progress_tag_edit">タグを編集</string>
 
     <!-- Report -->
     <string name="report_crush_title">Oops! Something went wrong</string>

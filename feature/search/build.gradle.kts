@@ -20,6 +20,4 @@ dependencies {
 
     implementation(libs.bundles.ui.implementation)
     kapt(libs.bundles.ui.kapt)
-
-    implementation(libs.unifile)
 }

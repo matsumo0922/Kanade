@@ -261,6 +261,7 @@ ui-implementation = [
     "accompanist-permissions",
     "google-material",
     "coil-compose",
+    "unifile"
 ]
 
 ui-kapt = [
