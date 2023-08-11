@@ -28,7 +28,7 @@ class ExportPlaylistViewModel @Inject constructor(
         val playlist = playlistRepository.get(playlistId)
 
         _screenState.value = if (playlist != null) {
-             ScreenState.Idle(ExportPlaylistUiState(playlist))
+            ScreenState.Idle(ExportPlaylistUiState(playlist))
         } else {
             ScreenState.Error(
                 message = R.string.error_no_data,
