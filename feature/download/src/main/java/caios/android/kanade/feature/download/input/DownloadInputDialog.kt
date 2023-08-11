@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -36,6 +42,8 @@ internal fun DownloadInputDialog(
     viewModel: DownloadInputViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(uiState.videoInfo) {
         if (uiState.videoInfo != null) {
@@ -91,6 +99,20 @@ internal fun DownloadInputDialog(
                         )
                     }
                 },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            clipboardManager.getText()?.let {
+                                viewModel.updateUrl(it.text)
+                            }
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ContentPaste,
+                            contentDescription = null,
+                        )
+                    }
+                }
             )
 
             Row(
@@ -116,7 +138,10 @@ internal fun DownloadInputDialog(
                 Button(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(4.dp),
-                    onClick = { viewModel.fetchInfo() },
+                    onClick = {
+                        keyboardController?.hide()
+                        viewModel.fetchInfo()
+                    },
                     enabled = uiState.url.isNotBlank() && uiState.error == null && uiState.state == State.Idle,
                 ) {
                     Text(
