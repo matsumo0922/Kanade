@@ -17,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -32,16 +33,18 @@ class TagEditViewModel @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<TagEditUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<TagEditUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     fun fetch(songId: Long) {
         viewModelScope.launch {
             val song = musicRepository.getSong(songId)
 
-            if (song != null) {
-                screenState.value = ScreenState.Idle(TagEditUiState(song))
+            _screenState.value = if (song != null) {
+                ScreenState.Idle(TagEditUiState(song))
             } else {
-                screenState.value = ScreenState.Error(
+                ScreenState.Error(
                     message = R.string.error_no_data,
                     retryTitle = R.string.common_close,
                 )

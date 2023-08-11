@@ -14,6 +14,7 @@ import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Random
@@ -25,9 +26,11 @@ class ArtistDetailViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<ArtistDetailUiState>>(ScreenState.Loading)
-
     private var artistId: Long? = null
+
+    private val _screenState = MutableStateFlow<ScreenState<ArtistDetailUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -46,7 +49,7 @@ class ArtistDetailViewModel @Inject constructor(
             val artist = musicRepository.getArtist(artistId)
             val artistDetail = artist?.let { musicRepository.getArtistDetail(it) }
 
-            screenState.value = if (artist != null) {
+            _screenState.value = if (artist != null) {
                 ScreenState.Idle(
                     ArtistDetailUiState(
                         artist = artist,

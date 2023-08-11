@@ -10,6 +10,7 @@ import caios.android.kanade.core.repository.ExternalPlaylistRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,15 +20,17 @@ class ExportPlaylistViewModel @Inject constructor(
     private val externalPlaylistRepository: ExternalPlaylistRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<ExportPlaylistUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<ExportPlaylistUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     fun fetch(playlistId: Long) {
         val playlist = playlistRepository.get(playlistId)
 
-        if (playlist != null) {
-            screenState.value = ScreenState.Idle(ExportPlaylistUiState(playlist))
+        _screenState.value = if (playlist != null) {
+             ScreenState.Idle(ExportPlaylistUiState(playlist))
         } else {
-            screenState.value = ScreenState.Error(
+            ScreenState.Error(
                 message = R.string.error_no_data,
                 retryTitle = R.string.common_close,
             )

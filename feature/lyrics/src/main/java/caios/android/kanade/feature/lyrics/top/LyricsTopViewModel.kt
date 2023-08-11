@@ -12,6 +12,7 @@ import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.di.LyricsMusixmatch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,7 +23,9 @@ class LyricsTopViewModel @Inject constructor(
     @LyricsMusixmatch private val lyricsRepository: LyricsRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<LyricsTopUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<LyricsTopUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -35,7 +38,7 @@ class LyricsTopViewModel @Inject constructor(
                     val lyrics = data.find { state.data.song.id == it.songId }
 
                     if (lyrics != null) {
-                        screenState.value = ScreenState.Idle(
+                        _screenState.value = ScreenState.Idle(
                             LyricsTopUiState(
                                 song = state.data.song,
                                 lyrics = lyrics,
@@ -49,8 +52,8 @@ class LyricsTopViewModel @Inject constructor(
 
     fun fetch(songId: Long) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
-            screenState.value = kotlin.runCatching {
+            _screenState.value = ScreenState.Loading
+            _screenState.value = kotlin.runCatching {
                 val song = musicRepository.getSong(songId)!!
                 val lyrics = lyricsRepository.get(song)
 

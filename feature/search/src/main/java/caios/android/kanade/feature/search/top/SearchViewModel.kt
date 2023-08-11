@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,7 +31,9 @@ class SearchViewModel @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<SearchUiState>>(ScreenState.Idle(SearchUiState()))
+    private val _screenState = MutableStateFlow<ScreenState<SearchUiState>>(ScreenState.Idle(SearchUiState()))
+
+    val screenState = _screenState.asStateFlow()
 
     fun onNewPlay(songs: List<Song>, index: Int) {
         musicController.playerEvent(
@@ -43,8 +46,8 @@ class SearchViewModel @Inject constructor(
     }
 
     suspend fun search(keywords: List<String>) {
-        screenState.value = ScreenState.Loading
-        screenState.value = kotlin.runCatching {
+        _screenState.value = ScreenState.Loading
+        _screenState.value = kotlin.runCatching {
             searchLibrary(keywords)
         }.fold(
             onSuccess = { ScreenState.Idle(it) },

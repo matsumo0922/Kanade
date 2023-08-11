@@ -12,6 +12,7 @@ import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlayHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +23,9 @@ class SongInformationViewModel @Inject constructor(
     private val volumeAnalyzer: VolumeAnalyzer,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<SongInformationUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<SongInformationUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     fun fetch(songId: Long) {
         viewModelScope.launch {
@@ -32,7 +35,7 @@ class SongInformationViewModel @Inject constructor(
             val isFavorite = song?.let { musicRepository.isFavorite(song) } ?: false
 
             if (song != null) {
-                screenState.value = ScreenState.Idle(
+                _screenState.value = ScreenState.Idle(
                     SongInformationUiState(
                         song = song,
                         volume = volume,
@@ -41,7 +44,7 @@ class SongInformationViewModel @Inject constructor(
                     ),
                 )
             } else {
-                screenState.value = ScreenState.Error(
+                _screenState.value = ScreenState.Error(
                     message = R.string.error_no_data,
                     retryTitle = R.string.common_close,
                 )

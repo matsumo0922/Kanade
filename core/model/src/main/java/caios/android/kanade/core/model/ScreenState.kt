@@ -1,7 +1,7 @@
 package caios.android.kanade.core.model
 
 sealed class ScreenState<out T> {
-    object Loading : ScreenState<Nothing>()
+    data object Loading : ScreenState<Nothing>()
 
     data class Error(
         val message: Int,
@@ -9,6 +9,6 @@ sealed class ScreenState<out T> {
     ) : ScreenState<Nothing>()
 
     data class Idle<T>(
-        val data: T,
+        var data: T,
     ) : ScreenState<T>()
 }

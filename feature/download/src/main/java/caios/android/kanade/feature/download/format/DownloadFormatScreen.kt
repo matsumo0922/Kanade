@@ -12,7 +12,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -58,6 +60,8 @@ internal fun DownloadFormatRoute(
             DownloadFormatScreen(
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 videoInfo = it.videoInfo,
+                savePath = it.savePath,
+                onUpdateSavePath = viewModel::updateSavePath,
                 onTerminate = terminate,
             )
         }
@@ -68,10 +72,15 @@ internal fun DownloadFormatRoute(
 @Composable
 private fun DownloadFormatScreen(
     videoInfo: VideoInfo,
+    savePath: String,
+    onUpdateSavePath: (String) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (videoInfo.formats.isNullOrEmpty()) return
+    if (videoInfo.formats.isNullOrEmpty()) {
+        onTerminate.invoke()
+        return
+    }
 
     val context = LocalContext.current
     val state = rememberTopAppBarState()
@@ -121,6 +130,18 @@ private fun DownloadFormatScreen(
                     author = videoInfo.uploader ?: videoInfo.channel,
                     duration = videoInfo.duration?.toLong(),
                     thumbnail = videoInfo.thumbnail?.toHttpsUrl(),
+                )
+            }
+
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                    value = savePath,
+                    onValueChange = onUpdateSavePath,
+                    label = { Text(stringResource(R.string.tag_edit_title)) },
+                    singleLine = true,
                 )
             }
         }

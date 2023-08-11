@@ -9,6 +9,7 @@ import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,12 +18,14 @@ class RenamePlaylistViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<RenamePlaylistUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<RenamePlaylistUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     fun fetch(playlistId: Long) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
-            screenState.value = kotlin.runCatching {
+            _screenState.value = ScreenState.Loading
+            _screenState.value = kotlin.runCatching {
                 musicRepository.fetchPlaylist()
                 musicRepository.playlists
             }.fold(

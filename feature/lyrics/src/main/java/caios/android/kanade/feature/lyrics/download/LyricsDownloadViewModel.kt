@@ -15,6 +15,7 @@ import caios.android.kanade.core.repository.di.LyricsKugou
 import caios.android.kanade.core.repository.di.LyricsMusixmatch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,17 +27,20 @@ class LyricsDownloadViewModel @Inject constructor(
     @LyricsKugou private val kugouLyrics: LyricsRepository,
     @LyricsMusixmatch private val musixmatchLyrics: LyricsRepository,
 ) : ViewModel() {
-    val screenState = MutableStateFlow<ScreenState<LyricsDownloadUiState>>(ScreenState.Loading)
+
+    private val _screenState = MutableStateFlow<ScreenState<LyricsDownloadUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     fun fetch(songId: Long) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
+            _screenState.value = ScreenState.Loading
 
             val song = musicRepository.getSong(songId)
             val lyrics = song?.let { kugouLyrics.get(it) }
             val token = tokenPreference.get(TokenPreference.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else null
 
-            screenState.value = if (song != null) {
+            _screenState.value = if (song != null) {
                 ScreenState.Idle(
                     LyricsDownloadUiState(
                         song = song,
@@ -55,7 +59,7 @@ class LyricsDownloadViewModel @Inject constructor(
 
     fun download(song: Song, isUseMusixmatch: Boolean, token: String?) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
+            _screenState.value = ScreenState.Loading
 
             val lyrics = kotlin.runCatching {
                 if (isUseMusixmatch && token != null) {
@@ -66,7 +70,7 @@ class LyricsDownloadViewModel @Inject constructor(
                 }
             }.getOrNull()
 
-            screenState.value = ScreenState.Idle(
+            _screenState.value = ScreenState.Idle(
                 LyricsDownloadUiState(
                     song = song,
                     lyrics = lyrics,

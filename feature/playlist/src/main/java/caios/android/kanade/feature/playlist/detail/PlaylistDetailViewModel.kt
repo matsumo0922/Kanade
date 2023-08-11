@@ -14,6 +14,7 @@ import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +26,9 @@ class PlaylistDetailViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow<ScreenState<PlaylistDetailUiState>>(ScreenState.Loading)
+    private val _screenState = MutableStateFlow<ScreenState<PlaylistDetailUiState>>(ScreenState.Loading)
+
+    val screenState = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -37,7 +40,7 @@ class PlaylistDetailViewModel @Inject constructor(
                     val playlistId = uiState.data.playlist.id
                     val playlist = data.find { it.id == playlistId }
 
-                    screenState.value = if (playlist != null) {
+                    _screenState.value = if (playlist != null) {
                         ScreenState.Idle(uiState.data.copy(playlist = playlist))
                     } else {
                         ScreenState.Error(
@@ -52,11 +55,11 @@ class PlaylistDetailViewModel @Inject constructor(
 
     fun fetch(playlistId: Long) {
         viewModelScope.launch {
-            screenState.value = ScreenState.Loading
+            _screenState.value = ScreenState.Loading
 
             val playlist = musicRepository.getPlaylist(playlistId)
 
-            screenState.value = if (playlist != null) {
+            _screenState.value = if (playlist != null) {
                 ScreenState.Idle(PlaylistDetailUiState(playlist))
             } else {
                 ScreenState.Error(
