@@ -304,7 +304,7 @@
 
     <!-- Download -->
     <string name="download_input_title">楽曲のダウンロード</string>
-    <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。選択可能な音質から自動的に最高のものを選択し、ダウンロードを行います。</string>
+    <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。この機能は試験段階で、動作が不安定なことがあります。</string>
     <string name="download_input_error_invalid_url">無効なURL形式です</string>
     <string name="download_input_error_failed">ダウンロード可能なファイルが見つかりませんでした</string>
     <string name="download_format_title">ファイル形式の選択</string>

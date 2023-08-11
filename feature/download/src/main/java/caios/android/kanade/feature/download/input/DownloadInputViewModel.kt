@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.download.input
 
+import android.content.Context
 import android.util.Patterns
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -13,6 +14,7 @@ import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.State
 import caios.android.kanade.core.model.download.VideoInfo
 import com.yausername.youtubedl_android.YoutubeDL
+import com.yausername.youtubedl_android.YoutubeDLException
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,14 +34,17 @@ class DownloadInputViewModel @Inject constructor(
 
     private val formatter = Json { ignoreUnknownKeys = true }
 
-    fun updateUrl(input: String) {
+    fun updateUrl(context: Context, input: String) {
+        val isStable = Patterns.WEB_URL.matcher(input).matches() || input.isEmpty()
+
         uiState = uiState.copy(
+            state = if (isStable) State.Idle else State.Error,
             url = input,
-            error = if (Patterns.WEB_URL.matcher(input).matches() || input.isEmpty()) null else R.string.download_input_error_invalid_url,
+            error = if (isStable) null else context.getString(R.string.download_input_error_invalid_url),
         )
     }
 
-    fun fetchInfo() {
+    fun fetchInfo(context: Context) {
         viewModelScope.launch {
             uiState = uiState.copy(state = State.Loading)
             uiState = fetchVideoInfo(uiState.url).fold(
@@ -53,7 +58,7 @@ class DownloadInputViewModel @Inject constructor(
                 onFailure = {
                     uiState.copy(
                         state = State.Error,
-                        error = R.string.download_input_error_failed,
+                        error = if (it is YoutubeDLException) it.localizedMessage else context.getString(R.string.download_input_error_failed),
                     )
                 },
             )
@@ -89,6 +94,6 @@ class DownloadInputViewModel @Inject constructor(
 data class DownloadInputUiState(
     val state: State = State.Idle,
     val url: String = "",
-    val error: Int? = null,
+    val error: String? = null,
     val videoInfo: VideoInfo? = null,
 )

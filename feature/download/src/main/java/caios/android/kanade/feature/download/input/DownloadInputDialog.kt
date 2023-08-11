@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ internal fun DownloadInputDialog(
     viewModel: DownloadInputViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val clipboardManager = LocalClipboardManager.current
 
@@ -86,14 +88,14 @@ internal fun DownloadInputDialog(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.url,
-                onValueChange = viewModel::updateUrl,
+                onValueChange = { viewModel.updateUrl(context, it) },
                 label = { Text("URL") },
                 singleLine = true,
                 isError = uiState.error != null,
                 supportingText = {
                     if (uiState.error != null) {
                         Text(
-                            text = stringResource(uiState.error),
+                            text = uiState.error,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error,
                         )
@@ -103,7 +105,7 @@ internal fun DownloadInputDialog(
                     IconButton(
                         onClick = {
                             clipboardManager.getText()?.let {
-                                viewModel.updateUrl(it.text)
+                                viewModel.updateUrl(context, it.text)
                             }
                         },
                     ) {
@@ -140,7 +142,7 @@ internal fun DownloadInputDialog(
                     shape = RoundedCornerShape(4.dp),
                     onClick = {
                         keyboardController?.hide()
-                        viewModel.fetchInfo()
+                        viewModel.fetchInfo(context)
                     },
                     enabled = uiState.url.isNotBlank() && uiState.error == null && uiState.state == State.Idle,
                 ) {
