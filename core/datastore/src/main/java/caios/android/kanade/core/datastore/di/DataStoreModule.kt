@@ -8,6 +8,7 @@ import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.DownloadPathPreference
+import caios.android.kanade.core.datastore.EqualizerPreference
 import caios.android.kanade.core.datastore.LyricsPreference
 import caios.android.kanade.core.datastore.MusicPreference
 import caios.android.kanade.core.datastore.MusicPreferenceSerializer
@@ -118,5 +119,13 @@ object DataStoreModule {
         @ApplicationContext context: Context,
     ): DownloadPathPreference {
         return DownloadPathPreference(context)
+    }
+
+    @Provides
+    @Singleton
+    fun providesEqualizerPreference(
+        @ApplicationContext context: Context,
+    ): EqualizerPreference {
+        return EqualizerPreference(context)
     }
 }
