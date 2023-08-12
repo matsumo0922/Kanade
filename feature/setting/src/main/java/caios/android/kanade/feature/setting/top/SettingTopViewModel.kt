@@ -100,7 +100,7 @@ class SettingTopViewModel @Inject constructor(
     }
 
     suspend fun updateYoutubeDL(context: Context): String? = withContext(dispatcher) {
-         with(YoutubeDL.getInstance()) {
+        with(YoutubeDL.getInstance()) {
             updateYoutubeDL(context)
             version(context)
         }

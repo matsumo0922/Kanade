@@ -46,7 +46,7 @@ inline fun <T> LazyGridScope.itemsIndexedWithEdgeSpace(
     noinline key: ((index: Int, item: T) -> Any)? = null,
     noinline span: (LazyGridItemSpanScope.(index: Int, item: T) -> GridItemSpan)? = null,
     noinline contentType: (index: Int, item: T) -> Any? = { _, _ -> null },
-    crossinline itemContent: @Composable LazyGridItemScope.(index: Int, item: T) -> Unit
+    crossinline itemContent: @Composable LazyGridItemScope.(index: Int, item: T) -> Unit,
 ) {
     require(spanCount > 0)
 

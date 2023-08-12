@@ -244,7 +244,7 @@ private fun DownloadFormatScreen(
                     contentDescription = null,
                 )
             }
-        }
+        },
     ) { paddingValues ->
         LazyVerticalGrid(
             modifier = Modifier

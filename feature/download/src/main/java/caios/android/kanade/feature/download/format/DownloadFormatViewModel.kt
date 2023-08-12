@@ -59,7 +59,7 @@ class DownloadFormatViewModel @Inject constructor(
                 DownloadFormatUiState(
                     videoInfo = videoInfo,
                     saveUniFile = uniFile,
-                )
+                ),
             )
         }
     }
@@ -145,7 +145,7 @@ class DownloadFormatViewModel @Inject constructor(
         format: VideoInfo.Format,
         extractAudio: Boolean,
         uniFile: UniFile,
-        callback: (Float, Long, String) -> Unit
+        callback: (Float, Long, String) -> Unit,
     ): Result<List<UniFile>> {
         val url = videoInfo.originalUrl ?: return Result.failure(Exception("Invalid url"))
         val file = File(context.cacheDir, "sdcard_tmp").run { resolve(videoInfo.id) }
@@ -156,8 +156,8 @@ class DownloadFormatViewModel @Inject constructor(
             addOption("--no-playlist")
 
             // Enable aria2c
-            //addOption("--downloader", "libaria2c.so")
-            //addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+            // addOption("--downloader", "libaria2c.so")
+            // addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
 
             if (extractAudio || videoInfo.acodec == "none") {
                 applyAudioOptions(format)

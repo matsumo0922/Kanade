@@ -60,7 +60,7 @@ internal fun DownloadFormatItem(
             )
             .clickable { onSelect.invoke() }
             .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),

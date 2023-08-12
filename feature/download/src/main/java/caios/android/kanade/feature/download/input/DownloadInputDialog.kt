@@ -114,7 +114,7 @@ internal fun DownloadInputDialog(
                             contentDescription = null,
                         )
                     }
-                }
+                },
             )
 
             Row(

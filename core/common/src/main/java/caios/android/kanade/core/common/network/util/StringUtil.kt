@@ -35,8 +35,9 @@ object StringUtil {
         val builder = StringBuilder(strings.first())
         for (s in strings.asList().subList(1, strings.size)) {
             if (s.isNotEmpty()) {
-                if (builder.isNotEmpty())
+                if (builder.isNotEmpty()) {
                     builder.append(delimiter)
+                }
                 builder.append(s)
             }
         }
