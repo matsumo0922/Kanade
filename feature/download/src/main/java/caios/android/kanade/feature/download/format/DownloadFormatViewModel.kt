@@ -88,7 +88,7 @@ class DownloadFormatViewModel @Inject constructor(
         }
     }
 
-    fun downloadFailed() {
+    private fun downloadFailed() {
         val state = screenState.value
 
         if (state is ScreenState.Idle) {
@@ -120,6 +120,7 @@ class DownloadFormatViewModel @Inject constructor(
         val file = File(context.cacheDir, "sdcard_tmp").run { resolve(videoInfo.id) }
 
         val request = YoutubeDLRequest(url).apply {
+            addOption("-v")
             addOption("--no-mtime")
             addOption("--no-playlist")
 
@@ -153,7 +154,7 @@ class DownloadFormatViewModel @Inject constructor(
         if (format.formatId.isNullOrBlank()) {
             addOption("--audio-format", "m4a")
         } else {
-            addOption("--format", format.formatId!!)
+            addOption("-f", format.formatId!!)
         }
 
         addOption("-x")

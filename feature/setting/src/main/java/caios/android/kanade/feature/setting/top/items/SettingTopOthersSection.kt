@@ -1,23 +1,37 @@
 package caios.android.kanade.feature.setting.top.items
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.feature.setting.SettingSwitchItem
 import caios.android.kanade.feature.setting.SettingTextItem
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun SettingTopOthersSection(
     userData: UserData,
     config: KanadeConfig,
+    onClickYtDlpVersion: suspend (Context) -> String?,
     onClickDeveloperMode: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var ytDlpVersion by remember { mutableStateOf(YoutubeDL.getInstance().version(context)) }
+
     Column(modifier) {
         SettingTopTitleItem(
             modifier = Modifier.fillMaxWidth(),
@@ -41,6 +55,18 @@ internal fun SettingTopOthersSection(
                 else -> ""
             },
             onClick = { /* do nothing */ },
+        )
+
+        SettingTextItem(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(R.string.setting_top_others_ytdlp_version),
+            description = ytDlpVersion ?: "Unknown",
+            onClick = {
+                scope.launch {
+                    ytDlpVersion = context.getString(R.string.setting_top_others_ytdlp_version_checking)
+                    ytDlpVersion = onClickYtDlpVersion.invoke(context)
+                }
+            },
         )
 
         SettingSwitchItem(

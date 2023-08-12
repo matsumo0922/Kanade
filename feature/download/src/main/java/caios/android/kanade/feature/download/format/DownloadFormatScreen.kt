@@ -150,7 +150,8 @@ private fun DownloadFormatScreen(
         }
 
         if (downloadState is DownloadFormatUiState.DownloadState.Failed) {
-            ToastUtil.show(context, "失敗")
+            isShowProgressDialog = false
+            ToastUtil.show(context, R.string.download_progress_toast_error)
         }
 
         onDispose { }
@@ -173,17 +174,19 @@ private fun DownloadFormatScreen(
     }
 
     if (isShowProgressDialog) {
-        DownloadProgressDialog(
-            state = downloadState as DownloadFormatUiState.DownloadState.Progress,
-            title = videoInfo.title,
-            author = videoInfo.uploader ?: videoInfo.channel,
-            thumbnail = videoInfo.thumbnail?.toHttpsUrl(),
-            onClickTagEdit = { /*TODO*/ },
-            onDismiss = {
-                isShowProgressDialog = false
-                onDownloadComplete.invoke()
-            },
-        )
+        (downloadState as? DownloadFormatUiState.DownloadState.Progress)?.let {
+            DownloadProgressDialog(
+                state = it,
+                title = videoInfo.title,
+                author = videoInfo.uploader ?: videoInfo.channel,
+                thumbnail = videoInfo.thumbnail?.toHttpsUrl(),
+                onClickTagEdit = { /*TODO*/ },
+                onDismiss = {
+                    isShowProgressDialog = false
+                    onDownloadComplete.invoke()
+                },
+            )
+        }
     }
 
     Scaffold(

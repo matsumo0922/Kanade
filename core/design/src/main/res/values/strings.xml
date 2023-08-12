@@ -268,7 +268,11 @@
     <string name="setting_top_library_ignore_not_music_description">楽曲フラグが指定されていないファイルを無視してライブラリを構築します。</string>
     <string name="setting_top_others">その他</string>
     <string name="setting_top_others_id">Kanade ID</string>
-    <string name="setting_top_others_version">バージョン</string>
+    <string name="setting_top_others_version">アプリバージョン</string>
+    <string name="setting_top_others_ytdlp_version">yt-dlp バージョン</string>
+    <string name="setting_top_others_ytdlp_version_checking">アップデート確認中…</string>
+    <string name="setting_top_others_ytdlp_version_toast_done">更新しました</string>
+    <string name="setting_top_others_ytdlp_version_toast_already_updated">最新バージョンを使用しています</string>
     <string name="setting_top_others_developer_mode">開発モード</string>
     <string name="setting_top_others_developer_mode_description">[Warning] Do not enable this mode if you are not a developer.</string>
     <string name="setting_theme_title">テーマ</string>
@@ -315,6 +319,7 @@
     <string name="download_format_alert_message">ダウンロードを中止しますか？</string>
     <string name="download_format_alert_confirm">中止</string>
     <string name="download_progress_tag_edit">タグを編集</string>
+    <string name="download_progress_toast_error">ダウンロードに失敗しました</string>
 
     <!-- Report -->
     <string name="report_crush_title">Oops! Something went wrong</string>

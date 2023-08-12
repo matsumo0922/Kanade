@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.setting.top
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,6 +64,7 @@ internal fun SettingTopRoute(
                 onClickStopWhenTaskkill = viewModel::setStopWhenTaskkill,
                 onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
                 onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
+                onClickYtDlpVersion = viewModel::updateYoutubeDL,
                 onClickDeveloperMode = { isEnable ->
                     if (isEnable) {
                         navigateToSettingDeveloper()
@@ -88,6 +90,7 @@ private fun SettingTopScreen(
     onClickStopWhenTaskkill: (Boolean) -> Unit,
     onClickIgnoreShortMusic: (Boolean) -> Unit,
     onClickIgnoreNotMusic: (Boolean) -> Unit,
+    onClickYtDlpVersion: suspend (Context) -> String?,
     onClickDeveloperMode: (Boolean) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -155,6 +158,7 @@ private fun SettingTopScreen(
                     modifier = Modifier.fillMaxWidth(),
                     config = config,
                     userData = userData,
+                    onClickYtDlpVersion = onClickYtDlpVersion,
                     onClickDeveloperMode = onClickDeveloperMode,
                 )
             }

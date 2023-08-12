@@ -128,7 +128,7 @@ internal fun DownloadInputDialog(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(4.dp),
                     onClick = { terminate.invoke() },
-                    enabled = uiState.state == State.Idle,
+                    enabled = uiState.state != State.Loading,
                 ) {
                     Text(
                         text = stringResource(R.string.common_cancel),
@@ -144,7 +144,7 @@ internal fun DownloadInputDialog(
                         keyboardController?.hide()
                         viewModel.fetchInfo(context)
                     },
-                    enabled = uiState.url.isNotBlank() && uiState.error == null && uiState.state == State.Idle,
+                    enabled = uiState.url.isNotBlank() && uiState.error == null && uiState.state != State.Loading,
                 ) {
                     Text(
                         text = stringResource(R.string.common_download),

@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -64,7 +65,7 @@ internal fun DownloadProgressDialog(
             Text(
                 modifier = Modifier
                     .padding(
-                        top = 16.dp,
+                        top = 24.dp,
                         start = 16.dp,
                         end = 16.dp,
                     )
@@ -90,14 +91,14 @@ internal fun DownloadProgressDialog(
             if (state.progress < 1f) {
                 LinearProgressIndicator(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(top = 24.dp)
                         .fillMaxWidth(),
                     progress = state.progress,
                 )
             } else {
                 Row(
                     modifier = Modifier
-                        .padding(top = 16.dp)
+                        .padding(top = 24.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -132,4 +133,20 @@ internal fun DownloadProgressDialog(
             }
         }
     }
+}
+
+@Composable
+@Preview
+private fun DownloadProgressDialogPreview() {
+    DownloadProgressDialog(
+        state = DownloadFormatUiState.DownloadState.Progress(
+            progress = 0.5f,
+            line = "Downloading...",
+        ),
+        title = "Title",
+        author = "Author",
+        thumbnail = "https://i.ytimg.com/vi/0zGcUoRlhmw/maxresdefault.jpg",
+        onClickTagEdit = { /* do nothing */ },
+        onDismiss = { /* do nothing */ },
+    )
 }

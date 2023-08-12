@@ -28,10 +28,10 @@ class KanadeApplication : Application() {
 
     @Inject
     @Dispatcher(KanadeDispatcher.IO)
-    lateinit var ioDispatcher: CoroutineDispatcher
+    lateinit var io: CoroutineDispatcher
 
     private val supervisorJob = SupervisorJob()
-    private val scope by lazy { CoroutineScope(ioDispatcher + supervisorJob) }
+    private val scope by lazy { CoroutineScope(io + supervisorJob) }
 
     override fun onCreate() {
         super.onCreate()
