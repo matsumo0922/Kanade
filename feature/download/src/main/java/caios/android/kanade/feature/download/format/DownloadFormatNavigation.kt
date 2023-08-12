@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.model.download.VideoInfo
 import kotlinx.serialization.json.Json
+import java.net.URLDecoder
 import java.net.URLEncoder
 
 const val DownloadFormatInfo = "DownloadInfo"
@@ -35,7 +36,7 @@ fun NavGraphBuilder.downloadFormatScreen(
     ) {
         DownloadFormatRoute(
             modifier = Modifier.fillMaxSize(),
-            videoInfo = formatter.decodeFromString(VideoInfo.serializer(), it.arguments?.getString(DownloadFormatInfo)!!),
+            videoInfo = formatter.decodeFromString(VideoInfo.serializer(), URLDecoder.decode(it.arguments?.getString(DownloadFormatInfo)!!, "UTF-8")),
             terminate = terminate,
         )
     }

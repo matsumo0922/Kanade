@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.common.network.util.StringUtil.connectWithBlank
+import caios.android.kanade.core.common.network.util.StringUtil.toBitRateString
 import caios.android.kanade.core.common.network.util.StringUtil.toFileSizeString
 import caios.android.kanade.core.model.download.VideoInfo
 
@@ -40,11 +43,11 @@ internal fun DownloadFormatItem(
         label = "FormatItemTitle",
     )
 
-    val fileSize = format.fileSize?.toFloat()?.toFileSizeString()
-    val bitRate = format.tbr?.toFloat()?.toFileSizeString()
+    val fileSize = (format.fileSize ?: format.fileSizeApprox)?.toFloat()?.toFileSizeString()
+    val bitRate = format.tbr?.toFloat()?.toBitRateString()
     val vCodec = format.vcodec.toString().substringBefore(".")
     val aCodec = format.acodec.toString().substringBefore(".")
-    val codec = vCodec + if (vCodec.isNotEmpty() && aCodec.isNotEmpty()) " " else "" + aCodec
+    val codec = connectWithBlank(vCodec, aCodec).let { if (it.isNotBlank()) "($it)" else it }
 
     Column(
         modifier = modifier
@@ -56,7 +59,8 @@ internal fun DownloadFormatItem(
                 shape = RoundedCornerShape(8.dp),
             )
             .clickable { onSelect.invoke() }
-            .padding(12.dp)
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -75,7 +79,7 @@ internal fun DownloadFormatItem(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = if (codec.isNotBlank()) "($codec)" else "",
+            text = "${format.ext} $codec".uppercase(),
             style = MaterialTheme.typography.labelMedium,
         )
     }

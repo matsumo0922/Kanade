@@ -30,4 +30,23 @@ object StringUtil {
             else -> "%.2f Kbps".format(this)
         }
     }
+
+    fun connectWithDelimiter(vararg strings: String, delimiter: String): String {
+        val builder = StringBuilder(strings.first())
+        for (s in strings.asList().subList(1, strings.size)) {
+            if (s.isNotEmpty()) {
+                if (builder.isNotEmpty())
+                    builder.append(delimiter)
+                builder.append(s)
+            }
+        }
+        return builder.toString()
+    }
+
+    fun connectWithBlank(s1: String, s2: String): String {
+        val f1 = if (s1 == "none" || s1 == "null") "" else s1
+        val f2 = if (s2 == "none" || s2 == "null") "" else s2
+        val blank = if (f1.isEmpty() || f2.isEmpty()) "" else " "
+        return f1 + blank + f2
+    }
 }
