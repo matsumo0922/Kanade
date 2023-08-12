@@ -40,6 +40,7 @@ import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
 
 @Composable
 internal fun SettingTopRoute(
+    navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
     navigateToSettingDeveloper: () -> Unit,
     terminate: () -> Unit,
@@ -58,6 +59,7 @@ internal fun SettingTopRoute(
                 userData = uiState.userData,
                 config = uiState.config,
                 onClickTheme = navigateToSettingTheme,
+                onClickEqualizer = navigateToEqualizer,
                 onClickDynamicNormalizer = viewModel::setUseDynamicNormalizer,
                 onClickOneStepBack = viewModel::setOneStepBack,
                 onClickKeepAudioFocus = viewModel::setKeepAudioFocus,
@@ -84,6 +86,7 @@ private fun SettingTopScreen(
     userData: UserData,
     config: KanadeConfig,
     onClickTheme: () -> Unit,
+    onClickEqualizer: () -> Unit,
     onClickDynamicNormalizer: (Boolean) -> Unit,
     onClickOneStepBack: (Boolean) -> Unit,
     onClickKeepAudioFocus: (Boolean) -> Unit,
@@ -139,7 +142,7 @@ private fun SettingTopScreen(
                 SettingTopPlayingSection(
                     modifier = Modifier.fillMaxWidth(),
                     userData = userData,
-                    onClickEqualizer = { },
+                    onClickEqualizer = onClickEqualizer,
                     onClickDynamicNormalizer = onClickDynamicNormalizer,
                     onClickOneStepBack = onClickOneStepBack,
                     onClickKeepAudioFocus = onClickKeepAudioFocus,
@@ -149,7 +152,6 @@ private fun SettingTopScreen(
                 SettingTopLibrarySection(
                     modifier = Modifier.fillMaxWidth(),
                     userData = userData,
-                    onClickScan = { },
                     onClickIgnoreShotMusic = onClickIgnoreShortMusic,
                     onClickIgnoreNotMusic = onClickIgnoreNotMusic,
                 )

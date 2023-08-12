@@ -14,6 +14,7 @@ fun NavController.navigateToSettingTop() {
 }
 
 fun NavGraphBuilder.settingTopScreen(
+    navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
     navigateToSettingDeveloper: () -> Unit,
     terminate: () -> Unit,
@@ -27,6 +28,7 @@ fun NavGraphBuilder.settingTopScreen(
     ) {
         SettingTopRoute(
             modifier = Modifier.fillMaxSize(),
+            navigateToEqualizer = navigateToEqualizer,
             navigateToSettingTheme = navigateToSettingTheme,
             navigateToSettingDeveloper = navigateToSettingDeveloper,
             terminate = terminate,

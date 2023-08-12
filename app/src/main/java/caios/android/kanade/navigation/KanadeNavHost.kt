@@ -24,6 +24,8 @@ import caios.android.kanade.feature.artist.top.artistTopScreen
 import caios.android.kanade.feature.download.format.downloadFormatScreen
 import caios.android.kanade.feature.download.format.navigateToDownloadFormat
 import caios.android.kanade.feature.download.input.downloadInputDialog
+import caios.android.kanade.feature.equalizer.equalizerScreen
+import caios.android.kanade.feature.equalizer.navigateToEqualizer
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.information.about.aboutScreen
@@ -393,6 +395,12 @@ fun KanadeNavHost(
             },
         )
 
+        equalizerScreen(
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
         aboutScreen(
             navigateToVersionHistory = ::showVersionHistory,
             navigateToDonate = {
@@ -403,6 +411,9 @@ fun KanadeNavHost(
         )
 
         settingTopScreen(
+            navigateToEqualizer = {
+                navController.navigateToEqualizer()
+            },
             navigateToSettingTheme = {
                 navController.navigateToSettingTheme()
             },

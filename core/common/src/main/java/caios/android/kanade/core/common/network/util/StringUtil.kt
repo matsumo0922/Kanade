@@ -31,6 +31,13 @@ object StringUtil {
         }
     }
 
+    fun Int.toHzString(): String {
+        return when {
+            this > 1000f -> "%.2f kHz".format(this / 1000f)
+            else -> "%.2f Hz".format(this)
+        }
+    }
+
     fun connectWithDelimiter(vararg strings: String, delimiter: String): String {
         val builder = StringBuilder(strings.first())
         for (s in strings.asList().subList(1, strings.size)) {

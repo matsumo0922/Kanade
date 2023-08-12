@@ -1,5 +1,7 @@
 package caios.android.kanade.feature.equalizer
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -21,6 +23,9 @@ fun NavGraphBuilder.equalizerScreen(
         popEnterTransition = { NavigateAnimation.Vertical.popEnter },
         popExitTransition = { NavigateAnimation.Vertical.popExit },
     ) {
-
+        EqualizerRoute(
+            modifier = Modifier.fillMaxSize(),
+            terminate = terminate,
+        )
     }
 }

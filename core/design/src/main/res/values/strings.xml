@@ -327,4 +327,17 @@
     <string name="report_crush_description">申し訳ありません…\n技術的な要因により、Kanade がクラッシュしました。\n以下のレポートを開発者に送付してください。</string>
     <string name="report_crush_copy">コピー</string>
     <string name="report_crush_toast_copy">コピーしました</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">イコライザー</string>
+    <string name="equalizer_preset">プリセット</string>
+    <string name="equalizer_preset_normal">ノーマル</string>
+    <string name="equalizer_preset_classical">クラシック</string>
+    <string name="equalizer_preset_dance">ダンス</string>
+    <string name="equalizer_preset_heavy_metal">ヘビーメタル</string>
+    <string name="equalizer_preset_hip_hop">ヒップホップ</string>
+    <string name="equalizer_preset_jazz">ジャズ</string>
+    <string name="equalizer_preset_pop">ポップ</string>
+    <string name="equalizer_preset_rock">ロック</string>
+    <string name="equalizer_preset_custom">カスタム</string>
 </resources>

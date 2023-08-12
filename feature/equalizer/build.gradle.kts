@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "caios.android.kanade.feature.download"
+    namespace = "caios.android.kanade.feature.equalizer"
 }
 
 dependencies {

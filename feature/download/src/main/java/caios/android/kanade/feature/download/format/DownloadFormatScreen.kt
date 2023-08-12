@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.OpenInNew
@@ -84,7 +83,6 @@ internal fun DownloadFormatRoute(
     AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
-        cornerShape = RoundedCornerShape(16.dp),
     ) {
         if (it != null) {
             DownloadFormatScreen(

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import caios.android.kanade.core.model.music.Equalizer as EqualizerModel
 
 class MusicEffector @Inject constructor(
     private val userDataRepository: UserDataRepository,
@@ -103,5 +104,28 @@ class MusicEffector @Inject constructor(
         Timber.d("MusicEffect: use dynamic normalizer: $maxVolume -> $strength")
 
         loudness?.setTargetGain(strength)
+    }
+
+    fun getEqualizerBand(): List<EqualizerModel.Band> {
+        val bands = equalizer?.numberOfBands ?: return emptyList()
+        val dataList = mutableListOf<EqualizerModel.Band>()
+
+        for (band in 0..<bands) {
+            val hz = equalizer!!.getCenterFreq(band.toShort()) / 1000
+            val maxLevel = equalizer!!.bandLevelRange[1]
+            val minLevel = equalizer!!.bandLevelRange[0]
+
+            dataList.add(
+                EqualizerModel.Band(
+                    hz = hz,
+                    band = band,
+                    value = 0f,
+                    maxLevel = maxLevel,
+                    minLevel = minLevel,
+                )
+            )
+        }
+
+        return dataList
     }
 }
