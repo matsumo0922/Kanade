@@ -30,7 +30,7 @@ import caios.android.kanade.feature.equalizer.items.EqualizerSeekbarSection
 internal fun EqualizerRoute(
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EqualizerViewModel = hiltViewModel()
+    viewModel: EqualizerViewModel = hiltViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -74,7 +74,7 @@ private fun EqualizerScreen(
         },
     ) { paddingValues ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),

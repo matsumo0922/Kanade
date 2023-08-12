@@ -22,6 +22,6 @@ data class Equalizer(
         JAZZ(listOf(4, 2, -2, 2, 5)),
         POP(listOf(-1, 2, 5, 1, -2)),
         ROCK(listOf(5, 3, -1, 3, 5)),
-        CUSTOM(listOf(0, 0, 0, 0, 0))
+        CUSTOM(listOf(0, 0, 0, 0, 0)),
     }
 }

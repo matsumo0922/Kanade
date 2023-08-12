@@ -122,7 +122,7 @@ class MusicEffector @Inject constructor(
                     value = 0f,
                     maxLevel = maxLevel,
                     minLevel = minLevel,
-                )
+                ),
             )
         }
 

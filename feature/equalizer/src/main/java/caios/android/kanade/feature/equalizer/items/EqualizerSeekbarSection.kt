@@ -32,7 +32,7 @@ internal fun EqualizerSeekbarSection(
             EqualizerSeekbar(
                 value = band.value,
                 hz = band.hz,
-                onValueChange = { onValueChange.invoke(band, it)},
+                onValueChange = { onValueChange.invoke(band, it) },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -70,13 +70,12 @@ private fun EqualizerSeekbar(
                             maxWidth = constraints.maxHeight,
                             minHeight = constraints.minWidth,
                             maxHeight = constraints.maxWidth,
-                        )
+                        ),
                     )
                     layout(placeable.height, placeable.width) {
                         placeable.place(-placeable.width, 0)
                     }
-                }
-            ,
+                },
             value = value,
             valueRange = -150f..150f,
             onValueChange = { onValueChange.invoke(it) },

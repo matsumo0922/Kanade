@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.datastore.EqualizerPreference
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Equalizer
-import caios.android.kanade.core.music.MusicEffector
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

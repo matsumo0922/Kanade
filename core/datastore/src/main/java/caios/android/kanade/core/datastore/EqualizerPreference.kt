@@ -18,7 +18,7 @@ class EqualizerPreference @Inject constructor(
             bands = listOf(),
             bassBoost = 0f,
             preset = Equalizer.Preset.NONE,
-        )
+        ),
     )
 
     val data = _data.asStateFlow()
@@ -68,19 +68,19 @@ class EqualizerPreference @Inject constructor(
     private fun updatePresetData(preset: Equalizer.Preset) {
         _data.value = _data.value.copy(
             preset = preset,
-            bands = _data.value.bands.map { it.copy(value = getHz(it.hz)) }
+            bands = _data.value.bands.map { it.copy(value = getHz(it.hz)) },
         )
     }
 
     private fun updateHz(hz: Int, value: Float) {
         _data.value = _data.value.copy(
-            bands = _data.value.bands.map { if (it.hz == hz) it.copy(value = value) else it }
+            bands = _data.value.bands.map { if (it.hz == hz) it.copy(value = value) else it },
         )
     }
 
     private fun updateBassBoost(gain: Float) {
         _data.value = _data.value.copy(
-            bassBoost = gain
+            bassBoost = gain,
         )
     }
 
