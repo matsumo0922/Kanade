@@ -104,6 +104,7 @@ dependencies {
     implementation(project(":feature:tag"))
     implementation(project(":feature:download"))
     implementation(project(":feature:report"))
+    implementation(project(":feature:equalizer"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
