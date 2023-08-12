@@ -385,6 +385,9 @@ fun KanadeNavHost(
         )
 
         downloadFormatScreen(
+            navigateToTagEdit = {
+                navController.navigateToTagEdit(it)
+            },
             terminate = {
                 navController.popBackStack()
             },

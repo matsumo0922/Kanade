@@ -319,6 +319,7 @@
     <string name="download_format_alert_message">ダウンロードを中止しますか？</string>
     <string name="download_format_alert_confirm">中止</string>
     <string name="download_progress_tag_edit">タグを編集</string>
+    <string name="download_progress_toast_complete">ダウンロードしました</string>
     <string name="download_progress_toast_error">ダウンロードに失敗しました</string>
 
     <!-- Report -->

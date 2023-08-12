@@ -22,6 +22,7 @@ fun NavController.navigateToDownloadFormat(videoInfo: VideoInfo) {
 }
 
 fun NavGraphBuilder.downloadFormatScreen(
+    navigateToTagEdit: (Long) -> Unit,
     terminate: () -> Unit,
 ) {
     val formatter = Json { ignoreUnknownKeys = true }
@@ -37,6 +38,7 @@ fun NavGraphBuilder.downloadFormatScreen(
         DownloadFormatRoute(
             modifier = Modifier.fillMaxSize(),
             videoInfo = formatter.decodeFromString(VideoInfo.serializer(), URLDecoder.decode(it.arguments?.getString(DownloadFormatInfo)!!, "UTF-8")),
+            navigateToTagEdit = navigateToTagEdit,
             terminate = terminate,
         )
     }

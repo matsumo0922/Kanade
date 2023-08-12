@@ -105,8 +105,6 @@ fun MainController(
     onFetchFavorite: suspend (Song) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Timber.d("MainController: ${windowSize.heightSizeClass}")
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val view = LocalView.current

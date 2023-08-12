@@ -69,6 +69,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun DownloadFormatRoute(
     videoInfo: VideoInfo,
+    navigateToTagEdit: (Long) -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DownloadFormatViewModel = hiltViewModel(),
@@ -91,8 +92,8 @@ internal fun DownloadFormatRoute(
                 videoInfo = it.videoInfo,
                 downloadState = it.downloadState,
                 saveUniFile = it.saveUniFile,
+                onClickTagEdit = navigateToTagEdit,
                 onDownload = viewModel::download,
-                onDownloadComplete = viewModel::downloadComplete,
                 onUpdateSaveUri = viewModel::updateSaveUri,
                 onTerminate = terminate,
             )
@@ -106,8 +107,8 @@ private fun DownloadFormatScreen(
     videoInfo: VideoInfo,
     downloadState: DownloadFormatUiState.DownloadState?,
     saveUniFile: UniFile?,
+    onClickTagEdit: (Long) -> Unit,
     onDownload: (Context, VideoInfo, VideoInfo.Format, Boolean, UniFile) -> Unit,
-    onDownloadComplete: () -> Unit,
     onUpdateSaveUri: (Context, Uri) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -154,6 +155,10 @@ private fun DownloadFormatScreen(
             ToastUtil.show(context, R.string.download_progress_toast_error)
         }
 
+        if (downloadState is DownloadFormatUiState.DownloadState.Complete) {
+            ToastUtil.show(context, R.string.download_progress_toast_complete)
+        }
+
         onDispose { }
     }
 
@@ -174,19 +179,32 @@ private fun DownloadFormatScreen(
     }
 
     if (isShowProgressDialog) {
-        (downloadState as? DownloadFormatUiState.DownloadState.Progress)?.let {
-            DownloadProgressDialog(
-                state = it,
-                title = videoInfo.title,
-                author = videoInfo.uploader ?: videoInfo.channel,
-                thumbnail = videoInfo.thumbnail?.toHttpsUrl(),
-                onClickTagEdit = { /*TODO*/ },
-                onDismiss = {
-                    isShowProgressDialog = false
-                    onDownloadComplete.invoke()
-                },
-            )
+        val progress: Float
+        val songId: Long?
+
+        when (downloadState) {
+            is DownloadFormatUiState.DownloadState.Complete -> {
+                progress = 1f
+                songId = downloadState.songId
+            }
+            is DownloadFormatUiState.DownloadState.Progress -> {
+                progress = downloadState.progress
+                songId = null
+            }
+            else -> return
         }
+
+        DownloadProgressDialog(
+            progress = progress,
+            title = videoInfo.title,
+            author = videoInfo.uploader ?: videoInfo.channel,
+            thumbnail = videoInfo.thumbnail?.toHttpsUrl(),
+            onClickTagEdit = { songId?.let { onClickTagEdit.invoke(it) } },
+            onDismiss = {
+                isShowProgressDialog = false
+                onTerminate.invoke()
+            },
+        )
     }
 
     Scaffold(

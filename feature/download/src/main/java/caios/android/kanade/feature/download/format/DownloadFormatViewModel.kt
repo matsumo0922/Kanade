@@ -1,6 +1,8 @@
 package caios.android.kanade.feature.download.format
 
+import android.content.ContentUris
 import android.content.Context
+import android.media.MediaScannerConnection
 import android.net.Uri
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
@@ -10,6 +12,7 @@ import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.datastore.DownloadPathPreference
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.download.VideoInfo
+import caios.android.kanade.core.repository.MusicRepository
 import com.hippo.unifile.UniFile
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -22,9 +25,12 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class DownloadFormatViewModel @Inject constructor(
+    private val musicRepository: MusicRepository,
     private val downloadPathPreference: DownloadPathPreference,
     @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
 ) : ViewModel() {
@@ -32,6 +38,17 @@ class DownloadFormatViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState<DownloadFormatUiState>>(ScreenState.Loading)
 
     val screenState = _screenState.asStateFlow()
+
+    private suspend fun refreshLibrary() {
+        musicRepository.clear()
+        musicRepository.fetchSongs()
+        musicRepository.fetchArtists()
+        musicRepository.fetchAlbums()
+        musicRepository.fetchPlaylist()
+        musicRepository.fetchAlbumArtwork()
+        musicRepository.fetchArtistArtwork()
+        musicRepository.refresh()
+    }
 
     fun fetch(context: Context, videoInfo: VideoInfo) {
         viewModelScope.launch {
@@ -55,6 +72,8 @@ class DownloadFormatViewModel @Inject constructor(
         uniFile: UniFile,
     ) {
         viewModelScope.launch(io) {
+            updateDownloadState(0f, "")
+
             downloadVideo(
                 context = context,
                 videoInfo = videoInfo,
@@ -62,10 +81,22 @@ class DownloadFormatViewModel @Inject constructor(
                 extractAudio = extractAudio,
                 uniFile = uniFile,
             ) { progress, _, line ->
+                Timber.d("Download progress: $progress, $line")
                 updateDownloadState(progress, line)
-            }.onFailure {
-                downloadFailed()
-            }
+            }.fold(
+                onSuccess = {
+                    Timber.d("Download complete")
+
+                    val mediaIds = scanMedia(context, it)
+
+                    refreshLibrary()
+                    downloadComplete(mediaIds)
+                },
+                onFailure = {
+                    Timber.e(it)
+                    downloadFailed()
+                },
+            )
         }
     }
 
@@ -80,11 +111,11 @@ class DownloadFormatViewModel @Inject constructor(
         }
     }
 
-    fun downloadComplete() {
+    private fun downloadComplete(mediaIds: List<Long>) {
         val state = screenState.value
 
         if (state is ScreenState.Idle) {
-            _screenState.value = ScreenState.Idle(state.data.copy(downloadState = null))
+            _screenState.value = ScreenState.Idle(state.data.copy(downloadState = DownloadFormatUiState.DownloadState.Complete(mediaIds.first())))
         }
     }
 
@@ -115,7 +146,7 @@ class DownloadFormatViewModel @Inject constructor(
         extractAudio: Boolean,
         uniFile: UniFile,
         callback: (Float, Long, String) -> Unit
-    ): Result<UniFile> {
+    ): Result<List<UniFile>> {
         val url = videoInfo.originalUrl ?: return Result.failure(Exception("Invalid url"))
         val file = File(context.cacheDir, "sdcard_tmp").run { resolve(videoInfo.id) }
 
@@ -125,8 +156,8 @@ class DownloadFormatViewModel @Inject constructor(
             addOption("--no-playlist")
 
             // Enable aria2c
-            addOption("--downloader", "libaria2c.so")
-            addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+            //addOption("--downloader", "libaria2c.so")
+            //addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
 
             if (extractAudio || videoInfo.acodec == "none") {
                 applyAudioOptions(format)
@@ -161,7 +192,6 @@ class DownloadFormatViewModel @Inject constructor(
         addOption("--embed-metadata")
         addOption("--embed-thumbnail")
         addOption("--convert-thumbnails", "jpg")
-        addOption("--ppa", """ffmpeg: -c:v mjpeg -vf crop=\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\"""")
 
         addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
         addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
@@ -173,18 +203,41 @@ class DownloadFormatViewModel @Inject constructor(
         }
     }
 
-    private fun moveFile(tempFile: File, parentUniFile: UniFile): Result<UniFile> {
+    private fun moveFile(tempFile: File, parentUniFile: UniFile): Result<List<UniFile>> {
         return kotlin.runCatching {
-            val newUniFile = parentUniFile.createFile(tempFile.name)
+            val uniFileList = mutableListOf<UniFile>()
 
-            newUniFile.openOutputStream().use { output ->
-                tempFile.inputStream().use { input ->
-                    input.copyTo(output)
+            tempFile.walkTopDown().forEach { file ->
+                if (file.isDirectory) return@forEach
+
+                val newUniFile = parentUniFile.createFile(file.name)
+
+                newUniFile.openOutputStream().use { output ->
+                    file.inputStream().use { input ->
+                        input.copyTo(output)
+                    }
                 }
+
+                uniFileList.add(newUniFile)
             }
 
-            tempFile.delete()
-            newUniFile
+            tempFile.deleteRecursively()
+
+            return@runCatching uniFileList
+        }
+    }
+
+    private suspend fun scanMedia(context: Context, uniFiles: List<UniFile>) = suspendCoroutine<List<Long>> {
+        val files = uniFiles.filter { it.isFile }
+        val paths = files.map { it.filePath }.toTypedArray()
+        val ids = mutableListOf<Long>()
+
+        MediaScannerConnection.scanFile(context, paths, null) { _, uri ->
+            ids.add(ContentUris.parseId(uri))
+
+            if (ids.size == files.size) {
+                it.resume(ids)
+            }
         }
     }
 }
@@ -203,5 +256,9 @@ data class DownloadFormatUiState(
         ) : DownloadState
 
         data object Failed : DownloadState
+
+        data class Complete(
+            val songId: Long?,
+        ) : DownloadState
     }
 }

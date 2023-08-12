@@ -1,11 +1,14 @@
 package caios.android.kanade.feature.download.format.items
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -16,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,18 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import caios.android.kanade.core.design.R
-import caios.android.kanade.feature.download.format.DownloadFormatUiState
 import coil.compose.AsyncImage
 
 @Composable
 internal fun DownloadProgressDialog(
-    state: DownloadFormatUiState.DownloadState.Progress,
+    progress: Float,
     title: String,
     author: String?,
     thumbnail: String?,
     onClickTagEdit: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val animateProgress by animateFloatAsState(
+        targetValue = progress,
+        label = "DownloadProgress",
+    )
+
     Dialog(
         onDismissRequest = { /* do nothing */ },
         properties = DialogProperties(
@@ -84,50 +92,62 @@ internal fun DownloadProgressDialog(
                     )
                     .fillMaxWidth(),
                 text = author ?: "Unknown Author",
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            if (state.progress < 1f) {
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth(),
-                    progress = state.progress,
-                )
-            } else {
-                Row(
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    OutlinedButton(
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(4.dp),
-                        onClick = {
-                            onDismiss.invoke()
-                            onClickTagEdit.invoke()
-                        },
-                    ) {
-                        Text(
-                            text = stringResource(R.string.download_progress_tag_edit),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                    }
+            Spacer(modifier = Modifier.height(24.dp))
 
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(4.dp),
-                        onClick = { onDismiss.invoke() },
+            when {
+                progress <= 0f -> {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                progress < 1f -> {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        progress = animateProgress,
+                    )
+                }
+                else -> {
+                    Row(
+                        modifier = Modifier
+                            .padding(
+                                bottom = 16.dp,
+                                start = 16.dp,
+                                end = 16.dp,
+                            )
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
-                            text = stringResource(R.string.common_finish),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                        )
+                        OutlinedButton(
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(4.dp),
+                            onClick = {
+                                onDismiss.invoke()
+                                onClickTagEdit.invoke()
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.download_progress_tag_edit),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+
+                        Button(
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(4.dp),
+                            onClick = { onDismiss.invoke() },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.common_finish),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
                     }
                 }
             }
@@ -137,12 +157,22 @@ internal fun DownloadProgressDialog(
 
 @Composable
 @Preview
-private fun DownloadProgressDialogPreview() {
+private fun DownloadProgressDialogPreview1() {
     DownloadProgressDialog(
-        state = DownloadFormatUiState.DownloadState.Progress(
-            progress = 0.5f,
-            line = "Downloading...",
-        ),
+        progress = 0.5f,
+        title = "Title",
+        author = "Author",
+        thumbnail = "https://i.ytimg.com/vi/0zGcUoRlhmw/maxresdefault.jpg",
+        onClickTagEdit = { /* do nothing */ },
+        onDismiss = { /* do nothing */ },
+    )
+}
+
+@Composable
+@Preview
+private fun DownloadProgressDialogPreview2() {
+    DownloadProgressDialog(
+        progress = 1f,
         title = "Title",
         author = "Author",
         thumbnail = "https://i.ytimg.com/vi/0zGcUoRlhmw/maxresdefault.jpg",
