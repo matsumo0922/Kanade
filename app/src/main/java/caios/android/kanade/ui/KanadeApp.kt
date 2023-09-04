@@ -128,6 +128,7 @@ fun KanadeApp(
             var topBarHeight by remember { mutableFloatStateOf(0f) }
             var bottomBarHeight by remember { mutableFloatStateOf(0f) }
             var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
+            var bottomSheetOffset by remember { mutableFloatStateOf(0f) }
             var bottomSheetOffsetRate by remember { mutableFloatStateOf(-1f) }
 
             val scope = rememberCoroutineScope()
@@ -171,13 +172,9 @@ fun KanadeApp(
 
             val toolbarOffset = with(density) { if (!isSearchActive) scrollBehavior.state.yOffset.toDp() else 0.dp }
 
-            bottomSheetOffsetRate = try {
-                val offset = scaffoldState.bottomSheetState.requireOffset()
-                val defaultHeight = bottomSheetHeight - bottomBarHeight - with(density) { 72.dp.toPx() }
-
-                (offset / defaultHeight).coerceIn(0f, 1f)
-            } catch (e: Throwable) {
-                1f
+            bottomSheetOffset = runCatching { scaffoldState.bottomSheetState.requireOffset() }.getOrDefault(0f)
+            bottomSheetOffsetRate = density.run {
+                (bottomSheetOffset / (bottomSheetHeight - bottomBarHeight - 72.dp.toPx())).coerceIn(0f, 1f)
             }
 
             LaunchedEffect(appState.currentLibraryDestination) {

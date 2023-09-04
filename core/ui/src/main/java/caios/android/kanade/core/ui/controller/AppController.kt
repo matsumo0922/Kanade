@@ -13,11 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicUiState
+import kotlin.math.pow
 
 @Composable
 fun AppController(
@@ -95,4 +99,25 @@ fun AppController(
             )
         }
     }
+}
+
+private fun calculateMoveOffset(toOffset: Offset, fromOffset: Offset, percent: Float): Offset {
+    return Offset(
+        lerp(toOffset.x, fromOffset.x, percent),
+        lerp(toOffset.y, fromOffset.y, percent),
+    )
+}
+
+private fun calculateMoveSize(toSize: IntSize, fromSize: IntSize, percent: Float): IntSize {
+    return IntSize(
+        lerp(toSize.width.toFloat(), fromSize.width.toFloat(), percent).toInt(),
+        lerp(toSize.height.toFloat(), fromSize.height.toFloat(), percent).toInt(),
+    )
+}
+
+private fun calculateMoveOffsetBezier(toOffset: Offset, fromOffset: Offset, thirdOffset: Offset, percent: Float): Offset {
+    return Offset(
+        (1f - percent).pow(2) * toOffset.x + 2f * percent * (1f - percent) * thirdOffset.x + percent.pow(2) * fromOffset.x,
+        (1f - percent).pow(2) * toOffset.y + 2f * percent * (1f - percent) * thirdOffset.y + percent.pow(2) * fromOffset.y,
+    )
 }
