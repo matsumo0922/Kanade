@@ -1,6 +1,8 @@
 package caios.android.kanade.navigation
 
 import android.app.Activity
+import android.content.Intent
+import android.media.audiofx.AudioEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +27,6 @@ import caios.android.kanade.feature.download.format.downloadFormatScreen
 import caios.android.kanade.feature.download.format.navigateToDownloadFormat
 import caios.android.kanade.feature.download.input.downloadInputDialog
 import caios.android.kanade.feature.equalizer.equalizerScreen
-import caios.android.kanade.feature.equalizer.navigateToEqualizer
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.homeScreen
 import caios.android.kanade.feature.information.about.aboutScreen
@@ -412,7 +413,13 @@ fun KanadeNavHost(
 
         settingTopScreen(
             navigateToEqualizer = {
-                navController.navigateToEqualizer()
+                activity.startActivity(
+                    Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL).apply {
+                        putExtra(AudioEffect.EXTRA_PACKAGE_NAME, activity.packageName)
+                        putExtra(AudioEffect.EXTRA_AUDIO_SESSION, 0)
+                        putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                    }
+                )
             },
             navigateToSettingTheme = {
                 navController.navigateToSettingTheme()
