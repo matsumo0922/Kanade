@@ -2,6 +2,7 @@ package caios.android.kanade.feature.tag
 
 import android.app.Activity
 import android.content.ContentUris
+import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -89,7 +90,7 @@ internal fun TagEditRoute(
 @Composable
 private fun TagEditScreen(
     song: Song,
-    onClickSave: suspend (Song, Tag) -> Boolean,
+    onClickSave: suspend (Context, Song, Tag) -> Boolean,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -117,6 +118,7 @@ private fun TagEditScreen(
             if (it.resultCode == Activity.RESULT_OK) {
                 scope.launch {
                     val result = onClickSave.invoke(
+                        context,
                         song,
                         Tag(
                             title = title,
@@ -292,6 +294,7 @@ private fun TagEditScreen(
                     } else {
                         scope.launch {
                             val result = onClickSave.invoke(
+                                context,
                                 song,
                                 Tag(
                                     title = title,

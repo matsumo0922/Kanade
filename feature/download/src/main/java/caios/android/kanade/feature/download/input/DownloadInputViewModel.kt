@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DownloadInputViewModel @Inject constructor(
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(DownloadInputUiState())
@@ -76,7 +76,7 @@ class DownloadInputViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getVideoInfo(request: YoutubeDLRequest): Result<VideoInfo> = withContext(io) {
+    private suspend fun getVideoInfo(request: YoutubeDLRequest): Result<VideoInfo> = withContext(ioDispatcher) {
         request.addOption("--dump-json")
 
         kotlin.runCatching {

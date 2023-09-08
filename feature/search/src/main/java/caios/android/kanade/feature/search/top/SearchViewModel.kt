@@ -28,7 +28,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState<SearchUiState>>(ScreenState.Idle(SearchUiState()))
@@ -55,7 +55,7 @@ class SearchViewModel @Inject constructor(
         )
     }
 
-    private suspend fun searchLibrary(keywords: List<String>) = withContext(io) {
+    private suspend fun searchLibrary(keywords: List<String>) = withContext(ioDispatcher) {
         val config = musicRepository.config.first()
         val songs = musicRepository.sortedSongs(config)
         val artists = musicRepository.sortedArtists(config)

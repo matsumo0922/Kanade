@@ -2,6 +2,7 @@ package caios.android.kanade.core.music.analyzer
 
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.VolumePreference
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.music.Volume
@@ -23,11 +24,10 @@ import javax.inject.Inject
 class VolumeAnalyzer @Inject constructor(
     private val musicRepository: MusicRepository,
     private val volumePreference: VolumePreference,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val cache = ConcurrentHashMap<Long, Volume>()
     private val _data = MutableStateFlow(emptyList<Volume>())
-    private val scope = CoroutineScope(SupervisorJob() + io)
 
     init {
         scope.launch {

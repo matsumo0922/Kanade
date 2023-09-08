@@ -26,11 +26,11 @@ class ArtistTopViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val lastFmRepository: LastFmRepository,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val screenState = combine(musicRepository.config, musicRepository.updateFlag, lastFmRepository.artistDetails, ::Triple).map { (config, _, _) ->
-        withContext(io) {
+        withContext(ioDispatcher) {
             musicRepository.fetchArtistArtwork()
             musicRepository.fetchArtists(config)
         }

@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class VolumePreference @Inject constructor(
     @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val formatter = Json { ignoreUnknownKeys = true }
@@ -33,7 +33,7 @@ class VolumePreference @Inject constructor(
         }
     }
 
-    suspend fun save(volume: Volume) = withContext(io) {
+    suspend fun save(volume: Volume) = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
         val volumeList = fetch().toMutableList()
 
@@ -48,7 +48,7 @@ class VolumePreference @Inject constructor(
         _data.value = volumeList.toList()
     }
 
-    private suspend fun fetch(): List<Volume> = withContext(io) {
+    private suspend fun fetch(): List<Volume> = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
         if (!file.exists()) return@withContext emptyList()
 

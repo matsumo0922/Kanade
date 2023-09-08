@@ -3,15 +3,12 @@ package caios.android.kanade.core.music
 import android.media.audiofx.BassBoost
 import android.media.audiofx.Equalizer
 import android.media.audiofx.LoudnessEnhancer
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.music.analyzer.VolumeAnalyzer
 import caios.android.kanade.core.repository.UserDataRepository
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -21,9 +18,8 @@ import caios.android.kanade.core.model.music.Equalizer as EqualizerModel
 class MusicEffector @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val volumeAnalyzer: VolumeAnalyzer,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @ApplicationScope private val scope: CoroutineScope,
 ) {
-    private val scope = CoroutineScope(SupervisorJob() + io)
     private var userDataCache: UserData? = null
 
     private var loudness: LoudnessEnhancer? = null

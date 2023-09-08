@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class LyricsPreference @Inject constructor(
     @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val formatter = Json { ignoreUnknownKeys = true }
@@ -33,7 +33,7 @@ class LyricsPreference @Inject constructor(
         }
     }
 
-    suspend fun save(lyrics: Lyrics) = withContext(io) {
+    suspend fun save(lyrics: Lyrics) = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
         val lyricsList = fetch().toMutableList()
 
@@ -48,7 +48,7 @@ class LyricsPreference @Inject constructor(
         _data.value = lyricsList.toList()
     }
 
-    private suspend fun fetch(): List<Lyrics> = withContext(io) {
+    private suspend fun fetch(): List<Lyrics> = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
         if (!file.exists()) return@withContext emptyList()
 
