@@ -14,7 +14,6 @@ import caios.android.kanade.core.model.music.Tag
 import caios.android.kanade.core.repository.MusicRepository
 import com.arthenica.ffmpegkit.FFmpegKit
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,8 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TagEditViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
-    @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState<TagEditUiState>>(ScreenState.Loading)
@@ -52,13 +50,13 @@ class TagEditViewModel @Inject constructor(
         }
     }
 
-    suspend fun edit(song: Song, tag: Tag): Boolean = withContext(io) {
+    suspend fun edit(context: Context, song: Song, tag: Tag): Boolean = withContext(ioDispatcher) {
         kotlin.runCatching {
             musicRepository.useSongFile(song) { file ->
-                tagEdit(song, tag, file!!)
+                tagEdit(context, song, tag, file!!)
             }
 
-            scan(song)
+            scan(context, song)
             refreshLibrary()
         }.fold(
             onSuccess = { true },
@@ -69,7 +67,7 @@ class TagEditViewModel @Inject constructor(
         )
     }
 
-    private fun tagEdit(song: Song, tag: Tag, inputFile: File) {
+    private fun tagEdit(context: Context, song: Song, tag: Tag, inputFile: File) {
         val outputFile = File(context.cacheDir, "${inputFile.nameWithoutExtension}-output.${inputFile.extension}")
 
         if (outputFile.exists()) outputFile.delete()
@@ -92,7 +90,7 @@ class TagEditViewModel @Inject constructor(
         }
     }
 
-    private fun scan(song: Song) {
+    private fun scan(context: Context, song: Song) {
         MediaScannerConnection.scanFile(context, arrayOf(song.data), null) { path, uri ->
             Timber.d("MediaScannerConnection scanned $path, $uri")
         }

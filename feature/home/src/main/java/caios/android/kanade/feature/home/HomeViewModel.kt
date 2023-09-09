@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
     private val playlistRepository: PlaylistRepository,
     private val lastFmRepository: LastFmRepository,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val screenState = combine(
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
         val queue = data[1] as Queue
         val playlist = data[2] as List<*>
 
-        withContext(io) {
+        withContext(ioDispatcher) {
             musicRepository.fetchSongs(config)
             musicRepository.fetchAlbumArtwork()
         }

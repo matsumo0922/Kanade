@@ -5,8 +5,7 @@ import android.content.Context
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaControllerCompat
 import buildBundle
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.ControlAction
@@ -19,10 +18,8 @@ import caios.android.kanade.core.repository.MusicRepository
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaMetadata
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,7 +60,7 @@ class MusicControllerImpl @Inject constructor(
     private val musicRepository: MusicRepository,
     private val queueManager: QueueManager,
     @ApplicationContext private val context: Context,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @ApplicationScope private val scope: CoroutineScope,
 ) : MusicController {
 
     private var _isInitialized = MutableStateFlow(false)
@@ -79,9 +76,6 @@ class MusicControllerImpl @Inject constructor(
     override val currentQueue = _currentQueue.asStateFlow()
     override val playerPosition = _playerPosition.asStateFlow()
     override val playerState = _playerState.asStateFlow()
-
-    private val supervisorJob = SupervisorJob()
-    private val scope = CoroutineScope(io + supervisorJob)
 
     private var isTryingConnect = false
     private var mediaBrowser: MediaBrowserCompat? = null

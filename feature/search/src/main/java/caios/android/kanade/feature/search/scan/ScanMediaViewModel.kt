@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScanMediaViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val uiState = MutableStateFlow(ScanMediaUiState())
@@ -37,7 +37,7 @@ class ScanMediaViewModel @Inject constructor(
     }
 
     fun scan(context: Context, uri: Uri) {
-        viewModelScope.launch(io) {
+        viewModelScope.launch(ioDispatcher) {
             val paths = getPaths(context, uri)
             val mimeTypes = paths.map { MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExtension(it)) }
 

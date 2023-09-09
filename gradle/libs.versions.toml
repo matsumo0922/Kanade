@@ -58,6 +58,9 @@ ksp = "1.9.0-1.0.13"
 protobuf = "3.23.0"
 protobufPlugin = "0.9.4"
 
+# Billing
+billing = "6.0.0"
+
 # Others
 dagger = "2.47"
 ktor = "2.3.1"
@@ -156,6 +159,10 @@ androidx-compose-material3-window = { module = "androidx.compose.material3:mater
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+
+# Billing
+billing = { module = "com.android.billingclient:billing", version.ref = "billing" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 
 # Google
 play-service-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "playServiceBilling" }
@@ -266,6 +273,11 @@ ui-implementation = [
 
 ui-kapt = [
     "androidx-lifecycle-compiler",
+]
+
+billing = [
+    "billing",
+    "billing-ktx",
 ]
 
 firebase = [

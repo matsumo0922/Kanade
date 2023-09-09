@@ -101,6 +101,7 @@ fun AppController(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 private fun calculateMoveOffset(toOffset: Offset, fromOffset: Offset, percent: Float): Offset {
     return Offset(
         lerp(toOffset.x, fromOffset.x, percent),
@@ -108,6 +109,7 @@ private fun calculateMoveOffset(toOffset: Offset, fromOffset: Offset, percent: F
     )
 }
 
+@Suppress("UnusedPrivateMember")
 private fun calculateMoveSize(toSize: IntSize, fromSize: IntSize, percent: Float): IntSize {
     return IntSize(
         lerp(toSize.width.toFloat(), fromSize.width.toFloat(), percent).toInt(),
@@ -115,6 +117,7 @@ private fun calculateMoveSize(toSize: IntSize, fromSize: IntSize, percent: Float
     )
 }
 
+@Suppress("UnusedPrivateMember")
 private fun calculateMoveOffsetBezier(toOffset: Offset, fromOffset: Offset, thirdOffset: Offset, percent: Float): Offset {
     return Offset(
         (1f - percent).pow(2) * toOffset.x + 2f * percent * (1f - percent) * thirdOffset.x + percent.pow(2) * fromOffset.x,

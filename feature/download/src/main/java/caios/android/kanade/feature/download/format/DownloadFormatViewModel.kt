@@ -32,7 +32,7 @@ import kotlin.coroutines.suspendCoroutine
 class DownloadFormatViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
     private val downloadPathPreference: DownloadPathPreference,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState<DownloadFormatUiState>>(ScreenState.Loading)
@@ -52,7 +52,7 @@ class DownloadFormatViewModel @Inject constructor(
 
     fun fetch(context: Context, videoInfo: VideoInfo) {
         viewModelScope.launch {
-            val uri = withContext(io) { downloadPathPreference.getUri() }
+            val uri = withContext(ioDispatcher) { downloadPathPreference.getUri() }
             val uniFile = UniFile.fromUri(context, uri)
 
             _screenState.value = ScreenState.Idle(
@@ -71,7 +71,7 @@ class DownloadFormatViewModel @Inject constructor(
         extractAudio: Boolean,
         uniFile: UniFile,
     ) {
-        viewModelScope.launch(io) {
+        viewModelScope.launch(ioDispatcher) {
             updateDownloadState(0f, "")
 
             downloadVideo(

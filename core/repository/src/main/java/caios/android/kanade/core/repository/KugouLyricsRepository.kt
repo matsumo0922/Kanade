@@ -1,7 +1,6 @@
 package caios.android.kanade.core.repository
 
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.LyricsPreference
 import caios.android.kanade.core.model.entity.KugouLyricsEntity
 import caios.android.kanade.core.model.entity.KugouSongEntity
@@ -14,9 +13,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import io.ktor.util.decodeBase64String
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -28,12 +25,11 @@ import javax.inject.Inject
 class KugouLyricsRepository @Inject constructor(
     private val client: HttpClient,
     private val lyricsPreference: LyricsPreference,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @ApplicationScope private val scope: CoroutineScope,
 ) : LyricsRepository {
 
     private val cache = ConcurrentHashMap<Long, Lyrics>()
     private val _data = MutableStateFlow(emptyList<Lyrics>())
-    private val scope = CoroutineScope(SupervisorJob() + io)
 
     init {
         scope.launch {

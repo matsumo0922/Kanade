@@ -22,7 +22,7 @@ class KanadePreferencesDataStore @Inject constructor(
     private val userPreference: DataStore<UserPreference>,
     private val musicPreference: DataStore<MusicPreference>,
     private val queuePreference: DataStore<QueuePreference>,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) {
     val userData = userPreference.data
         .map {
@@ -119,7 +119,7 @@ class KanadePreferencesDataStore @Inject constructor(
             )
         }
 
-    suspend fun setThemeConfig(themeConfig: ThemeConfig) = withContext(io) {
+    suspend fun setThemeConfig(themeConfig: ThemeConfig) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.themeConfig = when (themeConfig) {
@@ -131,7 +131,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig) = withContext(io) {
+    suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.themeColorConfig = when (themeColorConfig) {
@@ -146,7 +146,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseDynamicColor(useDynamicColor: Boolean) = withContext(io) {
+    suspend fun setUseDynamicColor(useDynamicColor: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseDynamicColor = useDynamicColor
@@ -154,7 +154,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setDeveloperMode(isDeveloperMode: Boolean) = withContext(io) {
+    suspend fun setDeveloperMode(isDeveloperMode: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isDeveloperMode = isDeveloperMode
@@ -162,7 +162,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setPremiumMode(isPremiumMode: Boolean) = withContext(io) {
+    suspend fun setPremiumMode(isPremiumMode: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isPremiumMode = isPremiumMode
@@ -170,7 +170,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean) = withContext(io) {
+    suspend fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseDynamicNormalizer = useDynamicNormalizer
@@ -178,7 +178,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseOneStepBack(useOneStepBack: Boolean) = withContext(io) {
+    suspend fun setUseOneStepBack(useOneStepBack: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseOneStepBack = useOneStepBack
@@ -186,7 +186,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseKeepAudioFocus(useKeepAudioFocus: Boolean) = withContext(io) {
+    suspend fun setUseKeepAudioFocus(useKeepAudioFocus: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseKeepAudioFocus = useKeepAudioFocus
@@ -194,7 +194,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseStopWhenTaskkill(useStopWhenTaskkill: Boolean) = withContext(io) {
+    suspend fun setUseStopWhenTaskkill(useStopWhenTaskkill: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseStopWhenTaskkill = useStopWhenTaskkill
@@ -202,7 +202,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseIgnoreShortMusic(useIgnoreShortMusic: Boolean) = withContext(io) {
+    suspend fun setUseIgnoreShortMusic(useIgnoreShortMusic: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseIgnoreShortMusic = useIgnoreShortMusic
@@ -210,7 +210,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setUseIgnoreNotMusic(useIgnoreNotMusic: Boolean) = withContext(io) {
+    suspend fun setUseIgnoreNotMusic(useIgnoreNotMusic: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
                 this.isUseIgnoreNotMusic = useIgnoreNotMusic
@@ -218,7 +218,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setShuffleMode(shuffleMode: ShuffleMode) = withContext(io) {
+    suspend fun setShuffleMode(shuffleMode: ShuffleMode) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.shuffleMode = when (shuffleMode) {
@@ -229,7 +229,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setRepeatMode(repeatMode: RepeatMode) = withContext(io) {
+    suspend fun setRepeatMode(repeatMode: RepeatMode) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.repeatMode = when (repeatMode) {
@@ -241,7 +241,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setSongOrder(musicOrder: MusicOrder) = withContext(io) {
+    suspend fun setSongOrder(musicOrder: MusicOrder) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.songOrder = when (musicOrder.order) {
@@ -269,7 +269,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setArtistOrder(musicOrder: MusicOrder) = withContext(io) {
+    suspend fun setArtistOrder(musicOrder: MusicOrder) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.artistOrder = when (musicOrder.order) {
@@ -291,7 +291,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setAlbumOrder(musicOrder: MusicOrder) = withContext(io) {
+    suspend fun setAlbumOrder(musicOrder: MusicOrder) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.albumOrder = when (musicOrder.order) {
@@ -314,7 +314,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setPlaylistOrder(musicOrder: MusicOrder) = withContext(io) {
+    suspend fun setPlaylistOrder(musicOrder: MusicOrder) = withContext(ioDispatcher) {
         musicPreference.updateData {
             it.copy {
                 this.playlistOrder = when (musicOrder.order) {
@@ -337,7 +337,7 @@ class KanadePreferencesDataStore @Inject constructor(
         currentItems: List<Long>,
         originalItems: List<Long>,
         index: Int,
-    ) = withContext(io) {
+    ) = withContext(ioDispatcher) {
         queuePreference.updateData {
             it.copy {
                 this.originalItems.clear()
@@ -351,7 +351,7 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setLastQueueProgress(progress: Long) = withContext(io) {
+    suspend fun setLastQueueProgress(progress: Long) = withContext(ioDispatcher) {
         queuePreference.updateData {
             it.copy {
                 this.progress = progress

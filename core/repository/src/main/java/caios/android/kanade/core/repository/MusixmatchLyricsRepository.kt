@@ -1,8 +1,7 @@
 package caios.android.kanade.core.repository
 
-import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeConfig
-import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.LyricsPreference
 import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.model.entity.MusixmatchLyricsEntity
@@ -15,9 +14,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -32,13 +29,12 @@ class MusixmatchLyricsRepository @Inject constructor(
     private val lyricsPreference: LyricsPreference,
     private val tokenPreference: TokenPreference,
     private val kanadeConfig: KanadeConfig,
-    @Dispatcher(KanadeDispatcher.IO) private val io: CoroutineDispatcher,
+    @ApplicationScope private val scope: CoroutineScope,
 ) : LyricsRepository {
 
     private val formatter = Json { ignoreUnknownKeys = true }
     private val cache = ConcurrentHashMap<Long, Lyrics>()
     private val _data = MutableStateFlow(emptyList<Lyrics>())
-    private val scope = CoroutineScope(SupervisorJob() + io)
 
     init {
         scope.launch {
