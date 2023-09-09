@@ -1,0 +1,26 @@
+package caios.android.kanade.core.billing
+
+import caios.android.kanade.core.billing.models.FeatureType
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.Purchase
+
+
+data class FeaturesSupportedResult(
+    val resultSet: Map<FeatureType, Boolean>,
+) {
+    fun featureTypes() = resultSet.keys.toList()
+    fun isSupported(featureType: FeatureType) = resultSet[featureType] ?: false
+    fun isSupported(featureTypes: List<FeatureType>) = resultSet.values.all { it }
+}
+
+data class SingleBillingFlowResult(
+    val command: PurchaseSingleCommand,
+    val purchases: List<Purchase>
+) {
+    val billingProductId get() = command.productId
+    val billingPurchase get() = purchases.first { it.products.contains(billingProductId.value) && !it.isAcknowledged }
+}
+
+data class AcknowledgeResult(
+    val params: AcknowledgePurchaseParams,
+)
