@@ -6,7 +6,7 @@ import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 
 sealed class BillingException(
-    val response: BillingResponse,
+    response: BillingResponse,
     message: String,
 ) : RuntimeException(message) {
     @BillingClient.BillingResponseCode
@@ -32,8 +32,8 @@ sealed class BillingStepFailedException(
     response: BillingResponse,
     stepName: String,
     details: String,
-    val isFailedOnInitialize: Boolean,
-    val isCalledAfterDispose: Boolean
+    isFailedOnInitialize: Boolean,
+    isCalledAfterDispose: Boolean
 ) : BillingException(
     response,
     if (isFailedOnInitialize) {
@@ -59,18 +59,18 @@ sealed class BillingStepFailedException(
     }
 )
 
-class InitializationFailedException @JvmOverloads constructor(
+class InitializationFailedException(
     response: BillingResponse,
-    val isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false
 ) : BillingException(
     response,
     if (isCalledAfterDispose) "Already disposed by ${response.kind}"
     else "Failed to initialize caused by ${response.kind}."
 )
 
-class VerifyFeatureSupportedFailedException @JvmOverloads constructor(
+class VerifyFeatureSupportedFailedException(
     response: BillingResponse,
-    val feature: FeatureType,
+    feature: FeatureType,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -86,9 +86,9 @@ class VerifyFeatureSupportedFailedException @JvmOverloads constructor(
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
 }
 
-class VerifyFeaturesSupportedFailedException @JvmOverloads constructor(
+class VerifyFeaturesSupportedFailedException(
     response: BillingResponse,
-    val result: FeaturesSupportedResult,
+    result: FeaturesSupportedResult,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -101,9 +101,9 @@ class VerifyFeaturesSupportedFailedException @JvmOverloads constructor(
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
 }
 
-class QueryProductDetailsFailedException @JvmOverloads constructor(
+class QueryProductDetailsFailedException(
     response: BillingResponse,
-    val productId: ProductId,
+    productId: ProductId,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -116,9 +116,9 @@ class QueryProductDetailsFailedException @JvmOverloads constructor(
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
 
-class InternalQueryProductDetailsListFailedException @JvmOverloads constructor(
+class InternalQueryProductDetailsListFailedException(
     response: BillingResponse,
-    val command: QueryProductDetailsCommand,
+    command: QueryProductDetailsCommand,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -131,9 +131,9 @@ class InternalQueryProductDetailsListFailedException @JvmOverloads constructor(
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
 
-class QueryProductDetailsListFailedException @JvmOverloads constructor(
+class QueryProductDetailsListFailedException(
     response: BillingResponse,
-    val command: QueryProductDetailsCommand,
+    command: QueryProductDetailsCommand,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -146,9 +146,9 @@ class QueryProductDetailsListFailedException @JvmOverloads constructor(
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
 
-class QuerySubscriptionOfferDetailsListFailedException @JvmOverloads constructor(
+class QuerySubscriptionOfferDetailsListFailedException(
     response: BillingResponse,
-    val productId: ProductId,
+    productId: ProductId,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -159,7 +159,7 @@ class QuerySubscriptionOfferDetailsListFailedException @JvmOverloads constructor
     isCalledAfterDispose
 )
 
-class QueryPurchasesFailedException @JvmOverloads constructor(
+class QueryPurchasesFailedException(
     response: BillingResponse,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
@@ -171,7 +171,7 @@ class QueryPurchasesFailedException @JvmOverloads constructor(
     isCalledAfterDispose
 )
 
-class QueryPurchaseHistoryFailedException @JvmOverloads constructor(
+class QueryPurchaseHistoryFailedException(
     response: BillingResponse,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
@@ -185,9 +185,9 @@ class QueryPurchaseHistoryFailedException @JvmOverloads constructor(
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
 }
 
-class LaunchBillingFlowFailedException @JvmOverloads constructor(
+class LaunchBillingFlowFailedException(
     response: BillingResponse,
-    val command: PurchaseSingleCommand,
+    command: PurchaseSingleCommand,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
@@ -203,9 +203,9 @@ class LaunchBillingFlowFailedException @JvmOverloads constructor(
     val isItemAlreadyOwned: Boolean = response is BillingResponse.ItemAlreadyOwned
 }
 
-class AcknowledgePurchaseFailedException @JvmOverloads constructor(
+class AcknowledgePurchaseFailedException(
     response: BillingResponse,
-    val params: AcknowledgePurchaseParams,
+    params: AcknowledgePurchaseParams,
     isFailedOnInitialize: Boolean = false,
     isCalledAfterDispose: Boolean = false
 ) : BillingStepFailedException(
