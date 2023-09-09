@@ -1,16 +1,12 @@
 package caios.android.kanade.core.music.analyzer
 
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.datastore.VolumePreference
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.music.Volume
 import caios.android.kanade.core.repository.MusicRepository
 import com.arthenica.ffmpegkit.FFmpegKit
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

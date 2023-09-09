@@ -4,6 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductId(val value: String): Parcelable {
+data class ProductId(val value: String) : Parcelable {
     override fun toString(): String = value
 }

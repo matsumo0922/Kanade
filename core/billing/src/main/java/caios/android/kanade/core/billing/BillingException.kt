@@ -27,13 +27,12 @@ sealed class BillingException(
     val isBillingUnavailable = response is BillingResponse.BillingUnavailable
 }
 
-
 sealed class BillingStepFailedException(
     response: BillingResponse,
     stepName: String,
     details: String,
     isFailedOnInitialize: Boolean,
-    isCalledAfterDispose: Boolean
+    isCalledAfterDispose: Boolean,
 ) : BillingException(
     response,
     if (isFailedOnInitialize) {
@@ -56,29 +55,32 @@ sealed class BillingStepFailedException(
             response: $response
             , $details
         """.trimIndent()
-    }
+    },
 )
 
 class InitializationFailedException(
     response: BillingResponse,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingException(
     response,
-    if (isCalledAfterDispose) "Already disposed by ${response.kind}"
-    else "Failed to initialize caused by ${response.kind}."
+    if (isCalledAfterDispose) {
+        "Already disposed by ${response.kind}"
+    } else {
+        "Failed to initialize caused by ${response.kind}."
+    },
 )
 
 class VerifyFeatureSupportedFailedException(
     response: BillingResponse,
     feature: FeatureType,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "verifyFeatureSupported",
     "feature: $feature",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     /**
      * Indicates Google Play response was FEATURE_NOT_SUPPORTED
@@ -90,13 +92,13 @@ class VerifyFeaturesSupportedFailedException(
     response: BillingResponse,
     result: FeaturesSupportedResult,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "verifyFeaturesSupported",
     "result: $result",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
 }
@@ -105,13 +107,13 @@ class QueryProductDetailsFailedException(
     response: BillingResponse,
     productId: ProductId,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "queryProductDetails",
     "productId: $productId",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
@@ -120,13 +122,13 @@ class InternalQueryProductDetailsListFailedException(
     response: BillingResponse,
     command: QueryProductDetailsCommand,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "internalQueryProductDetailsList",
     "params: $command",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
@@ -135,13 +137,13 @@ class QueryProductDetailsListFailedException(
     response: BillingResponse,
     command: QueryProductDetailsCommand,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "queryProductDetailsList",
     "params: $command",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
 }
@@ -150,37 +152,37 @@ class QuerySubscriptionOfferDetailsListFailedException(
     response: BillingResponse,
     productId: ProductId,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "querySubscriptionOfferDetailsList",
     "productId: $productId",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 )
 
 class QueryPurchasesFailedException(
     response: BillingResponse,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "queryPurchases",
     "",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 )
 
 class QueryPurchaseHistoryFailedException(
     response: BillingResponse,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "queryPurchaseHistory",
     "",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
 }
@@ -189,13 +191,13 @@ class LaunchBillingFlowFailedException(
     response: BillingResponse,
     command: PurchaseSingleCommand,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "launchBillingFlow",
     "command: $command",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
@@ -207,13 +209,13 @@ class AcknowledgePurchaseFailedException(
     response: BillingResponse,
     params: AcknowledgePurchaseParams,
     isFailedOnInitialize: Boolean = false,
-    isCalledAfterDispose: Boolean = false
+    isCalledAfterDispose: Boolean = false,
 ) : BillingStepFailedException(
     response,
     "acknowledgePurchase",
     "params: AcknowledgePurchaseParams(${params.purchaseToken})",
     isFailedOnInitialize,
-    isCalledAfterDispose
+    isCalledAfterDispose,
 ) {
     val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
     val isMightBeExpiredAcknowledgeLimit: Boolean = response is BillingResponse.DeveloperError

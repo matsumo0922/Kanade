@@ -418,7 +418,7 @@ fun KanadeNavHost(
                         putExtra(AudioEffect.EXTRA_PACKAGE_NAME, activity.packageName)
                         putExtra(AudioEffect.EXTRA_AUDIO_SESSION, 0)
                         putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
-                    }
+                    },
                 )
             },
             navigateToSettingTheme = {

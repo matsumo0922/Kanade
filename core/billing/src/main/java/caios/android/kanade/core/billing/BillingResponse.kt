@@ -26,23 +26,23 @@ sealed class BillingResponse(
         return "BillingResponse(result=$result, kind='$kind', code=$code, debugMessage='$debugMessage')"
     }
 
-    class Unknown(result: BillingResult): BillingResponse(result, "Unknown")
-    class ServiceTimeout(result: BillingResult): BillingResponse(result, "ServiceTimeout")
-    class FeatureNotSupported(result: BillingResult): BillingResponse(result, "FeatureNotSupported")
-    class ServiceDisconnected(result: BillingResult): BillingResponse(result, "ServiceDisconnected")
-    class OK(result: BillingResult): BillingResponse(result, "Ok")
-    class UserCanceled(result: BillingResult): BillingResponse(result, "UserCanceled")
-    class ServiceUnavailable(result: BillingResult): BillingResponse(result, "ServiceUnavailable")
-    class BillingUnavailable(result: BillingResult): BillingResponse(result, "BillingUnavailable")
-    class ItemUnavailable(result: BillingResult): BillingResponse(result, "ItemUnavailable")
-    class DeveloperError(result: BillingResult): BillingResponse(result, "DeveloperError")
-    class ServiceError(result: BillingResult): BillingResponse(result, "ServiceError")
-    class ItemAlreadyOwned(result: BillingResult): BillingResponse(result, "ItemAlreadyOwned")
-    class ItemNotOwned(result: BillingResult): BillingResponse(result, "ItemNotOwned")
+    class Unknown(result: BillingResult) : BillingResponse(result, "Unknown")
+    class ServiceTimeout(result: BillingResult) : BillingResponse(result, "ServiceTimeout")
+    class FeatureNotSupported(result: BillingResult) : BillingResponse(result, "FeatureNotSupported")
+    class ServiceDisconnected(result: BillingResult) : BillingResponse(result, "ServiceDisconnected")
+    class OK(result: BillingResult) : BillingResponse(result, "Ok")
+    class UserCanceled(result: BillingResult) : BillingResponse(result, "UserCanceled")
+    class ServiceUnavailable(result: BillingResult) : BillingResponse(result, "ServiceUnavailable")
+    class BillingUnavailable(result: BillingResult) : BillingResponse(result, "BillingUnavailable")
+    class ItemUnavailable(result: BillingResult) : BillingResponse(result, "ItemUnavailable")
+    class DeveloperError(result: BillingResult) : BillingResponse(result, "DeveloperError")
+    class ServiceError(result: BillingResult) : BillingResponse(result, "ServiceError")
+    class ItemAlreadyOwned(result: BillingResult) : BillingResponse(result, "ItemAlreadyOwned")
+    class ItemNotOwned(result: BillingResult) : BillingResponse(result, "ItemNotOwned")
 }
 
 fun BillingResult.toResponse(): BillingResponse {
-    return when(responseCode) {
+    return when (responseCode) {
         BillingResponseCode.OK -> BillingResponse.OK(this)
         BillingResponseCode.USER_CANCELED -> BillingResponse.UserCanceled(this)
         BillingResponseCode.SERVICE_TIMEOUT -> BillingResponse.ServiceTimeout(this)

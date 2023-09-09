@@ -5,7 +5,6 @@ import android.content.Context
 import caios.android.kanade.core.billing.models.ProductDetails
 import caios.android.kanade.core.billing.models.ProductType
 import caios.android.kanade.core.billing.models.translate
-import caios.android.kanade.core.common.network.di.ApplicationScope
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -16,7 +15,6 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.QueryPurchasesParams
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,7 +42,6 @@ interface BillingClientProvider {
 
 class BillingClientProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    @ApplicationScope private val scope: CoroutineScope,
 ) : BillingClientProvider {
 
     private val initializeResponseListeners = mutableListOf<ResponseListener<Unit>>()
@@ -107,7 +104,7 @@ class BillingClientProviderImpl @Inject constructor(
                     Timber.d("BillingClient disconnected")
                     state = BillingClientProvider.State.DISCONNECTED
                 }
-            }
+            },
         )
     }
 
@@ -141,7 +138,7 @@ class BillingClientProviderImpl @Inject constructor(
 
     override fun queryPurchases(
         productType: ProductType,
-        listener: ResponseListener<List<Purchase>>
+        listener: ResponseListener<List<Purchase>>,
     ) {
         require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
 
@@ -168,7 +165,7 @@ class BillingClientProviderImpl @Inject constructor(
 
     override fun queryPurchaseHistory(
         productType: ProductType,
-        listener: ResponseListener<List<PurchaseHistoryRecord>>
+        listener: ResponseListener<List<PurchaseHistoryRecord>>,
     ) {
         require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
 
@@ -195,7 +192,7 @@ class BillingClientProviderImpl @Inject constructor(
 
     override fun acknowledgePurchase(
         purchase: Purchase,
-        listener: ResponseListener<Unit>
+        listener: ResponseListener<Unit>,
     ) {
         require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
 
@@ -232,7 +229,9 @@ class BillingClientProviderImpl @Inject constructor(
                 val response = result.toResponse()
                 val isError = response !is BillingResponse.OK
                 val isLibraryError = response is BillingResponse.OK && purchases == null
-                val isPurchaseHandled = response is BillingResponse.OK && purchases != null && purchases.any { it.products.contains(command.productId.value) && !it.isAcknowledged }
+                val isPurchaseHandled = response is BillingResponse.OK && purchases != null && purchases.any {
+                    it.products.contains(command.productId.value) && !it.isAcknowledged
+                }
 
                 if (isError || isLibraryError || isPurchaseHandled) {
                     compositeListener.remove(this)

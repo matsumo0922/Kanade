@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.MediaMetadata
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,8 +76,6 @@ class MusicControllerImpl @Inject constructor(
     override val currentQueue = _currentQueue.asStateFlow()
     override val playerPosition = _playerPosition.asStateFlow()
     override val playerState = _playerState.asStateFlow()
-
-    private val supervisorJob = SupervisorJob()
 
     private var isTryingConnect = false
     private var mediaBrowser: MediaBrowserCompat? = null

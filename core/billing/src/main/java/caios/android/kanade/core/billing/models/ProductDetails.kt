@@ -51,7 +51,7 @@ fun RawProductDetails.translate(): ProductDetails {
                         billingCycleCount = it.billingCycleCount,
                         recurrenceMode = it.recurrenceMode,
                     )
-                }
+                },
             )
         }.orEmpty(),
         rawProductDetails = this,

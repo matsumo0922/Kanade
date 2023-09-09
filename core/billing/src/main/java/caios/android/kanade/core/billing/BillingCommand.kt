@@ -20,7 +20,7 @@ fun purchaseSingle(
 
 class PurchaseSingleCommandBuilder(
     val productDetails: ProductDetails,
-    val offerToken: String?
+    val offerToken: String?,
 ) {
     var obfuscatedAccountId: String? = null
     var obfuscatedProfileId: String? = null

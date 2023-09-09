@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-class CompositePurchasesUpdatedListener internal constructor(): PurchasesUpdatedListener {
+class CompositePurchasesUpdatedListener internal constructor() : PurchasesUpdatedListener {
 
     private val listeners = mutableSetOf<PurchasesUpdatedListener>()
     private val lock = ReentrantReadWriteLock()
