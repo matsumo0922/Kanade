@@ -46,7 +46,7 @@ class VolumeAnalyzer @Inject constructor(
         return cache.containsKey(song.id)
     }
 
-    suspend fun analyze(song: Song): Volume? = withContext(io) {
+    suspend fun analyze(song: Song): Volume? = withContext(scope.coroutineContext) {
         cache[song.id] ?: kotlin.runCatching {
             musicRepository.useSongFile(song) { file ->
                 analyzeVolume(song, file!!)

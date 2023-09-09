@@ -1,8 +1,7 @@
 package caios.android.kanade.core.music.di
 
 import android.content.Context
-import caios.android.kanade.core.common.network.Dispatcher
-import caios.android.kanade.core.common.network.KanadeDispatcher
+import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.MusicControllerImpl
 import caios.android.kanade.core.music.QueueManager
@@ -13,7 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 
 @Module
@@ -26,9 +25,9 @@ class MusicModule {
         musicRepository: MusicRepository,
         musicQueue: QueueManager,
         @ApplicationContext context: Context,
-        @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
+        @ApplicationScope scope: CoroutineScope,
     ): MusicController {
-        return MusicControllerImpl(musicRepository, musicQueue, context, io)
+        return MusicControllerImpl(musicRepository, musicQueue, context, scope)
     }
 
     @Provides
