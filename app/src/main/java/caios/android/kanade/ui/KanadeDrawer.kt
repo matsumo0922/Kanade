@@ -76,6 +76,7 @@ fun KanadeDrawer(
     navigateToSetting: () -> Unit,
     navigateToAbout: () -> Unit,
     navigateToSupport: () -> Unit,
+    navigateToBillingPlus: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet(
@@ -196,7 +197,7 @@ fun KanadeDrawer(
 
             NavigationDrawerPlusItem(
                 state = state,
-                onClick = {},
+                onClick = navigateToBillingPlus,
             )
         }
     }

@@ -37,6 +37,12 @@ android {
             keyPassword = localProperties.getProperty("keyPassword") ?: System.getenv("RELEASE_KEY_PASSWORD")
             keyAlias = localProperties.getProperty("keyAlias") ?: System.getenv("RELEASE_KEY_ALIAS")
         }
+        create("billing") {
+            storeFile = file("${project.rootDir}/gradle/keystore/release.jks")
+            storePassword = localProperties.getProperty("storePassword") ?: System.getenv("RELEASE_STORE_PASSWORD")
+            keyPassword = localProperties.getProperty("keyPassword") ?: System.getenv("RELEASE_KEY_PASSWORD")
+            keyAlias = localProperties.getProperty("keyAlias") ?: System.getenv("RELEASE_KEY_ALIAS")
+        }
     }
 
     buildTypes {
@@ -50,6 +56,11 @@ android {
             isDebuggable = true
             versionNameSuffix = ".D"
             applicationIdSuffix = ".debug3"
+        }
+        create("billing") {
+            signingConfig = signingConfigs.getByName("billing")
+            isDebuggable = true
+            matchingFallbacks.add("debug")
         }
     }
 

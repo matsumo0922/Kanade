@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,7 +35,6 @@ import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +60,6 @@ private fun BottomSheetWrapper(
             parent.removeView(composeView)
         }
     }
-
-    Timber.d("window insets: ${WindowInsets.displayCutout}")
 
     if (isOpen) {
         ModalBottomSheet(

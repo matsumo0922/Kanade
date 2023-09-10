@@ -118,6 +118,7 @@ fun KanadeApp(
                     navigateToSetting = { appState.navController.navigateToSettingTop() },
                     navigateToAbout = { appState.navController.navigateToAbout() },
                     navigateToSupport = { },
+                    navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
                 )
             },
             gesturesEnabled = (appState.currentLibraryDestination != null),

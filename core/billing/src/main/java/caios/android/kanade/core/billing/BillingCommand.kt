@@ -47,19 +47,18 @@ data class PurchaseSingleCommand(
     val productId: ProductId get() = productDetails.productId
 
     fun toBillingFlowParams(): BillingFlowParams {
-        val productDetailParams = offerToken?.let {
-            ProductDetailsParams.newBuilder()
-                .setProductDetails(productDetails.rawProductDetails)
-                .setOfferToken(it)
-                .build()
-        }
+        val productDetailParams = ProductDetailsParams.newBuilder()
+            .setProductDetails(productDetails.rawProductDetails)
+            .setOfferToken(offerToken ?: "")
+            .build()
 
         val builder = BillingFlowParams.newBuilder()
 
         obfuscatedAccountId?.let { builder.setObfuscatedAccountId(it) }
         obfuscatedProfileId?.let { builder.setObfuscatedProfileId(it) }
         subscriptionUpdate?.let { builder.setSubscriptionUpdateParams(it.toSubscriptionUpdateParams()) }
-        productDetailParams?.let { builder.setProductDetailsParamsList(listOf(it)) }
+
+        builder.setProductDetailsParamsList(listOf(productDetailParams))
 
         return builder.build()
     }

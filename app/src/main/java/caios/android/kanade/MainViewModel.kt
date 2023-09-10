@@ -2,6 +2,7 @@ package caios.android.kanade
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import caios.android.kanade.core.billing.BillingClient
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    billingClient: BillingClient,
     userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
@@ -22,4 +24,8 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ScreenState.Loading,
     )
+
+    init {
+        billingClient.initialize()
+    }
 }

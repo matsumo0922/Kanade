@@ -26,6 +26,7 @@ import caios.android.kanade.feature.album.top.navigateToAlbumTop
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.artist.top.ArtistTopRoute
 import caios.android.kanade.feature.artist.top.navigateToArtistTop
+import caios.android.kanade.feature.billing.plus.showBillingPlusDialog
 import caios.android.kanade.feature.home.HomeRoute
 import caios.android.kanade.feature.home.navigateToHome
 import caios.android.kanade.feature.information.song.navigateToSongInformation
@@ -241,6 +242,12 @@ class KanadeAppState(
             navigateToShare = {
                 ShareUtil.showShareDialog(activity, it.songs)
             },
+        )
+    }
+
+    fun showBillingPlusDialog(activity: Activity) {
+        activity.showBillingPlusDialog(
+            userData = userData,
         )
     }
 }
