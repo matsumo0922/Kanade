@@ -32,8 +32,8 @@ sealed class BillingStepFailedException(
     response: BillingResponse,
     stepName: String,
     details: String,
-    isFailedOnInitialize: Boolean,
-    isCalledAfterDispose: Boolean,
+    val isFailedOnInitialize: Boolean,
+    val isCalledAfterDispose: Boolean,
 ) : BillingException(
     response,
     if (isFailedOnInitialize) {

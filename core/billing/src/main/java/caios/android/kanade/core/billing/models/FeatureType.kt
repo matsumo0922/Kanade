@@ -12,6 +12,9 @@ enum class FeatureType(val rawValue: String) : Parcelable {
     SUBSCRIPTIONS_UPDATE(BillingClient.FeatureType.SUBSCRIPTIONS_UPDATE) {
         override fun toString(): String = rawValue
     },
+    IN_APP_MESSAGING(BillingClient.FeatureType.IN_APP_MESSAGING) {
+        override fun toString(): String = rawValue
+    },
     PRODUCT_DETAILS(BillingClient.FeatureType.PRODUCT_DETAILS) {
         override fun toString(): String = rawValue
     },

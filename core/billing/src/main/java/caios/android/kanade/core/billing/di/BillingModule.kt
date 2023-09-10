@@ -1,5 +1,7 @@
 package caios.android.kanade.core.billing.di
 
+import caios.android.kanade.core.billing.BillingClient
+import caios.android.kanade.core.billing.BillingClientImpl
 import caios.android.kanade.core.billing.BillingClientProvider
 import caios.android.kanade.core.billing.BillingClientProviderImpl
 import dagger.Binds
@@ -14,5 +16,9 @@ interface BillingModule {
 
     @Singleton
     @Binds
-    fun bindBillingRepository(billingClientProvider: BillingClientProviderImpl): BillingClientProvider
+    fun bindBillingClientProvider(billingClientProvider: BillingClientProviderImpl): BillingClientProvider
+
+    @Singleton
+    @Binds
+    fun bindBillingClient(billingClient: BillingClientImpl): BillingClient
 }

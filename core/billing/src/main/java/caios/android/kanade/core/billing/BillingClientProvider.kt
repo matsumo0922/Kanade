@@ -2,11 +2,14 @@ package caios.android.kanade.core.billing
 
 import android.app.Activity
 import android.content.Context
+import caios.android.kanade.core.billing.models.FeatureType
 import caios.android.kanade.core.billing.models.ProductDetails
+import caios.android.kanade.core.billing.models.ProductId
 import caios.android.kanade.core.billing.models.ProductType
 import caios.android.kanade.core.billing.models.translate
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
@@ -19,14 +22,17 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject
 
-typealias ResponseListener<T> = (Result<T>) -> Unit
+private typealias ResponseListener<T> = (Result<T>) -> Unit
 
 interface BillingClientProvider {
 
     fun initialize()
     fun dispose()
 
-    fun queryProductDetails(productDetailsCommand: QueryProductDetailsCommand, listener: ResponseListener<List<ProductDetails>>)
+    fun verifyFeatureSupported(featureType: FeatureType, listener: ResponseListener<Boolean>)
+    fun verifyFeaturesSupported(featureTypes: List<FeatureType>, listener: ResponseListener<Map<FeatureType, Boolean>>)
+    fun queryProductDetails(productId: ProductId, productType: ProductType, listener: ResponseListener<ProductDetails>)
+    fun queryProductDetailsList(productDetailsCommand: QueryProductDetailsCommand, productType: ProductType, listener: ResponseListener<List<ProductDetails>>)
     fun queryPurchases(productType: ProductType, listener: ResponseListener<List<Purchase>>)
     fun queryPurchaseHistory(productType: ProductType, listener: ResponseListener<List<PurchaseHistoryRecord>>)
     fun consumePurchase(purchase: Purchase, listener: ResponseListener<ConsumeResult>)
@@ -115,13 +121,103 @@ class BillingClientProviderImpl @Inject constructor(
         state = BillingClientProvider.State.DISPOSED
     }
 
+    override fun verifyFeatureSupported(
+        featureType: FeatureType,
+        listener: ResponseListener<Boolean>,
+    ) {
+        require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
+
+        verifyFeaturesSupported(listOf(featureType)) { result ->
+            result.fold(
+                onSuccess = { listener.invoke(Result.success(it[featureType] ?: false)) },
+                onFailure = {
+                    if (it is VerifyFeaturesSupportedFailedException) {
+                        listener.invoke(
+                            Result.failure(
+                                VerifyFeatureSupportedFailedException(
+                                    response = billingResponse(BillingResponseCode.FEATURE_NOT_SUPPORTED),
+                                    feature = featureType,
+                                    isCalledAfterDispose = it.isCalledAfterDispose,
+                                    isFailedOnInitialize = it.isFailedOnInitialize,
+                                )
+                            )
+                        )
+                    } else {
+                        listener.invoke(Result.failure(it))
+                    }
+                },
+            )
+        }
+    }
+
+    override fun verifyFeaturesSupported(
+        featureTypes: List<FeatureType>,
+        listener: ResponseListener<Map<FeatureType, Boolean>>,
+    ) {
+        require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
+
+        val resultSet = mutableMapOf<FeatureType, Boolean>()
+
+        for (featureType in featureTypes) {
+            when (val response = billingClient.isFeatureSupported(featureType.rawValue).toResponse()) {
+                is BillingResponse.OK -> resultSet[featureType] = true
+                is BillingResponse.FeatureNotSupported -> resultSet[featureType] = false
+                is BillingResponse.ServiceDisconnected, is BillingResponse.ServiceError -> {
+                    Timber.d("verifyFeatureSupported: service error. CODE=${response.code}")
+                    state = BillingClientProvider.State.DISPOSED
+                    listener.invoke(Result.failure(VerifyFeatureSupportedFailedException(response, featureType)))
+                    return
+                }
+                else -> {
+                    listener.invoke(Result.failure(VerifyFeatureSupportedFailedException(response, featureType)))
+                    return
+                }
+            }
+        }
+
+        if (resultSet.values.all { it }) {
+            listener.invoke(Result.success(resultSet))
+        } else {
+            listener.invoke(
+                Result.failure(
+                    VerifyFeaturesSupportedFailedException(
+                        billingResponse(BillingResponseCode.FEATURE_NOT_SUPPORTED),
+                        FeaturesSupportedResult(resultSet),
+                    ),
+                ),
+            )
+        }
+    }
+
     override fun queryProductDetails(
+        productId: ProductId,
+        productType: ProductType,
+        listener: ResponseListener<ProductDetails>,
+    ) {
+        require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
+
+        queryProductDetailsList(QueryProductDetailsCommand(listOf(productId)), productType) { result ->
+            result.fold(
+                onSuccess = {
+                    if (it.isEmpty()) {
+                        listener.invoke(Result.failure(QueryProductDetailsFailedException(billingResponse(BillingResponseCode.ITEM_UNAVAILABLE), productId)))
+                    } else {
+                        listener.invoke(Result.success(it.first()))
+                    }
+                },
+                onFailure = { listener.invoke(Result.failure(it)) },
+            )
+        }
+    }
+
+    override fun queryProductDetailsList(
         productDetailsCommand: QueryProductDetailsCommand,
+        productType: ProductType,
         listener: ResponseListener<List<ProductDetails>>,
     ) {
         require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
 
-        billingClient.queryProductDetailsAsync(productDetailsCommand.toQueryProductDetailsParams()) { result, products ->
+        billingClient.queryProductDetailsAsync(productDetailsCommand.toQueryProductDetailsParams(productType)) { result, products ->
             when (val response = result.toResponse()) {
                 is BillingResponse.OK -> {
                     listener.invoke(Result.success(products.translate()))
