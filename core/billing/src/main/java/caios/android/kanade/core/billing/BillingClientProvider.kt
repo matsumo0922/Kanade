@@ -9,6 +9,7 @@ import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ConsumeParams
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchaseHistoryRecord
 import com.android.billingclient.api.PurchasesUpdatedListener
@@ -28,7 +29,8 @@ interface BillingClientProvider {
     fun queryProductDetails(productDetailsCommand: QueryProductDetailsCommand, listener: ResponseListener<List<ProductDetails>>)
     fun queryPurchases(productType: ProductType, listener: ResponseListener<List<Purchase>>)
     fun queryPurchaseHistory(productType: ProductType, listener: ResponseListener<List<PurchaseHistoryRecord>>)
-    fun acknowledgePurchase(purchase: Purchase, listener: ResponseListener<Unit>)
+    fun consumePurchase(purchase: Purchase, listener: ResponseListener<ConsumeResult>)
+    fun acknowledgePurchase(purchase: Purchase, listener: ResponseListener<AcknowledgeResult>)
     fun launchBillingFlow(activity: Activity, command: PurchaseSingleCommand, listener: ResponseListener<SingleBillingFlowResult>)
 
     enum class State {
@@ -190,9 +192,39 @@ class BillingClientProviderImpl @Inject constructor(
         }
     }
 
+    override fun consumePurchase(
+        purchase: Purchase,
+        listener: ResponseListener<ConsumeResult>,
+    ) {
+        require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
+
+        val params = ConsumeParams.newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+            .build()
+
+        billingClient.consumeAsync(params) { result, _ ->
+            when (val response = result.toResponse()) {
+                is BillingResponse.OK -> {
+                    listener.invoke(Result.success(ConsumeResult(false, params)))
+                }
+                is BillingResponse.ItemNotOwned -> {
+                    listener.invoke(Result.success(ConsumeResult(true, params)))
+                }
+                is BillingResponse.ServiceDisconnected, is BillingResponse.ServiceError -> {
+                    Timber.d("consumePurchase: service error. CODE=${response.code}")
+                    state = BillingClientProvider.State.DISPOSED
+                    listener.invoke(Result.failure(ConsumePurchaseFailedException(response, params)))
+                }
+                else -> {
+                    listener.invoke(Result.failure(ConsumePurchaseFailedException(response, params)))
+                }
+            }
+        }
+    }
+
     override fun acknowledgePurchase(
         purchase: Purchase,
-        listener: ResponseListener<Unit>,
+        listener: ResponseListener<AcknowledgeResult>,
     ) {
         require(state == BillingClientProvider.State.CONNECTED) { "BillingClient is not connected" }
 
@@ -203,7 +235,7 @@ class BillingClientProviderImpl @Inject constructor(
         billingClient.acknowledgePurchase(params) { result ->
             when (val response = result.toResponse()) {
                 is BillingResponse.OK -> {
-                    listener.invoke(Result.success(Unit))
+                    listener.invoke(Result.success(AcknowledgeResult(params)))
                 }
                 is BillingResponse.ServiceDisconnected, is BillingResponse.ServiceError -> {
                     Timber.d("acknowledgePurchase: service error. CODE=${response.code}")

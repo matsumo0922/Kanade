@@ -2,6 +2,7 @@ package caios.android.kanade.core.billing
 
 import caios.android.kanade.core.billing.models.FeatureType
 import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.ConsumeParams
 import com.android.billingclient.api.Purchase
 
 data class FeaturesSupportedResult(
@@ -19,6 +20,11 @@ data class SingleBillingFlowResult(
     val billingProductId get() = command.productId
     val billingPurchase get() = purchases.first { it.products.contains(billingProductId.value) && !it.isAcknowledged }
 }
+
+data class ConsumeResult(
+    val isItemNotOwned: Boolean,
+    val params: ConsumeParams,
+)
 
 data class AcknowledgeResult(
     val params: AcknowledgePurchaseParams,
