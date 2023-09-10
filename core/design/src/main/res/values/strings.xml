@@ -65,6 +65,7 @@
     <string name="navigation_app_info">アプリについて</string>
     <string name="navigation_support">アプリを応援</string>
     <string name="navigation_top_bar_title">ライブラリを検索</string>
+    <string name="navigation_kanade_plus_description">コーヒー1杯程度の金額で、全ての機能にアクセスできるようになります！</string>
 
     <!-- Permission Request-->
     <string name="permission_request_title">権限</string>
