@@ -88,7 +88,7 @@ class BillingClientImpl @Inject constructor(
                     if (!cont.isCancelled) {
                         cont.resumeWithException(it)
                     }
-                }
+                },
             )
         }
     }

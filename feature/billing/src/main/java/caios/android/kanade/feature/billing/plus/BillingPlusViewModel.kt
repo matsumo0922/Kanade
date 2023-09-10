@@ -77,7 +77,7 @@ class BillingPlusViewModel @Inject constructor(
                 onFailure = {
                     Timber.w(it)
                     ToastUtil.show(activity, R.string.billing_plus_toast_purchased_error)
-                }
+                },
             )
         }
     }
@@ -95,7 +95,7 @@ class BillingPlusViewModel @Inject constructor(
                 onFailure = {
                     Timber.w(it)
                     ToastUtil.show(context, R.string.billing_plus_toast_verify_error)
-                }
+                },
             )
         }
     }
@@ -113,7 +113,7 @@ class BillingPlusViewModel @Inject constructor(
                 onFailure = {
                     Timber.w(it)
                     ToastUtil.show(context, R.string.billing_plus_toast_consumed_error)
-                }
+                },
             )
         }
     }

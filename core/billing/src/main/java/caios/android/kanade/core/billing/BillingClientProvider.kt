@@ -139,8 +139,8 @@ class BillingClientProviderImpl @Inject constructor(
                                     feature = featureType,
                                     isCalledAfterDispose = it.isCalledAfterDispose,
                                     isFailedOnInitialize = it.isFailedOnInitialize,
-                                )
-                            )
+                                ),
+                            ),
                         )
                     } else {
                         listener.invoke(Result.failure(it))

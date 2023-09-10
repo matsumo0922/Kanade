@@ -31,7 +31,7 @@ class PurchaseDonateUseCase @Inject constructor(
     private suspend fun purchase(
         activity: Activity,
         productDetails: ProductDetails,
-    ) : PurchaseConsumableResult = withContext(mainDispatcher) {
+    ): PurchaseConsumableResult = withContext(mainDispatcher) {
         val command = purchaseSingle(productDetails, null)
         val result = billingClient.launchBillingFlow(activity, command)
 
@@ -39,8 +39,8 @@ class PurchaseDonateUseCase @Inject constructor(
     }
 
     private suspend fun consume(
-        purchaseConsumableResult: PurchaseConsumableResult
-    ) : ConsumeResult {
+        purchaseConsumableResult: PurchaseConsumableResult,
+    ): ConsumeResult {
         return billingClient.consumePurchase(purchaseConsumableResult.purchase)
     }
 }

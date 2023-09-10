@@ -30,14 +30,14 @@ class PurchasePlusUseCase @Inject constructor(
     private suspend fun purchase(
         activity: Activity,
         productDetails: ProductDetails,
-    ) : PurchaseConsumableResult = withContext(mainDispatcher) {
+    ): PurchaseConsumableResult = withContext(mainDispatcher) {
         val command = purchaseSingle(productDetails, null)
         val result = billingClient.launchBillingFlow(activity, command)
 
         PurchaseConsumableResult(command, productDetails, result.billingPurchase)
     }
 
-    private suspend fun acknowledge(purchase: Purchase) : AcknowledgeResult {
+    private suspend fun acknowledge(purchase: Purchase): AcknowledgeResult {
         return billingClient.acknowledgePurchase(purchase)
     }
 }

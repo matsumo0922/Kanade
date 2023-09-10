@@ -73,7 +73,7 @@ private fun BillingPlusDialog(
         TitleItem(
             modifier = Modifier
                 .padding(top = 24.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
 
         Text(
