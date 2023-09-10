@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Album
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Person
@@ -31,8 +33,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -46,12 +48,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavDestination
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
@@ -71,15 +76,18 @@ fun KanadeDrawer(
     navigateToSetting: () -> Unit,
     navigateToAbout: () -> Unit,
     navigateToSupport: () -> Unit,
+    navigateToBillingPlus: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ModalDrawerSheet(windowInsets = WindowInsets(0, 0, 0, 0)) {
+    ModalDrawerSheet(
+        drawerContainerColor = MaterialTheme.colorScheme.surface,
+        windowInsets = WindowInsets(0, 0, 0, 0),
+    ) {
         Column(
             modifier = modifier
                 .width(256.dp)
                 .fillMaxHeight()
-                .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.surface),
+                .verticalScroll(rememberScrollState()),
         ) {
             NavigationDrawerHeader(
                 modifier = Modifier
@@ -131,7 +139,7 @@ fun KanadeDrawer(
                 onClick = { onClickItem.invoke(LibraryDestination.Album) },
             )
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth(),
@@ -177,6 +185,19 @@ fun KanadeDrawer(
                 label = stringResource(R.string.navigation_support),
                 icon = Icons.Default.Redeem,
                 onClick = navigateToSupport,
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth(),
+            )
+
+            NavigationDrawerPlusItem(
+                state = state,
+                onClick = navigateToBillingPlus,
             )
         }
     }
@@ -327,5 +348,62 @@ private fun NavigationDrawerHeader(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
+    }
+}
+
+@Composable
+private fun NavigationDrawerPlusItem(
+    state: DrawerState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val scope = rememberCoroutineScope()
+    val titleStyle = MaterialTheme.typography.titleMedium.bold()
+    val annotatedString = buildAnnotatedString {
+        append("Buy ")
+
+        withStyle(titleStyle.copy(color = MaterialTheme.colorScheme.primary).toSpanStyle()) {
+            append("Kanade+")
+        }
+    }
+
+    Row(
+        modifier = modifier
+            .clickable {
+                scope.launch {
+                    state.close()
+                    onClick.invoke()
+                }
+            }
+            .padding(top = 8.dp)
+            .padding(horizontal = 24.dp, vertical = 12.dp)
+            .navigationBarsPadding(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = Icons.Default.AutoAwesome,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = annotatedString,
+                style = titleStyle,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.navigation_kanade_plus_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }

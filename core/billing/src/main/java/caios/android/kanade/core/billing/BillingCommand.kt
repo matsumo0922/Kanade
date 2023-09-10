@@ -2,7 +2,7 @@ package caios.android.kanade.core.billing
 
 import caios.android.kanade.core.billing.models.ProductDetails
 import caios.android.kanade.core.billing.models.ProductId
-import com.android.billingclient.api.BillingClient.ProductType
+import caios.android.kanade.core.billing.models.ProductType
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams
@@ -11,7 +11,7 @@ import com.android.billingclient.api.QueryProductDetailsParams.Product
 fun purchaseSingle(
     productDetails: ProductDetails,
     offerToken: String?,
-    builder: PurchaseSingleCommandBuilder.() -> Unit,
+    builder: PurchaseSingleCommandBuilder.() -> Unit = {},
 ): PurchaseSingleCommand {
     return PurchaseSingleCommandBuilder(productDetails, offerToken)
         .apply(builder)
@@ -47,19 +47,18 @@ data class PurchaseSingleCommand(
     val productId: ProductId get() = productDetails.productId
 
     fun toBillingFlowParams(): BillingFlowParams {
-        val productDetailParams = offerToken?.let {
-            ProductDetailsParams.newBuilder()
-                .setProductDetails(productDetails.rawProductDetails)
-                .setOfferToken(it)
-                .build()
-        }
+        val productDetailParams = ProductDetailsParams.newBuilder()
+            .setProductDetails(productDetails.rawProductDetails)
+            .setOfferToken(offerToken ?: "")
+            .build()
 
         val builder = BillingFlowParams.newBuilder()
 
         obfuscatedAccountId?.let { builder.setObfuscatedAccountId(it) }
         obfuscatedProfileId?.let { builder.setObfuscatedProfileId(it) }
         subscriptionUpdate?.let { builder.setSubscriptionUpdateParams(it.toSubscriptionUpdateParams()) }
-        productDetailParams?.let { builder.setProductDetailsParamsList(listOf(it)) }
+
+        builder.setProductDetailsParamsList(listOf(productDetailParams))
 
         return builder.build()
     }
@@ -68,11 +67,11 @@ data class PurchaseSingleCommand(
 data class QueryProductDetailsCommand(
     val productIds: List<ProductId>,
 ) {
-    fun toQueryProductDetailsParams(): QueryProductDetailsParams {
+    fun toQueryProductDetailsParams(type: ProductType): QueryProductDetailsParams {
         val products = productIds.map {
             Product.newBuilder()
                 .setProductId(it.value)
-                .setProductType(ProductType.SUBS)
+                .setProductType(type.rawValue)
                 .build()
         }
 

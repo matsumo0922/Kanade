@@ -42,6 +42,7 @@
     <string name="error_no_data">データがありません</string>
     <string name="error_network">通信エラーが発生しました</string>
     <string name="error_developing_feature">開発中の機能です</string>
+    <string name="error_billing">購入情報を取得できませんでした</string>
 
     <!-- Music -->
     <string name="music_title">タイトル</string>
@@ -65,6 +66,7 @@
     <string name="navigation_app_info">アプリについて</string>
     <string name="navigation_support">アプリを応援</string>
     <string name="navigation_top_bar_title">ライブラリを検索</string>
+    <string name="navigation_kanade_plus_description">コーヒー1杯程度の金額で、全ての機能にアクセスできるようになります！</string>
 
     <!-- Permission Request-->
     <string name="permission_request_title">権限</string>
@@ -340,4 +342,33 @@
     <string name="equalizer_preset_pop">ポップ</string>
     <string name="equalizer_preset_rock">ロック</string>
     <string name="equalizer_preset_custom">カスタム</string>
+
+    <!-- Billing -->
+    <string name="billing_plus_title">Kanade+</string>
+    <string name="billing_plus_description">Kanade+ は、コーヒー1杯程度の金額で全ての機能にアクセスできるようになる有料サービスです。</string>
+    <string name="billing_plus_purchase_button">%1$sで購入</string>
+    <string name="billing_plus_verify_button">購入を復元</string>
+    <string name="billing_plus_consume_button">[DEBUG] CONSUME</string>
+    <string name="billing_plus_toast_purchased">購入しました</string>
+    <string name="billing_plus_toast_purchased_error">購入に失敗しました</string>
+    <string name="billing_plus_toast_consumed">消費しました</string>
+    <string name="billing_plus_toast_consumed_error">消費に失敗しました</string>
+    <string name="billing_plus_toast_verify">購入を復元しました</string>
+    <string name="billing_plus_toast_verify_error">購入情報が見つかりませんでした</string>
+    <string name="billing_plus_item_hide_ads">広告を非表示</string>
+    <string name="billing_plus_item_hide_ads_description">アプリ内の広告を全て非表示にし、スムーズで快適な音楽視聴をお楽しみください。</string>
+    <string name="billing_plus_item_download">楽曲のダウンロード</string>
+    <string name="billing_plus_item_download_description">動画投稿サイトなどから楽曲をダウンロードできます。この機能は試験段階で、動作が不安定なことがあります。</string>
+    <string name="billing_plus_item_edit_lyrics">歌詞の編集機能</string>
+    <string name="billing_plus_item_edit_lyrics_description">LRC形式の歌詞を入力すれば、同期歌詞と共に音楽を楽しめるようになります。</string>
+    <string name="billing_plus_item_widget">ホームウィジェット</string>
+    <string name="billing_plus_item_widget_description">ホーム画面にウィジェットを追加し、ウィジェットから音楽を再生できるようになります。</string>
+    <string name="billing_plus_item_material_you">Material You</string>
+    <string name="billing_plus_item_material_you_description">全てのバージョンで Material You によるカスタムテーマを利用できるようになります。</string>
+    <string name="billing_plus_item_accent_color">アクセントカラー</string>
+    <string name="billing_plus_item_accent_color_description">アプリのアクセントカラーを自由に設定できるようになります。</string>
+    <string name="billing_plus_item_feature">新機能の追加</string>
+    <string name="billing_plus_item_feature_description">新機能が追加された際にいち早く試すことができるようになります。</string>
+    <string name="billing_plus_item_support">最優先サポート</string>
+    <string name="billing_plus_item_support_description">Kanade+ユーザーは最優先でサポートを受けることができます。</string>
 </resources>

@@ -4,6 +4,7 @@ import caios.android.kanade.core.billing.models.FeatureType
 import caios.android.kanade.core.billing.models.ProductId
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.ConsumeParams
 
 sealed class BillingException(
     response: BillingResponse,
@@ -31,8 +32,8 @@ sealed class BillingStepFailedException(
     response: BillingResponse,
     stepName: String,
     details: String,
-    isFailedOnInitialize: Boolean,
-    isCalledAfterDispose: Boolean,
+    val isFailedOnInitialize: Boolean,
+    val isCalledAfterDispose: Boolean,
 ) : BillingException(
     response,
     if (isFailedOnInitialize) {
@@ -203,6 +204,22 @@ class LaunchBillingFlowFailedException(
     val isItemUnavailable: Boolean = response is BillingResponse.ItemUnavailable
     val isUserCancelled: Boolean = response is BillingResponse.UserCanceled
     val isItemAlreadyOwned: Boolean = response is BillingResponse.ItemAlreadyOwned
+}
+
+class ConsumePurchaseFailedException(
+    response: BillingResponse,
+    params: ConsumeParams,
+    isFailedOnInitialize: Boolean = false,
+    isCalledAfterDispose: Boolean = false,
+) : BillingStepFailedException(
+    response,
+    "consumePurchase",
+    "params: ConsumeParams(${params.purchaseToken})",
+    isFailedOnInitialize,
+    isCalledAfterDispose,
+) {
+    val isFeatureNotSupported: Boolean = response is BillingResponse.FeatureNotSupported
+    val isMightBeExpiredConsumeLimit: Boolean = response is BillingResponse.DeveloperError
 }
 
 class AcknowledgePurchaseFailedException(
