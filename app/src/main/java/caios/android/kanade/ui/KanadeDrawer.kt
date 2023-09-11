@@ -65,6 +65,7 @@ import caios.android.kanade.navigation.LibraryDestination
 import caios.android.kanade.navigation.isLibraryDestinationInHierarchy
 import kotlinx.coroutines.launch
 
+@Suppress("UnusedParameter")
 @Composable
 fun KanadeDrawer(
     state: DrawerState,
