@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlaylistPlay
 import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CloudDownload
@@ -183,12 +182,12 @@ fun KanadeDrawer(
                 onClick = navigateToAbout,
             )
 
-            NavigationDrawerItem(
+           /* NavigationDrawerItem(
                 state = state,
                 label = stringResource(R.string.navigation_support),
                 icon = Icons.Default.Redeem,
                 onClick = navigateToSupport,
-            )
+            )*/
 
             Spacer(modifier = Modifier.weight(1f))
 
