@@ -66,9 +66,13 @@ android {
 
     androidComponents {
         onVariants {
-            val appName = if (it.buildType == "release") "Kanade" else "KanadeDebug3"
-            it.resValues.put(it.makeResValueKey("string", "app_name"), ResValue(appName, null))
+            val appName = when (it.buildType) {
+                "debug" -> "KanadeDebug3"
+                "billing" -> "KanadeBilling"
+                else -> "Kanade"
+            }
 
+            it.resValues.put(it.makeResValueKey("string", "app_name"), ResValue(appName, null))
             it.buildConfigFields.apply {
                 putBuildConfig(localProperties, "VERSION_NAME", libs.versions.versionName.get().toStringLiteral())
                 putBuildConfig(localProperties, "VERSION_CODE", libs.versions.versionCode.get().toStringLiteral())

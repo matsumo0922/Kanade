@@ -13,7 +13,7 @@ message UserPreference {
 
   optional bool is_use_dynamic_color = 3;
   optional bool is_developer_mode = 4;
-  optional bool is_premium_mode = 5;
+  optional bool is_plus_mode = 5;
   optional bool is_use_dynamic_normalizer = 6;
   optional bool is_use_one_step_back = 7;
   optional bool is_use_keep_audio_focus = 8;

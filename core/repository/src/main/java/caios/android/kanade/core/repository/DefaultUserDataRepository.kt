@@ -25,8 +25,8 @@ class DefaultUserDataRepository @Inject constructor(
         kanadePreferencesDataStore.setDeveloperMode(isDeveloperMode)
     }
 
-    override suspend fun setPremiumMode(isPremiumMode: Boolean) {
-        kanadePreferencesDataStore.setPremiumMode(isPremiumMode)
+    override suspend fun setPlusMode(isPlusMode: Boolean) {
+        kanadePreferencesDataStore.setPlusMode(isPlusMode)
     }
 
     override suspend fun setUseDynamicColor(useDynamicColor: Boolean) {

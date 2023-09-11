@@ -109,6 +109,7 @@ fun KanadeApp(
             drawerContent = {
                 KanadeDrawer(
                     state = drawerState,
+                    userData = userData,
                     currentSong = musicViewModel.uiState.song,
                     currentDestination = appState.currentDestination,
                     onClickItem = appState::navigateToLibrary,

@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlaylistPlay
 import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CloudDownload
@@ -48,6 +47,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
@@ -57,6 +57,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavDestination
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.bold
+import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.ui.music.Artwork
@@ -64,9 +65,11 @@ import caios.android.kanade.navigation.LibraryDestination
 import caios.android.kanade.navigation.isLibraryDestinationInHierarchy
 import kotlinx.coroutines.launch
 
+@Suppress("UnusedParameter")
 @Composable
 fun KanadeDrawer(
     state: DrawerState,
+    userData: UserData?,
     currentSong: Song?,
     currentDestination: NavDestination?,
     onClickItem: (LibraryDestination) -> Unit,
@@ -180,12 +183,12 @@ fun KanadeDrawer(
                 onClick = navigateToAbout,
             )
 
-            NavigationDrawerItem(
+           /* NavigationDrawerItem(
                 state = state,
                 label = stringResource(R.string.navigation_support),
                 icon = Icons.Default.Redeem,
                 onClick = navigateToSupport,
-            )
+            )*/
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -197,6 +200,8 @@ fun KanadeDrawer(
 
             NavigationDrawerPlusItem(
                 state = state,
+                isPlusMode = userData?.isPlusMode == true,
+                isDeveloperMode = userData?.isDeveloperMode == true,
                 onClick = navigateToBillingPlus,
             )
         }
@@ -353,26 +358,42 @@ private fun NavigationDrawerHeader(
 
 @Composable
 private fun NavigationDrawerPlusItem(
+    isPlusMode: Boolean,
+    isDeveloperMode: Boolean,
     state: DrawerState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
     val titleStyle = MaterialTheme.typography.titleMedium.bold()
-    val annotatedString = buildAnnotatedString {
-        append("Buy ")
+    val title: AnnotatedString
+    val description: String
 
-        withStyle(titleStyle.copy(color = MaterialTheme.colorScheme.primary).toSpanStyle()) {
-            append("Kanade+")
+    if (isPlusMode) {
+        title = buildAnnotatedString {
+            withStyle(titleStyle.copy(color = MaterialTheme.colorScheme.primary).toSpanStyle()) {
+                append("Kanade+")
+            }
         }
+        description = stringResource(R.string.navigation_kanade_plus_purchased_description)
+    } else {
+        title = buildAnnotatedString {
+            append("Buy ")
+            withStyle(titleStyle.copy(color = MaterialTheme.colorScheme.primary).toSpanStyle()) {
+                append("Kanade+")
+            }
+        }
+        description = stringResource(R.string.navigation_kanade_plus_description)
     }
 
     Row(
         modifier = modifier
             .clickable {
                 scope.launch {
-                    state.close()
-                    onClick.invoke()
+                    if (!isPlusMode || isDeveloperMode) {
+                        state.close()
+                        onClick.invoke()
+                    }
                 }
             }
             .padding(top = 8.dp)
@@ -393,14 +414,14 @@ private fun NavigationDrawerPlusItem(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = annotatedString,
+                text = title,
                 style = titleStyle,
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.navigation_kanade_plus_description),
+                text = description,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
