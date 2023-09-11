@@ -46,8 +46,11 @@ class BillingPlusViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _screenState.value = runCatching {
+                val userData = userDataRepository.userData.firstOrNull()
+
                 BillingPlusUiState(
-                    isDeveloperMode = userDataRepository.userData.firstOrNull()?.isDeveloperMode ?: false,
+                    isPlusMode = userData?.isPlusMode ?: false,
+                    isDeveloperMode = userData?.isDeveloperMode ?: false,
                     productDetails = billingClient.queryProductDetails(ProductItem.plus, ProductType.INAPP),
                     purchase = runCatching { verifyPlusUseCase.execute() }.getOrNull(),
                 )
@@ -64,63 +67,72 @@ class BillingPlusViewModel @Inject constructor(
         }
     }
 
-    fun purchase(activity: Activity) {
-        viewModelScope.launch {
-            runCatching {
-                withContext(ioDispatcher) {
-                    purchasePlusUseCase.execute(activity)
-                }
-            }.fold(
-                onSuccess = {
-                    ToastUtil.show(activity, R.string.billing_plus_toast_purchased)
-                },
-                onFailure = {
-                    Timber.w(it)
-                    ToastUtil.show(activity, R.string.billing_plus_toast_purchased_error)
-                },
-            )
-        }
+    suspend fun purchase(activity: Activity): Boolean {
+        return runCatching {
+            withContext(ioDispatcher) {
+                purchasePlusUseCase.execute(activity)
+            }
+        }.fold(
+            onSuccess = {
+                userDataRepository.setPlusMode(true)
+                ToastUtil.show(activity, R.string.billing_plus_toast_purchased)
+                true
+            },
+            onFailure = {
+                Timber.w(it)
+                ToastUtil.show(activity, R.string.billing_plus_toast_purchased_error)
+                false
+            },
+        )
     }
 
-    fun verify(context: Context) {
-        viewModelScope.launch {
-            runCatching {
-                withContext(ioDispatcher) {
-                    verifyPlusUseCase.execute()
-                }
-            }.fold(
-                onSuccess = {
+    suspend fun verify(context: Context): Boolean {
+        return runCatching {
+            withContext(ioDispatcher) {
+                verifyPlusUseCase.execute()
+            }
+        }.fold(
+            onSuccess = {
+                if (it != null) {
+                    userDataRepository.setPlusMode(true)
                     ToastUtil.show(context, R.string.billing_plus_toast_verify)
-                },
-                onFailure = {
-                    Timber.w(it)
+                    true
+                } else {
                     ToastUtil.show(context, R.string.billing_plus_toast_verify_error)
-                },
-            )
-        }
+                    false
+                }
+            },
+            onFailure = {
+                Timber.w(it)
+                ToastUtil.show(context, R.string.error_billing)
+                false
+            },
+        )
     }
 
-    fun consume(context: Context, purchase: Purchase) {
-        viewModelScope.launch {
-            runCatching {
-                withContext(ioDispatcher) {
-                    consumePlusUseCase.execute(purchase)
-                }
-            }.fold(
-                onSuccess = {
-                    ToastUtil.show(context, R.string.billing_plus_toast_consumed)
-                },
-                onFailure = {
-                    Timber.w(it)
-                    ToastUtil.show(context, R.string.billing_plus_toast_consumed_error)
-                },
-            )
-        }
+    suspend fun consume(context: Context, purchase: Purchase): Boolean {
+        return runCatching {
+            withContext(ioDispatcher) {
+                consumePlusUseCase.execute(purchase)
+            }
+        }.fold(
+            onSuccess = {
+                userDataRepository.setPlusMode(false)
+                ToastUtil.show(context, R.string.billing_plus_toast_consumed)
+                true
+            },
+            onFailure = {
+                Timber.w(it)
+                ToastUtil.show(context, R.string.billing_plus_toast_consumed_error)
+                false
+            },
+        )
     }
 }
 
 @Stable
 data class BillingPlusUiState(
+    val isPlusMode: Boolean = false,
     val isDeveloperMode: Boolean = false,
     val productDetails: ProductDetails? = null,
     val purchase: Purchase? = null,

@@ -49,8 +49,8 @@ internal fun SettingTopOthersSection(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(R.string.setting_top_others_version),
             description = "${config.versionName}:${config.versionCode}" + when {
-                userData.isPremiumMode && userData.isDeveloperMode -> " [P+D]"
-                userData.isPremiumMode -> " [Premium]"
+                userData.isPlusMode && userData.isDeveloperMode -> " [P+D]"
+                userData.isPlusMode -> " [Premium]"
                 userData.isDeveloperMode -> " [Developer]"
                 else -> ""
             },

@@ -67,6 +67,7 @@
     <string name="navigation_support">アプリを応援</string>
     <string name="navigation_top_bar_title">ライブラリを検索</string>
     <string name="navigation_kanade_plus_description">コーヒー1杯程度の金額で、全ての機能にアクセスできるようになります！</string>
+    <string name="navigation_kanade_plus_purchased_description">あなたは Kanade+ ユーザーです。快適な音楽視聴をお楽しみください！</string>
 
     <!-- Permission Request-->
     <string name="permission_request_title">権限</string>
@@ -346,9 +347,9 @@
     <!-- Billing -->
     <string name="billing_plus_title">Kanade+</string>
     <string name="billing_plus_description">Kanade+ は、コーヒー1杯程度の金額で全ての機能にアクセスできるようになる有料サービスです。</string>
-    <string name="billing_plus_purchase_button">%1$sで購入</string>
+    <string name="billing_plus_purchase_button">%1$s で購入</string>
     <string name="billing_plus_verify_button">購入を復元</string>
-    <string name="billing_plus_consume_button">[DEBUG] CONSUME</string>
+    <string name="billing_plus_consume_button">購入を消費</string>
     <string name="billing_plus_toast_purchased">購入しました</string>
     <string name="billing_plus_toast_purchased_error">購入に失敗しました</string>
     <string name="billing_plus_toast_consumed">消費しました</string>
@@ -359,8 +360,14 @@
     <string name="billing_plus_item_hide_ads_description">アプリ内の広告を全て非表示にし、スムーズで快適な音楽視聴をお楽しみください。</string>
     <string name="billing_plus_item_download">楽曲のダウンロード</string>
     <string name="billing_plus_item_download_description">動画投稿サイトなどから楽曲をダウンロードできます。この機能は試験段階で、動作が不安定なことがあります。</string>
+    <string name="billing_plus_item_metadata">メタデータのダウンロード</string>
+    <string name="billing_plus_item_metadata_description">楽曲のメタデータを自動でダウンロードし、アートワークや歌詞を表示できるようになります。</string>
     <string name="billing_plus_item_edit_lyrics">歌詞の編集機能</string>
     <string name="billing_plus_item_edit_lyrics_description">LRC形式の歌詞を入力すれば、同期歌詞と共に音楽を楽しめるようになります。</string>
+    <string name="billing_plus_item_scan">楽曲のスキャン</string>
+    <string name="billing_plus_item_scan_description">アプリが認識できていない楽曲をスキャンして登録できるようになります。</string>
+    <string name="billing_plus_item_folder">フォルダーのブラウズ</string>
+    <string name="billing_plus_item_folder_description">フォルダー単位での再生ができるようになります。この機能は今後提供予定です。</string>
     <string name="billing_plus_item_widget">ホームウィジェット</string>
     <string name="billing_plus_item_widget_description">ホーム画面にウィジェットを追加し、ウィジェットから音楽を再生できるようになります。</string>
     <string name="billing_plus_item_material_you">Material You</string>

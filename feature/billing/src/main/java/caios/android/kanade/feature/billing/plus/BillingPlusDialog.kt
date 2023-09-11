@@ -17,12 +17,15 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Album
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DesignServices
 import androidx.compose.material.icons.filled.DoNotDisturb
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material3.Button
@@ -32,6 +35,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -49,7 +53,7 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.dialog.showAsButtonSheet
 import com.android.billingclient.api.Purchase
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @Composable
 private fun BillingPlusDialog(
@@ -61,8 +65,6 @@ private fun BillingPlusDialog(
 ) {
     val purchase = uiState.purchase
     val productDetails = uiState.productDetails ?: return
-
-    Timber.d("BillingPlusDialog: ${uiState.purchase}")
 
     Column(
         modifier = modifier
@@ -139,9 +141,30 @@ private fun BillingPlusDialog(
 
                 PlusItem(
                     modifier = Modifier.fillMaxWidth(),
+                    title = R.string.billing_plus_item_metadata,
+                    description = R.string.billing_plus_item_metadata_description,
+                    icon = Icons.Default.Album,
+                )
+
+                PlusItem(
+                    modifier = Modifier.fillMaxWidth(),
                     title = R.string.billing_plus_item_edit_lyrics,
                     description = R.string.billing_plus_item_edit_lyrics_description,
                     icon = Icons.Default.EditNote,
+                )
+
+                PlusItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.billing_plus_item_scan,
+                    description = R.string.billing_plus_item_scan_description,
+                    icon = Icons.Default.Scanner,
+                )
+
+                PlusItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.billing_plus_item_folder,
+                    description = R.string.billing_plus_item_folder_description,
+                    icon = Icons.Default.FolderOpen,
                 )
 
                 PlusItem(
@@ -258,6 +281,7 @@ fun Activity.showBillingPlusDialog(
     userData: UserData?,
 ) {
     showAsButtonSheet(userData, rectCorner = true, skipPartiallyExpanded = true) { onDismiss ->
+        val scope = rememberCoroutineScope()
         val viewModel = hiltViewModel<BillingPlusViewModel>()
         val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -270,9 +294,25 @@ fun Activity.showBillingPlusDialog(
                 BillingPlusDialog(
                     modifier = Modifier.fillMaxSize(),
                     uiState = uiState,
-                    onClickPurchase = { viewModel.purchase(this) },
-                    onClickVerify = { viewModel.verify(this) },
-                    onClickConsume = { viewModel.consume(this, it) },
+                    onClickPurchase = {
+                        scope.launch {
+                            if (viewModel.purchase(this@showBillingPlusDialog)) {
+                                onDismiss.invoke()
+                            }
+                        }
+                    },
+                    onClickVerify = {
+                        scope.launch {
+                            if (viewModel.verify(this@showBillingPlusDialog)) {
+                                onDismiss.invoke()
+                            }
+                        }
+                    },
+                    onClickConsume = {
+                        scope.launch {
+                            viewModel.consume(this@showBillingPlusDialog, it)
+                        }
+                    },
                 )
             }
         }

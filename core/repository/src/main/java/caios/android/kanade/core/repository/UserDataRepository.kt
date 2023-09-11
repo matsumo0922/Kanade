@@ -13,7 +13,7 @@ interface UserDataRepository {
     suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig)
     suspend fun setUseDynamicColor(useDynamicColor: Boolean)
     suspend fun setDeveloperMode(isDeveloperMode: Boolean)
-    suspend fun setPremiumMode(isPremiumMode: Boolean)
+    suspend fun setPlusMode(isPlusMode: Boolean)
     suspend fun setUseDynamicNormalizer(useDynamicNormalizer: Boolean)
     suspend fun setUseOneStepBack(isOneStepBack: Boolean)
     suspend fun setUseKeepAudioFocus(isKeepAudioFocus: Boolean)

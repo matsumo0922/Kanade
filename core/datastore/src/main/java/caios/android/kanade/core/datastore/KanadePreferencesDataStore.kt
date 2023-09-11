@@ -42,7 +42,7 @@ class KanadePreferencesDataStore @Inject constructor(
                 },
                 isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else true,
                 isDeveloperMode = if (it.hasIsDeveloperMode()) it.isDeveloperMode else false,
-                isPremiumMode = if (it.hasIsPremiumMode()) it.isPremiumMode else false,
+                isPlusMode = if (it.hasIsPlusMode()) it.isPlusMode else false,
                 isDynamicNormalizer = if (it.hasIsUseDynamicNormalizer()) it.isUseDynamicNormalizer else false,
                 isOneStepBack = if (it.hasIsUseOneStepBack()) it.isUseOneStepBack else true,
                 isKeepAudioFocus = if (it.hasIsUseKeepAudioFocus()) it.isUseKeepAudioFocus else false,
@@ -162,10 +162,10 @@ class KanadePreferencesDataStore @Inject constructor(
         }
     }
 
-    suspend fun setPremiumMode(isPremiumMode: Boolean) = withContext(ioDispatcher) {
+    suspend fun setPlusMode(isPlusMode: Boolean) = withContext(ioDispatcher) {
         userPreference.updateData {
             it.copy {
-                this.isPremiumMode = isPremiumMode
+                this.isPlusMode = isPlusMode
             }
         }
     }
