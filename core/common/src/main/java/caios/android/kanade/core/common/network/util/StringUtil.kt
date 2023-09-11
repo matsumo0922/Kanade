@@ -1,5 +1,9 @@
 package caios.android.kanade.core.common.network.util
 
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
+
 object StringUtil {
 
     fun String.toHttpsUrl(): String {
@@ -36,6 +40,11 @@ object StringUtil {
             this > 1000f -> "%.2f kHz".format(this / 1000f)
             else -> "%.2f Hz".format(this)
         }
+    }
+
+    fun String.fromJsonToLongList(): MutableList<Long> {
+        val serializer = ListSerializer(Long.serializer())
+        return Json.decodeFromString(serializer, this).toMutableList()
     }
 
     fun connectWithDelimiter(vararg strings: String, delimiter: String): String {

@@ -107,7 +107,10 @@ class MainActivity : ComponentActivity() {
             intent?.extras?.remove("notify")
         }
 
-        musicController.initialize()
+        lifecycleScope.launch {
+            musicViewModel.fetch()
+            musicController.initialize()
+        }
     }
 
     override fun onDestroy() {
