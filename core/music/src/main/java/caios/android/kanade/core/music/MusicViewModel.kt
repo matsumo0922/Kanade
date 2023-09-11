@@ -21,6 +21,7 @@ import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
+import caios.android.kanade.core.music.upgrade.BackwardCompatibleChecker
 import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
@@ -33,6 +34,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MusicViewModel @Inject constructor(
+    private val backwardCompatibleChecker: BackwardCompatibleChecker,
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
@@ -94,6 +96,7 @@ class MusicViewModel @Inject constructor(
             musicRepository.fetchPlaylist()
             musicRepository.fetchAlbumArtwork()
             musicRepository.fetchArtistArtwork()
+            backwardCompatibleChecker.check()
 
             uiState = uiState.copy(isReadyToFmService = musicRepository.songs.isNotEmpty())
 

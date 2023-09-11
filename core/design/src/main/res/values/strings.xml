@@ -97,6 +97,8 @@
     <string name="home_title_recently_added_albums">最近追加されたアルバム</string>
     <string name="home_title_recently_played_songs">最近再生された楽曲</string>
     <string name="home_title_most_played_songs">再生回数の多い楽曲</string>
+    <string name="home_empty_title">ホームは空です</string>
+    <string name="home_empty_description">再生履歴などを解析して\nあなたにおすすめの楽曲が表示されます</string>
 
     <!-- Controller -->
     <string name="controller_menu_add_playlist">プレイリストに追加</string>
