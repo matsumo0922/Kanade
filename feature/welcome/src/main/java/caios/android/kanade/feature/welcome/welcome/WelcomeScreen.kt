@@ -29,7 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
+import caios.android.kanade.feature.welcome.WelcomeIndicatorItem
 
 @Composable
 internal fun WelcomeScreen(
@@ -48,7 +52,9 @@ internal fun WelcomeScreen(
     var isAgreedTermsOfService by remember { mutableStateOf(false) }
 
     Column(
-        modifier = modifier.background(MaterialTheme.colorScheme.surface),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
@@ -64,17 +70,15 @@ internal fun WelcomeScreen(
         )
 
         Text(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.welcome_title),
-            style = MaterialTheme.typography.headlineMedium.bold().center(),
+            style = MaterialTheme.typography.displaySmall.bold().center(),
             color = MaterialTheme.colorScheme.onSurface,
         )
 
         Text(
             modifier = Modifier
-                .padding(top = 8.dp)
+                .padding(top = 12.dp)
                 .padding(horizontal = 24.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.welcome_description),
@@ -86,7 +90,7 @@ internal fun WelcomeScreen(
 
         Column(
             modifier = Modifier.width(IntrinsicSize.Max),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             CheckBoxLinkButton(
                 isChecked = isAgreedTermsOfService,
@@ -105,11 +109,17 @@ internal fun WelcomeScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+
+        WelcomeIndicatorItem(
+            modifier = Modifier.padding(bottom = 24.dp),
+            max = 3,
+            step = 1,
+        )
 
         Button(
             modifier = Modifier
-                .padding(24.dp, 16.dp)
+                .padding(bottom = 24.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(50),
             enabled = isAgreedPrivacyPolicy && isAgreedTermsOfService,
@@ -120,6 +130,7 @@ internal fun WelcomeScreen(
             },
         ) {
             Text(
+                modifier = Modifier.padding(8.dp),
                 text = stringResource(R.string.welcome_button_next),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (isAgreedPrivacyPolicy && isAgreedTermsOfService) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
@@ -137,37 +148,44 @@ private fun CheckBoxLinkButton(
     onLinkClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val annotatedString = buildAnnotatedString {
-        pushStringAnnotation(
-            tag = "link",
-            annotation = link,
-        )
+    val textStyle = TextStyle(
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold,
+    )
 
-        withStyle(MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary).bold().toSpanStyle()) {
+    val annotatedString = buildAnnotatedString {
+        pushStringAnnotation("url", link)
+
+        withStyle(textStyle.toSpanStyle()) {
             append(link)
         }
 
         pop()
 
-        append(body)
+        append(" ")
+
+        withStyle(TextStyle(color = MaterialTheme.colorScheme.onSurface).toSpanStyle()) {
+            append(body)
+        }
     }
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(12.dp),
             checked = isChecked,
             onCheckedChange = onChecked,
         )
 
         ClickableText(
             text = annotatedString,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             onClick = {
-                annotatedString.getStringAnnotations("link", it, it).firstOrNull()?.let { _ ->
+                annotatedString.getStringAnnotations("url", it, it).firstOrNull()?.let { _ ->
                     onLinkClick.invoke()
                 }
             },

@@ -2,6 +2,7 @@
 
 package caios.android.kanade.core.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,37 +28,32 @@ fun <T> AsyncLoadContents(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     cornerShape: RoundedCornerShape = RoundedCornerShape(0.dp),
     retryAction: () -> Unit = {},
-    content: @Composable (T?) -> Unit,
+    content: @Composable (T) -> Unit,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(cornerShape)
             .background(containerColor),
     ) {
-        content.invoke((screenState as? ScreenState.Idle<T>)?.data)
-
-        AnimatedVisibility(
-            modifier = modifier.align(Alignment.Center),
-            visible = screenState is ScreenState.Loading,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            LoadingView(
-                modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
-            )
-        }
-
-        AnimatedVisibility(
-            modifier = modifier.align(Alignment.Center),
-            visible = screenState is ScreenState.Error,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            if (screenState is ScreenState.Error) {
-                ErrorView(
-                    errorState = screenState,
-                    retryAction = retryAction,
-                )
+        AnimatedContent(
+            targetState = screenState,
+            label = "AsyncLoadContents",
+        ) { state ->
+            when (state) {
+                is ScreenState.Idle -> {
+                    content.invoke(state.data)
+                }
+                is ScreenState.Loading -> {
+                    LoadingView(
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
+                    )
+                }
+                is ScreenState.Error -> {
+                    ErrorView(
+                        errorState = state,
+                        retryAction = retryAction,
+                    )
+                }
             }
         }
     }

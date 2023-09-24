@@ -71,6 +71,9 @@ import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.feature.search.scan.navigateToScanMedia
 import caios.android.kanade.feature.setting.top.navigateToSettingTop
+import caios.android.kanade.feature.welcome.WelcomeNavHost
+import caios.android.kanade.feature.welcome.permission.WelcomePermissionRoute
+import caios.android.kanade.feature.welcome.welcome.WelcomeRoute
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -78,12 +81,12 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
 @Suppress("SwallowedException")
 @Composable
 fun KanadeApp(
     musicViewModel: MusicViewModel,
-    userData: UserData?,
+    userData: UserData,
     appState: KanadeAppState,
     modifier: Modifier = Modifier,
 ) {
@@ -103,6 +106,23 @@ fun KanadeApp(
                 }
             },
         )
+
+        val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
+        val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val locationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) android.Manifest.permission.ACCESS_MEDIA_LOCATION else null
+
+        val permissionList = listOfNotNull(storagePermission, notifyPermission, locationPermission)
+        val permissionsState = rememberMultiplePermissionsState(permissionList)
+        val isAllAllowed = permissionsState.permissions.all { it.status is PermissionStatus.Granted }
+
+        if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed) {
+            WelcomeNavHost(
+                modifier = Modifier.fillMaxSize(),
+                startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeRoute else WelcomePermissionRoute,
+            )
+
+            return@KanadeBackground
+        }
 
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -355,8 +375,7 @@ private fun RequestPermissions(onGranted: () -> Unit) {
     var isShowPermissionDialog by remember { mutableStateOf(true) }
 
     val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-    val storagePermission =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     val locationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) android.Manifest.permission.ACCESS_FINE_LOCATION else null
 
     val permissionList = listOfNotNull(storagePermission, notifyPermission, locationPermission)
