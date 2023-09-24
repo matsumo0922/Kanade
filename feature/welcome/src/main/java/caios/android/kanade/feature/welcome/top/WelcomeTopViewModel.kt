@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeTopViewModel @Inject constructor(
-    private val userDataRepository: UserDataRepository
+    private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
 
     fun setAgreedPrivacyPolicy() {

@@ -57,7 +57,6 @@ internal fun WelcomeTopScreen(
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Image(
@@ -197,6 +196,6 @@ private fun CheckBoxLinkButton(
 private fun PreviewWelcomeScreen() {
     WelcomeTopScreen(
         modifier = Modifier.fillMaxSize(),
-        navigateToWelcomePlus = {}
+        navigateToWelcomePlus = {},
     )
 }
