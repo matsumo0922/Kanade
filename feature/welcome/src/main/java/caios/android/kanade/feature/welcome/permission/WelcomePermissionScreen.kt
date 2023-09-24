@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun WelcomePermissionScreen(
-    navigateToWelcomePlus: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -118,7 +118,7 @@ internal fun WelcomePermissionScreen(
         WelcomeIndicatorItem(
             modifier = Modifier.padding(bottom = 24.dp),
             max = 3,
-            step = 2,
+            step = 3,
         )
 
         if (isGrantedStorage) {
@@ -127,7 +127,7 @@ internal fun WelcomePermissionScreen(
                     .padding(bottom = 24.dp)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(50),
-                onClick = { navigateToWelcomePlus.invoke() },
+                onClick = { navigateToHome.invoke() },
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
@@ -248,7 +248,7 @@ private fun startAppSettings(context: Context) {
 private fun WelcomePermissionScreenPreview() {
     WelcomePermissionScreen(
         modifier = Modifier.fillMaxSize(),
-        navigateToWelcomePlus = {},
+        navigateToHome = {},
     )
 }
 

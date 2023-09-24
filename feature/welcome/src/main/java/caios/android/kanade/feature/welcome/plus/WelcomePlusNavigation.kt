@@ -15,7 +15,7 @@ fun NavController.navigateToWelcomePlus() {
 
 fun NavGraphBuilder.welcomePlusScreen(
     navigateToBillingPlus: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToWelcomePermission: () -> Unit,
 ) {
     composable(
         route = WelcomePlusRoute,
@@ -27,7 +27,7 @@ fun NavGraphBuilder.welcomePlusScreen(
         WelcomePlusScreen(
             modifier = Modifier.fillMaxSize(),
             navigateToBillingPlus = navigateToBillingPlus,
-            navigateToHome = navigateToHome,
+            navigateToWelcomePermission = navigateToWelcomePermission,
         )
     }
 }

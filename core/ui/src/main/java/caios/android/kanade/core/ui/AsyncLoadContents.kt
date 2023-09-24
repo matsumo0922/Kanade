@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.ui.view.ErrorView
 import caios.android.kanade.core.ui.view.LoadingView
-import timber.log.Timber
 
 @Composable
 fun <T> AsyncLoadContents(
@@ -36,11 +36,10 @@ fun <T> AsyncLoadContents(
             .clip(cornerShape)
             .background(containerColor),
         targetState = screenState,
+        transitionSpec = { fadeIn().togetherWith(fadeOut()) },
         contentKey = { it.javaClass },
         label = "AsyncLoadContents",
     ) { state ->
-        Timber.d("AsyncLoadContents: ${state.javaClass}")
-
         when (state) {
             is ScreenState.Idle -> {
                 content.invoke(state.data)

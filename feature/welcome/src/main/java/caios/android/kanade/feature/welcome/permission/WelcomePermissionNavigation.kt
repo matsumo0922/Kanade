@@ -14,7 +14,7 @@ fun NavController.navigateToWelcomePermission() {
 }
 
 fun NavGraphBuilder.welcomePermissionScreen(
-    navigateToWelcomePlus: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     composable(
         route = WelcomePermissionRoute,
@@ -25,7 +25,7 @@ fun NavGraphBuilder.welcomePermissionScreen(
     ) {
         WelcomePermissionScreen(
             modifier = Modifier.fillMaxSize(),
-            navigateToWelcomePlus = navigateToWelcomePlus,
+            navigateToHome = navigateToHome,
         )
     }
 }

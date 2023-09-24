@@ -14,7 +14,7 @@ fun NavController.navigateToWelcomeTop() {
 }
 
 fun NavGraphBuilder.welcomeTopScreen(
-    navigateToWelcomePermission: () -> Unit,
+    navigateToWelcomePlus: () -> Unit,
 ) {
     composable(
         route = WelcomeTopRoute,
@@ -25,7 +25,7 @@ fun NavGraphBuilder.welcomeTopScreen(
     ) {
         WelcomeTopScreen(
             modifier = Modifier.fillMaxSize(),
-            navigateToWelcomePermission = navigateToWelcomePermission,
+            navigateToWelcomePlus = navigateToWelcomePlus,
         )
     }
 }

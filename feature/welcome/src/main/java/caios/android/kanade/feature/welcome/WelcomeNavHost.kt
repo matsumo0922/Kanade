@@ -26,15 +26,15 @@ fun WelcomeNavHost(
         modifier = modifier,
     ) {
         welcomeTopScreen(
-            navigateToWelcomePermission = { navController.navigateToWelcomePermission() },
-        )
-
-        welcomePermissionScreen(
             navigateToWelcomePlus = { navController.navigateToWelcomePlus() },
         )
 
         welcomePlusScreen(
             navigateToBillingPlus = navigateToBillingPlus,
+            navigateToWelcomePermission = { navController.navigateToWelcomePermission() },
+        )
+
+        welcomePermissionScreen(
             navigateToHome = onComplete,
         )
     }

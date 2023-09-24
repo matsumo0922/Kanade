@@ -93,6 +93,7 @@ class MainActivity : ComponentActivity() {
                     enableDynamicTheme = shouldUseDynamicColor(screenState),
                 ) {
                     KanadeApp(
+                        modifier = Modifier.fillMaxSize(),
                         musicViewModel = musicViewModel,
                         userData = userData,
                         appState = appState,

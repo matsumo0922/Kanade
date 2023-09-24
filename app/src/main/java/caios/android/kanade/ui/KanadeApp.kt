@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -80,8 +81,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
-@Suppress("SwallowedException")
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun KanadeApp(
     musicViewModel: MusicViewModel,
@@ -89,22 +89,8 @@ fun KanadeApp(
     appState: KanadeAppState,
     modifier: Modifier = Modifier,
 ) {
-    KanadeBackground(Modifier.fillMaxSize()) {
-        val density = LocalDensity.current
+    KanadeBackground(modifier) {
         val activity = (LocalContext.current as Activity)
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-        val safLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenDocumentTree(),
-            onResult = { uri ->
-                uri?.let {
-                    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-
-                    activity.contentResolver.takePersistableUriPermission(it, flag)
-                    appState.navController.navigateToScanMedia(it)
-                }
-            },
-        )
 
         val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
         val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -115,254 +101,290 @@ fun KanadeApp(
         val isAllAllowed = permissionsState.permissions.all { it.status is PermissionStatus.Granted }
 
         var isShouldShowWelcomeScreen by remember { mutableStateOf(true) }
+        val isShowWelcomeScreen = isShouldShowWelcomeScreen && (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed)
 
-        if (isShouldShowWelcomeScreen &&  (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed)) {
-            WelcomeNavHost(
-                modifier = Modifier.fillMaxSize(),
-                startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute,
+        AnimatedContent(
+            targetState = isShowWelcomeScreen,
+            label = "isShowWelcomeScreen",
+        ) {
+            if (it) {
+                WelcomeNavHost(
+                    modifier = Modifier.fillMaxSize(),
+                    startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute,
+                    navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
+                    onComplete = { isShouldShowWelcomeScreen = false },
+                )
+            } else {
+                IdleScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    musicViewModel = musicViewModel,
+                    userData = userData,
+                    appState = appState,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+private fun IdleScreen(
+    musicViewModel: MusicViewModel,
+    userData: UserData,
+    appState: KanadeAppState,
+    modifier: Modifier = Modifier,
+) {
+    val density = LocalDensity.current
+    val activity = (LocalContext.current as Activity)
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    val safLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+        onResult = { uri ->
+            uri?.let {
+                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+                activity.contentResolver.takePersistableUriPermission(it, flag)
+                appState.navController.navigateToScanMedia(it)
+            }
+        },
+    )
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            KanadeDrawer(
+                state = drawerState,
+                userData = userData,
+                currentSong = musicViewModel.uiState.song,
+                currentDestination = appState.currentDestination,
+                onClickItem = appState::navigateToLibrary,
+                navigateToQueue = { appState.navigateToQueue(activity) },
+                navigateToMediaScan = { safLauncher.launch(null) },
+                navigateToDownloadInput = { appState.navController.navigateToDownloadInput() },
+                navigateToSetting = { appState.navController.navigateToSettingTop() },
+                navigateToAbout = { appState.navController.navigateToAbout() },
+                navigateToSupport = { },
                 navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
-                onComplete = { isShouldShowWelcomeScreen = false },
             )
+        },
+        gesturesEnabled = (appState.currentLibraryDestination != null),
+    ) {
+        var isSearchActive by remember { mutableStateOf(false) }
+        val isShouldHideBottomController = isSearchActive || appState.currentLibraryDestination == null
 
-            return@KanadeBackground
+        var topBarHeight by remember { mutableFloatStateOf(0f) }
+        var bottomBarHeight by remember { mutableFloatStateOf(0f) }
+        var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
+        var bottomSheetOffset by remember { mutableFloatStateOf(0f) }
+        var bottomSheetOffsetRate by remember { mutableFloatStateOf(-1f) }
+
+        val scope = rememberCoroutineScope()
+        val scaffoldState = rememberBottomSheetScaffoldState()
+        val topAppBarState = rememberLibraryTopBarScrollState()
+        val scrollBehavior = LibraryTopBarScrollBehavior(
+            state = topAppBarState,
+            topBarHeight = topBarHeight,
+        )
+
+        val topBarAlpha by animateFloatAsState(
+            targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
+            label = "topBarAlpha",
+            animationSpec = tween(200),
+        )
+
+        val bottomSheetPeekHeight by animateDpAsState(
+            targetValue = if (isShouldHideBottomController) {
+                val passing = WindowInsets.navigationBars.asPaddingValues()
+                72.dp + passing.calculateBottomPadding() + passing.calculateTopPadding()
+            } else {
+                72.dp + with(density) { bottomBarHeight.toDp() }
+            },
+            label = "bottomSheetPeekHeight",
+            animationSpec = tween(
+                durationMillis = 200,
+                easing = NavigateAnimation.decelerateEasing,
+            ),
+        )
+
+        val bottomBarOffset by animateDpAsState(
+            targetValue = with(density) {
+                bottomBarHeight.toDp()
+            } * if (isShouldHideBottomController) 1f else (1f - bottomSheetOffsetRate),
+            label = "bottomBarOffset",
+            animationSpec = tween(
+                durationMillis = 200,
+                easing = NavigateAnimation.decelerateEasing,
+            ),
+        )
+
+        val toolbarOffset = with(density) { if (!isSearchActive) scrollBehavior.state.yOffset.toDp() else 0.dp }
+
+        bottomSheetOffset = runCatching { scaffoldState.bottomSheetState.requireOffset() }.getOrDefault(0f)
+        bottomSheetOffsetRate = density.run {
+            (bottomSheetOffset / (bottomSheetHeight - bottomBarHeight - 72.dp.toPx())).coerceIn(0f, 1f)
         }
 
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                KanadeDrawer(
-                    state = drawerState,
-                    userData = userData,
-                    currentSong = musicViewModel.uiState.song,
+        LaunchedEffect(appState.currentLibraryDestination) {
+            animate(
+                initialValue = scrollBehavior.state.yOffset,
+                targetValue = 0f,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = NavigateAnimation.decelerateEasing,
+                ),
+            ) { value, _ ->
+                scrollBehavior.state.yOffset = value
+            }
+        }
+
+        LaunchedEffect(isSearchActive) {
+            scrollBehavior.state.yOffset = 0f
+        }
+
+        LaunchedEffect(musicViewModel.uiState.isExpandedController) {
+            if (musicViewModel.uiState.isExpandedController) {
+                scaffoldState.bottomSheetState.expand()
+            } else {
+                scaffoldState.bottomSheetState.partialExpand()
+            }
+        }
+
+        LaunchedEffect(musicViewModel.uiState.isReadyToFmService) {
+            if (musicViewModel.uiState.isReadyToFmService) {
+                activity.startService(Intent(activity, LastFmService::class.java))
+            }
+        }
+
+        Scaffold(
+            modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            bottomBar = {
+                KanadeBottomBar(
+                    modifier = Modifier
+                        .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
+                        .offset(y = bottomBarOffset)
+                        .alpha(bottomSheetOffsetRate),
+                    destination = appState.libraryDestinations.toImmutableList(),
+                    onNavigateToDestination = appState::navigateToLibrary,
                     currentDestination = appState.currentDestination,
-                    onClickItem = appState::navigateToLibrary,
-                    navigateToQueue = { appState.navigateToQueue(activity) },
-                    navigateToMediaScan = { safLauncher.launch(null) },
-                    navigateToDownloadInput = { appState.navController.navigateToDownloadInput() },
-                    navigateToSetting = { appState.navController.navigateToSettingTop() },
-                    navigateToAbout = { appState.navController.navigateToAbout() },
-                    navigateToSupport = { },
-                    navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
                 )
             },
-            gesturesEnabled = (appState.currentLibraryDestination != null),
-        ) {
-            var isSearchActive by remember { mutableStateOf(false) }
-            val isShouldHideBottomController = isSearchActive || appState.currentLibraryDestination == null
-
-            var topBarHeight by remember { mutableFloatStateOf(0f) }
-            var bottomBarHeight by remember { mutableFloatStateOf(0f) }
-            var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
-            var bottomSheetOffset by remember { mutableFloatStateOf(0f) }
-            var bottomSheetOffsetRate by remember { mutableFloatStateOf(-1f) }
-
-            val scope = rememberCoroutineScope()
-            val scaffoldState = rememberBottomSheetScaffoldState()
-            val topAppBarState = rememberLibraryTopBarScrollState()
-            val scrollBehavior = LibraryTopBarScrollBehavior(
-                state = topAppBarState,
-                topBarHeight = topBarHeight,
+        ) { paddingValues ->
+            val padding = PaddingValues(
+                top = paddingValues.calculateTopPadding(),
+                bottom = bottomSheetPeekHeight,
             )
 
-            val topBarAlpha by animateFloatAsState(
-                targetValue = if (appState.currentLibraryDestination == null) 0f else 1f,
-                label = "topBarAlpha",
-                animationSpec = tween(200),
-            )
-
-            val bottomSheetPeekHeight by animateDpAsState(
-                targetValue = if (isShouldHideBottomController) {
-                    val passing = WindowInsets.navigationBars.asPaddingValues()
-                    72.dp + passing.calculateBottomPadding() + passing.calculateTopPadding()
-                } else {
-                    72.dp + with(density) { bottomBarHeight.toDp() }
-                },
-                label = "bottomSheetPeekHeight",
-                animationSpec = tween(
-                    durationMillis = 200,
-                    easing = NavigateAnimation.decelerateEasing,
-                ),
-            )
-
-            val bottomBarOffset by animateDpAsState(
-                targetValue = with(density) {
-                    bottomBarHeight.toDp()
-                } * if (isShouldHideBottomController) 1f else (1f - bottomSheetOffsetRate),
-                label = "bottomBarOffset",
-                animationSpec = tween(
-                    durationMillis = 200,
-                    easing = NavigateAnimation.decelerateEasing,
-                ),
-            )
-
-            val toolbarOffset = with(density) { if (!isSearchActive) scrollBehavior.state.yOffset.toDp() else 0.dp }
-
-            bottomSheetOffset = runCatching { scaffoldState.bottomSheetState.requireOffset() }.getOrDefault(0f)
-            bottomSheetOffsetRate = density.run {
-                (bottomSheetOffset / (bottomSheetHeight - bottomBarHeight - 72.dp.toPx())).coerceIn(0f, 1f)
-            }
-
-            LaunchedEffect(appState.currentLibraryDestination) {
-                animate(
-                    initialValue = scrollBehavior.state.yOffset,
-                    targetValue = 0f,
-                    animationSpec = tween(
-                        durationMillis = 200,
-                        easing = NavigateAnimation.decelerateEasing,
+            BottomSheetScaffold(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .onGloballyPositioned { bottomSheetHeight = it.size.height.toFloat() }
+                    .padding(padding)
+                    .consumeWindowInsets(padding)
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal,
+                        ),
                     ),
-                ) { value, _ ->
-                    scrollBehavior.state.yOffset = value
-                }
-            }
-
-            LaunchedEffect(isSearchActive) {
-                scrollBehavior.state.yOffset = 0f
-            }
-
-            LaunchedEffect(musicViewModel.uiState.isExpandedController) {
-                if (musicViewModel.uiState.isExpandedController) {
-                    scaffoldState.bottomSheetState.expand()
-                } else {
-                    scaffoldState.bottomSheetState.partialExpand()
-                }
-            }
-
-            LaunchedEffect(musicViewModel.uiState.isReadyToFmService) {
-                if (musicViewModel.uiState.isReadyToFmService) {
-                    activity.startService(Intent(activity, LastFmService::class.java))
-                }
-            }
-
-            Scaffold(
-                modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                bottomBar = {
-                    KanadeBottomBar(
-                        modifier = Modifier
-                            .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
-                            .offset(y = bottomBarOffset)
-                            .alpha(bottomSheetOffsetRate),
-                        destination = appState.libraryDestinations.toImmutableList(),
-                        onNavigateToDestination = appState::navigateToLibrary,
-                        currentDestination = appState.currentDestination,
+                scaffoldState = scaffoldState,
+                sheetShape = RectangleShape,
+                sheetDragHandle = {},
+                sheetContent = {
+                    AppController(
+                        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                        uiState = musicViewModel.uiState,
+                        windowSize = appState.windowSize,
+                        offsetRate = bottomSheetOffsetRate,
+                        onControllerEvent = musicViewModel::playerEvent,
+                        onClickBottomController = {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        },
+                        onClickCloseExpanded = {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.partialExpand()
+                            }
+                        },
+                        onClickFavorite = {
+                            scope.launch {
+                                musicViewModel.onFavorite(it)
+                            }
+                        },
+                        onFetchFavorite = {
+                            musicViewModel.fetchFavorite(it)
+                        },
+                        navigateToAddToPlaylist = {
+                            appState.navController.navigateToAddToPlaylist(listOf(it))
+                        },
+                        navigateToArtist = {
+                            appState.navController.navigateToArtistDetail(it)
+                        },
+                        navigateToAlbum = {
+                            appState.navController.navigateToAlbumDetail(it)
+                        },
+                        navigateToLyrics = {
+                            appState.navController.navigateToLyricsTop(it)
+                        },
+                        navigateToSearch = {
+                            isSearchActive = true
+                        },
+                        navigateToSleepTimer = { },
+                        navigateToQueue = { appState.navigateToQueue(activity) },
+                        navigateToKaraoke = { },
                     )
                 },
-            ) { paddingValues ->
-                val padding = PaddingValues(
-                    top = paddingValues.calculateTopPadding(),
-                    bottom = bottomSheetPeekHeight,
-                )
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                sheetPeekHeight = bottomSheetPeekHeight,
+            ) {
+                Box {
+                    if (musicViewModel.uiState.isAnalyzing) {
+                        LoadingDialog(R.string.common_analyzing)
+                    }
 
-                BottomSheetScaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .onGloballyPositioned { bottomSheetHeight = it.size.height.toFloat() }
-                        .padding(padding)
-                        .consumeWindowInsets(padding)
-                        .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal,
-                            ),
-                        ),
-                    scaffoldState = scaffoldState,
-                    sheetShape = RectangleShape,
-                    sheetDragHandle = {},
-                    sheetContent = {
-                        AppController(
-                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                            uiState = musicViewModel.uiState,
-                            windowSize = appState.windowSize,
-                            offsetRate = bottomSheetOffsetRate,
-                            onControllerEvent = musicViewModel::playerEvent,
-                            onClickBottomController = {
+                    if (topBarAlpha > 0f) {
+                        KanadeTopBar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned {
+                                    if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
+                                }
+                                .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
+                                .alpha(topBarAlpha),
+                            active = isSearchActive,
+                            yOffset = toolbarOffset,
+                            onChangeActive = { isSearchActive = it },
+                            onClickDrawerMenu = {
                                 scope.launch {
-                                    scaffoldState.bottomSheetState.expand()
+                                    drawerState.open()
                                 }
                             },
-                            onClickCloseExpanded = {
-                                scope.launch {
-                                    scaffoldState.bottomSheetState.partialExpand()
-                                }
-                            },
-                            onClickFavorite = {
-                                scope.launch {
-                                    musicViewModel.onFavorite(it)
-                                }
-                            },
-                            onFetchFavorite = {
-                                musicViewModel.fetchFavorite(it)
-                            },
-                            navigateToAddToPlaylist = {
-                                appState.navController.navigateToAddToPlaylist(listOf(it))
-                            },
-                            navigateToArtist = {
+                            navigateToArtistDetail = {
                                 appState.navController.navigateToArtistDetail(it)
                             },
-                            navigateToAlbum = {
+                            navigateToAlbumDetail = {
                                 appState.navController.navigateToAlbumDetail(it)
                             },
-                            navigateToLyrics = {
-                                appState.navController.navigateToLyricsTop(it)
+                            navigateToPlaylistDetail = {
+                                appState.navController.navigateToPlaylistDetail(it)
                             },
-                            navigateToSearch = {
-                                isSearchActive = true
-                            },
-                            navigateToSleepTimer = { },
-                            navigateToQueue = { appState.navigateToQueue(activity) },
-                            navigateToKaraoke = { },
-                        )
-                    },
-                    containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                    sheetPeekHeight = bottomSheetPeekHeight,
-                ) {
-                    Box {
-                        if (musicViewModel.uiState.isAnalyzing) {
-                            LoadingDialog(R.string.common_analyzing)
-                        }
-
-                        if (topBarAlpha > 0f) {
-                            KanadeTopBar(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .onGloballyPositioned {
-                                        if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
-                                    }
-                                    .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
-                                    .alpha(topBarAlpha),
-                                active = isSearchActive,
-                                yOffset = toolbarOffset,
-                                onChangeActive = { isSearchActive = it },
-                                onClickDrawerMenu = {
-                                    scope.launch {
-                                        drawerState.open()
-                                    }
-                                },
-                                navigateToArtistDetail = {
-                                    appState.navController.navigateToArtistDetail(it)
-                                },
-                                navigateToAlbumDetail = {
-                                    appState.navController.navigateToAlbumDetail(it)
-                                },
-                                navigateToPlaylistDetail = {
-                                    appState.navController.navigateToPlaylistDetail(it)
-                                },
-                                navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
-                                navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
-                                navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
-                                navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
-                            )
-                        }
-
-                        KanadeNavHost(
-                            musicViewModel = musicViewModel,
-                            appState = appState,
-                            userData = userData,
-                            libraryTopBarHeight = with(density) { topBarHeight.toDp() },
+                            navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
+                            navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
+                            navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
+                            navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
                         )
                     }
+
+                    KanadeNavHost(
+                        musicViewModel = musicViewModel,
+                        appState = appState,
+                        userData = userData,
+                        libraryTopBarHeight = with(density) { topBarHeight.toDp() },
+                    )
                 }
             }
         }

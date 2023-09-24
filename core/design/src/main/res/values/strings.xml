@@ -390,7 +390,7 @@
     <string name="welcome_button_next">はじめる</string>
     <string name="welcome_permission_title">権限</string>
     <string name="welcome_permission_message">アプリの利用には以下の権限が必要です\n下のボタンを押して権限を許可してください</string>
-    <string name="welcome_permission_ready_title">許可済み</string>
+    <string name="welcome_permission_ready_title">準備完了</string>
     <string name="welcome_permission_ready_message">アプリの利用に必要な権限がすべて許可されました</string>
     <string name="welcome_permission_storage">ストレージ</string>
     <string name="welcome_permission_storage_message">楽曲ファイルにアクセスするため</string>
@@ -400,10 +400,10 @@
     <string name="welcome_permission_denied">DENIED</string>
     <string name="welcome_permission_optional">OPTIONAL</string>
     <string name="welcome_permission_allow_button">許可</string>
-    <string name="welcome_permission_complete_button">次へ</string>
+    <string name="welcome_permission_complete_button">完了</string>
     <string name="welcome_plus_title">Kanade+</string>
     <string name="welcome_plus_description">Kanade+をご購入済みですか？\n以下のボタンから購入を復元できます</string>
     <string name="welcome_plus_purchase">Kanade+とは？</string>
     <string name="welcome_plus_restore">購入を復元</string>
-    <string name="welcome_plus_complete_button">完了</string>
+    <string name="welcome_plus_complete_button">次へ</string>
 </resources>

@@ -44,7 +44,7 @@ import caios.android.kanade.feature.welcome.WelcomeIndicatorItem
 
 @Composable
 internal fun WelcomeTopScreen(
-    navigateToWelcomePermission: () -> Unit,
+    navigateToWelcomePlus: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeTopViewModel = hiltViewModel(),
 ) {
@@ -124,7 +124,9 @@ internal fun WelcomeTopScreen(
             shape = RoundedCornerShape(50),
             enabled = isAgreedPrivacyPolicy && isAgreedTermsOfService,
             onClick = {
-                navigateToWelcomePermission.invoke()
+                navigateToWelcomePlus.invoke()
+                viewModel.setAgreedPrivacyPolicy()
+                viewModel.setAgreedTermsOfService()
             },
         ) {
             Text(
@@ -195,6 +197,6 @@ private fun CheckBoxLinkButton(
 private fun PreviewWelcomeScreen() {
     WelcomeTopScreen(
         modifier = Modifier.fillMaxSize(),
-        navigateToWelcomePermission = {}
+        navigateToWelcomePlus = {}
     )
 }

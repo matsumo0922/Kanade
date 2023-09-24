@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun WelcomePlusScreen(
     navigateToBillingPlus: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToWelcomePermission: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomePlusViewModel = hiltViewModel(),
 ) {
@@ -102,7 +102,7 @@ internal fun WelcomePlusScreen(
         WelcomeIndicatorItem(
             modifier = Modifier.padding(bottom = 24.dp),
             max = 3,
-            step = 3,
+            step = 2,
         )
 
         Button(
@@ -110,11 +110,11 @@ internal fun WelcomePlusScreen(
                 .padding(bottom = 24.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(50),
-            onClick = { navigateToHome.invoke() },
+            onClick = { navigateToWelcomePermission.invoke() },
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
-                text = stringResource(R.string.welcome_permission_complete_button),
+                text = stringResource(R.string.welcome_plus_complete_button),
             )
         }
     }
@@ -126,6 +126,6 @@ private fun WelcomePlusScreenPreview() {
     WelcomePlusScreen(
         modifier = Modifier.fillMaxSize(),
         navigateToBillingPlus = {},
-        navigateToHome = {},
+        navigateToWelcomePermission = {},
     )
 }
