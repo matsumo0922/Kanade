@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "caios.android.kanade.feature.billing"
+    namespace = "caios.android.kanade.feature.welcome"
 }
 
 dependencies {

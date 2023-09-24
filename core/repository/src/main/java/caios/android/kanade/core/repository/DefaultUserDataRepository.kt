@@ -56,4 +56,12 @@ class DefaultUserDataRepository @Inject constructor(
     override suspend fun setUseIgnoreNotMusic(isIgnoreNotMusic: Boolean) {
         kanadePreferencesDataStore.setUseIgnoreNotMusic(isIgnoreNotMusic)
     }
+
+    override suspend fun setAgreedPrivacyPolicy(isAgreedPrivacyPolicy: Boolean) {
+        kanadePreferencesDataStore.setAgreedPrivacyPolicy(isAgreedPrivacyPolicy)
+    }
+
+    override suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean) {
+        kanadePreferencesDataStore.setAgreedTermsOfService(isAgreedTermsOfService)
+    }
 }

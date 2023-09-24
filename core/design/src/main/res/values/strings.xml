@@ -380,4 +380,30 @@
     <string name="billing_plus_item_feature_description">新機能が追加された際にいち早く試すことができるようになります。</string>
     <string name="billing_plus_item_support">最優先サポート</string>
     <string name="billing_plus_item_support_description">Kanade+ユーザーは最優先でサポートを受けることができます。</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">ようこそ</string>
+    <string name="welcome_description">Kanadeでワクワクドキドキな音楽体験を！\n洗練されたデザインと機能で音楽視聴を楽しみましょう！</string>
+    <string name="welcome_privacy_policy">プライバシーポリシー</string>
+    <string name="welcome_team_of_service">利用規約</string>
+    <string name="welcome_agree">に同意する</string>
+    <string name="welcome_button_next">はじめる</string>
+    <string name="welcome_permission_title">権限</string>
+    <string name="welcome_permission_message">アプリの利用には以下の権限が必要です\n下のボタンを押して権限を許可してください</string>
+    <string name="welcome_permission_ready_title">準備完了</string>
+    <string name="welcome_permission_ready_message">アプリの利用に必要な権限がすべて許可されました</string>
+    <string name="welcome_permission_storage">ストレージ</string>
+    <string name="welcome_permission_storage_message">楽曲ファイルにアクセスするため</string>
+    <string name="welcome_permission_notification">通知</string>
+    <string name="welcome_permission_notification_message">コントローラーを表示するため</string>
+    <string name="welcome_permission_allowed">ALLOWED</string>
+    <string name="welcome_permission_denied">DENIED</string>
+    <string name="welcome_permission_optional">OPTIONAL</string>
+    <string name="welcome_permission_allow_button">許可</string>
+    <string name="welcome_permission_complete_button">完了</string>
+    <string name="welcome_plus_title">Kanade+</string>
+    <string name="welcome_plus_description">Kanade+をご購入済みですか？\n以下のボタンから購入を復元できます</string>
+    <string name="welcome_plus_purchase">Kanade+とは？</string>
+    <string name="welcome_plus_restore">購入を復元</string>
+    <string name="welcome_plus_complete_button">次へ</string>
 </resources>

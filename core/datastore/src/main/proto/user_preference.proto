@@ -20,4 +20,6 @@ message UserPreference {
   optional bool is_use_stop_when_taskkill = 9;
   optional bool is_use_ignore_short_music = 10;
   optional bool is_use_ignore_not_music = 11;
+  optional bool is_agreed_privacy_policy = 12;
+  optional bool is_agreed_terms_of_service = 13;
 }

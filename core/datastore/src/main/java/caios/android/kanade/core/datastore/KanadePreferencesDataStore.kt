@@ -49,6 +49,8 @@ class KanadePreferencesDataStore @Inject constructor(
                 isStopWhenTaskkill = if (it.hasIsUseStopWhenTaskkill()) it.isUseStopWhenTaskkill else false,
                 isIgnoreShortMusic = if (it.hasIsUseIgnoreShortMusic()) it.isUseIgnoreShortMusic else true,
                 isIgnoreNotMusic = if (it.hasIsUseIgnoreNotMusic()) it.isUseIgnoreNotMusic else true,
+                isAgreedPrivacyPolicy = if (it.hasIsAgreedPrivacyPolicy()) it.isAgreedPrivacyPolicy else false,
+                isAgreedTermsOfService = if (it.hasIsAgreedTermsOfService()) it.isAgreedTermsOfService else false,
             )
         }
 
@@ -214,6 +216,22 @@ class KanadePreferencesDataStore @Inject constructor(
         userPreference.updateData {
             it.copy {
                 this.isUseIgnoreNotMusic = useIgnoreNotMusic
+            }
+        }
+    }
+
+    suspend fun setAgreedPrivacyPolicy(isAgreedPrivacyPolicy: Boolean) = withContext(ioDispatcher) {
+        userPreference.updateData {
+            it.copy {
+                this.isAgreedPrivacyPolicy = isAgreedPrivacyPolicy
+            }
+        }
+    }
+
+    suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean) = withContext(ioDispatcher) {
+        userPreference.updateData {
+            it.copy {
+                this.isAgreedTermsOfService = isAgreedTermsOfService
             }
         }
     }

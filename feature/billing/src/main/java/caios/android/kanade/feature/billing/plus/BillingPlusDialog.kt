@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -64,7 +65,7 @@ private fun BillingPlusDialog(
     modifier: Modifier = Modifier,
 ) {
     val purchase = uiState.purchase
-    val productDetails = uiState.productDetails ?: return
+    val productDetails = uiState.productDetails
 
     Column(
         modifier = modifier
@@ -93,7 +94,7 @@ private fun BillingPlusDialog(
                 .fillMaxWidth(),
             onClick = { onClickPurchase.invoke() },
         ) {
-            Text(stringResource(R.string.billing_plus_purchase_button, productDetails.rawProductDetails.oneTimePurchaseOfferDetails?.formattedPrice ?: "￥300"))
+            Text(stringResource(R.string.billing_plus_purchase_button, productDetails?.rawProductDetails?.oneTimePurchaseOfferDetails?.formattedPrice ?: "￥300"))
         }
 
         OutlinedButton(
@@ -277,6 +278,23 @@ private fun PlusItem(
     }
 }
 
+@Preview
+@Composable
+private fun BillingPlusScreenPreview() {
+    BillingPlusDialog(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .fillMaxSize(),
+        uiState = BillingPlusUiState(
+            isDeveloperMode = true,
+            isPlusMode = false,
+        ),
+        onClickPurchase = {},
+        onClickVerify = {},
+        onClickConsume = {},
+    )
+}
+
 fun Activity.showBillingPlusDialog(
     userData: UserData?,
 ) {
@@ -290,31 +308,29 @@ fun Activity.showBillingPlusDialog(
             screenState = screenState,
             retryAction = { onDismiss.invoke() },
         ) { uiState ->
-            if (uiState != null) {
-                BillingPlusDialog(
-                    modifier = Modifier.fillMaxSize(),
-                    uiState = uiState,
-                    onClickPurchase = {
-                        scope.launch {
-                            if (viewModel.purchase(this@showBillingPlusDialog)) {
-                                onDismiss.invoke()
-                            }
+            BillingPlusDialog(
+                modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                onClickPurchase = {
+                    scope.launch {
+                        if (viewModel.purchase(this@showBillingPlusDialog)) {
+                            onDismiss.invoke()
                         }
-                    },
-                    onClickVerify = {
-                        scope.launch {
-                            if (viewModel.verify(this@showBillingPlusDialog)) {
-                                onDismiss.invoke()
-                            }
+                    }
+                },
+                onClickVerify = {
+                    scope.launch {
+                        if (viewModel.verify(this@showBillingPlusDialog)) {
+                            onDismiss.invoke()
                         }
-                    },
-                    onClickConsume = {
-                        scope.launch {
-                            viewModel.consume(this@showBillingPlusDialog, it)
-                        }
-                    },
-                )
-            }
+                    }
+                },
+                onClickConsume = {
+                    scope.launch {
+                        viewModel.consume(this@showBillingPlusDialog, it)
+                    }
+                },
+            )
         }
     }
 }

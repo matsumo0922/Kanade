@@ -20,4 +20,6 @@ interface UserDataRepository {
     suspend fun setUseStopWhenTaskkill(isStopWhenTaskkill: Boolean)
     suspend fun setUseIgnoreShortMusic(isIgnoreShortMusic: Boolean)
     suspend fun setUseIgnoreNotMusic(isIgnoreNotMusic: Boolean)
+    suspend fun setAgreedPrivacyPolicy(isAgreedPrivacyPolicy: Boolean)
+    suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean)
 }
