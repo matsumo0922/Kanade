@@ -122,6 +122,7 @@ dependencies {
     implementation(project(":feature:report"))
     implementation(project(":feature:equalizer"))
     implementation(project(":feature:billing"))
+    implementation(project(":feature:welcome"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
