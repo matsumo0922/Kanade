@@ -18,10 +18,10 @@ fun NavGraphBuilder.welcomeScreen(
 ) {
     composable(
         route = WelcomeRoute,
-        enterTransition = { NavigateAnimation.Vertical.enter },
-        exitTransition = { NavigateAnimation.Vertical.exit },
-        popEnterTransition = { NavigateAnimation.Vertical.popEnter },
-        popExitTransition = { NavigateAnimation.Vertical.popExit },
+        enterTransition = { NavigateAnimation.Horizontal.enter },
+        exitTransition = { NavigateAnimation.Horizontal.exit },
+        popEnterTransition = { NavigateAnimation.Horizontal.popEnter },
+        popExitTransition = { NavigateAnimation.Horizontal.popExit },
     ) {
         WelcomeScreen(
             modifier = Modifier.fillMaxSize(),

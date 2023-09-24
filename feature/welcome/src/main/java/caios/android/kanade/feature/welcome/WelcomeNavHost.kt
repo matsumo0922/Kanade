@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import caios.android.kanade.feature.welcome.permission.navigateToWelcomePermission
+import caios.android.kanade.feature.welcome.permission.welcomePermissionScreen
 import caios.android.kanade.feature.welcome.welcome.WelcomeRoute
 import caios.android.kanade.feature.welcome.welcome.welcomeScreen
 
@@ -22,6 +23,10 @@ fun WelcomeNavHost(
     ) {
         welcomeScreen(
             navigateToWelcomePermission = { navController.navigateToWelcomePermission() },
+        )
+
+        welcomePermissionScreen(
+            navigateToWelcomePlus = { },
         )
     }
 }

@@ -49,8 +49,8 @@ object NavigateAnimation {
     }
 
     object Horizontal {
-        private const val DURATION_FADE = 180
-        private const val DURATION_SLIDE = 180
+        private const val DURATION_FADE = 300
+        private const val DURATION_SLIDE = 300
 
         val enter = fadeIn(tween(DURATION_FADE)) + slideIn(
             animationSpec = tween(DURATION_SLIDE, 0, decelerateEasing),

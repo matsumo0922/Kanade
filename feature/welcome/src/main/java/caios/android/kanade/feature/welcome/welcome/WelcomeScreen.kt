@@ -124,15 +124,12 @@ internal fun WelcomeScreen(
             shape = RoundedCornerShape(50),
             enabled = isAgreedPrivacyPolicy && isAgreedTermsOfService,
             onClick = {
-                viewModel.setAgreedPrivacyPolicy()
-                viewModel.setAgreedTermsOfService()
                 navigateToWelcomePermission.invoke()
             },
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
                 text = stringResource(R.string.welcome_button_next),
-                style = MaterialTheme.typography.labelMedium,
                 color = if (isAgreedPrivacyPolicy && isAgreedTermsOfService) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
             )
         }

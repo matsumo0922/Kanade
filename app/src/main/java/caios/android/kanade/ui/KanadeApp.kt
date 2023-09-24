@@ -61,7 +61,6 @@ import caios.android.kanade.core.music.LastFmService
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.ui.controller.AppController
 import caios.android.kanade.core.ui.dialog.LoadingDialog
-import caios.android.kanade.core.ui.dialog.PermissionDialog
 import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.download.input.navigateToDownloadInput
@@ -247,8 +246,6 @@ fun KanadeApp(
                     )
                 },
             ) { paddingValues ->
-                RequestPermissions(musicViewModel::fetch)
-
                 val padding = PaddingValues(
                     top = paddingValues.calculateTopPadding(),
                     bottom = bottomSheetPeekHeight,
@@ -364,41 +361,6 @@ fun KanadeApp(
                     }
                 }
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-private fun RequestPermissions(onGranted: () -> Unit) {
-    var isPermissionRequested by remember { mutableStateOf(false) }
-    var isShowPermissionDialog by remember { mutableStateOf(true) }
-
-    val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-    val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    val locationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) android.Manifest.permission.ACCESS_FINE_LOCATION else null
-
-    val permissionList = listOfNotNull(storagePermission, notifyPermission, locationPermission)
-    val permissionsState = rememberMultiplePermissionsState(permissionList) {
-        isPermissionRequested = true
-    }
-
-    if (permissionsState.permissions[0].status is PermissionStatus.Granted) {
-        if (isPermissionRequested) {
-            isPermissionRequested = false
-            onGranted.invoke()
-        }
-        return
-    }
-
-    if (permissionsState.shouldShowRationale || isPermissionRequested) {
-        PermissionDialog(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            onDismiss = { isShowPermissionDialog = false },
-        )
-    } else {
-        LaunchedEffect(permissionsState) {
-            permissionsState.launchMultiplePermissionRequest()
         }
     }
 }
