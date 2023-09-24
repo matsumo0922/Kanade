@@ -33,6 +33,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
@@ -41,6 +42,7 @@ import caios.android.kanade.core.design.theme.center
 internal fun WelcomeScreen(
     navigateToWelcomePermission: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: WelcomeViewModel = hiltViewModel(),
 ) {
     var isAgreedPrivacyPolicy by remember { mutableStateOf(false) }
     var isAgreedTermsOfService by remember { mutableStateOf(false) }
@@ -110,13 +112,17 @@ internal fun WelcomeScreen(
                 .padding(24.dp, 16.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(50),
-            onClick = { navigateToWelcomePermission.invoke() },
             enabled = isAgreedPrivacyPolicy && isAgreedTermsOfService,
+            onClick = {
+                viewModel.setAgreedPrivacyPolicy()
+                viewModel.setAgreedTermsOfService()
+                navigateToWelcomePermission.invoke()
+            },
         ) {
             Text(
                 text = stringResource(R.string.welcome_button_next),
                 style = MaterialTheme.typography.labelMedium,
-                color = if (isAgreedPrivacyPolicy && isAgreedTermsOfService) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface ,
+                color = if (isAgreedPrivacyPolicy && isAgreedTermsOfService) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
             )
         }
     }

@@ -3,6 +3,8 @@ package caios.android.kanade.core.model
 data class UserData(
     val themeConfig: ThemeConfig,
     val themeColorConfig: ThemeColorConfig,
+    val isAgreedPrivacyPolicy: Boolean,
+    val isAgreedTermsOfService: Boolean,
     val isDynamicColor: Boolean,
     val isDeveloperMode: Boolean,
     val isPlusMode: Boolean,
@@ -18,6 +20,8 @@ data class UserData(
             return UserData(
                 themeConfig = ThemeConfig.System,
                 themeColorConfig = ThemeColorConfig.Default,
+                isAgreedPrivacyPolicy = false,
+                isAgreedTermsOfService = false,
                 isDynamicColor = true,
                 isDeveloperMode = true,
                 isPlusMode = false,
