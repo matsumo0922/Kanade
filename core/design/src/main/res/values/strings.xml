@@ -380,4 +380,12 @@
     <string name="billing_plus_item_feature_description">新機能が追加された際にいち早く試すことができるようになります。</string>
     <string name="billing_plus_item_support">最優先サポート</string>
     <string name="billing_plus_item_support_description">Kanade+ユーザーは最優先でサポートを受けることができます。</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">ようこそ</string>
+    <string name="welcome_description">Kanadeでワクワクドキドキな音楽体験を！\n洗練されたデザインと機能で音楽視聴を楽しみましょう！</string>
+    <string name="welcome_privacy_policy">プライバシーポリシー</string>
+    <string name="welcome_team_of_service">利用規約</string>
+    <string name="welcome_agree">に同意する</string>
+    <string name="welcome_button_next">はじめる</string>
 </resources>
