@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.welcome.top
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.bold
@@ -48,8 +51,12 @@ internal fun WelcomeTopScreen(
     modifier: Modifier = Modifier,
     viewModel: WelcomeTopViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     var isAgreedPrivacyPolicy by remember { mutableStateOf(false) }
     var isAgreedTermsOfService by remember { mutableStateOf(false) }
+
+    val teamOfServiceUri = "https://www.matsumo.me/application/kanade/team_of_service".toUri()
+    val privacyPolicyUri = "https://www.matsumo.me/application/kanade/privacy_policy".toUri()
 
     Column(
         modifier = modifier
@@ -96,7 +103,7 @@ internal fun WelcomeTopScreen(
                 link = stringResource(R.string.welcome_team_of_service),
                 body = stringResource(R.string.welcome_agree),
                 onChecked = { isAgreedTermsOfService = it },
-                onLinkClick = { },
+                onLinkClick = { context.startActivity(Intent(Intent.ACTION_VIEW, teamOfServiceUri)) },
             )
 
             CheckBoxLinkButton(
@@ -104,7 +111,7 @@ internal fun WelcomeTopScreen(
                 link = stringResource(R.string.welcome_privacy_policy),
                 body = stringResource(R.string.welcome_agree),
                 onChecked = { isAgreedPrivacyPolicy = it },
-                onLinkClick = { },
+                onLinkClick = { context.startActivity(Intent(Intent.ACTION_VIEW, privacyPolicyUri)) },
             )
         }
 

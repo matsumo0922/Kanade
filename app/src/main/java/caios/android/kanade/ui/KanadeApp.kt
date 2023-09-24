@@ -94,12 +94,15 @@ fun KanadeApp(
 
         val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
         val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        val locationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) android.Manifest.permission.ACCESS_MEDIA_LOCATION else null
 
-        val permissionList = listOfNotNull(storagePermission, notifyPermission, locationPermission)
+        val permissionList = listOfNotNull(storagePermission, notifyPermission)
         val permissionsState = rememberMultiplePermissionsState(permissionList)
-        val isAllAllowed = permissionsState.permissions.all { it.status is PermissionStatus.Granted }
+        val isAllAllowed = permissionsState.permissions[0].status is PermissionStatus.Granted
 
+        val startDestination =
+            remember {
+                if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute
+            }
         var isShouldShowWelcomeScreen by remember { mutableStateOf(true) }
         val isShowWelcomeScreen = isShouldShowWelcomeScreen && (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed)
 
@@ -110,7 +113,7 @@ fun KanadeApp(
             if (it) {
                 WelcomeNavHost(
                     modifier = Modifier.fillMaxSize(),
-                    startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute,
+                    startDestination = startDestination,
                     navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
                     onComplete = { isShouldShowWelcomeScreen = false },
                 )
