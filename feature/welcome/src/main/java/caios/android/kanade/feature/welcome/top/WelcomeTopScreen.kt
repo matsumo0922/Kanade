@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.welcome.welcome
+package caios.android.kanade.feature.welcome.top
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,10 +43,10 @@ import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.feature.welcome.WelcomeIndicatorItem
 
 @Composable
-internal fun WelcomeScreen(
+internal fun WelcomeTopScreen(
     navigateToWelcomePermission: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: WelcomeViewModel = hiltViewModel(),
+    viewModel: WelcomeTopViewModel = hiltViewModel(),
 ) {
     var isAgreedPrivacyPolicy by remember { mutableStateOf(false) }
     var isAgreedTermsOfService by remember { mutableStateOf(false) }
@@ -90,7 +90,7 @@ internal fun WelcomeScreen(
 
         Column(
             modifier = Modifier.width(IntrinsicSize.Max),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             CheckBoxLinkButton(
                 isChecked = isAgreedTermsOfService,
@@ -193,7 +193,7 @@ private fun CheckBoxLinkButton(
 @Preview
 @Composable
 private fun PreviewWelcomeScreen() {
-    WelcomeScreen(
+    WelcomeTopScreen(
         modifier = Modifier.fillMaxSize(),
         navigateToWelcomePermission = {}
     )

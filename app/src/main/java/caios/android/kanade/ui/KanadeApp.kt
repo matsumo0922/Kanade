@@ -72,7 +72,7 @@ import caios.android.kanade.feature.search.scan.navigateToScanMedia
 import caios.android.kanade.feature.setting.top.navigateToSettingTop
 import caios.android.kanade.feature.welcome.WelcomeNavHost
 import caios.android.kanade.feature.welcome.permission.WelcomePermissionRoute
-import caios.android.kanade.feature.welcome.welcome.WelcomeRoute
+import caios.android.kanade.feature.welcome.top.WelcomeTopRoute
 import caios.android.kanade.navigation.KanadeNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -114,10 +114,14 @@ fun KanadeApp(
         val permissionsState = rememberMultiplePermissionsState(permissionList)
         val isAllAllowed = permissionsState.permissions.all { it.status is PermissionStatus.Granted }
 
-        if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed) {
+        var isShouldShowWelcomeScreen by remember { mutableStateOf(true) }
+
+        if (isShouldShowWelcomeScreen &&  (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed)) {
             WelcomeNavHost(
                 modifier = Modifier.fillMaxSize(),
-                startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeRoute else WelcomePermissionRoute,
+                startDestination = if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute,
+                navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
+                onComplete = { isShouldShowWelcomeScreen = false },
             )
 
             return@KanadeBackground

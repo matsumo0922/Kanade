@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.welcome.welcome
+package caios.android.kanade.feature.welcome.top
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WelcomeViewModel @Inject constructor(
+class WelcomeTopViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 

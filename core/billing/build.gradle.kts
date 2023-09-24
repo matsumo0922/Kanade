@@ -14,5 +14,5 @@ dependencies {
     implementation(project(":core:repository"))
     implementation(project(":core:datastore"))
 
-    implementation(libs.bundles.billing)
+    api(libs.bundles.billing)
 }

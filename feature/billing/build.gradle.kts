@@ -20,6 +20,5 @@ dependencies {
     implementation(project(":core:billing"))
 
     implementation(libs.bundles.ui.implementation)
-    implementation(libs.bundles.billing)
     kapt(libs.bundles.ui.kapt)
 }

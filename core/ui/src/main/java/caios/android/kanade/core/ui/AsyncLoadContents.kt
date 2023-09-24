@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.ui.view.ErrorView
 import caios.android.kanade.core.ui.view.LoadingView
+import timber.log.Timber
 
 @Composable
 fun <T> AsyncLoadContents(
@@ -30,30 +31,33 @@ fun <T> AsyncLoadContents(
     retryAction: () -> Unit = {},
     content: @Composable (T) -> Unit,
 ) {
-    Box(
+    AnimatedContent(
         modifier = modifier
             .clip(cornerShape)
             .background(containerColor),
-    ) {
-        AnimatedContent(
-            targetState = screenState,
-            label = "AsyncLoadContents",
-        ) { state ->
-            when (state) {
-                is ScreenState.Idle -> {
-                    content.invoke(state.data)
-                }
-                is ScreenState.Loading -> {
-                    LoadingView(
-                        modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)),
-                    )
-                }
-                is ScreenState.Error -> {
-                    ErrorView(
-                        errorState = state,
-                        retryAction = retryAction,
-                    )
-                }
+        targetState = screenState,
+        contentKey = { it.javaClass },
+        label = "AsyncLoadContents",
+    ) { state ->
+        Timber.d("AsyncLoadContents: ${state.javaClass}")
+
+        when (state) {
+            is ScreenState.Idle -> {
+                content.invoke(state.data)
+            }
+            is ScreenState.Loading -> {
+                LoadingView(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.2f)),
+                )
+            }
+            is ScreenState.Error -> {
+                ErrorView(
+                    modifier = Modifier.fillMaxSize(),
+                    errorState = state,
+                    retryAction = retryAction,
+                )
             }
         }
     }

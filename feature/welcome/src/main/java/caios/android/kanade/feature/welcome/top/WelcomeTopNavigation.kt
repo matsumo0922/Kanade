@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.welcome.welcome
+package caios.android.kanade.feature.welcome.top
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -7,23 +7,23 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import caios.android.kanade.core.design.animation.NavigateAnimation
 
-const val WelcomeRoute = "welcome"
+const val WelcomeTopRoute = "welcomeTop"
 
-fun NavController.navigateToWelcome() {
-    this.navigate(WelcomeRoute)
+fun NavController.navigateToWelcomeTop() {
+    this.navigate(WelcomeTopRoute)
 }
 
-fun NavGraphBuilder.welcomeScreen(
+fun NavGraphBuilder.welcomeTopScreen(
     navigateToWelcomePermission: () -> Unit,
 ) {
     composable(
-        route = WelcomeRoute,
+        route = WelcomeTopRoute,
         enterTransition = { NavigateAnimation.Horizontal.enter },
         exitTransition = { NavigateAnimation.Horizontal.exit },
         popEnterTransition = { NavigateAnimation.Horizontal.popEnter },
         popExitTransition = { NavigateAnimation.Horizontal.popExit },
     ) {
-        WelcomeScreen(
+        WelcomeTopScreen(
             modifier = Modifier.fillMaxSize(),
             navigateToWelcomePermission = navigateToWelcomePermission,
         )

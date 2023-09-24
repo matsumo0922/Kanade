@@ -6,13 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import caios.android.kanade.feature.welcome.permission.navigateToWelcomePermission
 import caios.android.kanade.feature.welcome.permission.welcomePermissionScreen
-import caios.android.kanade.feature.welcome.welcome.WelcomeRoute
-import caios.android.kanade.feature.welcome.welcome.welcomeScreen
+import caios.android.kanade.feature.welcome.plus.navigateToWelcomePlus
+import caios.android.kanade.feature.welcome.plus.welcomePlusScreen
+import caios.android.kanade.feature.welcome.top.WelcomeTopRoute
+import caios.android.kanade.feature.welcome.top.welcomeTopScreen
 
 @Composable
 fun WelcomeNavHost(
+    navigateToBillingPlus: () -> Unit,
+    onComplete: () -> Unit,
     modifier: Modifier = Modifier,
-    startDestination: String = WelcomeRoute,
+    startDestination: String = WelcomeTopRoute,
 ) {
     val navController = rememberNavController()
 
@@ -21,12 +25,17 @@ fun WelcomeNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        welcomeScreen(
+        welcomeTopScreen(
             navigateToWelcomePermission = { navController.navigateToWelcomePermission() },
         )
 
         welcomePermissionScreen(
-            navigateToWelcomePlus = { },
+            navigateToWelcomePlus = { navController.navigateToWelcomePlus() },
+        )
+
+        welcomePlusScreen(
+            navigateToBillingPlus = navigateToBillingPlus,
+            navigateToHome = onComplete,
         )
     }
 }
