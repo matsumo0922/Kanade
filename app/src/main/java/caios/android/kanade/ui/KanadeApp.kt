@@ -2,7 +2,6 @@ package caios.android.kanade.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -72,50 +71,34 @@ import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
 import caios.android.kanade.feature.search.scan.navigateToScanMedia
 import caios.android.kanade.feature.setting.top.navigateToSettingTop
 import caios.android.kanade.feature.welcome.WelcomeNavHost
-import caios.android.kanade.feature.welcome.permission.WelcomePermissionRoute
-import caios.android.kanade.feature.welcome.top.WelcomeTopRoute
 import caios.android.kanade.navigation.KanadeNavHost
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun KanadeApp(
     musicViewModel: MusicViewModel,
+    isAgreedTeams: Boolean,
+    isAllowedPermission: Boolean,
     userData: UserData,
     appState: KanadeAppState,
     modifier: Modifier = Modifier,
 ) {
+    val activity = (LocalContext.current as Activity)
+    var isShowWelcomeScreen by remember { mutableStateOf(!isAgreedTeams || !isAllowedPermission) }
+
     KanadeBackground(modifier) {
-        val activity = (LocalContext.current as Activity)
-
-        val notifyPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.POST_NOTIFICATIONS else null
-        val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-        val permissionList = listOfNotNull(storagePermission, notifyPermission)
-        val permissionsState = rememberMultiplePermissionsState(permissionList)
-        val isAllAllowed = permissionsState.permissions[0].status is PermissionStatus.Granted
-
-        val startDestination =
-            remember {
-                if (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService) WelcomeTopRoute else WelcomePermissionRoute
-            }
-        var isShouldShowWelcomeScreen by remember { mutableStateOf(true) }
-        val isShowWelcomeScreen = isShouldShowWelcomeScreen && (!userData.isAgreedPrivacyPolicy || !userData.isAgreedTermsOfService || !isAllAllowed)
-
         AnimatedContent(
-            targetState = isShowWelcomeScreen,
+            targetState = isShowWelcomeScreen && (!isAgreedTeams || !isAllowedPermission),
             label = "isShowWelcomeScreen",
         ) {
             if (it) {
                 WelcomeNavHost(
                     modifier = Modifier.fillMaxSize(),
-                    startDestination = startDestination,
+                    isAgreedTeams = isAgreedTeams,
+                    isAllowedPermission = isAllowedPermission,
                     navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
-                    onComplete = { isShouldShowWelcomeScreen = false },
+                    onComplete = { isShowWelcomeScreen = false },
                 )
             } else {
                 IdleScreen(
