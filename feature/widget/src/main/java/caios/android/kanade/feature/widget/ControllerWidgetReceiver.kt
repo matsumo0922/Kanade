@@ -1,0 +1,10 @@
+package caios.android.kanade.feature.widget
+
+import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetReceiver
+
+class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
+
+    override val glanceAppWidget: GlanceAppWidget
+        get() = ControllerWidget()
+}

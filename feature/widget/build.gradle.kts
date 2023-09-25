@@ -1,6 +1,6 @@
 plugins {
     id("kanade.library")
-    id("kanade.library.compose")
+    id("kanade.library.glance")
     id("kanade.hilt")
     id("kanade.detekt")
 }
@@ -20,6 +20,5 @@ dependencies {
     implementation(project(":core:billing"))
 
     implementation(libs.bundles.ui.implementation)
-    implementation(libs.bundles.glance)
     kapt(libs.bundles.ui.kapt)
 }

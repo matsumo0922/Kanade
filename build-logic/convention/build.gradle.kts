@@ -35,6 +35,10 @@ gradlePlugin {
             id = "kanade.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidLibraryGlance") {
+            id = "kanade.library.glance"
+            implementationClass = "AndroidLibraryGlanceConventionPlugin"
+        }
         register("androidHilt") {
             id = "kanade.hilt"
             implementationClass = "AndroidHiltConventionPlugin"

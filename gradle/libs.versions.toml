@@ -146,6 +146,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-glance = { module = "androidx.glance:glance", version.ref = "androidxGlance" }
 androidx-glance-widget = { module = "androidx.glance:glance-appwidget", version.ref = "androidxGlance" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlance" }
 androidx-glance-wear = { module = "androidx.glance:glance-wear-tiles", version.ref = "androidxGranceWear" }
 
 # Compose
@@ -308,5 +309,6 @@ youtubedl = [
 glance = [
     "androidx-glance",
     "androidx-glance-widget",
+    "androidx-glance-material3",
     "androidx-glance-wear",
 ]
