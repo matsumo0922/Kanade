@@ -57,7 +57,7 @@ internal fun AboutAppSection(
                             start.linkTo(parent.start, 24.dp)
                             bottom.linkTo(parent.bottom, 16.dp)
                         },
-                    painter = painterResource(R.drawable.ic_app_icon),
+                    painter = painterResource(R.drawable.vec_app_icon_no_background),
                     contentDescription = null,
                 )
 

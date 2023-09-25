@@ -69,18 +69,16 @@ fun PlaylistDetailRoute(
         screenState = screenState,
         retryAction = { terminate.invoke() },
     ) { uiState ->
-        if (uiState != null) {
-            PlaylistDetailScreen(
-                playlist = uiState.playlist,
-                onFetch = viewModel::fetch,
-                onClickPlay = viewModel::onNewPlay,
-                onClickMenu = navigateToPlaylistMenu,
-                onClickSongMenu = navigateToSongMenu,
-                onMoveItem = viewModel::onMoveItem,
-                onDeleteItem = viewModel::onDeleteItem,
-                onTerminate = terminate,
-            )
-        }
+        PlaylistDetailScreen(
+            playlist = uiState.playlist,
+            onFetch = viewModel::fetch,
+            onClickPlay = viewModel::onNewPlay,
+            onClickMenu = navigateToPlaylistMenu,
+            onClickSongMenu = navigateToSongMenu,
+            onMoveItem = viewModel::onMoveItem,
+            onDeleteItem = viewModel::onDeleteItem,
+            onTerminate = terminate,
+        )
     }
 }
 

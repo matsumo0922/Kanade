@@ -76,13 +76,11 @@ internal fun TagEditRoute(
         screenState = screenState,
         retryAction = terminate,
     ) {
-        if (it != null) {
-            TagEditScreen(
-                song = it.song,
-                onClickSave = viewModel::edit,
-                onTerminate = terminate,
-            )
-        }
+        TagEditScreen(
+            song = it.song,
+            onClickSave = viewModel::edit,
+            onTerminate = terminate,
+        )
     }
 }
 

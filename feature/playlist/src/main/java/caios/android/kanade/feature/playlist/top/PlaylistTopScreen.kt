@@ -34,13 +34,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.PlaylistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.reflect.KClass
 
@@ -56,15 +55,15 @@ internal fun PlaylistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    FullAsyncLoadContents(
+    AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
         PlaylistTopScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             contentPadding = PaddingValues(top = topMargin + 8.dp, bottom = 8.dp),
-            playlists = uiState?.playlists?.toImmutableList() ?: persistentListOf(),
-            sortOrder = uiState?.sortOrder ?: MusicOrder.playlistDefault(),
+            playlists = uiState.playlists.toImmutableList(),
+            sortOrder = uiState.sortOrder,
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Playlist::class) },
             onClickEdit = navigateToPlaylistEdit,
             onClickPlaylist = navigateToPlaylistDetail,

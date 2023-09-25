@@ -53,30 +53,28 @@ internal fun SettingTopRoute(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
-        if (uiState != null) {
-            SettingTopScreen(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                userData = uiState.userData,
-                config = uiState.config,
-                onClickTheme = navigateToSettingTheme,
-                onClickEqualizer = navigateToEqualizer,
-                onClickDynamicNormalizer = viewModel::setUseDynamicNormalizer,
-                onClickOneStepBack = viewModel::setOneStepBack,
-                onClickKeepAudioFocus = viewModel::setKeepAudioFocus,
-                onClickStopWhenTaskkill = viewModel::setStopWhenTaskkill,
-                onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
-                onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
-                onClickYtDlpVersion = viewModel::updateYoutubeDL,
-                onClickDeveloperMode = { isEnable ->
-                    if (isEnable) {
-                        navigateToSettingDeveloper()
-                    } else {
-                        viewModel.setDeveloperMode(false)
-                    }
-                },
-                onTerminate = terminate,
-            )
-        }
+        SettingTopScreen(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            userData = uiState.userData,
+            config = uiState.config,
+            onClickTheme = navigateToSettingTheme,
+            onClickEqualizer = navigateToEqualizer,
+            onClickDynamicNormalizer = viewModel::setUseDynamicNormalizer,
+            onClickOneStepBack = viewModel::setOneStepBack,
+            onClickKeepAudioFocus = viewModel::setKeepAudioFocus,
+            onClickStopWhenTaskkill = viewModel::setStopWhenTaskkill,
+            onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
+            onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
+            onClickYtDlpVersion = viewModel::updateYoutubeDL,
+            onClickDeveloperMode = { isEnable ->
+                if (isEnable) {
+                    navigateToSettingDeveloper()
+                } else {
+                    viewModel.setDeveloperMode(false)
+                }
+            },
+            onTerminate = terminate,
+        )
     }
 }
 

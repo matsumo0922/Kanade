@@ -38,15 +38,13 @@ internal fun EqualizerRoute(
         modifier = modifier,
         screenState = screenState,
     ) {
-        if (it != null) {
-            EqualizerScreen(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                equalizer = it.equalizer,
-                onClickPreset = viewModel::updatePreset,
-                onBandValueChanged = viewModel::updateBand,
-                onTerminate = terminate,
-            )
-        }
+        EqualizerScreen(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            equalizer = it.equalizer,
+            onClickPreset = viewModel::updatePreset,
+            onBandValueChanged = viewModel::updateBand,
+            onTerminate = terminate,
+        )
     }
 }
 

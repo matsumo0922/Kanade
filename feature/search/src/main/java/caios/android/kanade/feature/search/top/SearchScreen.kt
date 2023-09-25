@@ -13,7 +13,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.feature.search.top.items.SearchResultSection
 
 @Composable
@@ -61,13 +61,13 @@ private fun SearchScreen(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        FullAsyncLoadContents(
+        AsyncLoadContents(
             modifier = Modifier.fillMaxSize(),
             screenState = screenState,
         ) { uiState ->
             SearchResultSection(
                 modifier = Modifier.fillMaxSize(),
-                uiState = uiState ?: SearchUiState(),
+                uiState = uiState,
                 onClickSong = onClickSong,
                 onClickArtist = onClickArtist,
                 onClickAlbum = onClickAlbum,

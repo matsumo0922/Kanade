@@ -49,16 +49,14 @@ internal fun SettingThemeRoute(
         modifier = modifier,
         screenState = screenState,
     ) {
-        if (it != null) {
-            SettingThemeDialog(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                userData = it.userData,
-                onSelectTheme = viewModel::setThemeConfig,
-                onSelectThemeColor = viewModel::setThemeColorConfig,
-                onClickDynamicColor = viewModel::setUseDynamicColor,
-                onTerminate = terminate,
-            )
-        }
+        SettingThemeDialog(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            userData = it.userData,
+            onSelectTheme = viewModel::setThemeConfig,
+            onSelectThemeColor = viewModel::setThemeColorConfig,
+            onClickDynamicColor = viewModel::setUseDynamicColor,
+            onTerminate = terminate,
+        )
     }
 }
 

@@ -72,22 +72,20 @@ internal fun LyricsTopRoute(
         screenState = screenState,
         retryAction = { terminate.invoke() },
     ) { uiState ->
-        if (uiState != null) {
-            LyricsTopScreen(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                song = uiState.song,
-                lyrics = uiState.lyrics,
-                navigateToLyricsExplore = {
-                    val query = "${it.title} ${it.artist} lyrics".replace(" ", "+")
-                    val uri = "https://www.google.com/search?q=$query".toUri()
+        LyricsTopScreen(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            song = uiState.song,
+            lyrics = uiState.lyrics,
+            navigateToLyricsExplore = {
+                val query = "${it.title} ${it.artist} lyrics".replace(" ", "+")
+                val uri = "https://www.google.com/search?q=$query".toUri()
 
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                },
-                navigateToLyricsDownload = navigateToLyricsDownload,
-                onSaveLyrics = viewModel::save,
-                onTerminate = terminate,
-            )
-        }
+                context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+            },
+            navigateToLyricsDownload = navigateToLyricsDownload,
+            onSaveLyrics = viewModel::save,
+            onTerminate = terminate,
+        )
     }
 }
 

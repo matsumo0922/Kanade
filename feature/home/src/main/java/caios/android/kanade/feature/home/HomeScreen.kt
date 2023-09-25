@@ -29,7 +29,7 @@ import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Queue
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.feature.home.items.HomeHeaderSection
 import caios.android.kanade.feature.home.items.HomeQueueSection
 import caios.android.kanade.feature.home.items.HomeRecentlyAddedAlbumsSection
@@ -54,52 +54,50 @@ internal fun HomeRoute(
     val scope = rememberCoroutineScope()
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    FullAsyncLoadContents(
+    AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
-        if (uiState != null) {
-            if (uiState.recentlyAddedAlbums.isEmpty() || uiState.recentlyPlayedSongs.isEmpty() || uiState.mostPlayedSongs.isEmpty()) {
-                HomeEmptyScreen(
-                    modifier = Modifier.fillMaxSize(),
-                )
-            } else if (uiState.queue?.items?.isEmpty() == false) {
-                HomeScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface),
-                    queue = uiState.queue,
-                    songs = uiState.songs.toImmutableList(),
-                    recentlyAddedAlbums = uiState.recentlyAddedAlbums.toImmutableList(),
-                    recentlyPlayedSongs = uiState.recentlyPlayedSongs.toImmutableList(),
-                    mostPlayedSongs = uiState.mostPlayedSongs.toImmutableList(),
-                    contentPadding = PaddingValues(top = topMargin),
-                    onClickRecentlyAdded = {
-                        uiState.songs.sortedBy { it.addedDate }.map { it.id }.let {
-                            navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_recently_add), it)
-                        }
-                    },
-                    onClickHistory = {
-                        scope.launch {
-                            val songs = viewModel.getRecentlyPlayedSongs(9999999)
-                            navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_history), songs.map { it.id })
-                        }
-                    },
-                    onClickMostPlayed = {
-                        scope.launch {
-                            val songs = viewModel.getMostPlayedSongs(9999999)
-                            navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_most_played), songs.map { it.first.id })
-                        }
-                    },
-                    onClickPlay = viewModel::onNewPlay,
-                    onClickSongMenu = navigateToSongMenu,
-                    onClickAlbum = navigateToAlbumDetail,
-                    onClickAlbumMenu = navigateToAlbumMenu,
-                    onClickShuffle = viewModel::onShufflePlay,
-                    onClickQueue = navigateToQueue,
-                    onClickQueueItem = viewModel::onSkipToQueue,
-                )
-            }
+        if (uiState.recentlyAddedAlbums.isEmpty() || uiState.recentlyPlayedSongs.isEmpty() || uiState.mostPlayedSongs.isEmpty()) {
+            HomeEmptyScreen(
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else if (uiState.queue?.items?.isEmpty() == false) {
+            HomeScreen(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+                queue = uiState.queue,
+                songs = uiState.songs.toImmutableList(),
+                recentlyAddedAlbums = uiState.recentlyAddedAlbums.toImmutableList(),
+                recentlyPlayedSongs = uiState.recentlyPlayedSongs.toImmutableList(),
+                mostPlayedSongs = uiState.mostPlayedSongs.toImmutableList(),
+                contentPadding = PaddingValues(top = topMargin),
+                onClickRecentlyAdded = {
+                    uiState.songs.sortedBy { it.addedDate }.map { it.id }.let {
+                        navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_recently_add), it)
+                    }
+                },
+                onClickHistory = {
+                    scope.launch {
+                        val songs = viewModel.getRecentlyPlayedSongs(9999999)
+                        navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_history), songs.map { it.id })
+                    }
+                },
+                onClickMostPlayed = {
+                    scope.launch {
+                        val songs = viewModel.getMostPlayedSongs(9999999)
+                        navigateToSongDetail.invoke(context.getString(R.string.song_detail_title_most_played), songs.map { it.first.id })
+                    }
+                },
+                onClickPlay = viewModel::onNewPlay,
+                onClickSongMenu = navigateToSongMenu,
+                onClickAlbum = navigateToAlbumDetail,
+                onClickAlbumMenu = navigateToAlbumMenu,
+                onClickShuffle = viewModel::onShufflePlay,
+                onClickQueue = navigateToQueue,
+                onClickQueueItem = viewModel::onSkipToQueue,
+            )
         }
     }
 }

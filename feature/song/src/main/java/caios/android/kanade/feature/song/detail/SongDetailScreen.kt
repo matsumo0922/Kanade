@@ -66,20 +66,18 @@ internal fun SongDetailRoute(
         screenState = screenState,
         retryAction = { terminate.invoke() },
     ) {
-        if (it != null) {
-            SongDetailScreen(
-                modifier = Modifier.fillMaxSize(),
-                title = title,
-                songs = it.songs.toImmutableList(),
-                queue = it.queue,
-                onClickSongHolder = viewModel::onNewPlay,
-                onClickSongMenu = navigateToSongMenu,
-                onClickShuffle = viewModel::onShufflePlay,
-                onClickMenuAddToQueue = viewModel::addToQueue,
-                onClickMenuAddToPlaylist = navigateToAddToPlaylist,
-                onTerminate = terminate,
-            )
-        }
+        SongDetailScreen(
+            modifier = Modifier.fillMaxSize(),
+            title = title,
+            songs = it.songs.toImmutableList(),
+            queue = it.queue,
+            onClickSongHolder = viewModel::onNewPlay,
+            onClickSongMenu = navigateToSongMenu,
+            onClickShuffle = viewModel::onShufflePlay,
+            onClickMenuAddToQueue = viewModel::addToQueue,
+            onClickMenuAddToPlaylist = navigateToAddToPlaylist,
+            onTerminate = terminate,
+        )
     }
 }
 

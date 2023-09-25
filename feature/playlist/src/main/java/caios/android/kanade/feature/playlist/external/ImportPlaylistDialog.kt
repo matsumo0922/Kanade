@@ -44,14 +44,12 @@ internal fun ImportPlaylistRoute(
         cornerShape = RoundedCornerShape(16.dp),
         retryAction = terminate,
     ) {
-        if (it != null) {
-            ImportPlaylistDialog(
-                playlists = it.playlists.toImmutableList(),
-                externalPlaylists = it.externalPlaylists.toImmutableList(),
-                onClickImport = viewModel::import,
-                onTerminate = terminate,
-            )
-        }
+        ImportPlaylistDialog(
+            playlists = it.playlists.toImmutableList(),
+            externalPlaylists = it.externalPlaylists.toImmutableList(),
+            onClickImport = viewModel::import,
+            onTerminate = terminate,
+        )
     }
 }
 
