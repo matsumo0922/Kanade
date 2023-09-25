@@ -44,6 +44,8 @@ androidxCompose = "2023.09.01"
 androidxComposeMaterial3 = "1.2.0-alpha08"
 androidxComposeConstraintLayout = "1.1.0-alpha12"
 androidxHiltNavigationCompose = "1.0.0"
+androidxGlance = "1.0.0"
+androidxGranceWear = "1.0.0-alpha05"
 
 # Google
 playServiceAds = "21.1.0"
@@ -142,6 +144,9 @@ androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidxNavigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-glance = { module = "androidx.glance:glance", version.ref = "androidxGlance" }
+androidx-glance-widget = { module = "androidx.glance:glance-appwidget", version.ref = "androidxGlance" }
+androidx-glance-wear = { module = "androidx.glance:glance-wear-tiles", version.ref = "androidxGranceWear" }
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
@@ -298,4 +303,10 @@ youtubedl = [
     "youtubedl-android-library",
     "youtubedl-android-ffmpeg",
     "youtubedl-android-aria2c",
+]
+
+glance = [
+    "androidx-glance",
+    "androidx-glance-widget",
+    "androidx-glance-wear",
 ]
