@@ -136,7 +136,6 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-    implementation(libs.play.service.billing)
     implementation(libs.play.service.oss)
     implementation(libs.google.material)
 
