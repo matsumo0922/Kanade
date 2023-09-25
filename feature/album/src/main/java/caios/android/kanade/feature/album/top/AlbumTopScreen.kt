@@ -17,13 +17,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.reflect.KClass
 
@@ -38,14 +37,14 @@ internal fun AlbumTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    FullAsyncLoadContents(
+    AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
         AlbumTopScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            albums = uiState?.albums?.toImmutableList() ?: persistentListOf(),
-            sortOrder = uiState?.sortOrder ?: MusicOrder.albumDefault(),
+            albums = uiState.albums.toImmutableList(),
+            sortOrder = uiState.sortOrder,
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Album::class) },
             onClickAlbum = navigateToAlbumDetail,
             onClickPlay = viewModel::onNewPlay,

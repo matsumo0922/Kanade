@@ -17,13 +17,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.player.MusicOrder
 import caios.android.kanade.core.model.player.MusicOrderOption
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.ArtistHolder
 import caios.android.kanade.core.ui.music.SortInfo
 import caios.android.kanade.core.ui.view.FixedWithEdgeSpace
 import caios.android.kanade.core.ui.view.itemsWithEdgeSpace
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.reflect.KClass
 
@@ -37,14 +36,14 @@ internal fun ArtistTopRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    FullAsyncLoadContents(
+    AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
         ArtistTopScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-            artists = uiState?.artists?.toImmutableList() ?: persistentListOf(),
-            sortOrder = uiState?.sortOrder ?: MusicOrder.artistDefault(),
+            artists = uiState.artists.toImmutableList(),
+            sortOrder = uiState.sortOrder,
             onClickSort = { navigateToSort.invoke(MusicOrderOption.Artist::class) },
             onClickArtist = navigateToArtistDetail,
             contentPadding = PaddingValues(top = topMargin + 8.dp, bottom = 8.dp),

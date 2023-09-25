@@ -1,6 +1,8 @@
 package caios.android.kanade
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -86,6 +90,8 @@ class MainActivity : ComponentActivity() {
                 screenState = screenState,
             ) { userData ->
                 val appState = rememberKanadeAppState(windowSize, musicViewModel, userData)
+                val isAgreedTeams = remember { userData.isAgreedPrivacyPolicy && userData.isAgreedTermsOfService }
+                val isAllowedPermission = remember { !shouldAllowPermission() }
 
                 KanadeTheme(
                     themeColorConfig = userData.themeColorConfig,
@@ -97,6 +103,8 @@ class MainActivity : ComponentActivity() {
                         musicViewModel = musicViewModel,
                         userData = userData,
                         appState = appState,
+                        isAgreedTeams = isAgreedTeams,
+                        isAllowedPermission = isAllowedPermission,
                     )
                 }
             }
@@ -149,5 +157,10 @@ class MainActivity : ComponentActivity() {
             is ScreenState.Idle -> screenState.data.isDynamicColor
             else -> false
         }
+    }
+
+    private fun shouldAllowPermission(): Boolean {
+        val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        return ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED
     }
 }

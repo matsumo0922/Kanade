@@ -57,16 +57,16 @@ internal fun LyricsDownloadRoute(
         retryAction = { terminate.invoke() },
         cornerShape = RoundedCornerShape(16.dp),
     ) { uiState ->
-        LaunchedEffect(uiState?.state) {
-            if (uiState?.state == LyricsDownloadUiState.State.Downloaded) {
+        LaunchedEffect(uiState.state) {
+            if (uiState.state == LyricsDownloadUiState.State.Downloaded) {
                 terminate.invoke()
             }
         }
 
         LyricsDownloadDialog(
-            song = uiState?.song,
-            token = uiState?.token,
-            state = uiState?.state ?: LyricsDownloadUiState.State.Idle,
+            song = uiState.song,
+            token = uiState.token,
+            state = uiState.state,
             onClickTokenWebPage = { context.startActivity(Intent(Intent.ACTION_VIEW, it.toUri())) },
             onClickDownload = viewModel::download,
             onTerminate = terminate,

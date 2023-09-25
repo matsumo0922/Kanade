@@ -43,14 +43,12 @@ internal fun SongInformationRoute(
         cornerShape = RoundedCornerShape(16.dp),
         retryAction = terminate,
     ) {
-        if (it != null) {
-            SongInformationDialog(
-                song = it.song,
-                volume = it.volume,
-                playCount = it.playCount,
-                isFavorite = it.isFavorite,
-            )
-        }
+        SongInformationDialog(
+            song = it.song,
+            volume = it.volume,
+            playCount = it.playCount,
+            isFavorite = it.isFavorite,
+        )
     }
 }
 

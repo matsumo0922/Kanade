@@ -23,7 +23,7 @@ Kanadeは同期歌詞を表示できるエレガントな音楽プレイヤー�
 <hr>
 
 <p align="center">
-    <img src="./media/screenshots.png" width="100%" alt="screenshots">
+    <img src="media/screenshot/screenshots.png" width="100%" alt="screenshots">
 </p>
 
 

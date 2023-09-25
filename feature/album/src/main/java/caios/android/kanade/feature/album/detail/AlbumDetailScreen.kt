@@ -56,17 +56,15 @@ internal fun AlbumDetailRoute(
         screenState = screenState,
         retryAction = { terminate.invoke() },
     ) {
-        if (it != null) {
-            AlbumDetailScreen(
-                modifier = Modifier.fillMaxSize(),
-                album = it.album,
-                onClickSongHolder = viewModel::onNewPlay,
-                onClickSongMenu = navigateToSongMenu,
-                onClickMenu = navigateToAlbumMenu,
-                onClickShuffle = viewModel::onShufflePlay,
-                onTerminate = terminate,
-            )
-        }
+        AlbumDetailScreen(
+            modifier = Modifier.fillMaxSize(),
+            album = it.album,
+            onClickSongHolder = viewModel::onNewPlay,
+            onClickSongMenu = navigateToSongMenu,
+            onClickMenu = navigateToAlbumMenu,
+            onClickShuffle = viewModel::onShufflePlay,
+            onTerminate = terminate,
+        )
     }
 }
 

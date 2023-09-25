@@ -39,7 +39,7 @@ import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.ArtistDetail
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.FullAsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.music.AlbumDetailHeader
 import caios.android.kanade.core.ui.music.AlbumHolder
 import caios.android.kanade.core.ui.music.SongDetailHeader
@@ -66,26 +66,24 @@ internal fun ArtistDetailRoute(
         viewModel.fetch(artistId)
     }
 
-    FullAsyncLoadContents(
+    AsyncLoadContents(
         modifier = modifier,
         screenState = screenState,
         retryAction = { terminate.invoke() },
     ) {
-        if (it != null) {
-            ArtistDetailScreen(
-                modifier = Modifier.fillMaxSize(),
-                artist = it.artist,
-                artistDetail = it.artistDetail,
-                onClickSeeAll = navigateToSongDetail,
-                onClickSongHolder = viewModel::onNewPlay,
-                onClickSongMenu = navigateToSongMenu,
-                onClickAlbumHolder = navigateToAlbumDetail,
-                onClickAlbumMenu = navigateToAlbumMenu,
-                onClickMenu = navigateToArtistMenu,
-                onClickShuffle = viewModel::onShufflePlay,
-                onTerminate = terminate,
-            )
-        }
+        ArtistDetailScreen(
+            modifier = Modifier.fillMaxSize(),
+            artist = it.artist,
+            artistDetail = it.artistDetail,
+            onClickSeeAll = navigateToSongDetail,
+            onClickSongHolder = viewModel::onNewPlay,
+            onClickSongMenu = navigateToSongMenu,
+            onClickAlbumHolder = navigateToAlbumDetail,
+            onClickAlbumMenu = navigateToAlbumMenu,
+            onClickMenu = navigateToArtistMenu,
+            onClickShuffle = viewModel::onShufflePlay,
+            onTerminate = terminate,
+        )
     }
 }
 

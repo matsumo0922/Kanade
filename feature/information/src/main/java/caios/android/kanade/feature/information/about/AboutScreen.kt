@@ -52,28 +52,26 @@ internal fun AboutRoute(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
-        if (uiState != null) {
-            AboutScreen(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                userData = uiState.userData,
-                config = uiState.config,
-                onClickGithub = { openLink("https://github.com/matsumo0922/KanadeMark3") },
-                onClickGithubProfile = { openLink("https://github.com/matsumo0922") },
-                onClickGithubIssue = { openLink("https://github.com/matsumo0922/KanadeMark3/issues/new") },
-                onClickDiscord = { ToastUtil.show(context, R.string.error_developing_feature) },
-                onClickGooglePlay = { openLink("https://play.google.com/store/apps/details?id=caios.android.kanade") },
-                onClickGooglePlayDeveloper = { openLink("https://play.google.com/store/apps/developer?id=CAIOS") },
-                onClickTwitter = { openLink("https://twitter.com/matsumo0922") },
-                onClickMao = { openLink("https://maou.audio/") },
-                onClickMaoTwitter = {
-                    openLink("https://twitter.com/koichi_maou?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor")
-                },
-                onClick358Design = { openLink("https://www.instagram.com/0358_design/") },
-                onClickVersionHistory = { navigateToVersionHistory.invoke(uiState.versions.toImmutableList()) },
-                onClickDonate = { navigateToDonate.invoke() },
-                onTerminate = terminate,
-            )
-        }
+        AboutScreen(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            userData = uiState.userData,
+            config = uiState.config,
+            onClickGithub = { openLink("https://github.com/matsumo0922/KanadeMark3") },
+            onClickGithubProfile = { openLink("https://github.com/matsumo0922") },
+            onClickGithubIssue = { openLink("https://github.com/matsumo0922/KanadeMark3/issues/new") },
+            onClickDiscord = { ToastUtil.show(context, R.string.error_developing_feature) },
+            onClickGooglePlay = { openLink("https://play.google.com/store/apps/details?id=caios.android.kanade") },
+            onClickGooglePlayDeveloper = { openLink("https://play.google.com/store/apps/developer?id=CAIOS") },
+            onClickTwitter = { openLink("https://twitter.com/matsumo0922") },
+            onClickMao = { openLink("https://maou.audio/") },
+            onClickMaoTwitter = {
+                openLink("https://twitter.com/koichi_maou?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor")
+            },
+            onClick358Design = { openLink("https://www.instagram.com/0358_design/") },
+            onClickVersionHistory = { navigateToVersionHistory.invoke(uiState.versions.toImmutableList()) },
+            onClickDonate = { navigateToDonate.invoke() },
+            onTerminate = terminate,
+        )
     }
 }
 

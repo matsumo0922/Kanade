@@ -84,18 +84,16 @@ internal fun DownloadFormatRoute(
         modifier = modifier,
         screenState = screenState,
     ) {
-        if (it != null) {
-            DownloadFormatScreen(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                videoInfo = it.videoInfo,
-                downloadState = it.downloadState,
-                saveUniFile = it.saveUniFile,
-                onClickTagEdit = navigateToTagEdit,
-                onDownload = viewModel::download,
-                onUpdateSaveUri = viewModel::updateSaveUri,
-                onTerminate = terminate,
-            )
-        }
+        DownloadFormatScreen(
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            videoInfo = it.videoInfo,
+            downloadState = it.downloadState,
+            saveUniFile = it.saveUniFile,
+            onClickTagEdit = navigateToTagEdit,
+            onDownload = viewModel::download,
+            onUpdateSaveUri = viewModel::updateSaveUri,
+            onTerminate = terminate,
+        )
     }
 }
 

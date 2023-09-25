@@ -119,19 +119,17 @@ fun Activity.showQueueDialog(
             screenState = screenState,
             retryAction = { onDismiss.invoke() },
         ) {
-            if (it != null) {
-                QueueDialog(
-                    modifier = Modifier.fillMaxSize(),
-                    uiState = it,
-                    onClickDismiss = onDismiss,
-                    onClickMenuAddPlaylist = navigateToAddToPlaylist,
-                    onClickMenuShare = navigateToShare,
-                    onClickSongMenu = navigateToSongMenu,
-                    onClickSkipToQueue = viewModel::onSkipToQueue,
-                    onDeleteItem = viewModel::onDeleteItem,
-                    onMoveQueue = viewModel::onQueueChanged,
-                )
-            }
+            QueueDialog(
+                modifier = Modifier.fillMaxSize(),
+                uiState = it,
+                onClickDismiss = onDismiss,
+                onClickMenuAddPlaylist = navigateToAddToPlaylist,
+                onClickMenuShare = navigateToShare,
+                onClickSongMenu = navigateToSongMenu,
+                onClickSkipToQueue = viewModel::onSkipToQueue,
+                onDeleteItem = viewModel::onDeleteItem,
+                onMoveQueue = viewModel::onQueueChanged,
+            )
         }
     }
 }
