@@ -1,9 +1,9 @@
 package caios.android.kanade.feature.widget.items
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
@@ -27,23 +27,17 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import caios.android.kanade.core.design.R
-import caios.android.kanade.core.model.UserData
-import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.model.player.PlayerState
 
 @Composable
 internal fun ControllerWidgetScreen(
-    userData: UserData,
-    currentSong: Song?,
-    playerState: PlayerState,
+    songTitle: String,
+    songArtwork: Bitmap?,
+    isPlaying: Boolean,
+    isPlusUser: Boolean,
     modifier: GlanceModifier = GlanceModifier,
 ) {
     val context = LocalContext.current
-    val playPauseIcon = when (playerState) {
-        PlayerState.Playing -> Icon.createWithResource(context, R.drawable.vec_play)
-        PlayerState.Paused -> Icon.createWithResource(context, R.drawable.vec_pause)
-        else -> Icon.createWithResource(context, R.drawable.vec_play)
-    }
+    val playPauseIcon = Icon.createWithResource(context, if (isPlaying) R.drawable.vec_pause else R.drawable.vec_play)
     val mainIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
         addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         putExtra("notify", true)
@@ -55,9 +49,10 @@ internal fun ControllerWidgetScreen(
             .clickable(androidx.glance.appwidget.action.actionStartActivity(mainIntent ?: Intent())),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        GlanceArtwork(
+        Image(
             modifier = GlanceModifier.size(90.dp),
-            artwork = currentSong?.albumArtwork ?: caios.android.kanade.core.model.music.Artwork.Unknown,
+            provider = ImageProvider(songArtwork?.let { Icon.createWithBitmap(it) } ?: Icon.createWithResource(context, R.drawable.im_default_artwork)),
+            contentDescription = null,
         )
 
         Column(
@@ -66,7 +61,7 @@ internal fun ControllerWidgetScreen(
         ) {
             Text(
                 modifier = GlanceModifier.fillMaxWidth(),
-                text = currentSong?.title ?: stringResource(R.string.music_unknown_title),
+                text = songTitle,
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,

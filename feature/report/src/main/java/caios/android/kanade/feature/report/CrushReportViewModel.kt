@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.report
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ScreenState
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class CrushReportViewModel @Inject constructor(
     userDataRepository: UserDataRepository,

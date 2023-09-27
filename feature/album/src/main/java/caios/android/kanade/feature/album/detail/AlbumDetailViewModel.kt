@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import java.util.Random
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class AlbumDetailViewModel @Inject constructor(
     private val musicController: MusicController,

@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class MusicViewModel @Inject constructor(
     private val backwardCompatibleChecker: BackwardCompatibleChecker,

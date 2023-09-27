@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class ScanMediaViewModel @Inject constructor(
     private val musicRepository: MusicRepository,

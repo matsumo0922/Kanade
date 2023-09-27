@@ -25,6 +25,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class TagEditViewModel @Inject constructor(
     private val musicRepository: MusicRepository,

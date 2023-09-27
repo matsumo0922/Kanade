@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class ExportPlaylistViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository,

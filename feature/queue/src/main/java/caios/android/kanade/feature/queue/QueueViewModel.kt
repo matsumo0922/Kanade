@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class QueueViewModel @Inject constructor(
     private val musicController: MusicController,

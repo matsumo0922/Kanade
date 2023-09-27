@@ -1,5 +1,6 @@
 package caios.android.kanade
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.billing.BillingClient
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class MainViewModel @Inject constructor(
     billingClient: BillingClient,

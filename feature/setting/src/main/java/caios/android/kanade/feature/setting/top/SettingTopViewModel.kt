@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class SettingTopViewModel @Inject constructor(
     private val musicRepository: MusicRepository,

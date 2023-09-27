@@ -29,6 +29,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class BillingPlusViewModel @Inject constructor(
     private val billingClient: BillingClient,

@@ -1,41 +1,59 @@
 package caios.android.kanade.feature.widget
 
 import android.content.Context
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.ui.res.stringResource
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
-import caios.android.kanade.core.music.MusicController
-import caios.android.kanade.core.repository.MusicRepository
-import caios.android.kanade.core.repository.UserDataRepository
+import androidx.glance.currentState
+import caios.android.kanade.core.design.R
 import caios.android.kanade.feature.widget.items.ControllerWidgetScreen
-import timber.log.Timber
 
-class ControllerWidget(
-    private val userDataRepository: UserDataRepository,
-    private val musicController: MusicController,
-    private val musicRepository: MusicRepository,
-) : GlanceAppWidget() {
+class ControllerWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-            val userData by userDataRepository.userData.collectAsState(initial = null)
-            val currentSong by musicController.currentSong.collectAsState(initial = null)
-            val playerState by musicController.playerState.collectAsState(initial = null)
+            val state = currentState<Preferences>()
 
-            Timber.d("provideGlance: $userData, $currentSong, $playerState")
+            val songId = state[longPreferencesKey(KEY_CURRENT_SONG_ID)] ?: 0L
+            val songTitle = state[stringPreferencesKey(KEY_CURRENT_SONG_TITLE)] ?: stringResource(R.string.music_unknown_title)
+            val songArtist = state[stringPreferencesKey(KEY_CURRENT_SONG_ARTIST)] ?: stringResource(R.string.music_unknown_artist)
+            val songArtworkBytes = state[stringPreferencesKey(KEY_CURRENT_SONG_ARTWORK)] ?: ""
+            val isPlaying = state[booleanPreferencesKey(KEY_IS_PLAYING)] ?: false
+            val isPlusUser = state[booleanPreferencesKey(KEY_IS_PLUS_USER)] ?: false
+
+            val artworkBitmap = decodeArtwork(songArtworkBytes)
 
             GlanceTheme {
-                if (userData != null && currentSong != null && playerState != null) {
-                    ControllerWidgetScreen(
-                        userData = userData!!,
-                        currentSong = currentSong,
-                        playerState = playerState!!,
-                    )
-                }
+                ControllerWidgetScreen(
+                    songTitle = songTitle,
+                    songArtwork = artworkBitmap,
+                    isPlaying = isPlaying,
+                    isPlusUser = isPlusUser,
+                )
             }
         }
+    }
+
+    private fun decodeArtwork(artworkBytes: String): Bitmap? = runCatching {
+        val bytes = Base64.decode(artworkBytes, 0)
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }.getOrNull()
+
+    companion object {
+        const val KEY_CURRENT_SONG_ID = "key_current_song_id"
+        const val KEY_CURRENT_SONG_TITLE = "key_current_song_title"
+        const val KEY_CURRENT_SONG_ARTIST = "key_current_song_artist"
+        const val KEY_CURRENT_SONG_ARTWORK = "key_current_song_artwork"
+        const val KEY_IS_PLAYING = "key_player_state"
+        const val KEY_IS_PLUS_USER = "key_is_plus_user"
     }
 }
