@@ -1,5 +1,6 @@
 package caios.android.kanade.feature.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,6 +12,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
+import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
@@ -19,8 +21,10 @@ import caios.android.kanade.feature.widget.items.ControllerWidgetScreen
 
 class ControllerWidget : GlanceAppWidget() {
 
+    @SuppressLint("WrongConstant")
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
+            val context = LocalContext.current
             val state = currentState<Preferences>()
 
             val songId = state[longPreferencesKey(KEY_CURRENT_SONG_ID)] ?: 0L
@@ -55,5 +59,10 @@ class ControllerWidget : GlanceAppWidget() {
         const val KEY_CURRENT_SONG_ARTWORK = "key_current_song_artwork"
         const val KEY_IS_PLAYING = "key_player_state"
         const val KEY_IS_PLUS_USER = "key_is_plus_user"
+
+        const val ACTION_PLAY = "caios.system.kanade3.play"
+        const val ACTION_PAUSE = "caios.system.kanade3.pause"
+        const val ACTION_SKIP_TO_NEXT = "caios.system.kanade3.skip_to_next"
+        const val ACTION_SKIP_TO_PREVIOUS = "caios.system.kanade3.skip_to_previous"
     }
 }

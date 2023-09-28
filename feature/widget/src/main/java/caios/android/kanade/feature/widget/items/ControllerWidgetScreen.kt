@@ -1,9 +1,14 @@
 package caios.android.kanade.feature.widget.items
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
@@ -13,7 +18,10 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.action.clickable
+import androidx.glance.appwidget.action.actionSendBroadcast
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.background
+import androidx.glance.color.ColorProviders
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
@@ -27,6 +35,12 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.music.MusicButtonReceiver
+import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_PAUSE
+import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_PLAY
+import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_SKIP_TO_NEXT
+import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_SKIP_TO_PREVIOUS
+import kotlin.math.ln
 
 @Composable
 internal fun ControllerWidgetScreen(
@@ -45,7 +59,7 @@ internal fun ControllerWidgetScreen(
 
     Row(
         modifier = modifier
-            .background(GlanceTheme.colors.surface)
+            .background(GlanceTheme.colors.surfaceColorAtElevation(context, 6.dp))
             .clickable(androidx.glance.appwidget.action.actionStartActivity(mainIntent ?: Intent())),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -60,12 +74,14 @@ internal fun ControllerWidgetScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                modifier = GlanceModifier.fillMaxWidth(),
+                modifier = GlanceModifier
+                    .padding(4.dp)
+                    .fillMaxWidth(),
                 text = songTitle,
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                 )
             )
@@ -79,30 +95,42 @@ internal fun ControllerWidgetScreen(
             ) {
                 Image(
                     modifier = GlanceModifier
-                        .size(32.dp)
-                        .clickable { },
+                        .size(40.dp)
+                        .cornerRadius(20.dp)
+                        .clickable(actionSendBroadcast(ACTION_SKIP_TO_PREVIOUS, ComponentName(context, MusicButtonReceiver::class.java)))
+                        .padding(4.dp),
                     provider = ImageProvider(Icon.createWithResource(context, R.drawable.vec_skip_to_previous)),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
                 )
 
-                Spacer(modifier = GlanceModifier.width(12.dp))
+                Spacer(modifier = GlanceModifier.width(16.dp))
 
                 Image(
                     modifier = GlanceModifier
-                        .size(40.dp)
-                        .clickable { },
+                        .size(48.dp)
+                        .cornerRadius(24.dp)
+                        .clickable(
+                            if (isPlaying) {
+                                actionSendBroadcast(ACTION_PAUSE, ComponentName(context, MusicButtonReceiver::class.java))
+                            } else {
+                                actionSendBroadcast(ACTION_PLAY, ComponentName(context, MusicButtonReceiver::class.java))
+                            }
+                        )
+                        .padding(4.dp),
                     provider = ImageProvider(playPauseIcon),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
                 )
 
-                Spacer(modifier = GlanceModifier.width(12.dp))
+                Spacer(modifier = GlanceModifier.width(16.dp))
 
                 Image(
                     modifier = GlanceModifier
-                        .size(32.dp)
-                        .clickable { },
+                        .size(40.dp)
+                        .cornerRadius(20.dp)
+                        .clickable(actionSendBroadcast(ACTION_SKIP_TO_NEXT, ComponentName(context, MusicButtonReceiver::class.java)))
+                        .padding(4.dp),
                     provider = ImageProvider(Icon.createWithResource(context, R.drawable.vec_skip_to_next)),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
@@ -110,4 +138,10 @@ internal fun ControllerWidgetScreen(
             }
         }
     }
+}
+
+private fun ColorProviders.surfaceColorAtElevation(context: Context, elevation: Dp): Color {
+    if (elevation == 0.dp) return surface.getColor(context)
+    val alpha = ((4.5f * ln(elevation.value + 1)) + 2f) / 100f
+    return primary.getColor(context).copy(alpha = alpha).compositeOver(surface.getColor(context))
 }

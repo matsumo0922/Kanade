@@ -25,8 +25,13 @@ import caios.android.kanade.core.design.theme.Orange40
 import caios.android.kanade.core.design.theme.Purple40
 import caios.android.kanade.core.design.theme.Teal40
 import caios.android.kanade.core.model.music.Artwork
+import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
+import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PAUSE
+import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PLAY
+import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_NEXT
+import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_PREVIOUS
 import caios.android.kanade.core.repository.UserDataRepository
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -63,8 +68,14 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        if (intent.action == ACTION_REQUEST_UPDATE) {
-            updateWidgets(context)
+        Timber.d("onReceive: ${intent.getStringExtra("key")}")
+
+        when (intent.action) {
+            ACTION_REQUEST_UPDATE -> updateWidgets(context)
+            ACTION_PLAY -> musicController.playerEvent(PlayerEvent.Play)
+            ACTION_PAUSE -> musicController.playerEvent(PlayerEvent.Pause)
+            ACTION_SKIP_TO_NEXT -> musicController.playerEvent(PlayerEvent.SkipToNext)
+            ACTION_SKIP_TO_PREVIOUS -> musicController.playerEvent(PlayerEvent.SkipToPrevious)
         }
     }
 

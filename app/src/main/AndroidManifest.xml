@@ -72,7 +72,7 @@
 
         <receiver
             android:name=".core.music.MusicButtonReceiver"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
 
