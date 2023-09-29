@@ -1,7 +1,5 @@
 package caios.android.kanade.feature.widget
 
-import android.app.PendingIntent
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,7 +24,6 @@ import caios.android.kanade.core.design.theme.Purple40
 import caios.android.kanade.core.design.theme.Teal40
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.player.PlayerEvent
-import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PAUSE
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PLAY
@@ -60,18 +57,17 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
         get() = ControllerWidget()
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidgets(context)
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        Timber.d("onReceive: ${intent.getStringExtra("key")}")
-
         when (intent.action) {
-            ACTION_REQUEST_UPDATE -> updateWidgets(context)
+            ACTION_REQUEST_UPDATE -> {
+                updateWidgets(
+                    context = context,
+                    isPlaying = intent.getBooleanExtra(ControllerWidget.KEY_IS_PLAYING, false),
+                    isPlusUser = intent.getBooleanExtra(ControllerWidget.KEY_IS_PLUS_USER, false),
+                )
+            }
             ACTION_PLAY -> musicController.playerEvent(PlayerEvent.Play)
             ACTION_PAUSE -> musicController.playerEvent(PlayerEvent.Pause)
             ACTION_SKIP_TO_NEXT -> musicController.playerEvent(PlayerEvent.SkipToNext)
@@ -80,13 +76,17 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    private fun updateWidgets(context: Context) {
+    private fun updateWidgets(
+        context: Context,
+        isPlaying: Boolean,
+        isPlusUser: Boolean,
+    ) {
         scope.launch {
             val currentSong = musicController.currentSong.value
-            val currentPlayerState = musicController.playerState.value
-
             val artworkBitmap = currentSong?.albumArtwork?.toBitmap(context)
             val bitmapBytes = artworkBitmap?.toBase64()
+
+            Timber.d("updateWidgets: $currentSong")
 
             for (id in GlanceAppWidgetManager(context).getGlanceIds(ControllerWidget::class.java)) {
                 updateAppWidgetState(context, id) { pref ->
@@ -94,8 +94,8 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
                     pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_TITLE)] = currentSong?.title ?: context.getString(R.string.music_unknown_title)
                     pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_ARTIST)] = currentSong?.artist ?: context.getString(R.string.music_unknown_artist)
                     pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_ARTWORK)] = bitmapBytes.orEmpty()
-                    pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLAYING)] = (currentPlayerState == PlayerState.Playing)
-                    //pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLUS_USER)] = userData.isPlusMode || userData.isDeveloperMode
+                    pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLAYING)] = isPlaying
+                    pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLUS_USER)] = isPlusUser
                 }
 
                 ControllerWidget().update(context, id)
@@ -103,7 +103,6 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
         }
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     private fun Bitmap.toBase64(): String {
         val outputStream = ByteArrayOutputStream()
         compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
@@ -114,19 +113,15 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
     companion object {
         private const val ACTION_REQUEST_UPDATE = "action_request_update"
 
-        // 定期更新用
-        fun createUpdatePendingIntent(context: Context): PendingIntent {
-            val updateIntent = createUpdateIntent(context)
-            val flags = PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-
-            return PendingIntent.getBroadcast(context, 1, updateIntent, flags)
-        }
-
-        // 手動更新用
-        fun createUpdateIntent(context: Context): Intent {
-            Timber.d("Create update intent.")
+        fun createUpdateIntent(
+            context: Context,
+            isPlaying: Boolean,
+            isPlusUser: Boolean,
+        ): Intent {
             return Intent(context, ControllerWidgetReceiver::class.java).apply {
                 action = ACTION_REQUEST_UPDATE
+                putExtra(ControllerWidget.KEY_IS_PLAYING, isPlaying)
+                putExtra(ControllerWidget.KEY_IS_PLUS_USER, isPlusUser)
             }
         }
     }

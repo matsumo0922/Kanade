@@ -1,5 +1,8 @@
 package caios.android.kanade.core.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class UserData(
     val themeConfig: ThemeConfig,
     val themeColorConfig: ThemeColorConfig,
@@ -15,6 +18,8 @@ data class UserData(
     val isIgnoreShortMusic: Boolean,
     val isIgnoreNotMusic: Boolean,
 ) {
+    val hasPrivilege get() = isPlusMode || isDeveloperMode
+
     companion object {
         fun dummy(): UserData {
             return UserData(

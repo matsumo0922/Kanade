@@ -28,6 +28,7 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.player.PlayerEvent
+import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.MusicViewModel
 import caios.android.kanade.core.repository.UserDataRepository
@@ -118,6 +119,11 @@ class MainActivity : ComponentActivity() {
             intent?.extras?.remove("notify")
         }
 
+        if (intent?.extras?.getBoolean("plus") == true) {
+            musicViewModel.setPlusDialogDisplayed(true)
+            intent?.extras?.remove("plus")
+        }
+
         lifecycleScope.launch {
             musicViewModel.fetch()
             musicController.initialize()
@@ -130,8 +136,14 @@ class MainActivity : ComponentActivity() {
                 musicController.playerState,
             ) { userData, song, playerState ->
                 Triple(userData, song, playerState)
-            }.collectLatest {
-                sendBroadcast(ControllerWidgetReceiver.createUpdateIntent(this@MainActivity))
+            }.collectLatest { (userData, _, playerState) ->
+                sendBroadcast(
+                    ControllerWidgetReceiver.createUpdateIntent(
+                        context = this@MainActivity,
+                        isPlaying = playerState == PlayerState.Playing,
+                        isPlusUser = userData.hasPrivilege,
+                    ),
+                )
             }
         }
     }
@@ -151,6 +163,10 @@ class MainActivity : ComponentActivity() {
 
         if (intent?.extras?.getBoolean("notify") == true) {
             musicViewModel.setControllerState(true)
+        }
+
+        if (intent?.extras?.getBoolean("plus") == true) {
+            musicViewModel.setPlusDialogDisplayed(true)
         }
     }
 
@@ -175,7 +191,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shouldAllowPermission(): Boolean {
-        val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val storagePermission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         return ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED
     }
 }
