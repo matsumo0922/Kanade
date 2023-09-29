@@ -22,6 +22,7 @@ fun NavController.navigateToDownloadFormat(videoInfo: VideoInfo) {
 }
 
 fun NavGraphBuilder.downloadFormatScreen(
+    navigateToBillingPlus: () -> Unit,
     navigateToTagEdit: (Long) -> Unit,
     terminate: () -> Unit,
 ) {
@@ -38,6 +39,7 @@ fun NavGraphBuilder.downloadFormatScreen(
         DownloadFormatRoute(
             modifier = Modifier.fillMaxSize(),
             videoInfo = formatter.decodeFromString(VideoInfo.serializer(), URLDecoder.decode(it.arguments?.getString(DownloadFormatInfo)!!, "UTF-8")),
+            navigateToBillingPlus = navigateToBillingPlus,
             navigateToTagEdit = navigateToTagEdit,
             terminate = terminate,
         )

@@ -388,6 +388,9 @@ fun KanadeNavHost(
         )
 
         downloadFormatScreen(
+            navigateToBillingPlus = {
+                appState.showBillingPlusDialog(activity)
+            },
             navigateToTagEdit = {
                 navController.navigateToTagEdit(it)
             },
@@ -433,6 +436,9 @@ fun KanadeNavHost(
         )
 
         settingThemeScreen(
+            navigateToBillingPlus = {
+                appState.showBillingPlusDialog(activity)
+            },
             terminate = {
                 navController.popBackStack()
             },

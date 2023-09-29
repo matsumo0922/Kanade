@@ -58,6 +58,7 @@ import caios.android.kanade.core.model.download.VideoInfo
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.core.ui.dialog.SimpleAlertDialog
 import caios.android.kanade.core.ui.view.KanadeTopAppBar
+import caios.android.kanade.feature.download.format.items.DownloadCautionItem
 import caios.android.kanade.feature.download.format.items.DownloadFormatItem
 import caios.android.kanade.feature.download.format.items.DownloadFormatSubTitle
 import caios.android.kanade.feature.download.format.items.DownloadFormatVideoPreviewSection
@@ -68,6 +69,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun DownloadFormatRoute(
     videoInfo: VideoInfo,
+    navigateToBillingPlus: () -> Unit,
     navigateToTagEdit: (Long) -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -86,9 +88,11 @@ internal fun DownloadFormatRoute(
     ) {
         DownloadFormatScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+            isPlusUser = it.isPlusUser,
             videoInfo = it.videoInfo,
             downloadState = it.downloadState,
             saveUniFile = it.saveUniFile,
+            onBillingPlus = navigateToBillingPlus,
             onClickTagEdit = navigateToTagEdit,
             onDownload = viewModel::download,
             onUpdateSaveUri = viewModel::updateSaveUri,
@@ -100,9 +104,11 @@ internal fun DownloadFormatRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DownloadFormatScreen(
+    isPlusUser: Boolean,
     videoInfo: VideoInfo,
     downloadState: DownloadFormatUiState.DownloadState?,
     saveUniFile: UniFile?,
+    onBillingPlus: () -> Unit,
     onClickTagEdit: (Long) -> Unit,
     onDownload: (Context, VideoInfo, VideoInfo.Format, Boolean, UniFile) -> Unit,
     onUpdateSaveUri: (Context, Uri) -> Unit,
@@ -217,6 +223,13 @@ private fun DownloadFormatScreen(
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = {
+                    if (!isPlusUser) {
+                        ToastUtil.show(context, R.string.billing_plus_toast_require_plus)
+                        onBillingPlus.invoke()
+
+                        return@FloatingActionButton
+                    }
+
                     if (saveUniFile == null) {
                         scope.launch {
                             isSaveUriError = true
@@ -346,6 +359,14 @@ private fun DownloadFormatScreen(
                     format = format,
                     isSelect = (selectedFormat as? SelectedItem.Video)?.index == index,
                     onSelect = { selectedFormat = SelectedItem.Video(index) },
+                )
+            }
+
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                DownloadCautionItem(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
                 )
             }
 

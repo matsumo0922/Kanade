@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import caios.android.kanade.core.design.R
@@ -45,6 +46,7 @@ internal fun SettingThemeColorSection(
     onSelectThemeColor: (ThemeColorConfig) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val isDarkMode = when (themeConfig) {
         ThemeConfig.Light -> false
         ThemeConfig.Dark -> true
@@ -65,7 +67,7 @@ internal fun SettingThemeColorSection(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
             items(
-                items = ThemeColorConfig.values(),
+                items = ThemeColorConfig.entries.toTypedArray(),
                 key = { it.name },
             ) {
                 val color = when (it) {

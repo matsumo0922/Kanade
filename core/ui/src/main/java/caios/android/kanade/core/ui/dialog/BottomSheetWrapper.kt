@@ -31,6 +31,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.design.theme.KanadeTheme
 import caios.android.kanade.core.design.theme.LocalSystemBars
 import caios.android.kanade.core.design.theme.SystemBars
+import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import kotlinx.coroutines.delay
@@ -111,6 +112,7 @@ fun Activity.showAsButtonSheet(
             }
 
             KanadeTheme(
+                themeColorConfig = userData?.themeColorConfig ?: ThemeColorConfig.Blue,
                 shouldUseDarkTheme = shouldUseDarkTheme,
                 enableDynamicTheme = userData?.isDynamicColor ?: false,
             ) {

@@ -95,7 +95,7 @@ class KanadeAppState(
             else -> null
         }
 
-    val libraryDestinations = LibraryDestination.values().asList()
+    val libraryDestinations = LibraryDestination.entries
 
     fun navigateToLibrary(libraryDestination: LibraryDestination) {
         val navOption = navOptions {

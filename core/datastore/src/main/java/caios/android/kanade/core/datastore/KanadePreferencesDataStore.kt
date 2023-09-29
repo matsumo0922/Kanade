@@ -38,9 +38,9 @@ class KanadePreferencesDataStore @Inject constructor(
                     ThemeColorConfigProto.THEME_COLOR_CONFIG_GREEN -> ThemeColorConfig.Green
                     ThemeColorConfigProto.THEME_COLOR_CONFIG_PURPLE -> ThemeColorConfig.Purple
                     ThemeColorConfigProto.THEME_COLOR_CONFIG_PINK -> ThemeColorConfig.Pink
-                    else -> ThemeColorConfig.Default
+                    else -> ThemeColorConfig.Blue
                 },
-                isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else true,
+                isDynamicColor = if (it.hasIsUseDynamicColor()) it.isUseDynamicColor else false,
                 isDeveloperMode = if (it.hasIsDeveloperMode()) it.isDeveloperMode else false,
                 isPlusMode = if (it.hasIsPlusMode()) it.isPlusMode else false,
                 isDynamicNormalizer = if (it.hasIsUseDynamicNormalizer()) it.isUseDynamicNormalizer else false,
@@ -142,7 +142,8 @@ class KanadePreferencesDataStore @Inject constructor(
                     ThemeColorConfig.Green -> ThemeColorConfigProto.THEME_COLOR_CONFIG_GREEN
                     ThemeColorConfig.Pink -> ThemeColorConfigProto.THEME_COLOR_CONFIG_PINK
                     ThemeColorConfig.Purple -> ThemeColorConfigProto.THEME_COLOR_CONFIG_PURPLE
-                    else -> ThemeColorConfigProto.THEME_COLOR_CONFIG_DEFAULT
+                    ThemeColorConfig.Default -> ThemeColorConfigProto.THEME_COLOR_CONFIG_DEFAULT
+                    else -> ThemeColorConfigProto.THEME_COLOR_CONFIG_BLUE
                 }
             }
         }
