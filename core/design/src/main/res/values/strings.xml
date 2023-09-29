@@ -323,6 +323,7 @@
     <string name="download_format_save_path">保存先</string>
     <string name="download_format_alert_message">ダウンロードを中止しますか？</string>
     <string name="download_format_alert_confirm">中止</string>
+    <string name="download_format_caution">この機能は試験段階で、動作が不安定なことがあります。また、Youtube Premium 限定コンテンツなど、閲覧制限がかかっているアイテムはダウンロードに失敗することがあります。</string>
     <string name="download_progress_tag_edit">タグを編集</string>
     <string name="download_progress_toast_complete">ダウンロードしました</string>
     <string name="download_progress_toast_error">ダウンロードに失敗しました</string>
@@ -352,6 +353,7 @@
     <string name="billing_plus_purchase_button">%1$s で購入</string>
     <string name="billing_plus_verify_button">購入を復元</string>
     <string name="billing_plus_consume_button">購入を消費</string>
+    <string name="billing_plus_toast_require_plus">この機能はKanade+でのみ使用することができます</string>
     <string name="billing_plus_toast_purchased">購入しました</string>
     <string name="billing_plus_toast_purchased_error">購入に失敗しました</string>
     <string name="billing_plus_toast_consumed">消費しました</string>

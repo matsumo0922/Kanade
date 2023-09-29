@@ -65,7 +65,7 @@ internal fun SettingThemeColorSection(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         ) {
             items(
-                items = ThemeColorConfig.values(),
+                items = ThemeColorConfig.entries.toTypedArray(),
                 key = { it.name },
             ) {
                 val color = when (it) {

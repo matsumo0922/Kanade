@@ -14,6 +14,7 @@ fun NavController.navigateToSettingTheme() {
 }
 
 fun NavGraphBuilder.settingThemeScreen(
+    navigateToBillingPlus: () -> Unit,
     terminate: () -> Unit,
 ) {
     composable(
@@ -25,6 +26,7 @@ fun NavGraphBuilder.settingThemeScreen(
     ) {
         SettingThemeRoute(
             modifier = Modifier.fillMaxSize(),
+            navigateToBillingPlus = navigateToBillingPlus,
             terminate = terminate,
         )
     }

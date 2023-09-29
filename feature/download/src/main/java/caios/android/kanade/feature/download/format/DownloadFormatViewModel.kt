@@ -13,6 +13,7 @@ import caios.android.kanade.core.datastore.DownloadPathPreference
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.download.VideoInfo
 import caios.android.kanade.core.repository.MusicRepository
+import caios.android.kanade.core.repository.UserDataRepository
 import com.hippo.unifile.UniFile
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -20,6 +21,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -31,6 +34,7 @@ import kotlin.coroutines.suspendCoroutine
 @Stable
 @HiltViewModel
 class DownloadFormatViewModel @Inject constructor(
+    private val userDataRepository: UserDataRepository,
     private val musicRepository: MusicRepository,
     private val downloadPathPreference: DownloadPathPreference,
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -39,6 +43,16 @@ class DownloadFormatViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState<DownloadFormatUiState>>(ScreenState.Loading)
 
     val screenState = _screenState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            userDataRepository.userData.collectLatest {
+                (screenState.value as? ScreenState.Idle)?.let { state ->
+                    _screenState.value = ScreenState.Idle(state.data.copy(isPlusUser = it.hasPrivilege))
+                }
+            }
+        }
+    }
 
     private suspend fun refreshLibrary() {
         musicRepository.clear()
@@ -53,11 +67,13 @@ class DownloadFormatViewModel @Inject constructor(
 
     fun fetch(context: Context, videoInfo: VideoInfo) {
         viewModelScope.launch {
+            val userData = userDataRepository.userData.first()
             val uri = withContext(ioDispatcher) { downloadPathPreference.getUri() }
             val uniFile = UniFile.fromUri(context, uri)
 
             _screenState.value = ScreenState.Idle(
                 DownloadFormatUiState(
+                    isPlusUser = userData.hasPrivilege,
                     videoInfo = videoInfo,
                     saveUniFile = uniFile,
                 ),
@@ -245,6 +261,7 @@ class DownloadFormatViewModel @Inject constructor(
 
 @Stable
 data class DownloadFormatUiState(
+    val isPlusUser: Boolean = false,
     val videoInfo: VideoInfo,
     val saveUniFile: UniFile? = null,
     val downloadState: DownloadState? = null,

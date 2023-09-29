@@ -23,10 +23,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ThemeColorConfig
 import caios.android.kanade.core.model.ThemeConfig
@@ -39,6 +41,7 @@ import caios.android.kanade.feature.setting.theme.items.SettingThemeTabsSection
 
 @Composable
 internal fun SettingThemeRoute(
+    navigateToBillingPlus: () -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingThemeViewModel = hiltViewModel(),
@@ -52,6 +55,7 @@ internal fun SettingThemeRoute(
         SettingThemeDialog(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             userData = it.userData,
+            onBillingPlus = navigateToBillingPlus,
             onSelectTheme = viewModel::setThemeConfig,
             onSelectThemeColor = viewModel::setThemeColorConfig,
             onClickDynamicColor = viewModel::setUseDynamicColor,
@@ -64,12 +68,14 @@ internal fun SettingThemeRoute(
 @Composable
 private fun SettingThemeDialog(
     userData: UserData,
+    onBillingPlus: () -> Unit,
     onSelectTheme: (ThemeConfig) -> Unit,
     onSelectThemeColor: (ThemeColorConfig) -> Unit,
     onClickDynamicColor: (Boolean) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val state = rememberTopAppBarState()
     val behavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(state)
 
@@ -121,7 +127,14 @@ private fun SettingThemeDialog(
                     title = R.string.setting_theme_theme_dynamic_color,
                     description = R.string.setting_theme_theme_dynamic_color_description,
                     value = userData.isDynamicColor,
-                    onValueChanged = onClickDynamicColor,
+                    onValueChanged = {
+                        if (userData.hasPrivilege) {
+                            onClickDynamicColor.invoke(it)
+                        } else {
+                            ToastUtil.show(context, R.string.billing_plus_toast_require_plus)
+                            onBillingPlus.invoke()
+                        }
+                    },
                 )
             }
 
