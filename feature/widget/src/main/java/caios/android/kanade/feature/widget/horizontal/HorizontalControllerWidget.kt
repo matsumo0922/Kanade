@@ -1,4 +1,4 @@
-package caios.android.kanade.feature.widget
+package caios.android.kanade.feature.widget.horizontal
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,9 +16,14 @@ import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
 import caios.android.kanade.core.design.R
-import caios.android.kanade.feature.widget.items.ControllerWidgetScreen
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ARTIST
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ARTWORK
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ID
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_TITLE
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_IS_PLAYING
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_IS_PLUS_USER
 
-class ControllerWidget : GlanceAppWidget() {
+class HorizontalControllerWidget : GlanceAppWidget() {
 
     override val sizeMode = SizeMode.Exact
 
@@ -37,7 +42,7 @@ class ControllerWidget : GlanceAppWidget() {
             val artworkBitmap = decodeArtwork(songArtworkBytes)
 
             GlanceTheme {
-                ControllerWidgetScreen(
+                SquareControllerWidgetScreen(
                     songTitle = songTitle,
                     songArtwork = artworkBitmap,
                     isPlaying = isPlaying,
@@ -51,18 +56,4 @@ class ControllerWidget : GlanceAppWidget() {
         val bytes = Base64.decode(artworkBytes, 0)
         BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }.getOrNull()
-
-    companion object {
-        const val KEY_CURRENT_SONG_ID = "key_current_song_id"
-        const val KEY_CURRENT_SONG_TITLE = "key_current_song_title"
-        const val KEY_CURRENT_SONG_ARTIST = "key_current_song_artist"
-        const val KEY_CURRENT_SONG_ARTWORK = "key_current_song_artwork"
-        const val KEY_IS_PLAYING = "key_player_state"
-        const val KEY_IS_PLUS_USER = "key_is_plus_user"
-
-        const val ACTION_PLAY = "caios.system.kanade3.play"
-        const val ACTION_PAUSE = "caios.system.kanade3.pause"
-        const val ACTION_SKIP_TO_NEXT = "caios.system.kanade3.skip_to_next"
-        const val ACTION_SKIP_TO_PREVIOUS = "caios.system.kanade3.skip_to_previous"
-    }
 }

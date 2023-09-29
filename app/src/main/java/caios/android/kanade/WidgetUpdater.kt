@@ -5,7 +5,8 @@ import caios.android.kanade.core.common.network.di.ApplicationScope
 import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.repository.UserDataRepository
-import caios.android.kanade.feature.widget.ControllerWidgetReceiver
+import caios.android.kanade.feature.widget.horizontal.HorizontalControllerWidgetReceiver
+import caios.android.kanade.feature.widget.square.SquareControllerWidgetReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +30,15 @@ class WidgetUpdater @Inject constructor(
                 Triple(userData, song, playerState)
             }.collectLatest { (userData, _, playerState) ->
                 context.sendBroadcast(
-                    ControllerWidgetReceiver.createUpdateIntent(
+                    HorizontalControllerWidgetReceiver.createUpdateIntent(
+                        context = context,
+                        isPlaying = playerState == PlayerState.Playing,
+                        isPlusUser = userData.hasPrivilege,
+                    ),
+                )
+
+                context.sendBroadcast(
+                    SquareControllerWidgetReceiver.createUpdateIntent(
                         context = context,
                         isPlaying = playerState == PlayerState.Playing,
                         isPlusUser = userData.hasPrivilege,

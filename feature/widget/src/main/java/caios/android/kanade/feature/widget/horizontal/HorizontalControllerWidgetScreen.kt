@@ -1,14 +1,10 @@
-package caios.android.kanade.feature.widget.items
+package caios.android.kanade.feature.widget.horizontal
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
@@ -22,7 +18,6 @@ import androidx.glance.action.clickable
 import androidx.glance.appwidget.action.actionSendBroadcast
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.background
-import androidx.glance.color.ColorProviders
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
@@ -39,14 +34,14 @@ import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.music.MusicButtonReceiver
-import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_PAUSE
-import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_PLAY
-import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_SKIP_TO_NEXT
-import caios.android.kanade.feature.widget.ControllerWidget.Companion.ACTION_SKIP_TO_PREVIOUS
-import kotlin.math.ln
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Actions.ACTION_PAUSE
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Actions.ACTION_PLAY
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Actions.ACTION_SKIP_TO_NEXT
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Actions.ACTION_SKIP_TO_PREVIOUS
+import caios.android.kanade.feature.widget.surfaceColorAtElevation
 
 @Composable
-internal fun ControllerWidgetScreen(
+internal fun SquareControllerWidgetScreen(
     songTitle: String,
     songArtwork: Bitmap?,
     isPlaying: Boolean,
@@ -91,7 +86,7 @@ internal fun ControllerWidgetScreen(
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurface,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         textAlign = TextAlign.Center,
                     )
                 )
@@ -171,10 +166,4 @@ internal fun ControllerWidgetScreen(
             }
         }
     }
-}
-
-private fun ColorProviders.surfaceColorAtElevation(context: Context, elevation: Dp): Color {
-    if (elevation == 0.dp) return surface.getColor(context)
-    val alpha = ((4.5f * ln(elevation.value + 1)) + 2f) / 100f
-    return primary.getColor(context).copy(alpha = alpha).compositeOver(surface.getColor(context))
 }

@@ -1,5 +1,6 @@
-package caios.android.kanade.feature.widget
+package caios.android.kanade.feature.widget.square
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -29,6 +30,12 @@ import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PAUS
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PLAY
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_NEXT
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_PREVIOUS
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ARTIST
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ARTWORK
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_ID
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_CURRENT_SONG_TITLE
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_IS_PLAYING
+import caios.android.kanade.feature.widget.ControllerWidgetContract.Args.KEY_IS_PLUS_USER
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -40,30 +47,40 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @AndroidEntryPoint
-class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
+class SquareControllerWidgetReceiver : GlanceAppWidgetReceiver() {
 
     @Inject
     lateinit var musicController: MusicController
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    private var latestIsPlaying = false
+    private var latestIsPlusUser = false
+
     override val glanceAppWidget: GlanceAppWidget
-        get() = ControllerWidget()
+        get() = SquareControllerWidget()
+
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
+
+        updateWidgets(
+            context = context,
+            isPlaying = latestIsPlaying,
+            isPlusUser = latestIsPlusUser,
+        )
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-
-        Timber.d("updateWidgets: ${intent.action}")
 
         when (intent.action) {
             ACTION_REQUEST_UPDATE -> {
                 updateWidgets(
                     context = context,
-                    isPlaying = intent.getBooleanExtra(ControllerWidget.KEY_IS_PLAYING, false),
-                    isPlusUser = intent.getBooleanExtra(ControllerWidget.KEY_IS_PLUS_USER, false),
+                    isPlaying = intent.getBooleanExtra(KEY_IS_PLAYING, false),
+                    isPlusUser = intent.getBooleanExtra(KEY_IS_PLUS_USER, false),
                 )
             }
             ACTION_PLAY -> musicController.playerEvent(PlayerEvent.Play)
@@ -73,7 +90,6 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
         }
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     private fun updateWidgets(
         context: Context,
         isPlaying: Boolean,
@@ -84,20 +100,21 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
             val artworkBitmap = currentSong?.albumArtwork?.toBitmap(context)
             val bitmapBytes = artworkBitmap?.toBase64()
 
-            Timber.d("updateWidgets: $currentSong")
-
-            for (id in GlanceAppWidgetManager(context).getGlanceIds(ControllerWidget::class.java)) {
+            for (id in GlanceAppWidgetManager(context).getGlanceIds(SquareControllerWidget::class.java)) {
                 updateAppWidgetState(context, id) { pref ->
-                    pref[longPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_ID)] = currentSong?.id ?: 0L
-                    pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_TITLE)] = currentSong?.title ?: context.getString(R.string.music_unknown_title)
-                    pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_ARTIST)] = currentSong?.artist ?: context.getString(R.string.music_unknown_artist)
-                    pref[stringPreferencesKey(ControllerWidget.KEY_CURRENT_SONG_ARTWORK)] = bitmapBytes.orEmpty()
-                    pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLAYING)] = isPlaying
-                    pref[booleanPreferencesKey(ControllerWidget.KEY_IS_PLUS_USER)] = isPlusUser
+                    pref[longPreferencesKey(KEY_CURRENT_SONG_ID)] = currentSong?.id ?: 0L
+                    pref[stringPreferencesKey(KEY_CURRENT_SONG_TITLE)] = currentSong?.title ?: context.getString(R.string.music_unknown_title)
+                    pref[stringPreferencesKey(KEY_CURRENT_SONG_ARTIST)] = currentSong?.artist ?: context.getString(R.string.music_unknown_artist)
+                    pref[stringPreferencesKey(KEY_CURRENT_SONG_ARTWORK)] = bitmapBytes.orEmpty()
+                    pref[booleanPreferencesKey(KEY_IS_PLAYING)] = isPlaying
+                    pref[booleanPreferencesKey(KEY_IS_PLUS_USER)] = isPlusUser
                 }
 
-                ControllerWidget().update(context, id)
+                SquareControllerWidget().update(context, id)
             }
+
+            latestIsPlaying = isPlaying
+            latestIsPlusUser = isPlusUser
         }
     }
 
@@ -116,10 +133,10 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
             isPlaying: Boolean,
             isPlusUser: Boolean,
         ): Intent {
-            return Intent(context, ControllerWidgetReceiver::class.java).apply {
+            return Intent(context, SquareControllerWidgetReceiver::class.java).apply {
                 action = ACTION_REQUEST_UPDATE
-                putExtra(ControllerWidget.KEY_IS_PLAYING, isPlaying)
-                putExtra(ControllerWidget.KEY_IS_PLUS_USER, isPlusUser)
+                putExtra(KEY_IS_PLAYING, isPlaying)
+                putExtra(KEY_IS_PLUS_USER, isPlusUser)
             }
         }
     }
