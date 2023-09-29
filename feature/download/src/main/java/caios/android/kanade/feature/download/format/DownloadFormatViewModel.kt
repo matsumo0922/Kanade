@@ -28,6 +28,7 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@Stable
 @HiltViewModel
 class DownloadFormatViewModel @Inject constructor(
     private val musicRepository: MusicRepository,

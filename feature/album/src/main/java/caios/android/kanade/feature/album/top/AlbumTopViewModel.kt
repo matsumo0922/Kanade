@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class AlbumTopViewModel @Inject constructor(
     private val musicController: MusicController,

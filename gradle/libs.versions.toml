@@ -9,20 +9,20 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Gradle
-gradle = "8.1.0"
+gradle = "8.1.1"
 
 # Kotlin
-kotlin = "1.9.0"
-kotlinCompiler = "1.5.1"
+kotlin = "1.9.10"
+kotlinCompiler = "1.5.3"
 
 # KotlinX
 kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.0"
-kotlinxSerializationJson = "1.5.1"
+kotlinxSerializationJson = "1.6.0"
 kotlinxImmutable = "0.3.5"
 
 # AndroidX
-androidxCore = "1.10.1"
+androidxCore = "1.12.0"
 androidxCoreSplash = "1.0.1"
 androidxAppCompat = "1.6.1"
 androidxActivity = "1.7.2"
@@ -32,38 +32,39 @@ androidxConstraintLayout = "2.1.4"
 androidxRecyclerView = "1.3.1"
 androidxCardView = "1.0.0"
 androidxViewPager2 = "1.1.0-beta02"
-androidxPreference = "1.2.0"
+androidxPreference = "1.2.1"
 androidxDataStore = "1.0.0"
 androidxPalette = "1.0.0"
-androidxLifecycle = "2.6.1"
+androidxLifecycle = "2.6.2"
 androidxRoom = "2.5.2"
 androidxMedia = "1.6.0"
-androidxAnnotation = "1.6.0"
-androidxNavigation = "2.7.0-rc01"
-androidxCompose = "2023.06.01"
-androidxComposeMaterial3 = "1.2.0-alpha04"
-androidxComposeConstraintLayout = "1.1.0-alpha11"
+androidxAnnotation = "1.7.0"
+androidxNavigation = "2.7.3"
+androidxCompose = "2023.09.01"
+androidxComposeMaterial3 = "1.2.0-alpha08"
+androidxComposeConstraintLayout = "1.1.0-alpha12"
 androidxHiltNavigationCompose = "1.0.0"
+androidxGlance = "1.0.0"
+androidxGranceWear = "1.0.0-alpha05"
 
 # Google
-playServiceBilling = "5.0.0"
 playServiceAds = "21.1.0"
 playServiceOss = "17.0.1"
 material = "1.9.0"
-exoPlayer = "2.19.0"
+exoPlayer = "2.19.1"
 accompanist = "0.30.1"
-ksp = "1.9.0-1.0.13"
+ksp = "1.9.10-1.0.13"
 
 # Protobuf
 protobuf = "3.23.0"
 protobufPlugin = "0.9.4"
 
 # Billing
-billing = "6.0.0"
+billing = "6.0.1"
 
 # Others
 dagger = "2.47"
-ktor = "2.3.1"
+ktor = "2.3.4"
 jsoup = "1.16.1"
 detekt = "1.23.1"
 balloon = "1.5.3"
@@ -143,6 +144,10 @@ androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidxNavigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-glance = { module = "androidx.glance:glance", version.ref = "androidxGlance" }
+androidx-glance-widget = { module = "androidx.glance:glance-appwidget", version.ref = "androidxGlance" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlance" }
+androidx-glance-wear = { module = "androidx.glance:glance-wear-tiles", version.ref = "androidxGranceWear" }
 
 # Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxCompose" }
@@ -165,7 +170,6 @@ billing = { module = "com.android.billingclient:billing", version.ref = "billing
 billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 
 # Google
-play-service-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "playServiceBilling" }
 play-service-oss = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "playServiceOss" }
 google-material = { module = "com.google.android.material:material", version.ref = "material" }
 google-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
@@ -300,4 +304,11 @@ youtubedl = [
     "youtubedl-android-library",
     "youtubedl-android-ffmpeg",
     "youtubedl-android-aria2c",
+]
+
+glance = [
+    "androidx-glance",
+    "androidx-glance-widget",
+    "androidx-glance-material3",
+    "androidx-glance-wear",
 ]

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class ArtistTopViewModel @Inject constructor(
     private val musicController: MusicController,

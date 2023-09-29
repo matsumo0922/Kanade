@@ -11,7 +11,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -112,7 +111,7 @@ fun KanadeApp(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IdleScreen(
     musicViewModel: MusicViewModel,
@@ -233,6 +232,13 @@ private fun IdleScreen(
                 scaffoldState.bottomSheetState.expand()
             } else {
                 scaffoldState.bottomSheetState.partialExpand()
+            }
+        }
+
+        LaunchedEffect(musicViewModel.uiState.isDisplayedPlusDialog) {
+            if (musicViewModel.uiState.isDisplayedPlusDialog) {
+                appState.showBillingPlusDialog(activity)
+                musicViewModel.setPlusDialogDisplayed(false)
             }
         }
 

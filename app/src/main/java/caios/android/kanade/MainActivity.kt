@@ -30,7 +30,6 @@ import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.player.PlayerEvent
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.MusicViewModel
-import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.ui.AsyncLoadContents
 import caios.android.kanade.ui.KanadeApp
 import caios.android.kanade.ui.rememberKanadeAppState
@@ -50,9 +49,6 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var musicController: MusicController
-
-    @Inject
-    lateinit var musicRepository: MusicRepository
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         val splashScreen = installSplashScreen()
@@ -115,6 +111,11 @@ class MainActivity : ComponentActivity() {
             intent?.extras?.remove("notify")
         }
 
+        if (intent?.extras?.getBoolean("plus") == true) {
+            musicViewModel.setPlusDialogDisplayed(true)
+            intent?.extras?.remove("plus")
+        }
+
         lifecycleScope.launch {
             musicViewModel.fetch()
             musicController.initialize()
@@ -136,6 +137,10 @@ class MainActivity : ComponentActivity() {
 
         if (intent?.extras?.getBoolean("notify") == true) {
             musicViewModel.setControllerState(true)
+        }
+
+        if (intent?.extras?.getBoolean("plus") == true) {
+            musicViewModel.setPlusDialogDisplayed(true)
         }
     }
 
@@ -160,7 +165,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shouldAllowPermission(): Boolean {
-        val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val storagePermission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_AUDIO else android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         return ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED
     }
 }

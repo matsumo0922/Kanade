@@ -71,7 +71,7 @@ internal fun WelcomeTopScreen(
                 .padding(64.dp, 24.dp)
                 .aspectRatio(1f)
                 .fillMaxWidth(),
-            painter = painterResource(R.drawable.vec_app_icon),
+            painter = painterResource(R.drawable.vec_app_icon_no_background),
             contentDescription = null,
         )
 

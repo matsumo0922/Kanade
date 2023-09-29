@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val musicController: MusicController,

@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":feature:welcome")
-
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -53,3 +50,5 @@ include(":feature:download")
 include(":feature:report")
 include(":feature:equalizer")
 include(":feature:billing")
+include(":feature:widget")
+include(":feature:welcome")

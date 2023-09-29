@@ -14,7 +14,7 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
     lateinit var musicController: MusicController
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Timber.d("onReceive: ${intent?.action?.toLongOrNull()}")
+        Timber.d("onReceive", "onReceive: ${intent?.action}")
 
         val playerEvent = when (intent?.action) {
             NotificationManager.ACTION_PLAY -> PlayerEvent.Play
@@ -25,6 +25,7 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
             else -> return
         }
 
+        musicController.initialize()
         musicController.playerEvent(playerEvent)
     }
 }

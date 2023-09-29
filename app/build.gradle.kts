@@ -123,6 +123,7 @@ dependencies {
     implementation(project(":feature:equalizer"))
     implementation(project(":feature:billing"))
     implementation(project(":feature:welcome"))
+    implementation(project(":feature:widget"))
 
     implementation(platform(libs.firebase.bom))
     implementation(platform(libs.androidx.compose.bom))
@@ -136,7 +137,6 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-    implementation(libs.play.service.billing)
     implementation(libs.play.service.oss)
     implementation(libs.google.material)
 

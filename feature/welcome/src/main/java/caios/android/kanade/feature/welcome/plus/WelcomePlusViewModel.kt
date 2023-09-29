@@ -1,6 +1,7 @@
 package caios.android.kanade.feature.welcome.plus
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import caios.android.kanade.core.billing.usecase.VerifyPlusUseCase
 import caios.android.kanade.core.common.network.Dispatcher
@@ -14,6 +15,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class WelcomePlusViewModel @Inject constructor(
     private val verifyPlusUseCase: VerifyPlusUseCase,

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class EqualizerViewModel @Inject constructor(
     private val equalizerPreference: EqualizerPreference,

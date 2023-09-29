@@ -24,6 +24,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class DownloadInputViewModel @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class AddToPlaylistViewModel @Inject constructor(
     private val musicRepository: MusicRepository,

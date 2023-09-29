@@ -1,10 +1,12 @@
 package caios.android.kanade.feature.menu.delete
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@Stable
 @HiltViewModel
 class DeleteSongViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
