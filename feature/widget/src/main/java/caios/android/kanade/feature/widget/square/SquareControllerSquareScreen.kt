@@ -41,7 +41,7 @@ import caios.android.kanade.feature.widget.ControllerWidgetContract
 import caios.android.kanade.feature.widget.surfaceColorAtElevation
 
 @Composable
-internal fun SquareControllerSquareSection(
+internal fun SquareControllerSquareScreen(
     songTitle: String,
     songArtist: String,
     songArtwork: Bitmap?,
@@ -69,7 +69,11 @@ internal fun SquareControllerSquareSection(
     ) {
         Image(
             modifier = GlanceModifier.size(max(widgetSize.height, widgetSize.width)),
-            provider = ImageProvider(songArtwork?.let { Icon.createWithBitmap(it) } ?: Icon.createWithResource(context, R.drawable.im_default_artwork)),
+            provider = ImageProvider(
+                songArtwork?.let {
+                    Icon.createWithBitmap(it)
+                } ?: Icon.createWithResource(context, R.drawable.im_default_artwork),
+            ),
             contentDescription = null,
         )
 
@@ -81,7 +85,7 @@ internal fun SquareControllerSquareSection(
         )
 
         Column(
-            modifier = GlanceModifier.fillMaxSize()
+            modifier = GlanceModifier.fillMaxSize(),
         ) {
             Spacer(modifier = GlanceModifier.defaultWeight())
 
@@ -95,7 +99,7 @@ internal fun SquareControllerSquareSection(
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
-                )
+                ),
             )
 
             Text(
@@ -108,7 +112,7 @@ internal fun SquareControllerSquareSection(
                     color = ColorProvider(Color.White),
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
-                )
+                ),
             )
 
             Row(
@@ -144,7 +148,7 @@ internal fun SquareControllerSquareSection(
                                 actionSendBroadcast(ControllerWidgetContract.Actions.ACTION_PAUSE, ComponentName(context, MusicButtonReceiver::class.java))
                             } else {
                                 actionSendBroadcast(ControllerWidgetContract.Actions.ACTION_PLAY, ComponentName(context, MusicButtonReceiver::class.java))
-                            }
+                            },
                         )
                         .padding(4.dp),
                     provider = ImageProvider(playPauseIcon),
@@ -187,7 +191,7 @@ internal fun SquareControllerSquareSection(
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
-                    )
+                    ),
                 )
             }
         }

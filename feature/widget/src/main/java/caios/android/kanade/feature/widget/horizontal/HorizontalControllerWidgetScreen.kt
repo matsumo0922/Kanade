@@ -70,7 +70,11 @@ internal fun SquareControllerWidgetScreen(
         ) {
             Image(
                 modifier = GlanceModifier.size(widgetSize.height),
-                provider = ImageProvider(songArtwork?.let { Icon.createWithBitmap(it) } ?: Icon.createWithResource(context, R.drawable.im_default_artwork)),
+                provider = ImageProvider(
+                    songArtwork?.let {
+                        Icon.createWithBitmap(it)
+                    } ?: Icon.createWithResource(context, R.drawable.im_default_artwork),
+                ),
                 contentDescription = null,
             )
 
@@ -88,7 +92,7 @@ internal fun SquareControllerWidgetScreen(
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
-                    )
+                    ),
                 )
 
                 Row(
@@ -120,7 +124,7 @@ internal fun SquareControllerWidgetScreen(
                                     actionSendBroadcast(ACTION_PAUSE, ComponentName(context, MusicButtonReceiver::class.java))
                                 } else {
                                     actionSendBroadcast(ACTION_PLAY, ComponentName(context, MusicButtonReceiver::class.java))
-                                }
+                                },
                             )
                             .padding(4.dp),
                         provider = ImageProvider(playPauseIcon),
@@ -161,7 +165,7 @@ internal fun SquareControllerWidgetScreen(
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
-                    )
+                    ),
                 )
             }
         }
