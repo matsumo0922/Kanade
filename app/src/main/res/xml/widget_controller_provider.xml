@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/glance_default_loading_layout"
-    android:targetCellHeight="1"
-    android:targetCellWidth="3"
     android:minWidth="250dp"
-    android:minHeight="50dp"
-    android:minResizeWidth="250dp"
-    android:minResizeHeight="50dp"
+    android:minHeight="40dp"
     android:previewImage="@drawable/vec_app_icon_no_background"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />

@@ -29,7 +29,6 @@ import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PAUS
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_PLAY
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_NEXT
 import caios.android.kanade.core.music.NotificationManager.Companion.ACTION_SKIP_TO_PREVIOUS
-import caios.android.kanade.core.repository.UserDataRepository
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -47,9 +46,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
 
     @Inject
-    lateinit var userDataRepository: UserDataRepository
-
-    @Inject
     lateinit var musicController: MusicController
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -59,6 +55,8 @@ class ControllerWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
+
+        Timber.d("updateWidgets: ${intent.action}")
 
         when (intent.action) {
             ACTION_REQUEST_UPDATE -> {

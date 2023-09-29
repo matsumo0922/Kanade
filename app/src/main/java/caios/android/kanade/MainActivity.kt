@@ -28,19 +28,14 @@ import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.player.PlayerEvent
-import caios.android.kanade.core.model.player.PlayerState
 import caios.android.kanade.core.music.MusicController
 import caios.android.kanade.core.music.MusicViewModel
-import caios.android.kanade.core.repository.UserDataRepository
 import caios.android.kanade.core.ui.AsyncLoadContents
-import caios.android.kanade.feature.widget.ControllerWidgetReceiver
 import caios.android.kanade.ui.KanadeApp
 import caios.android.kanade.ui.rememberKanadeAppState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,9 +46,6 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
     private val musicViewModel by viewModels<MusicViewModel>()
-
-    @Inject
-    lateinit var userDataRepository: UserDataRepository
 
     @Inject
     lateinit var musicController: MusicController
@@ -127,24 +119,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             musicViewModel.fetch()
             musicController.initialize()
-        }
-
-        lifecycleScope.launch {
-            combine(
-                userDataRepository.userData,
-                musicController.currentSong,
-                musicController.playerState,
-            ) { userData, song, playerState ->
-                Triple(userData, song, playerState)
-            }.collectLatest { (userData, _, playerState) ->
-                sendBroadcast(
-                    ControllerWidgetReceiver.createUpdateIntent(
-                        context = this@MainActivity,
-                        isPlaying = playerState == PlayerState.Playing,
-                        isPlusUser = userData.hasPrivilege,
-                    ),
-                )
-            }
         }
     }
 

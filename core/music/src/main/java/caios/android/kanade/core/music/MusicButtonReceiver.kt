@@ -2,9 +2,9 @@ package caios.android.kanade.core.music
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import caios.android.kanade.core.model.player.PlayerEvent
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -14,7 +14,7 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
     lateinit var musicController: MusicController
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("onReceive", "onReceive: ${intent?.action}")
+        Timber.d("onReceive", "onReceive: ${intent?.action}")
 
         val playerEvent = when (intent?.action) {
             NotificationManager.ACTION_PLAY -> PlayerEvent.Play
@@ -25,6 +25,7 @@ class MusicButtonReceiver : android.content.BroadcastReceiver() {
             else -> return
         }
 
+        musicController.initialize()
         musicController.playerEvent(playerEvent)
     }
 }

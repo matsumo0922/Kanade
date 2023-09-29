@@ -27,6 +27,9 @@ class KanadeApplication : Application() {
     lateinit var kanadeConfig: KanadeConfig
 
     @Inject
+    lateinit var widgetUpdater: WidgetUpdater
+
+    @Inject
     @Dispatcher(KanadeDispatcher.IO)
     lateinit var io: CoroutineDispatcher
 
