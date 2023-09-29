@@ -134,7 +134,7 @@ private fun SettingThemeDialog(
                             ToastUtil.show(context, R.string.billing_plus_toast_require_plus)
                             onBillingPlus.invoke()
                         }
-                    }
+                    },
                 )
             }
 
