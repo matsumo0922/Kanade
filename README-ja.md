@@ -42,6 +42,7 @@ Kanadeは同期歌詞を表示できるエレガントな音楽プレイヤー�
 - <a href="https://kotlinlang.org/docs/coroutines-overview.html">Kotlin Coroutines</a>
 - <a href="https://kotlinlang.org/docs/flow.html">Kotlin Flow<a>
 - <a href="https://developer.android.com/jetpack/compose?hl=ja">Jetpack Compose</a>
+- - <a href="https://developer.android.com/jetpack/compose/glance">Jetpack Glance</a>
 - <a href="https://m3.material.io/">Material3</a>
 
 ## Feature
@@ -54,6 +55,7 @@ Kanadeは同期歌詞を表示できるエレガントな音楽プレイヤー�
   - Equalizer
   - 同期歌詞の編集 / 表示
   - プレイリストの作成
+  - ウィジェット
 - 音楽情報取得
   - <a href="last.fm">Last.fm API</a>
   - <a href="https://www.musixmatch.com">Musixmatch API</a>
@@ -62,12 +64,9 @@ Kanadeは同期歌詞を表示できるエレガントな音楽プレイヤー�
 #### Not Ready...
 
 - 音楽の早送り / 巻き戻し（秒単位）
-- イコライザープリセット機能
-- 同期歌詞の作成（WALKMANみたいな）
 - MediaStore からのプレイリスト読み出し / 書き出し
 - 音楽おすすめ機能
 - アーティストおすすめ機能
-- 課金系全般
 - 広告系全般
 
 ## Architecture

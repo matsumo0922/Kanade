@@ -43,6 +43,7 @@ I created this as a test of my own skills! It's like a portfolio. I wanted to de
 - <a href="https://kotlinlang.org/docs/coroutines-overview.html">Kotlin Coroutines</a>
 - <a href="https://kotlinlang.org/docs/flow.html">Kotlin Flow<a>
 - <a href="https://developer.android.com/jetpack/compose?hl=ja">Jetpack Compose</a>
+- <a href="https://developer.android.com/jetpack/compose/glance">Jetpack Glance</a>
 - <a href="https://m3.material.io/">Material3</a>
 
 ## Feature
@@ -55,6 +56,7 @@ I created this as a test of my own skills! It's like a portfolio. I wanted to de
   - Equalizer
   - Editing / Display of synchronized lyrics
   - Playlist creation
+  - Home Widget
 - Music information retrieval
   - <a href="last.fm">Last.fm API</a>
   - <a href="https://www.musixmatch.com">Musixmatch API</a>
@@ -63,12 +65,8 @@ I created this as a test of my own skills! It's like a portfolio. I wanted to de
 #### Not Ready...
 
 - Fast forward / Rewind music (in seconds)
-- Equalizer preset function
-- Creation of synchronized lyrics (like WALKMAN)
-- Reading / Writing playlist from MediaStore
 - Music recommendation function
 - Artist recommendation function
-- Overall billing system
 - Overall advertising system
 
 ## Architecture
