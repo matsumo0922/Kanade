@@ -42,6 +42,7 @@ import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
 internal fun SettingTopRoute(
     navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
+    navigateToOpenSourceLicense: () -> Unit,
     navigateToSettingDeveloper: () -> Unit,
     terminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -66,6 +67,7 @@ internal fun SettingTopRoute(
             onClickIgnoreShortMusic = viewModel::setIgnoreShortMusic,
             onClickIgnoreNotMusic = viewModel::setIgnoreNotMusic,
             onClickYtDlpVersion = viewModel::updateYoutubeDL,
+            onClickOpenSourceLicense = navigateToOpenSourceLicense,
             onClickDeveloperMode = { isEnable ->
                 if (isEnable) {
                     navigateToSettingDeveloper()
@@ -92,6 +94,7 @@ private fun SettingTopScreen(
     onClickIgnoreShortMusic: (Boolean) -> Unit,
     onClickIgnoreNotMusic: (Boolean) -> Unit,
     onClickYtDlpVersion: suspend (Context) -> String?,
+    onClickOpenSourceLicense: () -> Unit,
     onClickDeveloperMode: (Boolean) -> Unit,
     onTerminate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -159,6 +162,7 @@ private fun SettingTopScreen(
                     config = config,
                     userData = userData,
                     onClickYtDlpVersion = onClickYtDlpVersion,
+                    onClickOpenSourceLicense = onClickOpenSourceLicense,
                     onClickDeveloperMode = onClickDeveloperMode,
                 )
             }

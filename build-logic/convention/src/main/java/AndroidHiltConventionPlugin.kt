@@ -1,9 +1,9 @@
 
+import caios.android.kanade.library
+import caios.android.kanade.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 
 class AndroidHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -13,10 +13,9 @@ class AndroidHiltConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.kapt")
             }
 
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                "implementation"(libs.findLibrary("dagger.hilt").get())
-                "kapt"(libs.findLibrary("dagger.hilt.compiler").get())
+                "implementation"(libs.library("dagger.hilt"))
+                "kapt"(libs.library("dagger.hilt.compiler"))
             }
         }
     }

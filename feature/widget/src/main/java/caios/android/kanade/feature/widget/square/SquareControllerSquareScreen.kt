@@ -100,6 +100,7 @@ internal fun SquareControllerSquareScreen(
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                 ),
+                maxLines = 1,
             )
 
             Text(
@@ -113,6 +114,7 @@ internal fun SquareControllerSquareScreen(
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                 ),
+                maxLines = 1,
             )
 
             Row(

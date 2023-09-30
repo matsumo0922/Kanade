@@ -62,6 +62,8 @@ import caios.android.kanade.feature.queue.showQueueDialog
 import caios.android.kanade.feature.search.scan.scanMediaDialog
 import caios.android.kanade.feature.setting.developer.navigateToSettingDeveloper
 import caios.android.kanade.feature.setting.developer.settingDeveloperDialog
+import caios.android.kanade.feature.setting.oss.navigateToSettingLicense
+import caios.android.kanade.feature.setting.oss.settingLicenseScreen
 import caios.android.kanade.feature.setting.theme.navigateToSettingTheme
 import caios.android.kanade.feature.setting.theme.settingThemeScreen
 import caios.android.kanade.feature.setting.top.settingTopScreen
@@ -430,6 +432,9 @@ fun KanadeNavHost(
             navigateToSettingDeveloper = {
                 navController.navigateToSettingDeveloper()
             },
+            navigateToOpenSourceLicense = {
+                navController.navigateToSettingLicense()
+            },
             terminate = {
                 navController.popBackStack()
             },
@@ -439,6 +444,12 @@ fun KanadeNavHost(
             navigateToBillingPlus = {
                 appState.showBillingPlusDialog(activity)
             },
+            terminate = {
+                navController.popBackStack()
+            },
+        )
+
+        settingLicenseScreen(
             terminate = {
                 navController.popBackStack()
             },

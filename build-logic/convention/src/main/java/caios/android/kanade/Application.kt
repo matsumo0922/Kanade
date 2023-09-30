@@ -2,19 +2,15 @@ package caios.android.kanade
 
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.getByType
 
 internal fun Project.configureApplication() {
     androidExt {
-        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-        
         defaultConfig {
             applicationId = "caios.android.kanade"
             
-            versionName = libs.findVersion("versionName").get().toString()
-            versionCode = libs.findVersion("versionCode").get().toString().toInt()
+            versionName = libs.version("versionName")
+            versionCode = libs.version("versionCode").toInt()
             
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }

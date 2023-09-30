@@ -236,7 +236,7 @@
     <string name="about_special_thanks_mao">魔王魂</string>
     <string name="about_special_thanks_mao_description">月間平均150万PVを誇る魔王魂を運営するプロ作曲家。アプリ内のサンプル楽曲「シャイニングスター」提供元。</string>
     <string name="about_special_thanks_358">358 Design</string>
-    <string name="about_special_thanks_358_description">企業ロゴからアプリアイコンまで、様々なデザインを行うグラフィックデザイナー。このアプリのアイコンを担当。</string>
+    <string name="about_special_thanks_358_description">企業ロゴからアプリアイコンまで、様々なデザインを行うグラフィックデザイナー。このアプリの旧アイコンを担当。</string>
     <string name="about_contribute">CONTRIBUTE</string>
     <string name="about_contribute_description">このアプリは OSS となっており、GPL でライセンスされています。コントリビュートはいつでも誰でも歓迎です。特に中国語への翻訳を手伝ってくれる方を探しています。</string>
     <string name="about_support">SUPPORT</string>
@@ -278,6 +278,8 @@
     <string name="setting_top_others_ytdlp_version_checking">アップデート確認中…</string>
     <string name="setting_top_others_ytdlp_version_toast_done">更新しました</string>
     <string name="setting_top_others_ytdlp_version_toast_already_updated">最新バージョンを使用しています</string>
+    <string name="setting_top_others_open_source_license">オープンソースライセンス</string>
+    <string name="setting_top_others_open_source_license_description">OSSライブラリのライセンスを表示します。</string>
     <string name="setting_top_others_developer_mode">開発モード</string>
     <string name="setting_top_others_developer_mode_description">[Warning] Do not enable this mode if you are not a developer.</string>
     <string name="setting_theme_title">テーマ</string>

@@ -87,8 +87,7 @@ fun MainController(
     onClickMenuAlbum: (Long) -> Unit,
     onClickMenuEqualizer: () -> Unit,
     onClickMenuEdit: () -> Unit,
-    onClickMenuAnalyze: () -> Unit,
-    onClickMenuDetailInfo: () -> Unit,
+    onClickMenuDetailInfo: (Long) -> Unit,
     onClickPlay: () -> Unit,
     onClickPause: () -> Unit,
     onClickSkipToNext: () -> Unit,
@@ -99,9 +98,7 @@ fun MainController(
     onClickSeek: (Float) -> Unit,
     onClickLyrics: (Long) -> Unit,
     onClickFavorite: () -> Unit,
-    onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
-    onClickKaraoke: () -> Unit,
     onFetchFavorite: suspend (Song) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -210,8 +207,7 @@ fun MainController(
                     },
                     onClickMenuEqualizer = onClickMenuEqualizer,
                     onClickMenuEdit = onClickMenuEdit,
-                    onClickMenuAnalyze = onClickMenuAnalyze,
-                    onClickMenuDetailInfo = onClickMenuDetailInfo,
+                    onClickMenuDetailInfo = { uiState.song?.id?.let { onClickMenuDetailInfo.invoke(it) } },
                 )
             }
 
@@ -346,9 +342,7 @@ fun MainController(
                     isFavorite = !isFavorite
                     onClickFavorite.invoke()
                 },
-                onClickSleepTimer = onClickSleepTimer,
                 onClickQueue = onClickQueue,
-                onClickKaraoke = onClickKaraoke,
             )
         }
     }
@@ -435,7 +429,6 @@ private fun Preview() {
             onClickMenuAlbum = { },
             onClickMenuEqualizer = { },
             onClickMenuEdit = { },
-            onClickMenuAnalyze = { },
             onClickMenuDetailInfo = { },
             onClickPlay = { },
             onClickPause = { },
@@ -447,9 +440,7 @@ private fun Preview() {
             onClickSeek = { },
             onClickLyrics = { },
             onClickFavorite = { },
-            onClickSleepTimer = { },
             onClickQueue = { },
-            onClickKaraoke = { },
             onFetchFavorite = { true },
         )
     }

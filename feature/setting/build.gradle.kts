@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.bundles.ui.implementation)
     implementation(libs.bundles.youtubedl)
     kapt(libs.bundles.ui.kapt)
+
+    implementation(libs.libraries.ui)
 }

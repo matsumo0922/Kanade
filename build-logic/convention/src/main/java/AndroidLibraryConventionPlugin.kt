@@ -1,11 +1,10 @@
 
 import caios.android.kanade.configureKotlinAndroid
+import caios.android.kanade.libs
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 
 class AndroidLibraryConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
@@ -19,8 +18,6 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
                 apply("project-report")
                 apply("com.google.devtools.ksp")
             }
-
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)

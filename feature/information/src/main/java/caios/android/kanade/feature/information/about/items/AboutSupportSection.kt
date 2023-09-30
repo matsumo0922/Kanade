@@ -107,7 +107,7 @@ private fun AboutSupportItem(
     Row(
         modifier = modifier
             .clickable { onClick.invoke() }
-            .padding(horizontal = 24.dp, vertical = 6.dp),
+            .padding(horizontal = 24.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {

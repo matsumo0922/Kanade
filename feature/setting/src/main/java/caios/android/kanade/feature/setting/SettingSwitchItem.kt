@@ -24,7 +24,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 @Composable
 internal fun SettingSwitchItem(
     @StringRes title: Int,
-    @StringRes description: Int,
+    @StringRes description: Int?,
     value: Boolean,
     onValueChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -70,12 +70,14 @@ internal fun SettingSwitchItem(
                 color = titleColor,
             )
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = descriptionColor,
-            )
+            if (description != null) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = descriptionColor,
+                )
+            }
         }
 
         Switch(
@@ -109,6 +111,19 @@ private fun PreviewSettingSwitchItem2() {
             value = true,
             onValueChanged = {},
             isEnabled = false,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSettingSwitchItem3() {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
+        SettingSwitchItem(
+            title = R.string.copy,
+            description = null,
+            value = true,
+            onValueChanged = {},
         )
     }
 }

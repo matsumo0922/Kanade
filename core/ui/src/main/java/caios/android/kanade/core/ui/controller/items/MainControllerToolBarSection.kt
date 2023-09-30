@@ -43,7 +43,6 @@ internal fun MainControllerToolBarSection(
     onClickMenuAlbum: () -> Unit,
     onClickMenuEqualizer: () -> Unit,
     onClickMenuEdit: () -> Unit,
-    onClickMenuAnalyze: () -> Unit,
     onClickMenuDetailInfo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -121,10 +120,6 @@ internal fun MainControllerToolBarSection(
                         onClick = onClickMenuEdit,
                     ),
                     DropDownMenuItemData(
-                        text = R.string.controller_menu_analyze,
-                        onClick = onClickMenuAnalyze,
-                    ),
-                    DropDownMenuItemData(
                         text = R.string.controller_menu_detail_info,
                         onClick = onClickMenuDetailInfo,
                     ),
@@ -157,7 +152,6 @@ private fun Preview() {
             onClickMenuAlbum = { },
             onClickMenuEqualizer = { },
             onClickMenuEdit = { },
-            onClickMenuAnalyze = { },
             onClickMenuDetailInfo = { },
         )
     }

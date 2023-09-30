@@ -93,6 +93,7 @@ internal fun SquareControllerWidgetScreen(
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
                     ),
+                    maxLines = 1,
                 )
 
                 Row(
