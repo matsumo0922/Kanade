@@ -148,7 +148,7 @@ private fun TagEditScreen(
             topBar = {
                 KanadeTopAppBar(
                     modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(R.string.lyrics_edit_title),
+                    title = stringResource(R.string.menu_edit),
                     behavior = behavior,
                     onTerminate = { onTerminate.invoke() },
                 )
