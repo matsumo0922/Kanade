@@ -22,6 +22,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.theme.bold
 import caios.android.kanade.core.design.theme.center
+import caios.android.kanade.core.ui.dialog.SimpleAlertDialog
 import caios.android.kanade.feature.welcome.WelcomeIndicatorItem
 
 @Composable
@@ -52,11 +54,23 @@ internal fun WelcomeTopScreen(
     viewModel: WelcomeTopViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    var isDisplayedOldUserDialog by remember { mutableStateOf(false) }
     var isAgreedPrivacyPolicy by remember { mutableStateOf(false) }
     var isAgreedTermsOfService by remember { mutableStateOf(false) }
 
     val teamOfServiceUri = "https://www.matsumo.me/application/kanade/team_of_service".toUri()
     val privacyPolicyUri = "https://www.matsumo.me/application/kanade/privacy_policy".toUri()
+
+    if (isDisplayedOldUserDialog) {
+        SimpleAlertDialog(
+            title = R.string.welcome_top_old_users_title,
+            message = R.string.welcome_top_old_users_description,
+            negativeText = null,
+            onPositiveClick = { isDisplayedOldUserDialog = false },
+            onDismiss = { isDisplayedOldUserDialog = false },
+            cancelable = false,
+        )
+    }
 
     Column(
         modifier = modifier
@@ -141,6 +155,10 @@ internal fun WelcomeTopScreen(
                 color = if (isAgreedPrivacyPolicy && isAgreedTermsOfService) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
             )
         }
+    }
+
+    LaunchedEffect(true) {
+        isDisplayedOldUserDialog = viewModel.checkHasOldData(context)
     }
 }
 

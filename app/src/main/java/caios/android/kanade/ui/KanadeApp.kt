@@ -3,6 +3,7 @@ package caios.android.kanade.ui
 import android.app.Activity
 import android.content.Intent
 import android.media.audiofx.AudioEffect
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -31,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -348,38 +350,36 @@ private fun IdleScreen(
                         LoadingDialog(R.string.common_analyzing)
                     }
 
-                    if (topBarAlpha > 0f) {
-                        KanadeTopBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .onGloballyPositioned {
-                                    if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
-                                }
-                                .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
-                                .alpha(topBarAlpha),
-                            active = isSearchActive,
-                            yOffset = toolbarOffset,
-                            onChangeActive = { isSearchActive = it },
-                            onClickDrawerMenu = {
-                                scope.launch {
-                                    drawerState.open()
-                                }
-                            },
-                            navigateToArtistDetail = {
-                                appState.navController.navigateToArtistDetail(it)
-                            },
-                            navigateToAlbumDetail = {
-                                appState.navController.navigateToAlbumDetail(it)
-                            },
-                            navigateToPlaylistDetail = {
-                                appState.navController.navigateToPlaylistDetail(it)
-                            },
-                            navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
-                            navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
-                            navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
-                            navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
-                        )
-                    }
+                    KanadeTopBar(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned {
+                                if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
+                            }
+                            .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
+                            .alpha(topBarAlpha),
+                        active = isSearchActive,
+                        yOffset = toolbarOffset,
+                        onChangeActive = { isSearchActive = it },
+                        onClickDrawerMenu = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        navigateToArtistDetail = {
+                            appState.navController.navigateToArtistDetail(it)
+                        },
+                        navigateToAlbumDetail = {
+                            appState.navController.navigateToAlbumDetail(it)
+                        },
+                        navigateToPlaylistDetail = {
+                            appState.navController.navigateToPlaylistDetail(it)
+                        },
+                        navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
+                        navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
+                        navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
+                        navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
+                    )
 
                     KanadeNavHost(
                         musicViewModel = musicViewModel,
@@ -387,6 +387,12 @@ private fun IdleScreen(
                         userData = userData,
                         libraryTopBarHeight = with(density) { topBarHeight.toDp() },
                     )
+
+                    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.partialExpand()
+                        }
+                    }
                 }
             }
         }

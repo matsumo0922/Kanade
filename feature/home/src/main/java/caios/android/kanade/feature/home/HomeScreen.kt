@@ -58,16 +58,16 @@ internal fun HomeRoute(
         modifier = modifier,
         screenState = screenState,
     ) { uiState ->
-        if (uiState.recentlyAddedAlbums.isEmpty() || uiState.recentlyPlayedSongs.isEmpty() || uiState.mostPlayedSongs.isEmpty()) {
+        if (uiState.recentlyAddedAlbums.isEmpty() || uiState.recentlyPlayedSongs.isEmpty() || uiState.mostPlayedSongs.isEmpty() || uiState.queue?.items?.isEmpty() == true) {
             HomeEmptyScreen(
                 modifier = Modifier.fillMaxSize(),
             )
-        } else if (uiState.queue?.items?.isEmpty() == false) {
+        } else {
             HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
-                queue = uiState.queue,
+                queue = uiState.queue!!,
                 songs = uiState.songs.toImmutableList(),
                 recentlyAddedAlbums = uiState.recentlyAddedAlbums.toImmutableList(),
                 recentlyPlayedSongs = uiState.recentlyPlayedSongs.toImmutableList(),

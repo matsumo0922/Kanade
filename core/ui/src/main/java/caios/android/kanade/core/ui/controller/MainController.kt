@@ -1,12 +1,6 @@
 package caios.android.kanade.core.ui.controller
 
-import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -22,19 +16,12 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -43,15 +30,8 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.atLeast
-import androidx.palette.graphics.Palette
 import caios.android.kanade.core.design.component.KanadeBackground
-import caios.android.kanade.core.design.theme.Blue40
 import caios.android.kanade.core.design.theme.DarkDefaultColorScheme
-import caios.android.kanade.core.design.theme.Green40
-import caios.android.kanade.core.design.theme.Orange40
-import caios.android.kanade.core.design.theme.Purple40
-import caios.android.kanade.core.design.theme.Teal40
-import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.RepeatMode
 import caios.android.kanade.core.model.player.ShuffleMode
@@ -68,18 +48,17 @@ import caios.android.kanade.core.ui.controller.items.MainControllerEmptyLyricsIt
 import caios.android.kanade.core.ui.controller.items.MainControllerInfoSection
 import caios.android.kanade.core.ui.controller.items.MainControllerTextSection
 import caios.android.kanade.core.ui.controller.items.MainControllerToolBarSection
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
-import okhttp3.internal.toHexString
-import timber.log.Timber
 
 @Composable
 fun MainController(
     uiState: MusicUiState,
     windowSize: WindowSizeClass,
+    isFavorite: Boolean,
+    isLyricsVisible: Boolean,
+    lyricsAlpha: Float,
+    gradientColor: Color,
     onClickClose: () -> Unit,
     onClickSearch: () -> Unit,
     onClickMenuAddPlaylist: (Long) -> Unit,
@@ -96,31 +75,16 @@ fun MainController(
     onClickShuffle: (ShuffleMode) -> Unit,
     onClickRepeat: (RepeatMode) -> Unit,
     onClickSeek: (Float) -> Unit,
-    onClickLyrics: (Long) -> Unit,
+    onClickLyrics: () -> Unit,
+    onClickLyricsEdit: (Long) -> Unit,
     onClickFavorite: () -> Unit,
     onClickQueue: () -> Unit,
-    onFetchFavorite: suspend (Song) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val configuration = LocalConfiguration.current
-    val view = LocalView.current
     val scope = rememberCoroutineScope()
     val isDarkMode = uiState.userData?.isDarkMode()
     val isLargeDevice = windowSize.heightSizeClass == WindowHeightSizeClass.Expanded
-    var isFavorite by remember { mutableStateOf(false) }
-    var isLyricsVisible by remember { mutableStateOf(false) }
-    var artworkColor by remember { mutableStateOf(Color.Transparent) }
-    val gradientColor by animateColorAsState(
-        targetValue = artworkColor,
-        animationSpec = tween(300, 0, LinearEasing),
-        label = "gradientColor",
-    )
-    val lyricsAlpha by animateFloatAsState(
-        targetValue = if (isLyricsVisible) 1f else 0f,
-        animationSpec = tween(200, 0, LinearEasing),
-        label = "lyricsAlpha",
-    )
 
     val state = rememberLyricsViewState(
         uiState.lyrics,
@@ -137,18 +101,6 @@ fun MainController(
     }
 
     state.position = uiState.progress
-
-    LaunchedEffect(uiState.song) {
-        val song = uiState.song ?: return@LaunchedEffect
-        val artwork = song.albumArtwork
-
-        artworkColor = getArtworkColor(context, artwork)
-        isFavorite = onFetchFavorite.invoke(song)
-    }
-
-    LaunchedEffect(isLyricsVisible) {
-        view.keepScreenOn = (isLyricsVisible && uiState.lyrics != null)
-    }
 
     MainControllerBackground {
         ConstraintLayout(
@@ -277,7 +229,7 @@ fun MainController(
                             scope.launch {
                                 uiState.song?.let {
                                     onClickClose.invoke()
-                                    onClickLyrics.invoke(it.id)
+                                    onClickLyricsEdit.invoke(it.id)
                                 }
                             }
                         },
@@ -329,19 +281,16 @@ fun MainController(
                     }
                     .padding(top = 8.dp),
                 isFavorite = isFavorite,
-                onClickLyrics = { isLyricsVisible = !isLyricsVisible },
+                onClickLyrics = onClickLyrics,
                 onClickLyricsEdit = {
                     scope.launch {
                         uiState.song?.let {
                             onClickClose.invoke()
-                            onClickLyrics.invoke(it.id)
+                            onClickLyricsEdit.invoke(it.id)
                         }
                     }
                 },
-                onClickFavorite = {
-                    isFavorite = !isFavorite
-                    onClickFavorite.invoke()
-                },
+                onClickFavorite = onClickFavorite,
                 onClickQueue = onClickQueue,
             )
         }
@@ -362,51 +311,6 @@ private fun MainControllerBackground(content: @Composable () -> Unit) {
     }
 }
 
-private suspend fun getArtworkColor(
-    context: Context,
-    artwork: Artwork,
-): Color {
-    try {
-        val builder = when (artwork) {
-            is Artwork.Internal -> {
-                return when (artwork.name.toList().sumOf { it.code } % 5) {
-                    0 -> Blue40
-                    1 -> Green40
-                    2 -> Orange40
-                    3 -> Purple40
-                    4 -> Teal40
-                    else -> throw IllegalArgumentException("Unknown album name.")
-                }
-            }
-
-            is Artwork.Web -> ImageRequest.Builder(context).data(artwork.url)
-            is Artwork.MediaStore -> ImageRequest.Builder(context).data(artwork.uri)
-            else -> return Color.Transparent
-        }.allowHardware(false)
-
-        val request = builder.build()
-        val result = (ImageLoader(context).execute(request) as? SuccessResult)?.drawable
-            ?: return Color.Transparent
-        val palette = Palette.from((result as BitmapDrawable).bitmap).generate()
-
-        val list = listOfNotNull(
-            palette.mutedSwatch,
-            palette.lightMutedSwatch,
-            palette.vibrantSwatch,
-            palette.lightVibrantSwatch,
-            palette.darkVibrantSwatch,
-            palette.darkMutedSwatch,
-        )
-
-        Timber.d("artwork palette: ${list.map { it.rgb.toHexString() }}")
-
-        return Color(list.first().rgb)
-    } catch (e: Throwable) {
-        Timber.e(e)
-        return Color.Transparent
-    }
-}
-
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(showBackground = true)
 @Composable
@@ -422,6 +326,10 @@ private fun Preview() {
                 repeatMode = RepeatMode.ALL,
             ),
             windowSize = WindowSizeClass.calculateFromSize(DpSize.Zero),
+            isFavorite = false,
+            isLyricsVisible = false,
+            lyricsAlpha = 0f,
+            gradientColor = Color(0xFF121212),
             onClickClose = { },
             onClickSearch = { },
             onClickMenuAddPlaylist = { },
@@ -439,9 +347,9 @@ private fun Preview() {
             onClickRepeat = { },
             onClickSeek = { },
             onClickLyrics = { },
+            onClickLyricsEdit = { },
             onClickFavorite = { },
             onClickQueue = { },
-            onFetchFavorite = { true },
         )
     }
 }

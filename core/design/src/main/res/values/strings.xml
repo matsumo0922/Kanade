@@ -392,6 +392,8 @@
     <string name="welcome_team_of_service">利用規約</string>
     <string name="welcome_agree">に同意する</string>
     <string name="welcome_button_next">はじめる</string>
+    <string name="welcome_top_old_users_title">以前からKanadeをお使いの方へ</string>
+    <string name="welcome_top_old_users_description">Kanade をご利用いただきありがとうございます。\n\nこの度 Kanade は UI や機能のリニューアルを実施し、より良い音楽視聴ができるようにアプリの改変を行いました。それに伴い、再生履歴や再生回数などの情報を削除させていただきました。あらかじめご了承ください。プレイリストや再生待ちリストなどの必須データは復元をしておりますので、引き続きご利用いただくことが可能です。\n\nまた、以前のプレミアム版（現 Kanade+）をご購入いただいていた方は、サービス名変更に伴い購入情報が維持されていない場合がございます。その場合は、次の画面にて「購入を復元」ボタンを押していただき、購入情報を復元していただくようお願い申し上げます。\n\n引き続き、Kanade をよろしくお願いいたします。</string>
     <string name="welcome_permission_title">権限</string>
     <string name="welcome_permission_message">アプリの利用には以下の権限が必要です\n下のボタンを押して権限を許可してください</string>
     <string name="welcome_permission_ready_title">準備完了</string>

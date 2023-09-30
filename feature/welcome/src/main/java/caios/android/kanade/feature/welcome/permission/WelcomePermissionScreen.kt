@@ -63,7 +63,7 @@ internal fun WelcomePermissionScreen(
     }
 
     val isGrantedStorage = permissionsState.permissions[0].status is PermissionStatus.Granted
-    val isGrantedNotify = permissionsState.permissions[1].status is PermissionStatus.Granted
+    val isGrantedNotify = permissionsState.permissions.elementAtOrNull(1)?.status is PermissionStatus.Granted
 
     Column(
         modifier = modifier

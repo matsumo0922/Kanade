@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.design.R
+import caios.android.kanade.core.model.NotificationConfigs
 import caios.android.kanade.core.repository.LastFmRepository
 import caios.android.kanade.core.repository.MusicRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,7 @@ import kotlin.coroutines.CoroutineContext
 class LastFmService : Service(), CoroutineScope {
 
     private val manager by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+    private val notifyConfig = NotificationConfigs.lastfm
 
     private var processJob: Job? = null
     private val scrapingInterval = if (BuildConfig.DEBUG) 500L else 1000L * 3
@@ -128,7 +130,7 @@ class LastFmService : Service(), CoroutineScope {
 
     private fun setForegroundService(isForeground: Boolean, title: String, progress: Int, max: Int) {
         if (isForeground) {
-            startForeground(NOTIFY_ID, createMusicNotification(baseContext, title, progress, max))
+            startForeground(notifyConfig.notifyId, createMusicNotification(baseContext, title, progress, max))
         } else {
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
@@ -141,7 +143,7 @@ class LastFmService : Service(), CoroutineScope {
         }
         val mainPendingIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-        return NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
+        return NotificationCompat.Builder(context, notifyConfig.channelId)
             .setSmallIcon(R.drawable.vec_songs_off)
             .setContentTitle(getString(R.string.notify_last_fm_title))
             .setContentText(songTitle)
@@ -155,13 +157,13 @@ class LastFmService : Service(), CoroutineScope {
     }
 
     private fun createNotificationChannel() {
-        if (manager.getNotificationChannel(NOTIFY_CHANNEL_ID) != null) return
+        if (manager.getNotificationChannel(notifyConfig.channelId) != null) return
 
         val channelName = baseContext.getString(R.string.notify_channel_last_fm_name)
         val channelDescription = baseContext.getString(R.string.notify_channel_last_fm_description)
 
         val channel = NotificationChannel(
-            NOTIFY_CHANNEL_ID,
+            notifyConfig.channelId,
             channelName,
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
@@ -169,10 +171,5 @@ class LastFmService : Service(), CoroutineScope {
         }
 
         manager.createNotificationChannel(channel)
-    }
-
-    companion object {
-        private const val NOTIFY_ID = 94
-        private const val NOTIFY_CHANNEL_ID = "KanadeNotify2"
     }
 }
