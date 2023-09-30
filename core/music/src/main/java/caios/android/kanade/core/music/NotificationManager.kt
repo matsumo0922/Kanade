@@ -24,6 +24,7 @@ import caios.android.kanade.core.design.theme.Green40
 import caios.android.kanade.core.design.theme.Orange40
 import caios.android.kanade.core.design.theme.Purple40
 import caios.android.kanade.core.design.theme.Teal40
+import caios.android.kanade.core.model.NotificationConfigs
 import caios.android.kanade.core.model.music.Artwork
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.player.PlayerState
@@ -39,6 +40,7 @@ class NotificationManager(
     private val musicController: MusicController,
 ) {
     private val manager = NotificationManagerCompat.from(service.baseContext)
+    private val notifyConfig = NotificationConfigs.music
 
     init {
         createNotificationChannel()
@@ -54,9 +56,9 @@ class NotificationManager(
         )
 
         if (isForeground) {
-            service.startForeground(NOTIFY_ID, notification)
+            service.startForeground(notifyConfig.notifyId, notification)
         } else {
-            manager.notify(NOTIFY_ID, notification)
+            manager.notify(notifyConfig.notifyId, notification)
             service.stopForeground(false)
         }
     }
@@ -68,7 +70,7 @@ class NotificationManager(
             song = musicController.currentSong.first(),
         )
 
-        manager.notify(NOTIFY_ID, notification)
+        manager.notify(notifyConfig.notifyId, notification)
     }
 
     @SuppressLint("WrongConstant")
@@ -83,9 +85,9 @@ class NotificationManager(
         val pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 
         val stopActionIntent = Intent(ACTION_PAUSE).apply { addFlags(0x01000000) }
-        val stopActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, stopActionIntent, pendingIntentFlags)
+        val stopActionPendingIntent = PendingIntent.getBroadcast(context, 99, stopActionIntent, pendingIntentFlags)
 
-        val notificationBuilder = NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(context, notifyConfig.channelId)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionToken)
@@ -103,19 +105,19 @@ class NotificationManager(
             .setContentIntent(mainPendingIntent)
 
         val playActionIntent = Intent(ACTION_PLAY).apply { addFlags(0x01000000) }
-        val playActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, playActionIntent, pendingIntentFlags)
+        val playActionPendingIntent = PendingIntent.getBroadcast(context, 99, playActionIntent, pendingIntentFlags)
         val playAction = NotificationCompat.Action(R.drawable.vec_play, null, playActionPendingIntent)
 
         val pauseActionIntent = Intent(ACTION_PAUSE).apply { addFlags(0x01000000) }
-        val pauseActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, pauseActionIntent, pendingIntentFlags)
+        val pauseActionPendingIntent = PendingIntent.getBroadcast(context, 99, pauseActionIntent, pendingIntentFlags)
         val pauseAction = NotificationCompat.Action(R.drawable.vec_pause, null, pauseActionPendingIntent)
 
         val skipToNextActionIntent = Intent(ACTION_SKIP_TO_NEXT).apply { addFlags(0x01000000) }
-        val skipToNextActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, skipToNextActionIntent, pendingIntentFlags)
+        val skipToNextActionPendingIntent = PendingIntent.getBroadcast(context, 99, skipToNextActionIntent, pendingIntentFlags)
         val skipToNextAction = NotificationCompat.Action(R.drawable.vec_skip_to_next, null, skipToNextActionPendingIntent)
 
         val skipToPreviousActionIntent = Intent(ACTION_SKIP_TO_PREVIOUS).apply { addFlags(0x01000000) }
-        val skipToPreviousActionPendingIntent = PendingIntent.getBroadcast(context, NOTIFY_INTENT_ID, skipToPreviousActionIntent, pendingIntentFlags)
+        val skipToPreviousActionPendingIntent = PendingIntent.getBroadcast(context, 99, skipToPreviousActionIntent, pendingIntentFlags)
         val skipToPreviousAction = NotificationCompat.Action(R.drawable.vec_skip_to_previous, null, skipToPreviousActionPendingIntent)
 
         notificationBuilder.addAction(skipToPreviousAction)
@@ -126,13 +128,13 @@ class NotificationManager(
     }
 
     private fun createNotificationChannel() {
-        if (manager.getNotificationChannel(NOTIFY_CHANNEL_ID) != null) return
+        if (manager.getNotificationChannel(notifyConfig.channelId) != null) return
 
         val channelName = service.baseContext.getString(R.string.notify_channel_music_name)
         val channelDescription = service.baseContext.getString(R.string.notify_channel_music_description)
 
         val channel = NotificationChannel(
-            NOTIFY_CHANNEL_ID,
+            notifyConfig.channelId,
             channelName,
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
@@ -202,10 +204,6 @@ class NotificationManager(
     }
 
     companion object {
-        const val NOTIFY_ID = 92
-        const val NOTIFY_INTENT_ID = 93
-        const val NOTIFY_CHANNEL_ID = "KanadeNotify1"
-
         const val ACTION_PLAY = "caios.system.kanade3.play"
         const val ACTION_PAUSE = "caios.system.kanade3.pause"
         const val ACTION_STOP = "caios.system.kanade3.stop"

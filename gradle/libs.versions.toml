@@ -75,7 +75,7 @@ youtubedl= "23b26d55f8"
 twitterComposeRule = "0.0.26"
 
 # Debugs
-firebase = "32.2.2"
+firebase = "32.3.1"
 leakCanary = "2.12"
 flipper = "0.201.0"
 timber = "5.0.1"

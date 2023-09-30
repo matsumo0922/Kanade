@@ -14,7 +14,7 @@ fun SimpleAlertDialog(
     title: String,
     message: String,
     positiveText: String = stringResource(R.string.common_ok),
-    negativeText: String = stringResource(R.string.common_cancel),
+    negativeText: String? = stringResource(R.string.common_cancel),
     onPositiveClick: () -> Unit = {},
     onNegativeClick: () -> Unit = {},
     onDismiss: () -> Unit = {},
@@ -34,13 +34,15 @@ fun SimpleAlertDialog(
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = {
-                    onNegativeClick.invoke()
-                    onDismiss.invoke()
-                },
-            ) {
-                Text(negativeText)
+            if (negativeText != null) {
+                TextButton(
+                    onClick = {
+                        onNegativeClick.invoke()
+                        onDismiss.invoke()
+                    },
+                ) {
+                    Text(negativeText)
+                }
             }
         },
         onDismissRequest = {
@@ -57,7 +59,7 @@ fun SimpleAlertDialog(
     @StringRes title: Int,
     @StringRes message: Int,
     @StringRes positiveText: Int = R.string.common_ok,
-    @StringRes negativeText: Int = R.string.common_cancel,
+    @StringRes negativeText: Int? = R.string.common_cancel,
     onPositiveClick: () -> Unit = {},
     onNegativeClick: () -> Unit = {},
     onDismiss: () -> Unit = {},
@@ -67,7 +69,7 @@ fun SimpleAlertDialog(
         title = stringResource(title),
         message = stringResource(message),
         positiveText = stringResource(positiveText),
-        negativeText = stringResource(negativeText),
+        negativeText = negativeText?.let { stringResource(it) },
         onPositiveClick = onPositiveClick,
         onNegativeClick = onNegativeClick,
         onDismiss = onDismiss,

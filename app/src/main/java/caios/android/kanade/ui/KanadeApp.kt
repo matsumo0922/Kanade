@@ -350,38 +350,36 @@ private fun IdleScreen(
                         LoadingDialog(R.string.common_analyzing)
                     }
 
-                    if (topBarAlpha > 0f) {
-                        KanadeTopBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .onGloballyPositioned {
-                                    if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
-                                }
-                                .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
-                                .alpha(topBarAlpha),
-                            active = isSearchActive,
-                            yOffset = toolbarOffset,
-                            onChangeActive = { isSearchActive = it },
-                            onClickDrawerMenu = {
-                                scope.launch {
-                                    drawerState.open()
-                                }
-                            },
-                            navigateToArtistDetail = {
-                                appState.navController.navigateToArtistDetail(it)
-                            },
-                            navigateToAlbumDetail = {
-                                appState.navController.navigateToAlbumDetail(it)
-                            },
-                            navigateToPlaylistDetail = {
-                                appState.navController.navigateToPlaylistDetail(it)
-                            },
-                            navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
-                            navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
-                            navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
-                            navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
-                        )
-                    }
+                    KanadeTopBar(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned {
+                                if (topBarHeight == 0f) topBarHeight = it.size.height.toFloat()
+                            }
+                            .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
+                            .alpha(topBarAlpha),
+                        active = isSearchActive,
+                        yOffset = toolbarOffset,
+                        onChangeActive = { isSearchActive = it },
+                        onClickDrawerMenu = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        navigateToArtistDetail = {
+                            appState.navController.navigateToArtistDetail(it)
+                        },
+                        navigateToAlbumDetail = {
+                            appState.navController.navigateToAlbumDetail(it)
+                        },
+                        navigateToPlaylistDetail = {
+                            appState.navController.navigateToPlaylistDetail(it)
+                        },
+                        navigateToSongMenu = { appState.showSongMenuDialog(activity, it) },
+                        navigateToArtistMenu = { appState.showArtistMenuDialog(activity, it) },
+                        navigateToAlbumMenu = { appState.showAlbumMenuDialog(activity, it) },
+                        navigateToPlaylistMenu = { appState.showPlaylistMenuDialog(activity, it) },
+                    )
 
                     KanadeNavHost(
                         musicViewModel = musicViewModel,

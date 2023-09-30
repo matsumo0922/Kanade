@@ -18,6 +18,9 @@ dependencies {
     implementation(project(":core:music"))
     implementation(project(":core:ui"))
 
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.ui.implementation)
+    implementation(libs.bundles.firebase)
     kapt(libs.bundles.ui.kapt)
 }
