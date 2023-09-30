@@ -25,6 +25,7 @@ internal fun SettingTopOthersSection(
     userData: UserData,
     config: KanadeConfig,
     onClickYtDlpVersion: suspend (Context) -> String?,
+    onClickOpenSourceLicense: () -> Unit,
     onClickDeveloperMode: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -67,6 +68,13 @@ internal fun SettingTopOthersSection(
                     ytDlpVersion = onClickYtDlpVersion.invoke(context)
                 }
             },
+        )
+
+        SettingTextItem(
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(R.string.setting_top_others_open_source_license),
+            description = stringResource(R.string.setting_top_others_open_source_license_description),
+            onClick = { onClickOpenSourceLicense.invoke() },
         )
 
         SettingSwitchItem(

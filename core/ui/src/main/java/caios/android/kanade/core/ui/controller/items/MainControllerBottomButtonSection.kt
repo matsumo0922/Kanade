@@ -13,8 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.Article
-import androidx.compose.material.icons.outlined.Bedtime
-import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.PlaylistPlay
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -34,9 +32,7 @@ internal fun MainControllerBottomButtonSection(
     onClickLyrics: () -> Unit,
     onClickLyricsEdit: () -> Unit,
     onClickFavorite: () -> Unit,
-    onClickSleepTimer: () -> Unit,
     onClickQueue: () -> Unit,
-    onClickKaraoke: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -75,29 +71,9 @@ internal fun MainControllerBottomButtonSection(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(50))
-                .clickable { onClickSleepTimer.invoke() }
-                .padding(8.dp),
-            imageVector = Icons.Outlined.Bedtime,
-            contentDescription = null,
-        )
-
-        Icon(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(50))
                 .clickable { onClickQueue.invoke() }
                 .padding(8.dp),
             imageVector = Icons.Outlined.PlaylistPlay,
-            contentDescription = null,
-        )
-
-        Icon(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(50))
-                .clickable { onClickKaraoke.invoke() }
-                .padding(8.dp),
-            imageVector = Icons.Outlined.GraphicEq,
             contentDescription = null,
         )
     }
@@ -112,9 +88,7 @@ private fun MainControllerBottomButtonSectionPreview() {
             onClickLyrics = { },
             onClickLyricsEdit = { },
             onClickFavorite = { },
-            onClickSleepTimer = { },
             onClickQueue = { },
-            onClickKaraoke = { },
         )
     }
 }

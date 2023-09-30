@@ -23,6 +23,7 @@ import caios.android.kanade.core.ui.view.LoadingView
 fun <T> AsyncLoadContents(
     screenState: ScreenState<T>,
     modifier: Modifier = Modifier,
+    otherModifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     cornerShape: RoundedCornerShape = RoundedCornerShape(0.dp),
     retryAction: () -> Unit = {},
@@ -43,14 +44,12 @@ fun <T> AsyncLoadContents(
             }
             is ScreenState.Loading -> {
                 LoadingView(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.2f)),
+                    modifier = otherModifier.background(Color.Black.copy(alpha = 0.2f)),
                 )
             }
             is ScreenState.Error -> {
                 ErrorView(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = otherModifier,
                     errorState = state,
                     retryAction = retryAction,
                 )

@@ -2,6 +2,7 @@ package caios.android.kanade.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.media.audiofx.AudioEffect
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -64,6 +65,7 @@ import caios.android.kanade.feature.album.detail.navigateToAlbumDetail
 import caios.android.kanade.feature.artist.detail.navigateToArtistDetail
 import caios.android.kanade.feature.download.input.navigateToDownloadInput
 import caios.android.kanade.feature.information.about.navigateToAbout
+import caios.android.kanade.feature.information.song.navigateToSongInformation
 import caios.android.kanade.feature.lyrics.top.navigateToLyricsTop
 import caios.android.kanade.feature.playlist.add.navigateToAddToPlaylist
 import caios.android.kanade.feature.playlist.detail.navigateToPlaylistDetail
@@ -324,9 +326,17 @@ private fun IdleScreen(
                         navigateToSearch = {
                             isSearchActive = true
                         },
-                        navigateToSleepTimer = { },
                         navigateToQueue = { appState.navigateToQueue(activity) },
-                        navigateToKaraoke = { },
+                        navigateToSongInfo = { appState.navController.navigateToSongInformation(it) },
+                        navigateToEqualizer = {
+                            activity.startActivity(
+                                Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL).apply {
+                                    putExtra(AudioEffect.EXTRA_PACKAGE_NAME, activity.packageName)
+                                    putExtra(AudioEffect.EXTRA_AUDIO_SESSION, 0)
+                                    putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                                },
+                            )
+                        },
                     )
                 },
                 containerColor = Color.Transparent,

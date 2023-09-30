@@ -22,7 +22,7 @@ import caios.android.kanade.core.design.component.KanadeBackground
 @Composable
 internal fun SettingTextItem(
     title: String,
-    description: String,
+    description: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
@@ -62,19 +62,21 @@ internal fun SettingTextItem(
             color = titleColor,
         )
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = descriptionColor,
-        )
+        if (description != null) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = descriptionColor,
+            )
+        }
     }
 }
 
 @Composable
 internal fun SettingTextItem(
     @StringRes title: Int,
-    @StringRes description: Int,
+    @StringRes description: Int?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
@@ -82,7 +84,7 @@ internal fun SettingTextItem(
     SettingTextItem(
         modifier = modifier,
         title = stringResource(title),
-        description = stringResource(description),
+        description = description?.let { stringResource(it) },
         onClick = onClick,
         isEnabled = isEnabled,
     )
@@ -109,6 +111,18 @@ private fun PreviewSettingTextItem2() {
             description = R.string.copyUrl,
             onClick = {},
             isEnabled = false,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSettingTextItem3() {
+    KanadeBackground(background = MaterialTheme.colorScheme.surface) {
+        SettingTextItem(
+            title = R.string.copy,
+            description = null,
+            onClick = {},
         )
     }
 }
