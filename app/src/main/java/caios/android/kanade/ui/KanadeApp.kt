@@ -3,6 +3,7 @@ package caios.android.kanade.ui
 import android.app.Activity
 import android.content.Intent
 import android.media.audiofx.AudioEffect
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -31,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -387,6 +389,12 @@ private fun IdleScreen(
                         userData = userData,
                         libraryTopBarHeight = with(density) { topBarHeight.toDp() },
                     )
+
+                    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.partialExpand()
+                        }
+                    }
                 }
             }
         }
