@@ -1,4 +1,5 @@
 
+import caios.android.kanade.configureApplication
 import caios.android.kanade.configureKotlinAndroid
 import caios.android.kanade.libs
 import caios.android.kanade.version
@@ -25,6 +26,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
+                configureApplication()
                 configureKotlinAndroid(this)
 
                 defaultConfig.targetSdk = libs.version("targetSdk").toInt()

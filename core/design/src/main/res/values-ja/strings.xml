@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">キャンセル</string>
+    <string name="common_allow">許可</string>
+    <string name="common_denied">拒否</string>
+    <string name="common_retry">再試行</string>
+    <string name="common_reload">再読み込み</string>
+    <string name="common_back">戻る</string>
+    <string name="common_close">閉じる</string>
+    <string name="common_next">次へ</string>
+    <string name="common_finish">完了</string>
+    <string name="common_skip">スキップ</string>
+    <string name="common_loading">処理中…</string>
+    <string name="common_analyzing">楽曲情報を解析中…</string>
+    <string name="common_caution">注意</string>
+    <string name="common_error">エラー</string>
+    <string name="common_warning">警告</string>
+    <string name="common_save">保存</string>
+    <string name="common_unknown">不明</string>
+    <string name="common_songs">楽曲</string>
+    <string name="common_artists">アーティスト</string>
+    <string name="common_albums">アルバム</string>
+    <string name="common_playlists">プレイリスト</string>
+    <string name="common_genres">ジャンル</string>
+    <string name="common_details">詳細</string>
+    <string name="common_delete">削除</string>
+    <string name="common_download">ダウンロード</string>
+
+    <!-- Common Unit -->
+    <string name="unit_song">%1$d 曲</string>
+    <string name="unit_artist">%1$d 名</string>
+    <string name="unit_album">%1$d 枚</string>
+    <string name="unit_playlist">%1$d 枚</string>
+    <string name="unit_play_times">%1$d 回再生</string>
+
+    <!-- Common Error -->
+    <string name="error_executed">エラーが発生しました</string>
+    <string name="error_unknown">不明なエラーが発生しました</string>
+    <string name="error_no_data">データがありません</string>
+    <string name="error_network">通信エラーが発生しました</string>
+    <string name="error_developing_feature">開発中の機能です</string>
+    <string name="error_billing">購入情報を取得できませんでした</string>
+
+    <!-- Music -->
+    <string name="music_title">タイトル</string>
+    <string name="music_artist">アーティスト</string>
+    <string name="music_album">アルバム</string>
+    <string name="music_unknown_title">音楽がありません</string>
+    <string name="music_unknown_artist">不明な音楽情報</string>
+
+    <!-- Navigation -->
+    <string name="navigation_home">ホーム</string>
+    <string name="navigation_playlist">プレイリスト</string>
+    <string name="navigation_song">楽曲</string>
+    <string name="navigation_artist">アーティスト</string>
+    <string name="navigation_album">アルバム</string>
+    <string name="navigation_genre">ジャンル</string>
+    <string name="navigation_folder">フォルダー</string>
+    <string name="navigation_queue">再生待ちリスト</string>
+    <string name="navigation_scan">スキャン</string>
+    <string name="navigation_download">ダウンロード</string>
+    <string name="navigation_setting">設定</string>
+    <string name="navigation_app_info">アプリについて</string>
+    <string name="navigation_support">アプリを応援</string>
+    <string name="navigation_top_bar_title">ライブラリを検索</string>
+    <string name="navigation_kanade_plus_description">コーヒー1杯程度の金額で、全ての機能にアクセスできるようになります！</string>
+    <string name="navigation_kanade_plus_purchased_description">あなたは Kanade+ ユーザーです。快適な音楽視聴をお楽しみください！</string>
+
+    <!-- Permission Request-->
+    <string name="permission_request_title">権限</string>
+    <string name="permission_request_message">アプリを使用するには、以下の権限が必要です。以下のボタンより許可をお願いします。</string>
+    <string name="permission_request_storage">ストレージ (必須)</string>
+    <string name="permission_request_storage_why">楽曲を読み込むため</string>
+    <string name="permission_request_notification">通知</string>
+    <string name="permission_request_notification_why">コントローラーを表示するため</string>
+
+    <!-- Notification -->
+    <string name="notify_channel_music_name">コントローラー</string>
+    <string name="notify_channel_music_description">通知欄にコントローラーを表示します</string>
+    <string name="notify_channel_last_fm_name">楽曲情報の取得</string>
+    <string name="notify_channel_last_fm_description">楽曲情報を取得するために通信を行います</string>
+    <string name="notify_last_fm_title">メタデータをダウンロード中です</string>
+    <string name="notify_last_fm_message">アーティストやアルバムの情報を自動ダウンロードしています</string>
+
+    <!-- Search -->
+    <string name="search_title">ライブラリを検索</string>
+    <string name="search_not_found">一致したメディアはありません</string>
+    <string name="search_keyword_suggestion_description">入力されたキーワードから推測して、以下のキーワードを含むメディアも検索しています。\n\n[%1$s]</string>
+
+    <!-- Home -->
+    <string name="home_button_play_all">すべて再生</string>
+    <string name="home_button_shuffle_all">シャッフル</string>
+    <string name="home_title_queue">再生待ちリスト</string>
+    <string name="home_title_recently_added_albums">最近追加されたアルバム</string>
+    <string name="home_title_recently_played_songs">最近再生された楽曲</string>
+    <string name="home_title_most_played_songs">再生回数の多い楽曲</string>
+    <string name="home_empty_title">ホームは空です</string>
+    <string name="home_empty_description">再生履歴などを解析して\nあなたにおすすめの楽曲が表示されます</string>
+
+    <!-- Controller -->
+    <string name="controller_menu_add_playlist">プレイリストに追加</string>
+    <string name="controller_menu_artist">アーティスト</string>
+    <string name="controller_menu_album">アルバム</string>
+    <string name="controller_menu_equalizer">イコライザー</string>
+    <string name="controller_menu_edit">音楽情報を編集</string>
+    <string name="controller_menu_analyze">音楽情報を解析</string>
+    <string name="controller_menu_detail_info">詳細情報</string>
+    <string name="controller_lyrics_empty_title">歌詞が設定されていません</string>
+    <string name="controller_lyrics_empty_description">以下のボタンより歌詞を編集できます</string>
+    <string name="controller_lyrics_empty_button">歌詞を編集</string>
+
+    <!-- Menu -->
+    <string name="menu_play_next">次に再生</string>
+    <string name="menu_play_only">この曲だけ再生</string>
+    <string name="menu_play_only_artist">このアーティストだけ再生</string>
+    <string name="menu_play_only_album">このアルバムだけ再生</string>
+    <string name="menu_play_only_playlist">このプレイリストだけ再生</string>
+    <string name="menu_add_to_queue">再生待ちリストに追加</string>
+    <string name="menu_add_to_playlist">プレイリストに追加</string>
+    <string name="menu_artist">アーティスト</string>
+    <string name="menu_album">アルバム</string>
+    <string name="menu_analyze">音楽情報を解析</string>
+    <string name="menu_edit">音楽情報を編集</string>
+    <string name="menu_lyrics">歌詞</string>
+    <string name="menu_detail_info">詳細情報</string>
+    <string name="menu_share">共有</string>
+    <string name="menu_rename">名前を変更</string>
+    <string name="menu_export">エクスポート</string>
+    <string name="menu_delete">デバイスから削除</string>
+    <string name="menu_delete_playlist">プレイリストを削除</string>
+    <string name="menu_toast_add_to_queue">再生待ちリストに追加しました</string>
+    <string name="menu_toast_add_to_playlist">プレイリストに追加しました</string>
+
+    <!-- Sort -->
+    <string name="sort_order_asc">昇順</string>
+    <string name="sort_order_desc">降順</string>
+    <string name="sort_option_title">タイトル</string>
+    <string name="sort_option_artist">アーティスト</string>
+    <string name="sort_option_album">アルバム</string>
+    <string name="sort_option_duration">曲長</string>
+    <string name="sort_option_year">年</string>
+    <string name="sort_option_track">トラック</string>
+    <string name="sort_option_tracks">曲数</string>
+    <string name="sort_option_albums">アルバム数</string>
+
+    <!-- Song -->
+    <string name="song_header_history">履歴</string>
+    <string name="song_header_recently_add">最近の追加</string>
+    <string name="song_header_most_played">再生回数トップ</string>
+    <string name="song_header_shuffle">シャッフル</string>
+    <string name="song_header_see_all">すべて表示</string>
+    <string name="song_detail_title_history">最近の再生</string>
+    <string name="song_detail_title_recently_add">最近の追加</string>
+    <string name="song_detail_title_most_played">再生回数トップ</string>
+    <string name="song_information_title">詳細情報</string>
+    <string name="song_information_path">デバイス内の場所</string>
+    <string name="song_information_uri">システム内の場所</string>
+    <string name="song_information_song_title">タイトル</string>
+    <string name="song_information_song_artist">アーティスト</string>
+    <string name="song_information_song_album">アルバム</string>
+    <string name="song_information_size">サイズ</string>
+    <string name="song_information_id">ID</string>
+    <string name="song_information_year">年</string>
+    <string name="song_information_track">トラック</string>
+    <string name="song_information_play_count">再生回数</string>
+    <string name="song_information_favorite">お気に入り</string>
+    <string name="song_information_duration">曲長</string>
+    <string name="song_information_mime">MIME</string>
+    <string name="song_information_extension">拡張子</string>
+    <string name="song_information_encoder">エンコーダー</string>
+    <string name="song_information_max_volume">最大音量</string>
+    <string name="song_information_mean_volume">平均音量</string>
+    <string name="song_information_not_analyzed_yet">未解析</string>
+    <string name="song_delete_title">デバイスから削除</string>
+    <string name="song_delete_description">%1$d曲をデバイスから削除しますか？\nこの操作は取り消しできません。</string>
+    <string name="song_delete_toast">削除しました</string>
+    <string name="song_delete_error_toast">削除に失敗しました</string>
+
+    <!-- Queue -->
+    <string name="queue_title">再生待ちリスト</string>
+    <string name="queue_menu_add_to_playlist">プレイリストに追加</string>
+    <string name="queue_menu_share">共有</string>
+
+    <!-- Playlist -->
+    <string name="playlist_add_title">プレイリストを選択</string>
+    <string name="playlist_add_toast">プレイリストに追加しました</string>
+    <string name="playlist_create_title">プレイリストを作成</string>
+    <string name="playlist_created_toast">プレイリストを作成しました</string>
+    <string name="playlist_created_date">%1$s 作成</string>
+    <string name="playlist_create_new">新規作成</string>
+    <string name="playlist_fab_create_new">新規作成</string>
+    <string name="playlist_fab_external">外部プレイリスト</string>
+    <string name="playlist_fab_import">m3uインポート</string>
+    <string name="playlist_error_existed">同名のプレイリストが存在します</string>
+    <string name="playlist_error_rename_system_playlist">システムが管理しているプレイリストは名前を変更できません</string>
+    <string name="playlist_name">プレイリスト名</string>
+    <string name="playlist_rename_title">プレイリスト名を変更</string>
+    <string name="playlist_export_title">エクスポート</string>
+    <string name="playlist_export_description">プレイリストのエクスポートを実行します。プレイリストは Android システム全体で共有され、他の音楽アプリなども取得可能になります。また、Kanade をアンインストールしても書き出したプレイリストが削除されることはありません。\n\n書き出されたプレイリストは Kanade の管理対象ではなくなり、Kanade 上でプレイリストの編集を行っても書き出されたプレイリストには反映されません。再度書き出しを行えば、変更内容が反映されます。</string>
+    <string name="playlist_export_action">エクスポート</string>
+    <string name="playlist_export_toast">プレイリストをエクスポートしました</string>
+    <string name="playlist_import_title">インポート</string>
+    <string name="playlist_import_description">プレイリストのインポートを実行します。インポートしたプレイリストは Android システムの管理対象ではなくなり、別アプリなどで楽曲を追加したりしても Kanade 上では反映されません。再度インポートすると反映されるようになります。</string>
+    <string name="playlist_import_toast">プレイリストをインポートしました</string>
+    <string name="playlist_import_toast_error">同名のプレイリストがすでに存在するため、インポートできません</string>
+    <string name="playlist_import_error_no_data">外部プレイリストが見つかりません</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics_edit_title">歌詞を編集</string>
+    <string name="lyrics_edit_placeholder">LRC形式の同期歌詞を入力</string>
+    <string name="lyrics_edit_error">保存できませんでした\nLRC形式の歌詞である必要があります</string>
+    <string name="lyrics_edit_toast_saved">保存しました</string>
+    <string name="lyrics_edit_not_save">保存しない</string>
+    <string name="lyrics_edit_not_saved_message">変更が保存されていません\n保存しますか？</string>
+    <string name="lyrics_datastore_default">デフォルト</string>
+    <string name="lyrics_datastore_musixmatch">Musixmatch</string>
+    <string name="lyrics_download_dialog_title">LRC歌詞をダウンロード</string>
+    <string name="lyrics_download_dialog_confirm">ダウンロード</string>
+    <string name="lyrics_download_dialog_kugou_error">歌詞が見つかりませんでした\nタイトルやアーティスト名を確認してください</string>
+    <string name="lyrics_download_dialog_musixmatch_label">Musixmatch を使用する</string>
+    <string name="lyrics_download_dialog_musixmatch_token">API key</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint1">Musixmatch API を使用するためには有効なAPIキーが必要です。こちらの</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint2">Webページ</string>
+    <string name="lyrics_download_dialog_musixmatch_token_hint3">に記載されている手順で取得してください。</string>
+    <string name="lyrics_download_dialog_musixmatch_error">有効なAPI keyではないか、クールタイム中です。しばらくしてから再度お試しください。</string>
+
+    <!-- About -->
+    <string name="about_title">アプリについて</string>
+    <string name="about_name">Kanade</string>
+    <string name="about_developer_name">CAIOS</string>
+    <string name="about_developer_prefix">Developed and designed by</string>
+    <string name="about_special_thanks">SPECIAL THANKS</string>
+    <string name="about_special_thanks_mao">魔王魂</string>
+    <string name="about_special_thanks_mao_description">月間平均150万PVを誇る魔王魂を運営するプロ作曲家。アプリ内のサンプル楽曲「シャイニングスター」提供元。</string>
+    <string name="about_special_thanks_358">358 Design</string>
+    <string name="about_special_thanks_358_description">企業ロゴからアプリアイコンまで、様々なデザインを行うグラフィックデザイナー。このアプリの旧アイコンを担当。</string>
+    <string name="about_contribute">CONTRIBUTE</string>
+    <string name="about_contribute_description">このアプリは OSS となっており、GPL でライセンスされています。コントリビュートはいつでも誰でも歓迎です。特に中国語への翻訳を手伝ってくれる方を探しています。</string>
+    <string name="about_support">SUPPORT</string>
+    <string name="about_support_version_history">更新履歴</string>
+    <string name="about_support_rate_app">アプリを評価</string>
+    <string name="about_support_opinion">ご意見・ご要望</string>
+    <string name="about_support_donate">寄付</string>
+
+    <!-- Settings -->
+    <string name="setting_title">設定</string>
+    <string name="setting_top_theme">テーマ</string>
+    <string name="setting_top_theme_app">アプリのテーマ</string>
+    <string name="setting_top_theme_app_description">アプリのテーマを変更します。</string>
+    <string name="setting_top_theme_app_light">ライトテーマ</string>
+    <string name="setting_top_theme_app_dark">ダークテーマ</string>
+    <string name="setting_top_theme_app_system">システムのテーマ</string>
+    <string name="setting_top_playing">再生</string>
+    <string name="setting_top_playing_equalizer">イコライザー</string>
+    <string name="setting_top_playing_equalizer_description">イコライザーを調整して好みの音質に変更します。</string>
+    <string name="setting_top_playing_dynamic_normalizer">ダイナミックノーマライザー</string>
+    <string name="setting_top_playing_dynamic_normalizer_description">楽曲を解析し、全ての楽曲が同じ音量で再生されるようにコントロールします。</string>
+    <string name="setting_top_playing_one_step_back">ワンステップ・バック</string>
+    <string name="setting_top_playing_one_step_back_description">曲戻り時に、再生中の楽曲が中盤であれば最初から再生します。</string>
+    <string name="setting_top_playing_keep_audio_focus">オーディオフォーカスを保持</string>
+    <string name="setting_top_playing_keep_audio_focus_description">オーディオフォーカスを保持し、他のアプリからの Duck リクエストに対応しません。</string>
+    <string name="setting_top_playing_stop_when_taskkill">タスクキルで停止</string>
+    <string name="setting_top_playing_stop_when_taskkill_description">アプリを終了した際に再生中の音楽を停止します。</string>
+    <string name="setting_top_library">ライブラリ</string>
+    <string name="setting_top_library_scan">楽曲のスキャン</string>
+    <string name="setting_top_library_scan_description">アプリが認識できていない楽曲をスキャンして登録します。</string>
+    <string name="setting_top_library_ignore_short_music">曲長が短い楽曲を無視</string>
+    <string name="setting_top_library_ignore_short_music_description">曲長が5秒以下の楽曲を無視してライブラリを構築します。</string>
+    <string name="setting_top_library_ignore_not_music">楽曲ではない音声ファイルを無視</string>
+    <string name="setting_top_library_ignore_not_music_description">楽曲フラグが指定されていないファイルを無視してライブラリを構築します。</string>
+    <string name="setting_top_others">その他</string>
+    <string name="setting_top_others_id">Kanade ID</string>
+    <string name="setting_top_others_version">アプリバージョン</string>
+    <string name="setting_top_others_ytdlp_version">yt-dlp バージョン</string>
+    <string name="setting_top_others_ytdlp_version_checking">アップデート確認中…</string>
+    <string name="setting_top_others_ytdlp_version_toast_done">更新しました</string>
+    <string name="setting_top_others_ytdlp_version_toast_already_updated">最新バージョンを使用しています</string>
+    <string name="setting_top_others_open_source_license">オープンソースライセンス</string>
+    <string name="setting_top_others_open_source_license_description">OSSライブラリのライセンスを表示します。</string>
+    <string name="setting_top_others_developer_mode">開発モード</string>
+    <string name="setting_top_others_developer_mode_description">[Warning] Do not enable this mode if you are not a developer.</string>
+    <string name="setting_theme_title">テーマ</string>
+    <string name="setting_theme_theme_dynamic_color">Dynamic Color</string>
+    <string name="setting_theme_theme_dynamic_color_description">ホームに設定している壁紙などから色を自動抽出する Dynamic Color を使用します。Android 12 以降でのみ利用可能です。</string>
+    <string name="setting_theme_color">テーマカラー</string>
+    <string name="setting_theme_color_description">アプリのテーマカラーを設定します。Dynamic Color と同時使用はできません。</string>
+    <string name="setting_developer_title">開発モード</string>
+    <string name="setting_developer_warning">You are trying to turn on this mode.Please enter the developer\'s PIN.\n\n[Warning] When this mode is turned on, you will not be able to receive any support.</string>
+
+    <!-- Share -->
+    <string name="share_title">共有先を選択</string>
+    <string name="share_error_no_data">共有するアイテムがありません</string>
+
+    <!-- Tag Edit -->
+    <string name="tag_editor">タグエディター</string>
+    <string name="tag_edit_title">タイトル</string>
+    <string name="tag_edit_artist">アーティスト</string>
+    <string name="tag_edit_album">アルバム</string>
+    <string name="tag_edit_composer">作曲者</string>
+    <string name="tag_edit_genre">ジャンル</string>
+    <string name="tag_edit_year">年</string>
+    <string name="tag_edit_track_total">トラック数</string>
+    <string name="tag_edit_track">トラック</string>
+    <string name="tag_edit_disc_total">ディスク数</string>
+    <string name="tag_edit_disc">ディスク</string>
+    <string name="tag_edit_toast_success">編集に成功しました</string>
+    <string name="tag_edit_toast_failure">編集に失敗しました</string>
+
+    <!-- Scan -->
+    <string name="scan_title">スキャン</string>
+    <string name="scan_initializing">処理中…</string>
+
+    <!-- Download -->
+    <string name="download_input_title">楽曲のダウンロード</string>
+    <string name="download_input_description">動画投稿サイトなどから楽曲をダウンロードします。この機能は試験段階で、動作が不安定なことがあります。</string>
+    <string name="download_input_error_invalid_url">無効なURL形式です</string>
+    <string name="download_input_error_failed">ダウンロード可能なファイルが見つかりませんでした</string>
+    <string name="download_format_title">ファイル形式の選択</string>
+    <string name="download_format_suggestion">推奨</string>
+    <string name="download_format_audio">音声</string>
+    <string name="download_format_video">動画</string>
+    <string name="download_format_save_path">保存先</string>
+    <string name="download_format_alert_message">ダウンロードを中止しますか？</string>
+    <string name="download_format_alert_confirm">中止</string>
+    <string name="download_format_caution">この機能は試験段階で、動作が不安定なことがあります。また、Youtube Premium 限定コンテンツなど、閲覧制限がかかっているアイテムはダウンロードに失敗することがあります。</string>
+    <string name="download_progress_tag_edit">タグを編集</string>
+    <string name="download_progress_toast_complete">ダウンロードしました</string>
+    <string name="download_progress_toast_error">ダウンロードに失敗しました</string>
+
+    <!-- Report -->
+    <string name="report_crush_title">Oops! Something went wrong</string>
+    <string name="report_crush_description">申し訳ありません…\n技術的な要因により、Kanade がクラッシュしました。\n以下のレポートを開発者に送付してください。</string>
+    <string name="report_crush_copy">コピー</string>
+    <string name="report_crush_toast_copy">コピーしました</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">イコライザー</string>
+    <string name="equalizer_preset">プリセット</string>
+    <string name="equalizer_preset_normal">ノーマル</string>
+    <string name="equalizer_preset_classical">クラシック</string>
+    <string name="equalizer_preset_dance">ダンス</string>
+    <string name="equalizer_preset_heavy_metal">ヘビーメタル</string>
+    <string name="equalizer_preset_hip_hop">ヒップホップ</string>
+    <string name="equalizer_preset_jazz">ジャズ</string>
+    <string name="equalizer_preset_pop">ポップ</string>
+    <string name="equalizer_preset_rock">ロック</string>
+    <string name="equalizer_preset_custom">カスタム</string>
+
+    <!-- Billing -->
+    <string name="billing_plus_title">Kanade+</string>
+    <string name="billing_plus_description">Kanade+ は、コーヒー1杯程度の金額で全ての機能にアクセスできるようになる有料サービスです。</string>
+    <string name="billing_plus_purchase_button">%1$s で購入</string>
+    <string name="billing_plus_verify_button">購入を復元</string>
+    <string name="billing_plus_consume_button">購入を消費</string>
+    <string name="billing_plus_toast_require_plus">この機能はKanade+でのみ使用することができます</string>
+    <string name="billing_plus_toast_purchased">購入しました</string>
+    <string name="billing_plus_toast_purchased_error">購入に失敗しました</string>
+    <string name="billing_plus_toast_consumed">消費しました</string>
+    <string name="billing_plus_toast_consumed_error">消費に失敗しました</string>
+    <string name="billing_plus_toast_verify">購入を復元しました</string>
+    <string name="billing_plus_toast_verify_error">購入情報が見つかりませんでした</string>
+    <string name="billing_plus_item_hide_ads">広告を非表示</string>
+    <string name="billing_plus_item_hide_ads_description">アプリ内の広告を全て非表示にし、スムーズで快適な音楽視聴をお楽しみください。</string>
+    <string name="billing_plus_item_download">楽曲のダウンロード</string>
+    <string name="billing_plus_item_download_description">動画投稿サイトなどから楽曲をダウンロードできます。この機能は試験段階で、動作が不安定なことがあります。</string>
+    <string name="billing_plus_item_metadata">メタデータのダウンロード</string>
+    <string name="billing_plus_item_metadata_description">楽曲のメタデータを自動でダウンロードし、アートワークや歌詞を表示できるようになります。</string>
+    <string name="billing_plus_item_edit_lyrics">歌詞の編集機能</string>
+    <string name="billing_plus_item_edit_lyrics_description">LRC形式の歌詞を入力すれば、同期歌詞と共に音楽を楽しめるようになります。</string>
+    <string name="billing_plus_item_scan">楽曲のスキャン</string>
+    <string name="billing_plus_item_scan_description">アプリが認識できていない楽曲をスキャンして登録できるようになります。</string>
+    <string name="billing_plus_item_folder">フォルダーのブラウズ</string>
+    <string name="billing_plus_item_folder_description">フォルダー単位での再生ができるようになります。この機能は今後提供予定です。</string>
+    <string name="billing_plus_item_widget">ホームウィジェット</string>
+    <string name="billing_plus_item_widget_description">ホーム画面にウィジェットを追加し、ウィジェットから音楽を再生できるようになります。</string>
+    <string name="billing_plus_item_material_you">Material You</string>
+    <string name="billing_plus_item_material_you_description">全てのバージョンで Material You によるカスタムテーマを利用できるようになります。</string>
+    <string name="billing_plus_item_accent_color">アクセントカラー</string>
+    <string name="billing_plus_item_accent_color_description">アプリのアクセントカラーを自由に設定できるようになります。</string>
+    <string name="billing_plus_item_feature">新機能の追加</string>
+    <string name="billing_plus_item_feature_description">新機能が追加された際にいち早く試すことができるようになります。</string>
+    <string name="billing_plus_item_support">最優先サポート</string>
+    <string name="billing_plus_item_support_description">Kanade+ユーザーは最優先でサポートを受けることができます。</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">ようこそ</string>
+    <string name="welcome_description">Kanadeでワクワクドキドキな音楽体験を！\n洗練されたデザインと機能で音楽視聴を楽しみましょう！</string>
+    <string name="welcome_privacy_policy">プライバシーポリシー</string>
+    <string name="welcome_team_of_service">利用規約</string>
+    <string name="welcome_agree">に同意する</string>
+    <string name="welcome_button_next">はじめる</string>
+    <string name="welcome_top_old_users_title">以前からKanadeをお使いの方へ</string>
+    <string name="welcome_top_old_users_description">Kanade をご利用いただきありがとうございます。\n\nこの度 Kanade は UI や機能のリニューアルを実施し、より良い音楽視聴ができるようにアプリの改変を行いました。それに伴い、再生履歴や再生回数などの情報を削除させていただきました。あらかじめご了承ください。プレイリストや再生待ちリストなどの必須データは復元をしておりますので、引き続きご利用いただくことが可能です。\n\nまた、以前のプレミアム版（現 Kanade+）をご購入いただいていた方は、サービス名変更に伴い購入情報が維持されていない場合がございます。その場合は、次の画面にて「購入を復元」ボタンを押していただき、購入情報を復元していただくようお願い申し上げます。\n\n引き続き、Kanade をよろしくお願いいたします。</string>
+    <string name="welcome_permission_title">権限</string>
+    <string name="welcome_permission_message">アプリの利用には以下の権限が必要です\n下のボタンを押して権限を許可してください</string>
+    <string name="welcome_permission_ready_title">準備完了</string>
+    <string name="welcome_permission_ready_message">アプリの利用に必要な権限がすべて許可されました</string>
+    <string name="welcome_permission_storage">ストレージ</string>
+    <string name="welcome_permission_storage_message">楽曲ファイルにアクセスするため</string>
+    <string name="welcome_permission_notification">通知</string>
+    <string name="welcome_permission_notification_message">コントローラーを表示するため</string>
+    <string name="welcome_permission_allowed">ALLOWED</string>
+    <string name="welcome_permission_denied">DENIED</string>
+    <string name="welcome_permission_optional">OPTIONAL</string>
+    <string name="welcome_permission_allow_button">許可</string>
+    <string name="welcome_permission_complete_button">完了</string>
+    <string name="welcome_plus_title">Kanade+</string>
+    <string name="welcome_plus_description">Kanade+をご購入済みですか？\n以下のボタンから購入を復元できます</string>
+    <string name="welcome_plus_purchase">Kanade+とは？</string>
+    <string name="welcome_plus_restore">購入を復元</string>
+    <string name="welcome_plus_complete_button">次へ</string>
+
+    <!-- Widget -->
+    <string name="widget_error_require_plus">ウィジェットを利用するには\nKanade+に加入する必要があります</string>
+</resources>
