@@ -336,7 +336,7 @@ private fun IdleScreen(
                                     putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
                                 },
                             )
-                        }
+                        },
                     )
                 },
                 containerColor = Color.Transparent,
