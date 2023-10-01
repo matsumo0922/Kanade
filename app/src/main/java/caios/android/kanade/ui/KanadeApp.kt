@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.animation.NavigateAnimation
 import caios.android.kanade.core.design.component.KanadeBackground
@@ -150,11 +151,17 @@ private fun IdleScreen(
                 onClickItem = appState::navigateToLibrary,
                 navigateToQueue = { appState.navigateToQueue(activity) },
                 navigateToMediaScan = { safLauncher.launch(null) },
-                navigateToDownloadInput = { appState.navController.navigateToDownloadInput() },
                 navigateToSetting = { appState.navController.navigateToSettingTop() },
                 navigateToAbout = { appState.navController.navigateToAbout() },
                 navigateToSupport = { },
                 navigateToBillingPlus = { appState.showBillingPlusDialog(activity) },
+                navigateToDownloadInput = {
+                    if (musicViewModel.uiState.isEnableYoutubeDL) {
+                        appState.navController.navigateToDownloadInput()
+                    } else {
+                        ToastUtil.show(activity, R.string.error_developing_feature)
+                    }
+                },
             )
         },
         gesturesEnabled = (appState.currentLibraryDestination != null),

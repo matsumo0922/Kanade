@@ -1,5 +1,6 @@
 package caios.android.kanade.core.music
 
+import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -26,6 +27,9 @@ import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import caios.android.kanade.core.repository.di.LyricsMusixmatch
+import com.yausername.aria2c.Aria2c
+import com.yausername.ffmpeg.FFmpeg
+import com.yausername.youtubedl_android.YoutubeDL
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -85,6 +89,18 @@ class MusicViewModel @Inject constructor(
                 )
             }.collect {
                 uiState = it
+            }
+        }
+    }
+
+    fun initYoutubeDL(context: Context) {
+        viewModelScope.launch {
+            runCatching {
+                YoutubeDL.init(context)
+                FFmpeg.init(context)
+                Aria2c.init(context)
+
+                uiState = uiState.copy(isEnableYoutubeDL = true)
             }
         }
     }
@@ -170,6 +186,7 @@ data class MusicUiState(
     val isDisplayedPlusDialog: Boolean = false,
     val isReadyToFmService: Boolean = false,
     val isAnalyzing: Boolean = false,
+    val isEnableYoutubeDL: Boolean = false,
 ) {
     val isPlaying
         get() = (state == PlayerState.Playing)

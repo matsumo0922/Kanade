@@ -29,9 +29,12 @@ Kanade is an elegant music player app that can display synchronized lyrics.
 <p align="center">Do you speak Japanese? Japanese <a href="./README-ja.md">READEME</a> is Here!</p>
 
 ## Status
-#### WIP :construction:
+#### Ready!! :rocket:
 
-It's still under development! Please see the sections below for the features that are already implemented and those that should be implemented next. We don't yet have a planned completion date, but we aim to finish it within the year 2023! Contributions are always welcome. Please follow the sections below to build the app.
+After a long development period, we have finally released it to Google Play!
+However, development is still ongoing and contributions are always welcome. Try building your app by following the section below.
+
+#### [Download](https://play.google.com/store/apps/details?id=caios.android.kanade) from GooglePlay
 
 ## Why?
 

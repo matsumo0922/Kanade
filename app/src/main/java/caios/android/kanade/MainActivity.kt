@@ -117,6 +117,7 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
+            musicViewModel.initYoutubeDL(this@MainActivity)
             musicViewModel.fetch()
             musicController.initialize()
         }
