@@ -17,6 +17,8 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:repository"))
 
+    implementation(libs.bundles.youtubedl)
+
     implementation(libs.kotlinx.coroutines.guava)
 
     implementation(libs.androidx.constraintlayout)

@@ -250,5 +250,12 @@
     "date": "2022/10/01",
     "logJp": "・UIリニューアル\n・コードを100％ Jetpack Compose に置き換え\n・コードの置き換えに伴う複数の機能変更\n・コードをOSSとして公開",
     "logEn": "・UI renewal\n・Replace code with 100% Jetpack Compose\n・Multiple functional changes due to code replacement\n・Publish the code as OSS"
+  },
+  {
+    "versionName": "2.0.1",
+    "versionCode": 133,
+    "date": "2022/10/01",
+    "logJp": "・軽微なバグ修正",
+    "logEn": "・Minor bug fixes"
   }
 ]
