@@ -173,7 +173,7 @@ private fun WelcomePermissionItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         WelcomePermissionLabel(
-            modifier = Modifier.width(64.dp),
+            modifier = Modifier.width(72.dp),
             isAllowed = isAllowed,
             isOptional = isOptional,
         )

@@ -103,6 +103,7 @@ fun KanadeTopBar(
         )
 
         SearchBar(
+            modifier = Modifier.fillMaxWidth(),
             query = query,
             onQueryChange = { query = it },
             onSearch = { },

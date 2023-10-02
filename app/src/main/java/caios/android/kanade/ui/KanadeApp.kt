@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.media.audiofx.AudioEffect
@@ -13,27 +14,24 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -116,7 +114,8 @@ fun KanadeApp(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun IdleScreen(
     musicViewModel: MusicViewModel,
@@ -242,7 +241,7 @@ private fun IdleScreen(
             if (musicViewModel.uiState.isExpandedController) {
                 scaffoldState.bottomSheetState.expand()
             } else {
-                scaffoldState.bottomSheetState.partialExpand()
+                scaffoldState.bottomSheetState.collapse()
             }
         }
 
@@ -267,6 +266,7 @@ private fun IdleScreen(
             bottomBar = {
                 KanadeBottomBar(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .onGloballyPositioned { bottomBarHeight = it.size.height.toFloat() }
                         .offset(y = bottomBarOffset)
                         .alpha(bottomSheetOffsetRate),
@@ -275,18 +275,11 @@ private fun IdleScreen(
                     currentDestination = appState.currentDestination,
                 )
             },
-        ) { paddingValues ->
-            val padding = PaddingValues(
-                top = paddingValues.calculateTopPadding(),
-                bottom = bottomSheetPeekHeight,
-            )
-
+        ) {
             BottomSheetScaffold(
                 modifier = Modifier
                     .fillMaxSize()
                     .onGloballyPositioned { bottomSheetHeight = it.size.height.toFloat() }
-                    .padding(padding)
-                    .consumeWindowInsets(padding)
                     .windowInsetsPadding(
                         WindowInsets.safeDrawing.only(
                             WindowInsetsSides.Horizontal,
@@ -294,10 +287,14 @@ private fun IdleScreen(
                     ),
                 scaffoldState = scaffoldState,
                 sheetShape = RectangleShape,
-                sheetDragHandle = {},
+                backgroundColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                sheetPeekHeight = bottomSheetPeekHeight,
                 sheetContent = {
                     AppController(
-                        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface),
                         uiState = musicViewModel.uiState,
                         windowSize = appState.windowSize,
                         offsetRate = bottomSheetOffsetRate,
@@ -309,7 +306,7 @@ private fun IdleScreen(
                         },
                         onClickCloseExpanded = {
                             scope.launch {
-                                scaffoldState.bottomSheetState.partialExpand()
+                                scaffoldState.bottomSheetState.collapse()
                             }
                         },
                         onClickFavorite = {
@@ -348,9 +345,6 @@ private fun IdleScreen(
                         },
                     )
                 },
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                sheetPeekHeight = bottomSheetPeekHeight,
             ) {
                 Box {
                     if (musicViewModel.uiState.isAnalyzing) {
@@ -395,9 +389,9 @@ private fun IdleScreen(
                         libraryTopBarHeight = with(density) { topBarHeight.toDp() },
                     )
 
-                    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+                    BackHandler(scaffoldState.bottomSheetState.currentValue == BottomSheetValue.Expanded) {
                         scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
+                            scaffoldState.bottomSheetState.collapse()
                         }
                     }
                 }
