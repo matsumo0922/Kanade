@@ -1,7 +1,7 @@
 [versions]
 # Application
-versionName = "2.0.1"
-versionCode = "133"
+versionName = "2.0.2"
+versionCode = "134"
 
 # SDK
 minSdk = "26"
@@ -69,6 +69,7 @@ jsoup = "1.16.1"
 detekt = "1.23.1"
 balloon = "1.5.3"
 orbital = "0.2.4"
+chaquopy = "15.0.0"
 libraries = "10.9.1"
 ffmpeg = "5.1"
 youtubedl= "23b26d55f8"
@@ -91,6 +92,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "libraries" }
+chaquopy = { id = "com.chaquo.python", version.ref = "chaquopy" }
 module-graph = { id = "dev.iurysouza.modulegraph", version = "0.4.0" }
 
 [libraries]

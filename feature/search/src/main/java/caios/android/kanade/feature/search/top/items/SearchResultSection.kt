@@ -6,9 +6,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import caios.android.kanade.core.design.R
+import caios.android.kanade.core.design.theme.center
 import caios.android.kanade.core.model.music.Album
 import caios.android.kanade.core.model.music.Artist
 import caios.android.kanade.core.model.music.Playlist
@@ -32,6 +37,22 @@ internal fun SearchResultSection(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = 8.dp),
     ) {
+        if (uiState.resultYTMusic.isNotEmpty()) {
+            itemsIndexed(
+                items = uiState.resultYTMusic,
+                key = { _, ytmusicSearch -> ytmusicSearch.hashCode() },
+            ) { index, ytmusicSearch ->
+                Text(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    text = ytmusicSearch.title ?: "unknown",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
+
         if (uiState.resultSongs.isNotEmpty()) {
             item {
                 SearchHeaderItem(
@@ -128,6 +149,26 @@ internal fun SearchResultSection(
                     range = uiState.resultPlaylistsRangeMap[it.id] ?: 0..0,
                     onClickHolder = { onClickPlaylist.invoke(it) },
                     onClickMenu = onClickPlaylistMenu,
+                )
+            }
+        }
+
+        if (
+            uiState.resultSongs.isEmpty() &&
+            uiState.resultAlbums.isEmpty() &&
+            uiState.resultArtists.isEmpty() &&
+            uiState.resultPlaylists.isEmpty() &&
+            uiState.isEnableYTMusic &&
+            uiState.keywords.all { it.isBlank() }
+        ) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.search_empty_text_ytmusic),
+                    style = MaterialTheme.typography.bodyMedium.center(),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

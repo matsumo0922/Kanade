@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
-import caios.android.kanade.core.datastore.DownloadPathPreference
+import caios.android.kanade.core.datastore.PreferenceDownloadPath
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.download.VideoInfo
 import caios.android.kanade.core.repository.MusicRepository
@@ -36,7 +36,7 @@ import kotlin.coroutines.suspendCoroutine
 class DownloadFormatViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val musicRepository: MusicRepository,
-    private val downloadPathPreference: DownloadPathPreference,
+    private val preferenceDownloadPath: PreferenceDownloadPath,
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -68,7 +68,7 @@ class DownloadFormatViewModel @Inject constructor(
     fun fetch(context: Context, videoInfo: VideoInfo) {
         viewModelScope.launch {
             val userData = userDataRepository.userData.first()
-            val uri = withContext(ioDispatcher) { downloadPathPreference.getUri() }
+            val uri = withContext(ioDispatcher) { preferenceDownloadPath.getUri() }
             val uniFile = UniFile.fromUri(context, uri)
 
             _screenState.value = ScreenState.Idle(
@@ -118,7 +118,7 @@ class DownloadFormatViewModel @Inject constructor(
     }
 
     fun updateSaveUri(context: Context, savePath: Uri) {
-        downloadPathPreference.saveUri(savePath)
+        preferenceDownloadPath.saveUri(savePath)
 
         val state = screenState.value
         val uniFile = UniFile.fromUri(context, savePath)

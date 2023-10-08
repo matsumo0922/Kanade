@@ -3,7 +3,7 @@ package caios.android.kanade.feature.equalizer
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import caios.android.kanade.core.datastore.EqualizerPreference
+import caios.android.kanade.core.datastore.PreferenceEqualizer
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Equalizer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +16,10 @@ import javax.inject.Inject
 @Stable
 @HiltViewModel
 class EqualizerViewModel @Inject constructor(
-    private val equalizerPreference: EqualizerPreference,
+    private val preferenceEqualizer: PreferenceEqualizer,
 ) : ViewModel() {
 
-    val screenState = equalizerPreference.data.map {
+    val screenState = preferenceEqualizer.data.map {
         ScreenState.Idle(EqualizerUiState(it))
     }.stateIn(
         scope = viewModelScope,
@@ -29,19 +29,19 @@ class EqualizerViewModel @Inject constructor(
 
     fun updatePreset(preset: Equalizer.Preset) {
         viewModelScope.launch {
-            equalizerPreference.setPreset(preset)
+            preferenceEqualizer.setPreset(preset)
         }
     }
 
     fun updateBand(band: Equalizer.Band, value: Float) {
         viewModelScope.launch {
-            equalizerPreference.setHz(band.hz, value)
+            preferenceEqualizer.setHz(band.hz, value)
         }
     }
 
     fun updateBassBoost(value: Float) {
         viewModelScope.launch {
-            equalizerPreference.setBassBoost(value)
+            preferenceEqualizer.setBassBoost(value)
         }
     }
 }

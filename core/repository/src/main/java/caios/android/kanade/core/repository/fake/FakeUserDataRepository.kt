@@ -14,6 +14,10 @@ class FakeUserDataRepository @Inject constructor(
 
     override val userData: Flow<UserData> = kanadePreferencesDataStore.userData
 
+    override suspend fun setKanadeId(id: String) {
+        kanadePreferencesDataStore.setKanadeId(id)
+    }
+
     override suspend fun setThemeConfig(themeConfig: ThemeConfig) {
         kanadePreferencesDataStore.setThemeConfig(themeConfig)
     }
@@ -64,5 +68,9 @@ class FakeUserDataRepository @Inject constructor(
 
     override suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean) {
         kanadePreferencesDataStore.setAgreedTermsOfService(isAgreedTermsOfService)
+    }
+
+    override suspend fun setEnableYTMusic(isEnableYTMusic: Boolean) {
+        kanadePreferencesDataStore.setEnableYTMusic(isEnableYTMusic)
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
-import caios.android.kanade.core.model.music.Volume
+import caios.android.kanade.core.model.music.Lyrics
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -17,13 +17,13 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import javax.inject.Inject
 
-class VolumePreference @Inject constructor(
+class PreferenceLyrics @Inject constructor(
     @ApplicationContext private val context: Context,
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val formatter = Json { ignoreUnknownKeys = true }
-    private val _data = MutableStateFlow(emptyList<Volume>())
+    private val _data = MutableStateFlow(emptyList<Lyrics>())
 
     val data get() = _data.asSharedFlow()
 
@@ -33,27 +33,27 @@ class VolumePreference @Inject constructor(
         }
     }
 
-    suspend fun save(volume: Volume) = withContext(ioDispatcher) {
+    suspend fun save(lyrics: Lyrics) = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
-        val volumeList = fetch().toMutableList()
+        val lyricsList = fetch().toMutableList()
 
-        volumeList.removeIf { it.songId == volume.songId }
-        volumeList.add(volume)
+        lyricsList.removeIf { it.songId == lyrics.songId }
+        lyricsList.add(lyrics)
 
-        val serializer = ListSerializer(Volume.serializer())
-        val json = formatter.encodeToString(serializer, volumeList)
+        val serializer = ListSerializer(Lyrics.serializer())
+        val json = formatter.encodeToString(serializer, lyricsList)
 
         file.writeText(json)
 
-        _data.value = volumeList.toList()
+        _data.value = lyricsList.toList()
     }
 
-    private suspend fun fetch(): List<Volume> = withContext(ioDispatcher) {
+    private suspend fun fetch(): List<Lyrics> = withContext(ioDispatcher) {
         val file = File(context.filesDir, FILE_NAME)
         if (!file.exists()) return@withContext emptyList()
 
         val json = file.readText()
-        val serializer = ListSerializer(Volume.serializer())
+        val serializer = ListSerializer(Lyrics.serializer())
         val lyricsList = formatter.decodeFromString(serializer, json)
 
         _data.value = lyricsList.toList()
@@ -62,6 +62,6 @@ class VolumePreference @Inject constructor(
     }
 
     companion object {
-        private const val FILE_NAME = "MusicVolumesCache.json"
+        private const val FILE_NAME = "MusicLyricsCache.json"
     }
 }

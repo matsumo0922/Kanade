@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
@@ -74,7 +75,10 @@ internal fun QueueListSection(
                     key = "${item.index}",
                 ) { isDragging ->
                     val dismissState = rememberDismissState(
-                        confirmValueChange = { onDeleteItem(item) },
+                        confirmValueChange = {
+                            if (it == DismissValue.Default) return@rememberDismissState false
+                            onDeleteItem(item)
+                        },
                     )
                     val elevation = animateDpAsState(
                         targetValue = if (isDragging) 16.dp else 0.dp,

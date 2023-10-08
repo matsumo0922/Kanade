@@ -27,6 +27,7 @@ class KanadePreferencesDataStore @Inject constructor(
     val userData = userPreference.data
         .map {
             UserData(
+                kanadeId = it.kanadeId,
                 themeConfig = when (it.themeConfig) {
                     ThemeConfigProto.THEME_CONFIG_LIGHT -> ThemeConfig.Light
                     ThemeConfigProto.THEME_CONFIG_DARK -> ThemeConfig.Dark
@@ -51,6 +52,7 @@ class KanadePreferencesDataStore @Inject constructor(
                 isIgnoreNotMusic = if (it.hasIsUseIgnoreNotMusic()) it.isUseIgnoreNotMusic else true,
                 isAgreedPrivacyPolicy = if (it.hasIsAgreedPrivacyPolicy()) it.isAgreedPrivacyPolicy else false,
                 isAgreedTermsOfService = if (it.hasIsAgreedTermsOfService()) it.isAgreedTermsOfService else false,
+                isEnableYTMusic = if (it.hasIsEnableYtmusic()) it.isEnableYtmusic else false,
             )
         }
 
@@ -120,6 +122,14 @@ class KanadePreferencesDataStore @Inject constructor(
                 progress = it.progress,
             )
         }
+
+    suspend fun setKanadeId(id: String) = withContext(ioDispatcher) {
+        userPreference.updateData {
+            it.copy {
+                this.kanadeId = id
+            }
+        }
+    }
 
     suspend fun setThemeConfig(themeConfig: ThemeConfig) = withContext(ioDispatcher) {
         userPreference.updateData {
@@ -233,6 +243,14 @@ class KanadePreferencesDataStore @Inject constructor(
         userPreference.updateData {
             it.copy {
                 this.isAgreedTermsOfService = isAgreedTermsOfService
+            }
+        }
+    }
+
+    suspend fun setEnableYTMusic(isEnableYTMusic: Boolean) = withContext(ioDispatcher) {
+        userPreference.updateData {
+            it.copy {
+                this.isEnableYtmusic = isEnableYTMusic
             }
         }
     }

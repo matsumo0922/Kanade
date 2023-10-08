@@ -7,6 +7,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven(url = "https://www.jitpack.io")
+        maven(url = "https://chaquo.com/maven-test")
     }
 }
 

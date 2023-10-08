@@ -5,7 +5,7 @@ import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class TokenPreference @Inject constructor(
+class PreferenceToken @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val preference by lazy { context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE) }

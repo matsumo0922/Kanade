@@ -4,7 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.common.network.KanadeConfig
-import caios.android.kanade.core.datastore.VersionPreference
+import caios.android.kanade.core.datastore.PreferenceVersion
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.model.Version
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class AboutViewModel @Inject constructor(
     kanadeConfig: KanadeConfig,
     userDataRepository: UserDataRepository,
-    versionPreference: VersionPreference,
+    preferenceVersion: PreferenceVersion,
 ) : ViewModel() {
 
     val screenState = userDataRepository.userData.map {
@@ -28,7 +28,7 @@ class AboutViewModel @Inject constructor(
             AboutUiState(
                 userData = it,
                 config = kanadeConfig,
-                versions = versionPreference.get(),
+                versions = preferenceVersion.get(),
             ),
         )
     }.stateIn(

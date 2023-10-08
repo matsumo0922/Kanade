@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class EqualizerPreference @Inject constructor(
+class PreferenceEqualizer @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val preference by lazy { context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE) }

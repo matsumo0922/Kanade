@@ -257,5 +257,12 @@
     "date": "2022/10/01",
     "logJp": "・軽微なバグ修正",
     "logEn": "・Minor bug fixes"
+  },
+  {
+    "versionName": "2.0.2",
+    "versionCode": 134,
+    "date": "2022/10/16",
+    "logJp": "・予測型戻るアニメーションを有効にしている場合にボトムシートを戻るボタンで閉じることのできない問題を修正\n・再生待ちリスト画面とプレイリスト詳細画面にて楽曲の削除（横スワイプ）をキャンセルすることのできない問題を修正",
+    "logEn": "・Fixed an issue where the bottom sheet could not be closed with the back button when predictive back animation was enabled.\n・Fixed an issue where it was not possible to cancel song deletion (horizontal swipe) on the playback list screen and playlist details screen."
   }
 ]

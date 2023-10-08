@@ -24,11 +24,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.common.network.KanadeConfig
+import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.UserData
 import caios.android.kanade.core.ui.AsyncLoadContents
@@ -37,9 +39,11 @@ import caios.android.kanade.feature.setting.top.items.SettingTopLibrarySection
 import caios.android.kanade.feature.setting.top.items.SettingTopOthersSection
 import caios.android.kanade.feature.setting.top.items.SettingTopPlayingSection
 import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
+import caios.android.kanade.feature.setting.top.items.SettingTopYTMusicSection
 
 @Composable
 internal fun SettingTopRoute(
+    navigateToYTMusicLogin: () -> Unit,
     navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
     navigateToOpenSourceLicense: () -> Unit,
@@ -48,6 +52,7 @@ internal fun SettingTopRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingTopViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     AsyncLoadContents(
@@ -70,11 +75,27 @@ internal fun SettingTopRoute(
             onClickOpenSourceLicense = navigateToOpenSourceLicense,
             onClickDeveloperMode = { isEnable ->
                 if (isEnable) {
-                    navigateToSettingDeveloper()
+                    navigateToSettingDeveloper.invoke()
                 } else {
                     viewModel.setDeveloperMode(false)
                 }
             },
+            onClickEnableYTMusic = { isEnable ->
+                if (isEnable) {
+                    if (uiState.isYTMusicInitialized) {
+                        if (uiState.userData.isDeveloperMode) {
+                            viewModel.setEnableYTMusic(true)
+                        } else {
+                            ToastUtil.show(context, R.string.error_developing_feature)
+                        }
+                    } else {
+                        navigateToYTMusicLogin.invoke()
+                    }
+                } else {
+                    viewModel.setEnableYTMusic(false)
+                }
+            },
+            onClickRemoveYTMusicToken = viewModel::removeYTMusicToken,
             onTerminate = terminate,
         )
     }
@@ -86,6 +107,8 @@ private fun SettingTopScreen(
     userData: UserData,
     config: KanadeConfig,
     onClickTheme: () -> Unit,
+    onClickEnableYTMusic: (Boolean) -> Unit,
+    onClickRemoveYTMusicToken: () -> Unit,
     onClickEqualizer: () -> Unit,
     onClickDynamicNormalizer: (Boolean) -> Unit,
     onClickOneStepBack: (Boolean) -> Unit,
@@ -138,6 +161,13 @@ private fun SettingTopScreen(
                 SettingTopThemeSection(
                     modifier = Modifier.fillMaxWidth(),
                     onClickAppTheme = onClickTheme,
+                )
+
+                SettingTopYTMusicSection(
+                    modifier = Modifier.fillMaxWidth(),
+                    userData = userData,
+                    onClickEnableYTMusic = onClickEnableYTMusic,
+                    onClickRemoveYTMusicToken = onClickRemoveYTMusicToken,
                 )
 
                 SettingTopPlayingSection(
