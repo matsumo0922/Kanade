@@ -1,28 +1,30 @@
 package caios.android.kanade.core.repository.di
 
 import caios.android.kanade.core.repository.AlbumRepository
+import caios.android.kanade.core.repository.AlbumRepositoryImpl
 import caios.android.kanade.core.repository.ArtistRepository
+import caios.android.kanade.core.repository.ArtistRepositoryImpl
 import caios.android.kanade.core.repository.ArtworkRepository
-import caios.android.kanade.core.repository.DefaultAlbumRepository
-import caios.android.kanade.core.repository.DefaultArtistRepository
-import caios.android.kanade.core.repository.DefaultArtworkRepository
-import caios.android.kanade.core.repository.DefaultExternalPlaylistRepository
-import caios.android.kanade.core.repository.DefaultLastFmRepository
-import caios.android.kanade.core.repository.DefaultMusicRepository
-import caios.android.kanade.core.repository.DefaultPlayHistoryRepository
-import caios.android.kanade.core.repository.DefaultPlaylistRepository
-import caios.android.kanade.core.repository.DefaultSongRepository
-import caios.android.kanade.core.repository.DefaultUserDataRepository
+import caios.android.kanade.core.repository.ArtworkRepositoryImpl
 import caios.android.kanade.core.repository.ExternalPlaylistRepository
+import caios.android.kanade.core.repository.ExternalPlaylistRepositoryImpl
 import caios.android.kanade.core.repository.KugouLyricsRepository
 import caios.android.kanade.core.repository.LastFmRepository
+import caios.android.kanade.core.repository.LastFmRepositoryImpl
 import caios.android.kanade.core.repository.LyricsRepository
 import caios.android.kanade.core.repository.MusicRepository
+import caios.android.kanade.core.repository.MusicRepositoryImpl
 import caios.android.kanade.core.repository.MusixmatchLyricsRepository
 import caios.android.kanade.core.repository.PlayHistoryRepository
+import caios.android.kanade.core.repository.PlayHistoryRepositoryImpl
 import caios.android.kanade.core.repository.PlaylistRepository
+import caios.android.kanade.core.repository.PlaylistRepositoryImpl
 import caios.android.kanade.core.repository.SongRepository
+import caios.android.kanade.core.repository.SongRepositoryImpl
 import caios.android.kanade.core.repository.UserDataRepository
+import caios.android.kanade.core.repository.UserDataRepositoryImpl
+import caios.android.kanade.core.repository.YTMusicRepository
+import caios.android.kanade.core.repository.YTMusicRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,49 +47,49 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindUserDataRepository(
-        userDataRepository: DefaultUserDataRepository,
+        userDataRepository: UserDataRepositoryImpl,
     ): UserDataRepository
 
     @Singleton
     @Binds
     fun bindMusicRepository(
-        musicRepository: DefaultMusicRepository,
+        musicRepository: MusicRepositoryImpl,
     ): MusicRepository
 
     @Singleton
     @Binds
     fun bindSongRepository(
-        songRepository: DefaultSongRepository,
+        songRepository: SongRepositoryImpl,
     ): SongRepository
 
     @Singleton
     @Binds
     fun bindArtistRepository(
-        artistRepository: DefaultArtistRepository,
+        artistRepository: ArtistRepositoryImpl,
     ): ArtistRepository
 
     @Singleton
     @Binds
     fun bindAlbumRepository(
-        albumRepository: DefaultAlbumRepository,
+        albumRepository: AlbumRepositoryImpl,
     ): AlbumRepository
 
     @Singleton
     @Binds
     fun bindPlaylistRepository(
-        playlistRepository: DefaultPlaylistRepository,
+        playlistRepository: PlaylistRepositoryImpl,
     ): PlaylistRepository
 
     @Singleton
     @Binds
     fun bindExternalPlaylistRepository(
-        externalPlaylistRepository: DefaultExternalPlaylistRepository,
+        externalPlaylistRepository: ExternalPlaylistRepositoryImpl,
     ): ExternalPlaylistRepository
 
     @Singleton
     @Binds
     fun bindArtworkRepository(
-        artworkRepository: DefaultArtworkRepository,
+        artworkRepository: ArtworkRepositoryImpl,
     ): ArtworkRepository
 
     @LyricsKugou
@@ -107,12 +109,18 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindPlayHistoryRepository(
-        playHistoryRepository: DefaultPlayHistoryRepository,
+        playHistoryRepository: PlayHistoryRepositoryImpl,
     ): PlayHistoryRepository
 
     @Singleton
     @Binds
     fun bindLastFmRepository(
-        lastFmRepository: DefaultLastFmRepository,
+        lastFmRepository: LastFmRepositoryImpl,
     ): LastFmRepository
+
+    @Singleton
+    @Binds
+    fun bindYTMusicRepository(
+        yTMusicRepository: YTMusicRepositoryImpl,
+    ): YTMusicRepository
 }
