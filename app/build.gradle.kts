@@ -81,6 +81,10 @@ android {
                 putBuildConfig(localProperties, "LAST_FM_API_SECRET")
                 putBuildConfig(localProperties, "MUSIXMATCH_API_KEY")
             }
+
+            if (it.buildType == "release") {
+                it.packaging.resources.excludes.add("META-INF/**")
+            }
         }
     }
 
