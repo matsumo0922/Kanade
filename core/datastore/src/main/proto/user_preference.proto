@@ -22,4 +22,7 @@ message UserPreference {
   optional bool is_use_ignore_not_music = 11;
   optional bool is_agreed_privacy_policy = 12;
   optional bool is_agreed_terms_of_service = 13;
+  optional bool is_enable_ytmusic = 14;
+
+  optional string kanade_id = 999;
 }

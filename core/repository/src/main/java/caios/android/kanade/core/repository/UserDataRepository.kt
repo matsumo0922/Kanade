@@ -11,6 +11,7 @@ interface UserDataRepository {
 
     val userData: Flow<UserData>
 
+    suspend fun setKanadeId(id: String)
     suspend fun setThemeConfig(themeConfig: ThemeConfig)
     suspend fun setThemeColorConfig(themeColorConfig: ThemeColorConfig)
     suspend fun setUseDynamicColor(useDynamicColor: Boolean)
@@ -24,6 +25,7 @@ interface UserDataRepository {
     suspend fun setUseIgnoreNotMusic(isIgnoreNotMusic: Boolean)
     suspend fun setAgreedPrivacyPolicy(isAgreedPrivacyPolicy: Boolean)
     suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean)
+    suspend fun setEnableYTMusic(isEnableYTMusic: Boolean)
 }
 
 class UserDataRepositoryImpl @Inject constructor(
@@ -31,6 +33,10 @@ class UserDataRepositoryImpl @Inject constructor(
 ) : UserDataRepository {
 
     override val userData: Flow<UserData> = kanadePreferencesDataStore.userData
+
+    override suspend fun setKanadeId(id: String) {
+        kanadePreferencesDataStore.setKanadeId(id)
+    }
 
     override suspend fun setThemeConfig(themeConfig: ThemeConfig) {
         kanadePreferencesDataStore.setThemeConfig(themeConfig)
@@ -82,5 +88,9 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override suspend fun setAgreedTermsOfService(isAgreedTermsOfService: Boolean) {
         kanadePreferencesDataStore.setAgreedTermsOfService(isAgreedTermsOfService)
+    }
+
+    override suspend fun setEnableYTMusic(isEnableYTMusic: Boolean) {
+        kanadePreferencesDataStore.setEnableYTMusic(isEnableYTMusic)
     }
 }

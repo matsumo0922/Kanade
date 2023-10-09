@@ -37,9 +37,11 @@ import caios.android.kanade.feature.setting.top.items.SettingTopLibrarySection
 import caios.android.kanade.feature.setting.top.items.SettingTopOthersSection
 import caios.android.kanade.feature.setting.top.items.SettingTopPlayingSection
 import caios.android.kanade.feature.setting.top.items.SettingTopThemeSection
+import caios.android.kanade.feature.setting.top.items.SettingTopYTMusicSection
 
 @Composable
 internal fun SettingTopRoute(
+    navigateToYTMusicLogin: () -> Unit,
     navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
     navigateToOpenSourceLicense: () -> Unit,
@@ -70,11 +72,23 @@ internal fun SettingTopRoute(
             onClickOpenSourceLicense = navigateToOpenSourceLicense,
             onClickDeveloperMode = { isEnable ->
                 if (isEnable) {
-                    navigateToSettingDeveloper()
+                    navigateToSettingDeveloper.invoke()
                 } else {
                     viewModel.setDeveloperMode(false)
                 }
             },
+            onClickEnableYTMusic = { isEnable ->
+                if (isEnable) {
+                    if (uiState.isYTMusicInitialized) {
+                        viewModel.setEnableYTMusic(true)
+                    } else {
+                        navigateToYTMusicLogin.invoke()
+                    }
+                } else {
+                    viewModel.setEnableYTMusic(false)
+                }
+            },
+            onClickRemoveYTMusicToken = viewModel::removeYTMusicToken,
             onTerminate = terminate,
         )
     }
@@ -86,6 +100,8 @@ private fun SettingTopScreen(
     userData: UserData,
     config: KanadeConfig,
     onClickTheme: () -> Unit,
+    onClickEnableYTMusic: (Boolean) -> Unit,
+    onClickRemoveYTMusicToken: () -> Unit,
     onClickEqualizer: () -> Unit,
     onClickDynamicNormalizer: (Boolean) -> Unit,
     onClickOneStepBack: (Boolean) -> Unit,
@@ -138,6 +154,13 @@ private fun SettingTopScreen(
                 SettingTopThemeSection(
                     modifier = Modifier.fillMaxWidth(),
                     onClickAppTheme = onClickTheme,
+                )
+
+                SettingTopYTMusicSection(
+                    modifier = Modifier.fillMaxWidth(),
+                    userData = userData,
+                    onClickEnableYTMusic = onClickEnableYTMusic,
+                    onClickRemoveYTMusicToken = onClickRemoveYTMusicToken,
                 )
 
                 SettingTopPlayingSection(

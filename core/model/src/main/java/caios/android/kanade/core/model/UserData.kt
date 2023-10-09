@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class UserData(
+    val kanadeId: String,
     val themeConfig: ThemeConfig,
     val themeColorConfig: ThemeColorConfig,
     val isAgreedPrivacyPolicy: Boolean,
@@ -17,12 +18,14 @@ data class UserData(
     val isStopWhenTaskkill: Boolean,
     val isIgnoreShortMusic: Boolean,
     val isIgnoreNotMusic: Boolean,
+    val isEnableYTMusic: Boolean,
 ) {
     val hasPrivilege get() = isPlusMode || isDeveloperMode
 
     companion object {
         fun dummy(): UserData {
             return UserData(
+                kanadeId = "",
                 themeConfig = ThemeConfig.System,
                 themeColorConfig = ThemeColorConfig.Default,
                 isAgreedPrivacyPolicy = false,
@@ -36,6 +39,7 @@ data class UserData(
                 isStopWhenTaskkill = false,
                 isIgnoreShortMusic = true,
                 isIgnoreNotMusic = true,
+                isEnableYTMusic = false,
             )
         }
     }

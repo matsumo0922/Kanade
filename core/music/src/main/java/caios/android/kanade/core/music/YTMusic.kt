@@ -23,6 +23,7 @@ interface YTMusic {
     suspend fun getOAuthCode(): Result<YTMusicOAuthCode>
     suspend fun getOAuthToken(code: YTMusicOAuthCode): Result<YTMusicOAuthToken>
 
+    suspend fun removeToken()
     suspend fun refreshToken(token: YTMusicOAuthToken): Result<YTMusicOAuthRefreshToken>
     suspend fun search(query: String, filters: Filters? = null, scopes: Scopes? = null): Result<String>
 
@@ -79,6 +80,10 @@ class YTMusicImpl @Inject constructor(
                 ytMusicRepository.saveToken(it)
             }
         }
+    }
+
+    override suspend fun removeToken() {
+        ytMusicRepository.removeToken()
     }
 
     override suspend fun refreshToken(token: YTMusicOAuthToken): Result<YTMusicOAuthRefreshToken> = withContext(ioDispatcher) {

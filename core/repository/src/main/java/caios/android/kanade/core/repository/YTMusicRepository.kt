@@ -21,6 +21,7 @@ interface YTMusicRepository {
     suspend fun refreshToken(token: YTMusicOAuthToken): YTMusicOAuthRefreshToken?
 
     fun saveToken(token: YTMusicOAuthToken)
+    fun removeToken()
     fun getTokenFilePath(): String
     fun getOAuthToken(): YTMusicOAuthToken?
 }
@@ -78,6 +79,10 @@ class YTMusicRepositoryImpl @Inject constructor(
 
     override fun saveToken(token: YTMusicOAuthToken) {
         preferenceYTMusic.saveToken(token)
+    }
+
+    override fun removeToken() {
+        preferenceYTMusic.removeToken()
     }
 
     override fun getTokenFilePath(): String {

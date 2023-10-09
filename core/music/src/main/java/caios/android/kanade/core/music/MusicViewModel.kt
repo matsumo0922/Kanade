@@ -1,19 +1,16 @@
 package caios.android.kanade.core.music
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.model.ThemeConfig
 import caios.android.kanade.core.model.UserData
-import caios.android.kanade.core.model.entity.YTMusicOAuthCode
 import caios.android.kanade.core.model.music.Lyrics
 import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Queue
@@ -37,6 +34,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 @Stable
@@ -46,14 +44,11 @@ class MusicViewModel @Inject constructor(
     private val musicController: MusicController,
     private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
-    private val ytMusic: YTMusic,
     @LyricsMusixmatch private val lyricsRepository: LyricsRepository,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(MusicUiState())
         private set
-
-    private var oauthCode: YTMusicOAuthCode? = null
 
     init {
         fetch()
@@ -99,6 +94,15 @@ class MusicViewModel @Inject constructor(
         }
     }
 
+    fun initKanadeId() {
+        viewModelScope.launch {
+            val id = UUID.randomUUID().toString()
+
+            userDataRepository.setKanadeId(id)
+            Timber.d("Initailize KanadeID to $id")
+        }
+    }
+
     fun initYoutubeDL(context: Context) {
         viewModelScope.launch {
             runCatching {
@@ -107,22 +111,6 @@ class MusicViewModel @Inject constructor(
                 Aria2c.init(context)
 
                 uiState = uiState.copy(isEnableYoutubeDL = true)
-            }
-        }
-    }
-
-    fun search(context: Context) {
-        viewModelScope.launch {
-            if (!ytMusic.isInitialized()) {
-                if (oauthCode == null) {
-                    oauthCode = ytMusic.getOAuthCode().getOrThrow()
-                    context.startActivity(Intent(Intent.ACTION_VIEW, "${oauthCode!!.verificationUrl}?user_code=${oauthCode!!.userCode}".toUri()))
-                } else {
-                    ytMusic.getOAuthToken(oauthCode!!)
-                }
-            } else {
-                val a = ytMusic.search("花の塔", YTMusic.Filters.SONGS)
-                Timber.d("TestSearch: ${a.getOrNull()}")
             }
         }
     }

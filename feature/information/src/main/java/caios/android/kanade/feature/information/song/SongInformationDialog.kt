@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.music.Volume
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContentsWithoutAnimation
 
 @Composable
 internal fun SongInformationRoute(
@@ -37,7 +37,7 @@ internal fun SongInformationRoute(
         viewModel.fetch(songId)
     }
 
-    AsyncLoadContents(
+    AsyncLoadContentsWithoutAnimation(
         modifier = modifier,
         screenState = screenState,
         cornerShape = RoundedCornerShape(16.dp),

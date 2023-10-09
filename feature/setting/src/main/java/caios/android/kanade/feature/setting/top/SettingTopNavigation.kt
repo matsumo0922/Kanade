@@ -14,6 +14,7 @@ fun NavController.navigateToSettingTop() {
 }
 
 fun NavGraphBuilder.settingTopScreen(
+    navigateToYTMusicLogin: () -> Unit,
     navigateToEqualizer: () -> Unit,
     navigateToSettingTheme: () -> Unit,
     navigateToOpenSourceLicense: () -> Unit,
@@ -29,6 +30,7 @@ fun NavGraphBuilder.settingTopScreen(
     ) {
         SettingTopRoute(
             modifier = Modifier.fillMaxSize(),
+            navigateToYTMusicLogin = navigateToYTMusicLogin,
             navigateToEqualizer = navigateToEqualizer,
             navigateToSettingTheme = navigateToSettingTheme,
             navigateToOpenSourceLicense = navigateToOpenSourceLicense,

@@ -18,6 +18,10 @@ class PreferenceYTMusic @Inject constructor(
         }
     }
 
+    fun removeToken() {
+        tokenFile.delete()
+    }
+
     fun getToken(): YTMusicOAuthToken? {
         if (!tokenFile.exists()) return null
 
