@@ -1,5 +1,6 @@
 package caios.android.kanade.core.repository
 
+import caios.android.kanade.core.datastore.PreferenceYTMusic
 import caios.android.kanade.core.model.entity.YTMusicInfo
 import caios.android.kanade.core.model.entity.YTMusicOAuthCode
 import caios.android.kanade.core.model.entity.YTMusicOAuthRefreshToken
@@ -18,10 +19,15 @@ interface YTMusicRepository {
     suspend fun getOAuthToken(code: YTMusicOAuthCode): YTMusicOAuthToken?
 
     suspend fun refreshToken(token: YTMusicOAuthToken): YTMusicOAuthRefreshToken?
+
+    fun saveToken(token: YTMusicOAuthToken)
+    fun getTokenFilePath(): String
+    fun getOAuthToken(): YTMusicOAuthToken?
 }
 
 class YTMusicRepositoryImpl @Inject constructor(
     private val client: HttpClient,
+    private val preferenceYTMusic: PreferenceYTMusic,
 ) : YTMusicRepository {
 
     init {
@@ -68,5 +74,17 @@ class YTMusicRepositoryImpl @Inject constructor(
         ).parse<YTMusicOAuthRefreshToken>()?.let {
             it.copy(expiresAt = (System.currentTimeMillis() / 1000).toInt() + it.expiresIn)
         }
+    }
+
+    override fun saveToken(token: YTMusicOAuthToken) {
+        preferenceYTMusic.saveToken(token)
+    }
+
+    override fun getTokenFilePath(): String {
+        return preferenceYTMusic.getTokenFilePath()
+    }
+
+    override fun getOAuthToken(): YTMusicOAuthToken? {
+        return preferenceYTMusic.getToken()
     }
 }

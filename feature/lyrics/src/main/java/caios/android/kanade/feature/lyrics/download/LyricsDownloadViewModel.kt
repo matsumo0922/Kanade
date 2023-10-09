@@ -4,7 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import caios.android.kanade.core.common.network.KanadeConfig
-import caios.android.kanade.core.datastore.TokenPreference
+import caios.android.kanade.core.datastore.PreferenceToken
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.music.Lyrics
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class LyricsDownloadViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
     private val kanadeConfig: KanadeConfig,
-    private val tokenPreference: TokenPreference,
+    private val preferenceToken: PreferenceToken,
     @LyricsKugou private val kugouLyrics: LyricsRepository,
     @LyricsMusixmatch private val musixmatchLyrics: LyricsRepository,
 ) : ViewModel() {
@@ -39,7 +39,7 @@ class LyricsDownloadViewModel @Inject constructor(
 
             val song = musicRepository.getSong(songId)
             val lyrics = song?.let { kugouLyrics.get(it) }
-            val token = tokenPreference.get(TokenPreference.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else null
+            val token = preferenceToken.get(PreferenceToken.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else null
 
             _screenState.value = if (song != null) {
                 ScreenState.Idle(
@@ -64,7 +64,7 @@ class LyricsDownloadViewModel @Inject constructor(
 
             val lyrics = kotlin.runCatching {
                 if (isUseMusixmatch && token != null) {
-                    tokenPreference.set(TokenPreference.KEY_MUSIXMATCH, token)
+                    preferenceToken.set(PreferenceToken.KEY_MUSIXMATCH, token)
                     musixmatchLyrics.lyrics(song)
                 } else {
                     kugouLyrics.lyrics(song)

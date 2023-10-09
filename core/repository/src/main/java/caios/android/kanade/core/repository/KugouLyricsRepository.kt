@@ -1,7 +1,7 @@
 package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.common.network.di.ApplicationScope
-import caios.android.kanade.core.datastore.LyricsPreference
+import caios.android.kanade.core.datastore.PreferenceLyrics
 import caios.android.kanade.core.model.entity.KugouLyricsEntity
 import caios.android.kanade.core.model.entity.KugouSongEntity
 import caios.android.kanade.core.model.music.Lyrics
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class KugouLyricsRepository @Inject constructor(
     private val client: HttpClient,
-    private val lyricsPreference: LyricsPreference,
+    private val preferenceLyrics: PreferenceLyrics,
     @ApplicationScope private val scope: CoroutineScope,
 ) : LyricsRepository {
 
@@ -33,7 +33,7 @@ class KugouLyricsRepository @Inject constructor(
 
     init {
         scope.launch {
-            lyricsPreference.data.collect { lyrics ->
+            preferenceLyrics.data.collect { lyrics ->
                 cache.clear()
                 cache.putAll(lyrics.associateBy { it.songId })
 
@@ -45,7 +45,7 @@ class KugouLyricsRepository @Inject constructor(
     override val data: SharedFlow<List<Lyrics>> = _data.asSharedFlow()
 
     override suspend fun save(lyrics: Lyrics) {
-        lyricsPreference.save(lyrics)
+        preferenceLyrics.save(lyrics)
     }
 
     override fun get(song: Song): Lyrics? {
@@ -63,7 +63,7 @@ class KugouLyricsRepository @Inject constructor(
 
             parseLrc(song, lyrics)
         }.getOrNull()?.also {
-            lyricsPreference.save(it)
+            preferenceLyrics.save(it)
         }
     }
 

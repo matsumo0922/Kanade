@@ -1,7 +1,8 @@
-package caios.android.kanade.core.datastore
+package caios.android.kanade.core.datastore.serializer
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import caios.android.kanade.core.datastore.QueuePreference
 import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream

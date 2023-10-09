@@ -15,15 +15,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.logging.Filter
 import javax.inject.Inject
 
 interface YTMusic {
+    fun isInitialized(): Boolean
+
     suspend fun getOAuthCode(): Result<YTMusicOAuthCode>
     suspend fun getOAuthToken(code: YTMusicOAuthCode): Result<YTMusicOAuthToken>
 
     suspend fun refreshToken(token: YTMusicOAuthToken): Result<YTMusicOAuthRefreshToken>
-    suspend fun search(query: String, filter: Filter, scopes: Scopes): Result<String>
+    suspend fun search(query: String, filters: Filters? = null, scopes: Scopes? = null): Result<String>
 
     enum class Language(val value: String) {
         ENGLISH("en"),
@@ -62,6 +63,10 @@ class YTMusicImpl @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : YTMusic {
 
+    override fun isInitialized(): Boolean {
+        return ytMusicRepository.getOAuthToken() != null
+    }
+
     override suspend fun getOAuthCode(): Result<YTMusicOAuthCode> = withContext(ioDispatcher) {
         suspendRunCatching {
             ytMusicRepository.getOAuthCode()!!
@@ -70,7 +75,9 @@ class YTMusicImpl @Inject constructor(
 
     override suspend fun getOAuthToken(code: YTMusicOAuthCode): Result<YTMusicOAuthToken> = withContext(ioDispatcher) {
         suspendRunCatching {
-            ytMusicRepository.getOAuthToken(code)!!
+            ytMusicRepository.getOAuthToken(code)!!.also {
+                ytMusicRepository.saveToken(it)
+            }
         }
     }
 
@@ -80,24 +87,44 @@ class YTMusicImpl @Inject constructor(
         }
     }
 
-    override suspend fun search(query: String, filter: Filter, scopes: YTMusic.Scopes): Result<String> {
-        launchPythonScript("ytmusic") {
-            it.callAttr("")
+    override suspend fun search(query: String, filters: YTMusic.Filters?, scopes: YTMusic.Scopes?): Result<String> = withContext(ioDispatcher) {
+        suspendRunCatching {
+            launchPythonScript {
+                return@launchPythonScript it.callAttr("search", query, filters?.value, scopes?.value).toString()
+            }!!
         }
     }
 
-    private fun launchPythonScript(module: String, action: (PyObject) -> Unit) {
-        try {
+    private suspend fun launchPythonScript(action: (PyObject) -> String): String? {
+        return try {
             if (!Python.isStarted()) {
                 Python.start(AndroidPlatform(context))
             }
 
-            val python = Python.getInstance()
-            val module = python.getModule(module)
+            checkTokenExpired()
 
-            action.invoke(module)
+            val python = Python.getInstance()
+            val module = python.getModule("ytmusic")
+
+            action.invoke(module.callAttr("YTMusicClient", ytMusicRepository.getTokenFilePath()))
         } catch (e: Throwable) {
             Timber.w(e)
+            null
+        }
+    }
+
+    private suspend fun checkTokenExpired() {
+        val token = ytMusicRepository.getOAuthToken() ?: error("Token is not saved.")
+
+        if (token.expiresAt < (System.currentTimeMillis() / 1000)) {
+            val refreshToken = ytMusicRepository.refreshToken(token)!!
+            val newToken = token.copy(
+                accessToken = refreshToken.accessToken,
+                expiresAt = refreshToken.expiresAt,
+                expiresIn = refreshToken.expiresIn,
+            )
+
+            ytMusicRepository.saveToken(newToken)
         }
     }
 }

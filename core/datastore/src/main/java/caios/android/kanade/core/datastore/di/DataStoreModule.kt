@@ -7,18 +7,12 @@ import androidx.datastore.dataStoreFile
 import caios.android.kanade.core.common.network.Dispatcher
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.common.network.di.ApplicationScope
-import caios.android.kanade.core.datastore.DownloadPathPreference
-import caios.android.kanade.core.datastore.EqualizerPreference
-import caios.android.kanade.core.datastore.LyricsPreference
 import caios.android.kanade.core.datastore.MusicPreference
-import caios.android.kanade.core.datastore.MusicPreferenceSerializer
 import caios.android.kanade.core.datastore.QueuePreference
-import caios.android.kanade.core.datastore.QueuePreferenceSerializer
-import caios.android.kanade.core.datastore.TokenPreference
 import caios.android.kanade.core.datastore.UserPreference
-import caios.android.kanade.core.datastore.UserPreferenceSerializer
-import caios.android.kanade.core.datastore.VersionPreference
-import caios.android.kanade.core.datastore.VolumePreference
+import caios.android.kanade.core.datastore.serializer.MusicPreferenceSerializer
+import caios.android.kanade.core.datastore.serializer.QueuePreferenceSerializer
+import caios.android.kanade.core.datastore.serializer.UserPreferenceSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,57 +69,5 @@ object DataStoreModule {
             scope = CoroutineScope(scope.coroutineContext + io),
             produceFile = { context.dataStoreFile("queue_preference.pb") },
         )
-    }
-
-    @Provides
-    @Singleton
-    fun providesLyricsPreference(
-        @ApplicationContext context: Context,
-        @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
-        @ApplicationScope scope: CoroutineScope,
-    ): LyricsPreference {
-        return LyricsPreference(context, io, CoroutineScope(scope.coroutineContext + io))
-    }
-
-    @Provides
-    @Singleton
-    fun provideTokenPreference(
-        @ApplicationContext context: Context,
-    ): TokenPreference {
-        return TokenPreference(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideVersionPreference(
-        @ApplicationContext context: Context,
-    ): VersionPreference {
-        return VersionPreference(context)
-    }
-
-    @Provides
-    @Singleton
-    fun providesVolumePreference(
-        @ApplicationContext context: Context,
-        @Dispatcher(KanadeDispatcher.IO) io: CoroutineDispatcher,
-        @ApplicationScope scope: CoroutineScope,
-    ): VolumePreference {
-        return VolumePreference(context, io, CoroutineScope(scope.coroutineContext + io))
-    }
-
-    @Provides
-    @Singleton
-    fun providesDownloadPathPreference(
-        @ApplicationContext context: Context,
-    ): DownloadPathPreference {
-        return DownloadPathPreference(context)
-    }
-
-    @Provides
-    @Singleton
-    fun providesEqualizerPreference(
-        @ApplicationContext context: Context,
-    ): EqualizerPreference {
-        return EqualizerPreference(context)
     }
 }

@@ -365,6 +365,7 @@ private fun IdleScreen(
                         onChangeActive = { isSearchActive = it },
                         onClickDrawerMenu = {
                             scope.launch {
+                                musicViewModel.search(activity)
                                 drawerState.open()
                             }
                         },

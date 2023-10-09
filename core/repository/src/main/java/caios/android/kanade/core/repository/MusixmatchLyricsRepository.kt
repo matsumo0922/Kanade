@@ -2,8 +2,8 @@ package caios.android.kanade.core.repository
 
 import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.common.network.di.ApplicationScope
-import caios.android.kanade.core.datastore.LyricsPreference
-import caios.android.kanade.core.datastore.TokenPreference
+import caios.android.kanade.core.datastore.PreferenceLyrics
+import caios.android.kanade.core.datastore.PreferenceToken
 import caios.android.kanade.core.model.entity.MusixmatchLyricsEntity
 import caios.android.kanade.core.model.entity.MusixmatchSongsEntity
 import caios.android.kanade.core.model.music.Lyrics
@@ -26,8 +26,8 @@ import javax.inject.Inject
 
 class MusixmatchLyricsRepository @Inject constructor(
     private val client: HttpClient,
-    private val lyricsPreference: LyricsPreference,
-    private val tokenPreference: TokenPreference,
+    private val preferenceLyrics: PreferenceLyrics,
+    private val preferenceToken: PreferenceToken,
     private val kanadeConfig: KanadeConfig,
     @ApplicationScope private val scope: CoroutineScope,
 ) : LyricsRepository {
@@ -38,7 +38,7 @@ class MusixmatchLyricsRepository @Inject constructor(
 
     init {
         scope.launch {
-            lyricsPreference.data.collect { lyrics ->
+            preferenceLyrics.data.collect { lyrics ->
                 cache.clear()
                 cache.putAll(lyrics.associateBy { it.songId })
 
@@ -50,7 +50,7 @@ class MusixmatchLyricsRepository @Inject constructor(
     override val data: SharedFlow<List<Lyrics>> = _data.asSharedFlow()
 
     override suspend fun save(lyrics: Lyrics) {
-        lyricsPreference.save(lyrics)
+        preferenceLyrics.save(lyrics)
     }
 
     override fun get(song: Song): Lyrics? {
@@ -59,7 +59,7 @@ class MusixmatchLyricsRepository @Inject constructor(
 
     override suspend fun lyrics(song: Song): Lyrics? {
         return kotlin.runCatching {
-            val token = tokenPreference.get(TokenPreference.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else return@runCatching null
+            val token = preferenceToken.get(PreferenceToken.KEY_MUSIXMATCH) ?: if (kanadeConfig.isDebug) kanadeConfig.musixmatchApiKey else return@runCatching null
             val songs = fetchSongs(token, song.title, song.artist) ?: return@runCatching null
             val track = findTrack(songs.message.body.trackList, (song.duration / 1000).toInt()) ?: return@runCatching null
             val entity = fetchLyrics(token, track.track.trackId) ?: return@runCatching null
@@ -68,7 +68,7 @@ class MusixmatchLyricsRepository @Inject constructor(
 
             parseLrc(song, entity.message.body.subtitle.subtitleBody)
         }.fold(
-            onSuccess = { lyrics -> lyrics?.also { lyricsPreference.save(it) } },
+            onSuccess = { lyrics -> lyrics?.also { preferenceLyrics.save(it) } },
             onFailure = {
                 Timber.w(it)
                 null

@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 import java.util.Locale
 import javax.inject.Inject
 
-class VersionPreference @Inject constructor(
+class PreferenceVersion @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private var data: List<Version>? = null

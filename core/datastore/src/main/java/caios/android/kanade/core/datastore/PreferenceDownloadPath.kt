@@ -7,7 +7,7 @@ import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class DownloadPathPreference @Inject constructor(
+class PreferenceDownloadPath @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val preference by lazy { context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE) }

@@ -1,12 +1,23 @@
 plugins {
     id("kanade.library")
     id("kanade.library.compose")
+    id("kanade.library.chaquopy")
     id("kanade.hilt")
     id("kanade.detekt")
 }
 
 android {
     namespace = "caios.android.kanade.core.music"
+}
+
+chaquopy {
+    defaultConfig {
+        version = "3.8"
+
+        pip {
+            install("ytmusicapi")
+        }
+    }
 }
 
 dependencies {
