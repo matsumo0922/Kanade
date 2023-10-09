@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomSheetScaffold
@@ -275,7 +276,7 @@ private fun IdleScreen(
                     currentDestination = appState.currentDestination,
                 )
             },
-        ) {
+        ) { rootPadding ->
             BottomSheetScaffold(
                 modifier = Modifier
                     .fillMaxSize()
@@ -346,7 +347,7 @@ private fun IdleScreen(
                     )
                 },
             ) {
-                Box {
+                Box(Modifier.padding(rootPadding)) {
                     if (musicViewModel.uiState.isAnalyzing) {
                         LoadingDialog(R.string.common_analyzing)
                     }
