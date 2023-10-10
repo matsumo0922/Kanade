@@ -7,6 +7,7 @@ import caios.android.kanade.core.common.network.util.suspendRunCatching
 import caios.android.kanade.core.model.entity.YTMusicOAuthCode
 import caios.android.kanade.core.model.entity.YTMusicOAuthRefreshToken
 import caios.android.kanade.core.model.entity.YTMusicOAuthToken
+import caios.android.kanade.core.model.entity.YTMusicSearch
 import caios.android.kanade.core.repository.YTMusicRepository
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
@@ -14,6 +15,9 @@ import com.chaquo.python.android.AndroidPlatform
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,7 +29,7 @@ interface YTMusic {
 
     suspend fun removeToken()
     suspend fun refreshToken(token: YTMusicOAuthToken): Result<YTMusicOAuthRefreshToken>
-    suspend fun search(query: String, filters: Filters? = null, scopes: Scopes? = null): Result<String>
+    suspend fun search(query: String, filters: Filters? = null, scopes: Scopes? = null): Result<List<YTMusicSearch>>
 
     enum class Language(val value: String) {
         ENGLISH("en"),
@@ -64,6 +68,16 @@ class YTMusicImpl @Inject constructor(
     @Dispatcher(KanadeDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : YTMusic {
 
+    @OptIn(ExperimentalSerializationApi::class)
+    private val formatter = Json {
+        isLenient = true
+        prettyPrint = true
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+        encodeDefaults = true
+        explicitNulls = false
+    }
+
     override fun isInitialized(): Boolean {
         return ytMusicRepository.getOAuthToken() != null
     }
@@ -92,15 +106,20 @@ class YTMusicImpl @Inject constructor(
         }
     }
 
-    override suspend fun search(query: String, filters: YTMusic.Filters?, scopes: YTMusic.Scopes?): Result<String> = withContext(ioDispatcher) {
+    override suspend fun search(query: String, filters: YTMusic.Filters?, scopes: YTMusic.Scopes?): Result<List<YTMusicSearch>> = withContext(ioDispatcher) {
         suspendRunCatching {
             launchPythonScript {
-                return@launchPythonScript it.callAttr("search", query, filters?.value, scopes?.value).toString()
+                val serializer = ListSerializer(YTMusicSearch.serializer())
+                val result = it.callAttr("search", query, filters?.value, scopes?.value).toString()
+                    .replaceSingleQuotesWithDoubleQuotes()
+                    .replace("None", "null")
+
+                return@launchPythonScript formatter.decodeFromString(serializer, result)
             }!!
         }
     }
 
-    private suspend fun launchPythonScript(action: (PyObject) -> String): String? {
+    private suspend fun <T> launchPythonScript(action: (PyObject) -> T): T? {
         return try {
             if (!Python.isStarted()) {
                 Python.start(AndroidPlatform(context))
@@ -131,5 +150,9 @@ class YTMusicImpl @Inject constructor(
 
             ytMusicRepository.saveToken(newToken)
         }
+    }
+
+    private fun String.replaceSingleQuotesWithDoubleQuotes(): String {
+        return "'(.*?)'".toRegex().replace(this) { "\"${it.groupValues[1]}\"" }
     }
 }

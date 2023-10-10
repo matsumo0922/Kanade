@@ -370,6 +370,7 @@ private fun IdleScreen(
                             }
                             .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
                             .alpha(topBarAlpha),
+                        isEnableYTMusic = userData.isEnableYTMusic,
                         active = isSearchActive,
                         yOffset = toolbarOffset,
                         onChangeActive = { isSearchActive = it },

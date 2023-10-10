@@ -88,6 +88,7 @@
     <!-- Search -->
     <string name="search_title">Search library</string>
     <string name="search_not_found">No media matched</string>
+    <string name="search_empty_text_ytmusic">Youtube Music と連携中です\nインクリメンタルサーチは利用できません</string>
     <string name="search_keyword_suggestion_description">Inferred from the keywords you entered, we are also searching for media containing the following keywords. \n\n[%1$s]</string>
 
     <!-- Home -->

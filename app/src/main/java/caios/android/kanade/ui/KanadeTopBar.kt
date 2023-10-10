@@ -29,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +48,7 @@ import caios.android.kanade.core.model.music.Playlist
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.feature.search.top.SearchRoute
 import caios.android.kanade.feature.search.top.SearchViewModel
+import kotlinx.coroutines.launch
 
 @Suppress("ViewModelInjection")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
@@ -54,6 +56,7 @@ import caios.android.kanade.feature.search.top.SearchViewModel
 fun KanadeTopBar(
     active: Boolean,
     yOffset: Dp,
+    isEnableYTMusic: Boolean,
     onChangeActive: (Boolean) -> Unit,
     onClickDrawerMenu: () -> Unit,
     navigateToArtistDetail: (Long) -> Unit,
@@ -66,6 +69,7 @@ fun KanadeTopBar(
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
+    val scope = rememberCoroutineScope()
     val searchViewModel = hiltViewModel<SearchViewModel>()
 
     val image = AnimatedImageVector.animatedVectorResource(R.drawable.av_drawer_to_arrow)
@@ -85,7 +89,9 @@ fun KanadeTopBar(
     }
 
     LaunchedEffect(query) {
-        searchViewModel.search(listOf(query))
+        if (!isEnableYTMusic) {
+            searchViewModel.search(listOf(query))
+        }
     }
 
     Column(
@@ -105,7 +111,13 @@ fun KanadeTopBar(
         SearchBar(
             query = query,
             onQueryChange = { query = it },
-            onSearch = { },
+            onSearch = {
+                if (isEnableYTMusic) {
+                    scope.launch {
+                        searchViewModel.search(listOf(query))
+                    }
+                }
+            },
             active = active,
             onActiveChange = onChangeActive,
             colors = SearchBarDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
@@ -151,6 +163,7 @@ private fun Preview() {
     KanadeTopBar(
         active = false,
         yOffset = 0.dp,
+        isEnableYTMusic = false,
         onChangeActive = { },
         onClickDrawerMenu = { },
         navigateToArtistDetail = { },
