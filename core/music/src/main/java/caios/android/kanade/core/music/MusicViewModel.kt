@@ -34,6 +34,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 @Stable
@@ -90,6 +91,15 @@ class MusicViewModel @Inject constructor(
             }.collect {
                 uiState = it
             }
+        }
+    }
+
+    fun initKanadeId() {
+        viewModelScope.launch {
+            val id = UUID.randomUUID().toString()
+
+            userDataRepository.setKanadeId(id)
+            Timber.d("Initailize KanadeID to $id")
         }
     }
 

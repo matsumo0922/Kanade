@@ -35,7 +35,7 @@ import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.design.component.KanadeBackground
 import caios.android.kanade.core.model.music.Song
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContentsWithoutAnimation
 
 @Composable
 internal fun LyricsDownloadRoute(
@@ -51,7 +51,7 @@ internal fun LyricsDownloadRoute(
         viewModel.fetch(songId)
     }
 
-    AsyncLoadContents(
+    AsyncLoadContentsWithoutAnimation(
         modifier = modifier,
         screenState = screenState,
         retryAction = { terminate.invoke() },

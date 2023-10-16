@@ -9,6 +9,7 @@ import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.common.network.KanadeDispatcher
 import caios.android.kanade.core.model.ScreenState
 import caios.android.kanade.core.model.UserData
+import caios.android.kanade.core.music.YTMusic
 import caios.android.kanade.core.repository.MusicRepository
 import caios.android.kanade.core.repository.UserDataRepository
 import com.yausername.youtubedl_android.YoutubeDL
@@ -27,6 +28,7 @@ class SettingTopViewModel @Inject constructor(
     private val musicRepository: MusicRepository,
     private val userDataRepository: UserDataRepository,
     private val kanadeConfig: KanadeConfig,
+    private val ytMusic: YTMusic,
     @Dispatcher(KanadeDispatcher.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -37,6 +39,7 @@ class SettingTopViewModel @Inject constructor(
             SettingTopUiState(
                 userData = it,
                 config = kanadeConfig,
+                isYTMusicInitialized = ytMusic.isInitialized(),
             ),
         )
     }.stateIn(
@@ -61,6 +64,12 @@ class SettingTopViewModel @Inject constructor(
     fun setDeveloperMode(isDeveloperMode: Boolean) {
         viewModelScope.launch {
             userDataRepository.setDeveloperMode(isDeveloperMode)
+        }
+    }
+
+    fun setEnableYTMusic(isEnable: Boolean) {
+        viewModelScope.launch {
+            userDataRepository.setEnableYTMusic(isEnable)
         }
     }
 
@@ -100,6 +109,13 @@ class SettingTopViewModel @Inject constructor(
         }
     }
 
+    fun removeYTMusicToken() {
+        viewModelScope.launch {
+            ytMusic.removeToken()
+            setEnableYTMusic(false)
+        }
+    }
+
     suspend fun updateYoutubeDL(context: Context): String? = withContext(dispatcher) {
         with(YoutubeDL.getInstance()) {
             updateYoutubeDL(context)
@@ -112,4 +128,5 @@ class SettingTopViewModel @Inject constructor(
 data class SettingTopUiState(
     val userData: UserData,
     val config: KanadeConfig,
+    val isYTMusicInitialized: Boolean,
 )

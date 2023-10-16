@@ -31,7 +31,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:localeConfig="@xml/locales_config"
-        android:enableOnBackInvokedCallback="true"
+        android:enableOnBackInvokedCallback="false"
         android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"

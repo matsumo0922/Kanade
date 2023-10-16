@@ -39,6 +39,10 @@ gradlePlugin {
             id = "kanade.library.glance"
             implementationClass = "AndroidLibraryGlanceConventionPlugin"
         }
+        register("androidLibraryChaquopy") {
+            id = "kanade.library.chaquopy"
+            implementationClass = "AndroidLibraryChaquopyConventionPlugin"
+        }
         register("androidHilt") {
             id = "kanade.hilt"
             implementationClass = "AndroidHiltConventionPlugin"

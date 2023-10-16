@@ -1,7 +1,7 @@
 package caios.android.kanade.core.music.analyzer
 
 import caios.android.kanade.core.common.network.di.ApplicationScope
-import caios.android.kanade.core.datastore.VolumePreference
+import caios.android.kanade.core.datastore.PreferenceVolume
 import caios.android.kanade.core.model.music.Song
 import caios.android.kanade.core.model.music.Volume
 import caios.android.kanade.core.repository.MusicRepository
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class VolumeAnalyzer @Inject constructor(
     private val musicRepository: MusicRepository,
-    private val volumePreference: VolumePreference,
+    private val preferenceVolume: PreferenceVolume,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val cache = ConcurrentHashMap<Long, Volume>()
@@ -27,7 +27,7 @@ class VolumeAnalyzer @Inject constructor(
 
     init {
         scope.launch {
-            volumePreference.data.collect { lyrics ->
+            preferenceVolume.data.collect { lyrics ->
                 cache.clear()
                 cache.putAll(lyrics.associateBy { it.songId })
 
@@ -52,7 +52,7 @@ class VolumeAnalyzer @Inject constructor(
                 analyzeVolume(song, file!!)
             }
         }.getOrNull()?.also {
-            volumePreference.save(it)
+            preferenceVolume.save(it)
         }
     }
 

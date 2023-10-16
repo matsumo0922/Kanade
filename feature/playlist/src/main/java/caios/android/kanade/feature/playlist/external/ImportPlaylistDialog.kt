@@ -26,7 +26,7 @@ import caios.android.kanade.core.common.network.util.ToastUtil
 import caios.android.kanade.core.design.R
 import caios.android.kanade.core.model.music.ExternalPlaylist
 import caios.android.kanade.core.model.music.Playlist
-import caios.android.kanade.core.ui.AsyncLoadContents
+import caios.android.kanade.core.ui.AsyncLoadContentsWithoutAnimation
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -38,7 +38,7 @@ internal fun ImportPlaylistRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    AsyncLoadContents(
+    AsyncLoadContentsWithoutAnimation(
         modifier = modifier,
         screenState = screenState,
         cornerShape = RoundedCornerShape(16.dp),

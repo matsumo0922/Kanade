@@ -13,5 +13,6 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.libraries) apply false
+    alias(libs.plugins.chaquopy) apply false
     alias(libs.plugins.module.graph) apply false
 }

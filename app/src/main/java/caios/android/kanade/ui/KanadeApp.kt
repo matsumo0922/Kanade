@@ -14,6 +14,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -89,6 +90,12 @@ fun KanadeApp(
 ) {
     val activity = (LocalContext.current as Activity)
     var isShowWelcomeScreen by remember { mutableStateOf(!isAgreedTeams || !isAllowedPermission) }
+
+    LaunchedEffect(true) {
+        if (userData.kanadeId.isBlank()) {
+            musicViewModel.initKanadeId()
+        }
+    }
 
     KanadeBackground(modifier) {
         AnimatedContent(
@@ -277,6 +284,11 @@ private fun IdleScreen(
                 )
             },
         ) { rootPadding ->
+            val padding = PaddingValues(
+                top = rootPadding.calculateTopPadding(),
+                bottom = bottomSheetPeekHeight,
+            )
+
             BottomSheetScaffold(
                 modifier = Modifier
                     .fillMaxSize()
@@ -347,7 +359,7 @@ private fun IdleScreen(
                     )
                 },
             ) {
-                Box(Modifier.padding(rootPadding)) {
+                Box(Modifier.padding(padding)) {
                     if (musicViewModel.uiState.isAnalyzing) {
                         LoadingDialog(R.string.common_analyzing)
                     }
@@ -360,6 +372,7 @@ private fun IdleScreen(
                             }
                             .zIndex(if (appState.currentLibraryDestination == null) 0f else 1f)
                             .alpha(topBarAlpha),
+                        isEnableYTMusic = userData.isEnableYTMusic,
                         active = isSearchActive,
                         yOffset = toolbarOffset,
                         onChangeActive = { isSearchActive = it },

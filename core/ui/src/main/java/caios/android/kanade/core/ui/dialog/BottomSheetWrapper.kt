@@ -3,6 +3,7 @@ package caios.android.kanade.core.ui.dialog
 import android.app.Activity
 import android.graphics.Rect
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
@@ -75,6 +76,13 @@ private fun BottomSheetWrapper(
             ),
             onDismissRequest = { isOpen = false },
         ) {
+            BackHandler {
+                scope.launch {
+                    state.hide()
+                    isOpen = false
+                }
+            }
+
             content {
                 scope.launch {
                     state.hide()

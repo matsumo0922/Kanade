@@ -19,7 +19,6 @@ import caios.android.kanade.feature.setting.SettingSwitchItem
 import caios.android.kanade.feature.setting.SettingTextItem
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 internal fun SettingTopOthersSection(
@@ -43,7 +42,7 @@ internal fun SettingTopOthersSection(
         SettingTextItem(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(R.string.setting_top_others_id),
-            description = UUID.randomUUID().toString(),
+            description = userData.kanadeId,
             onClick = { /* do nothing */ },
         )
 
