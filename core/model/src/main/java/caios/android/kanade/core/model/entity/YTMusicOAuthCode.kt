@@ -14,5 +14,5 @@ data class YTMusicOAuthCode(
     @SerialName("user_code")
     val userCode: String,
     @SerialName("verification_url")
-    val verificationUrl: String
+    val verificationUrl: String,
 )

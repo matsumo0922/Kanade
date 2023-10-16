@@ -16,7 +16,6 @@ interface ExternalPlaylistRepository {
     suspend fun import(externalPlaylistId: Long)
 }
 
-
 class ExternalPlaylistRepositoryImpl @Inject constructor(
     private val songRepository: SongRepository,
     private val playlistRepository: PlaylistRepository,

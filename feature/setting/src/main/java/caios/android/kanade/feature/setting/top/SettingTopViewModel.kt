@@ -39,7 +39,7 @@ class SettingTopViewModel @Inject constructor(
             SettingTopUiState(
                 userData = it,
                 config = kanadeConfig,
-                isYTMusicInitialized = ytMusic.isInitialized()
+                isYTMusicInitialized = ytMusic.isInitialized(),
             ),
         )
     }.stateIn(

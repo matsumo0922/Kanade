@@ -266,8 +266,8 @@
     <string name="setting_top_playing_stop_when_taskkill">Stop on task kill</string>
     <string name="setting_top_playing_stop_when_taskkill_description">Stop playing music when exiting the app. </string>
     <string name="setting_top_library">Library</string>
-    <string name="setting_top_library_ytmusic_title">Youtube Music と連携</string>
-    <string name="setting_top_library_ytmusic_description">連携を行うと、Youtube Music のデータを Kanade で使用できるようになります</string>
+    <string name="setting_top_library_ytmusic_title">Youtube Music と連携 (未提供)</string>
+    <string name="setting_top_library_ytmusic_description">連携を行うと、Youtube Music のデータを Kanade で使用できるようになります。この機能は次回以降のアップデートで提供予定です。</string>
     <string name="setting_top_library_ytmusic_remove_token_title">連携情報を削除</string>
     <string name="setting_top_library_ytmusic_remove_token_description">Youtube Music との連携情報を削除します</string>
     <string name="setting_top_library_scan">Song scan</string>
@@ -301,6 +301,7 @@
     <string name="setting_ytmusic_login_description2">Google アカウントにサインイン後に以下の「連携」ボタンを押してください。</string>
     <string name="setting_ytmusic_login_button2">連携</string>
     <string name="setting_ytmusic_login_toast_success">Youtube Music と連携しました</string>
+    <string name="setting_ytmusic_login_toast_success2">Youtube Music と連携しましたが、この機能は次回以降のアップデートで提供されます</string>
     <string name="setting_ytmusic_login_toast_failure">連携に失敗しました</string>
     <string name="setting_ytmusic_login_toast_remove_token">連携情報を削除しました</string>
 

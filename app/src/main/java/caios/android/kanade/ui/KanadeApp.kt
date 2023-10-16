@@ -211,7 +211,9 @@ private fun IdleScreen(
         )
 
         val bottomBarOffset by animateDpAsState(
-            targetValue = with(density) { bottomBarHeight.toDp() } * if (isShouldHideBottomController) 1f else (1f - bottomSheetOffsetRate),
+            targetValue = with(density) {
+                bottomBarHeight.toDp()
+            } * if (isShouldHideBottomController) 1f else (1f - bottomSheetOffsetRate),
             label = "bottomBarOffset",
             animationSpec = tween(
                 durationMillis = 200,

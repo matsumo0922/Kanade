@@ -54,7 +54,6 @@ interface SongRepository {
     fun songsSort(songs: List<Song>, musicConfig: MusicConfig): List<Song>
 }
 
-
 class SongRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val artworkRepository: ArtworkRepository,

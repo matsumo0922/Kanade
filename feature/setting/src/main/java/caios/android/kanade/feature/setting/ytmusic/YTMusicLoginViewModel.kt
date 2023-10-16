@@ -11,13 +11,14 @@ import caios.android.kanade.core.repository.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class YTMusicLoginViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
-    private val ytMusic: YTMusic
+    private val ytMusic: YTMusic,
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState<YTMusicLoginUiState>>(ScreenState.Loading)
@@ -40,7 +41,7 @@ class YTMusicLoginViewModel @Inject constructor(
                         message = R.string.error_no_data,
                         retryTitle = R.string.common_close,
                     )
-                }
+                },
             )
         }
     }
@@ -54,6 +55,7 @@ class YTMusicLoginViewModel @Inject constructor(
     suspend fun getOAuthToken(oauthCode: YTMusicOAuthCode): Boolean {
         return ytMusic.getOAuthToken(oauthCode).onSuccess {
             userDataRepository.setEnableYTMusic(true)
+            if (!userDataRepository.userData.first().isDeveloperMode) userDataRepository.setEnableYTMusic(false)
         }.isSuccess
     }
 }

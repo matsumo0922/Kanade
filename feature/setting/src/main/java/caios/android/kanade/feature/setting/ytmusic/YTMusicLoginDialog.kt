@@ -56,7 +56,7 @@ internal fun YTMusicLoginRoute(
             onClickDone = {
                 scope.launch {
                     if (viewModel.getOAuthToken(uiState.oauthCode)) {
-                        ToastUtil.show(context, R.string.setting_ytmusic_login_toast_success)
+                        ToastUtil.show(context, R.string.setting_ytmusic_login_toast_success2)
                         terminate.invoke()
                     } else {
                         ToastUtil.show(context, R.string.setting_ytmusic_login_toast_failure)

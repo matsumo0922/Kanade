@@ -1,6 +1,5 @@
 package caios.android.kanade.core.model.entity
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -47,14 +46,14 @@ data class YTMusicSearch(
     @SerialName("views")
     val views: String?,
     @SerialName("year")
-    val year: String?
+    val year: String?,
 ) {
     @Serializable
     data class Album(
         @SerialName("id")
         val id: String?,
         @SerialName("name")
-        val name: String
+        val name: String,
     )
 
     @Serializable
@@ -62,7 +61,7 @@ data class YTMusicSearch(
         @SerialName("id")
         val id: String?,
         @SerialName("name")
-        val name: String
+        val name: String,
     )
 
     @Serializable
@@ -70,7 +69,7 @@ data class YTMusicSearch(
         @SerialName("add")
         val add: String?,
         @SerialName("remove")
-        val remove: String?
+        val remove: String?,
     )
 
     @Serializable
@@ -80,6 +79,6 @@ data class YTMusicSearch(
         @SerialName("url")
         val url: String,
         @SerialName("width")
-        val width: Int
+        val width: Int,
     )
 }
