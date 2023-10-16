@@ -80,6 +80,8 @@ android {
                 putBuildConfig(localProperties, "LAST_FM_API_KEY")
                 putBuildConfig(localProperties, "LAST_FM_API_SECRET")
                 putBuildConfig(localProperties, "MUSIXMATCH_API_KEY")
+                putBuildConfig(localProperties, "YTMUSIC_CLIENT_ID")
+                putBuildConfig(localProperties, "YTMUSIC_CLIENT_SECRET")
             }
 
             if (it.buildType == "release") {
