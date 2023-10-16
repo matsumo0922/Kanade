@@ -8,8 +8,6 @@ object YTMusicInfo {
 
     const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"
 
-    const val OAUTH_CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com"
-    const val OAUTH_CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT"
     const val OAUTH_SCOPE = "https://www.googleapis.com/auth/youtube"
     const val OAUTH_CODE_URL = "https://www.youtube.com/o/oauth2/device/code"
     const val OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token"

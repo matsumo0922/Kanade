@@ -32,6 +32,8 @@ object AppModule {
             lastFmApiKey = BuildConfig.LAST_FM_API_KEY,
             lastFmApiSecret = BuildConfig.LAST_FM_API_SECRET,
             musixmatchApiKey = BuildConfig.MUSIXMATCH_API_KEY,
+            ytMusicApiKey = BuildConfig.YTMUSIC_CLIENT_ID,
+            ytMusicApiSecret = BuildConfig.YTMUSIC_CLIENT_SECRET,
         )
     }
 

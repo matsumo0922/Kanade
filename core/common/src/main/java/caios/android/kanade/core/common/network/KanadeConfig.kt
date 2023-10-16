@@ -10,6 +10,8 @@ data class KanadeConfig(
     val lastFmApiKey: String,
     val lastFmApiSecret: String,
     val musixmatchApiKey: String,
+    val ytMusicApiKey: String,
+    val ytMusicApiSecret: String,
 ) {
     companion object {
         fun dummy(): KanadeConfig {
@@ -23,6 +25,8 @@ data class KanadeConfig(
                 lastFmApiKey = "1919191919",
                 lastFmApiSecret = "1919191919",
                 musixmatchApiKey = "1919191919",
+                ytMusicApiKey = "1919191919",
+                ytMusicApiSecret = "1919191919",
             )
         }
     }

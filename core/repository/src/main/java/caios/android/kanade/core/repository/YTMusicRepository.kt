@@ -1,5 +1,6 @@
 package caios.android.kanade.core.repository
 
+import caios.android.kanade.core.common.network.KanadeConfig
 import caios.android.kanade.core.datastore.PreferenceYTMusic
 import caios.android.kanade.core.model.entity.YTMusicInfo
 import caios.android.kanade.core.model.entity.YTMusicOAuthCode
@@ -29,6 +30,7 @@ interface YTMusicRepository {
 class YTMusicRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     private val preferenceYTMusic: PreferenceYTMusic,
+    private val kanadeConfig: KanadeConfig,
 ) : YTMusicRepository {
 
     init {
@@ -43,7 +45,7 @@ class YTMusicRepositoryImpl @Inject constructor(
         return client.submitForm(
             url = YTMusicInfo.OAUTH_CODE_URL,
             formParameters = Parameters.build {
-                append("client_id", YTMusicInfo.OAUTH_CLIENT_ID)
+                append("client_id", kanadeConfig.ytMusicApiKey)
                 append("scope", YTMusicInfo.OAUTH_SCOPE)
             },
         ).parse()
@@ -53,8 +55,8 @@ class YTMusicRepositoryImpl @Inject constructor(
         return client.submitForm(
             url = YTMusicInfo.OAUTH_TOKEN_URL,
             formParameters = Parameters.build {
-                append("client_id", YTMusicInfo.OAUTH_CLIENT_ID)
-                append("client_secret", YTMusicInfo.OAUTH_CLIENT_SECRET)
+                append("client_id", kanadeConfig.ytMusicApiKey)
+                append("client_secret", kanadeConfig.ytMusicApiSecret)
                 append("code", code.deviceCode)
                 append("grant_type", "http://oauth.net/grant_type/device/1.0")
             },
@@ -67,8 +69,8 @@ class YTMusicRepositoryImpl @Inject constructor(
         return client.submitForm(
             url = YTMusicInfo.OAUTH_TOKEN_URL,
             formParameters = Parameters.build {
-                append("client_id", YTMusicInfo.OAUTH_CLIENT_ID)
-                append("client_secret", YTMusicInfo.OAUTH_CLIENT_SECRET)
+                append("client_id", kanadeConfig.ytMusicApiKey)
+                append("client_secret", kanadeConfig.ytMusicApiSecret)
                 append("refresh_token", token.refreshToken)
                 append("grant_type", "refresh_token")
             },
