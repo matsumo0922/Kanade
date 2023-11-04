@@ -142,26 +142,28 @@ class SongRepositoryImpl @Inject constructor(
         selectionValues: List<String>,
         vararg musicOrders: MusicOrder,
     ): Cursor? {
-        val order = musicOrders.joinToString(separator = ", ") { it.create() }
-        val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-
-        var selectionFinal = MediaStore.Audio.AudioColumns.TITLE + " != ''"
-        var selectionValuesFinal = emptyArray<String>()
-
-        if (selection.isNotBlank()) {
-            selectionFinal += " AND $selection"
-            selectionValuesFinal += selectionValues
-        }
-
-        if (userDataRepository.userData.first().isIgnoreNotMusic) {
-            selectionFinal += " AND ${MediaStore.Audio.AudioColumns.IS_MUSIC}=1"
-        }
-
-        if (userDataRepository.userData.first().isIgnoreShortMusic) {
-            selectionFinal += " AND ${MediaStore.Audio.Media.DURATION} >= 5000"
-        }
-
         return try {
+            val order = musicOrders.joinToString(separator = ", ") { it.create() }
+            val uri =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+
+            var selectionFinal = MediaStore.Audio.AudioColumns.TITLE + " != ''"
+            var selectionValuesFinal = emptyArray<String>()
+
+            if (selection.isNotBlank()) {
+                selectionFinal += " AND $selection"
+                selectionValuesFinal += selectionValues
+            }
+
+            if (userDataRepository.userData.first().isIgnoreNotMusic) {
+                selectionFinal += " AND ${MediaStore.Audio.AudioColumns.IS_MUSIC}=1"
+            }
+
+            if (userDataRepository.userData.first().isIgnoreShortMusic) {
+                selectionFinal += " AND ${MediaStore.Audio.Media.DURATION} >= 5000"
+            }
+
+
             context.contentResolver.query(
                 uri,
                 baseProjection,
@@ -214,7 +216,8 @@ class SongRepositoryImpl @Inject constructor(
     }
 
     private fun getSong(cursor: Cursor): Song {
-        val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val uri =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL) else MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val albumArtworks = artworkRepository.albumArtworks.toImmutableMap()
         val artistArtworks = artworkRepository.artistArtworks.toImmutableMap()
 

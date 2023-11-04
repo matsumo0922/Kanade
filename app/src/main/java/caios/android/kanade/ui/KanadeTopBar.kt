@@ -1,5 +1,6 @@
 package caios.android.kanade.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
@@ -56,6 +57,7 @@ import kotlinx.coroutines.launch
 fun KanadeTopBar(
     active: Boolean,
     yOffset: Dp,
+    isEnableBackHandler: Boolean,
     isEnableYTMusic: Boolean,
     onChangeActive: (Boolean) -> Unit,
     onClickDrawerMenu: () -> Unit,
@@ -142,6 +144,10 @@ fun KanadeTopBar(
                 )
             },
         ) {
+            BackHandler(isEnableBackHandler) {
+                onChangeActive.invoke(false)
+            }
+
             SearchRoute(
                 modifier = Modifier.fillMaxWidth(),
                 viewModel = searchViewModel,
@@ -163,6 +169,7 @@ private fun Preview() {
     KanadeTopBar(
         active = false,
         yOffset = 0.dp,
+        isEnableBackHandler = false,
         isEnableYTMusic = false,
         onChangeActive = { },
         onClickDrawerMenu = { },

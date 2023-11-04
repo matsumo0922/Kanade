@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -124,7 +123,7 @@ class MusicControllerImpl @Inject constructor(
 
     init {
         scope.launch {
-            queueManager.queue.collectLatest {
+            queueManager.queue.collect {
                 _currentQueue.value = it
 
                 if (it.items.isNotEmpty()) {
@@ -277,7 +276,7 @@ class MusicControllerImpl @Inject constructor(
         queueManager.skipToItem(event.index)
 
         val args = buildBundle {
-            putBoolean(ControlKey.PLAY_WHEN_READY, playerState.value == PlayerState.Playing)
+            putBoolean(ControlKey.PLAY_WHEN_READY, event.playWhenReady ?: (playerState.value == PlayerState.Playing))
         }
 
         event.transport { sendCustomAction(ControlAction.NEW_PLAY, args) }

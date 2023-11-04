@@ -96,6 +96,8 @@ class MediaSessionManager(
             if (!musicController.isInitialized.value) {
                 Timber.d("onPlay: cannot play because MusicController is not initialized")
 
+                musicController.initialize()
+
                 scope.launch {
                     musicRepository.fetchSongs()
                     musicRepository.fetchArtists()

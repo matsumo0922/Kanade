@@ -12,19 +12,22 @@ sealed interface PlayerEvent {
         val playWhenReady: Boolean,
     ) : PlayerEvent
 
-    object Play : PlayerEvent
+    data object Play : PlayerEvent
 
-    object Pause : PlayerEvent
+    data object Pause : PlayerEvent
 
-    object PauseTransient : PlayerEvent
+    data object PauseTransient : PlayerEvent
 
-    object Stop : PlayerEvent
+    data object Stop : PlayerEvent
 
-    object SkipToNext : PlayerEvent
+    data object SkipToNext : PlayerEvent
 
-    object SkipToPrevious : PlayerEvent
+    data object SkipToPrevious : PlayerEvent
 
-    data class SkipToQueue(val index: Int) : PlayerEvent
+    data class SkipToQueue(
+        val index: Int,
+        val playWhenReady: Boolean? = null,
+    ) : PlayerEvent
 
     data class Seek(val progress: Float) : PlayerEvent
 
