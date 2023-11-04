@@ -163,7 +163,6 @@ class SongRepositoryImpl @Inject constructor(
                 selectionFinal += " AND ${MediaStore.Audio.Media.DURATION} >= 5000"
             }
 
-
             context.contentResolver.query(
                 uri,
                 baseProjection,
